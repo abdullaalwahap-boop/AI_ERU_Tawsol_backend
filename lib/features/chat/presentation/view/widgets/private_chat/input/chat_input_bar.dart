@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_emoji_picker.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_input_text_field.dart';
@@ -124,13 +126,13 @@ class _ChatInputBarState extends State<ChatInputBar> {
           children: [
             ChatIconButton(
               icon: Icons.attach_file_rounded,
-              color: ChatColors.textSecondary,
+              color: AppColors.textSecondary,
               onTap: () => AttachmentBottomSheet.show(
                 context,
                 onSelected: widget.onAttachment,
               ),
             ),
-            const SizedBox(width: 8),
+            AppSpacing.w8,
             Expanded(
               child: ChatInputTextField(
                 controller: _controller,
@@ -140,7 +142,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 emojiActive: _showEmojiPicker,
               ),
             ),
-            const SizedBox(width: 8),
+            AppSpacing.w8,
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               transitionBuilder: (child, anim) =>

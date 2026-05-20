@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/content_card/course_content_card_attachment_chip.dart';
 
 class CourseContentCardFooter extends StatelessWidget {
@@ -15,22 +16,17 @@ class CourseContentCardFooter extends StatelessWidget {
       children: [
         if (content.attachments.isNotEmpty) ...[
           CourseContentCardAttachmentChip(count: content.attachments.length),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
         ],
         const Spacer(),
         Text(
           'View Details',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 11.5,
-            fontWeight: FontWeight.w700,
-            color: CourseColors.primary,
-          ),
+          style: AppTextStyles.labelSmall.copyWith(color: AppColors.primary),
         ),
-        const SizedBox(width: 2),
+        AppSpacing.w2,
         const Icon(Icons.arrow_forward_ios_rounded,
-            size: 10, color: CourseColors.primary),
+            size: 10, color: AppColors.primary),
       ],
     );
   }
 }
-

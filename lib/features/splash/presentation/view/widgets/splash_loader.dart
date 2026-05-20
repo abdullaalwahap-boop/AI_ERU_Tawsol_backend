@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashLoader extends StatefulWidget {
@@ -73,7 +74,7 @@ class _SplashLoaderState extends State<SplashLoader>
                       boxShadow: [
                         BoxShadow(
                           color:
-                              const Color(0xff3D6FFF).withValues(alpha: 0.65),
+                              AppColors.accent.withValues(alpha: 0.65),
                           blurRadius: 8,
                           spreadRadius: 1,
                         ),

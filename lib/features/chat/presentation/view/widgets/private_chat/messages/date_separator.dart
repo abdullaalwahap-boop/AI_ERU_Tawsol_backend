@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class DateSeparator extends StatelessWidget {
   final DateTime date;
@@ -37,28 +38,26 @@ class DateSeparator extends StatelessWidget {
       child: Row(
         children: [
           const Expanded(
-              child: Divider(color: ChatColors.divider, thickness: 1)),
-          const SizedBox(width: 12),
+              child: Divider(color: AppColors.dividerLight, thickness: 1)),
+          AppSpacing.w12,
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
             decoration: BoxDecoration(
-              color: ChatColors.background,
+              color: AppColors.backgroundLight,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: ChatColors.divider),
+              border: Border.all(color: AppColors.dividerLight),
             ),
             child: Text(
               _formatDate(),
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                color: ChatColors.textSecondary,
+              style: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.textSecondary,
                 letterSpacing: 0.3,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           const Expanded(
-              child: Divider(color: ChatColors.divider, thickness: 1)),
+              child: Divider(color: AppColors.dividerLight, thickness: 1)),
         ],
       ),
     );

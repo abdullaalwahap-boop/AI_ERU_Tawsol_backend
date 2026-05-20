@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class FeatureFilterChip extends StatelessWidget {
   final String label;
@@ -47,9 +47,7 @@ class FeatureFilterChip extends StatelessWidget {
             const SizedBox(width: 5),
             Text(
               label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+              style: AppTextStyles.labelMedium.copyWith(
                 color: isSelected ? Colors.white : unselectedText,
               ),
             ),

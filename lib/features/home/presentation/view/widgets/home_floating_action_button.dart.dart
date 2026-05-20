@@ -1,6 +1,7 @@
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,12 +40,10 @@ class HomeFloatingActionButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.add_rounded, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
+                AppSpacing.w8,
                 Text(
                   'New Post',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                  style: AppTextStyles.buttonMedium.copyWith(
                     color: Colors.white,
                   ),
                 ),

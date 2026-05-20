@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AnnounFilterChip extends StatelessWidget {
   final String label;
@@ -27,10 +28,10 @@ class AnnounFilterChip extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: isSelected ? color : AnnounColors.inputBg,
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? color : AppColors.inputBgLight,
+          borderRadius: AppRadius.xxlarge,
           border: Border.all(
-            color: isSelected ? color : AnnounColors.divider,
+            color: isSelected ? color : AppColors.dividerLight,
             width: 1.2,
           ),
         ),
@@ -40,15 +41,14 @@ class AnnounFilterChip extends StatelessWidget {
             Icon(
               icon,
               size: 13,
-              color: isSelected ? Colors.white : AnnounColors.textSecondary,
+              color: isSelected ? Colors.white : AppColors.textSecondary,
             ),
             const SizedBox(width: 5),
             Text(
               label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
+              style: AppTextStyles.labelMedium.copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : AnnounColors.textSecondary,
+                color: isSelected ? Colors.white : AppColors.textSecondary,
               ),
             ),
           ],

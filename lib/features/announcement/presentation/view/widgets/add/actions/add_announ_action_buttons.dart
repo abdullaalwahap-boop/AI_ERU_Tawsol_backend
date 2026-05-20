@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/actions/add_announ_discard_button.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/actions/add_announ_post_button.dart';
 
@@ -21,10 +22,10 @@ class AddAnnounActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
-      decoration: BoxDecoration(
-        color: AnnounColors.surface,
-        border: const Border(
-          top: BorderSide(color: AnnounColors.divider, width: 1),
+      decoration: const BoxDecoration(
+        color: AppColors.surfaceLight,
+        border: Border(
+          top: BorderSide(color: AppColors.dividerLight, width: 1),
         ),
       ),
       child: SafeArea(
@@ -37,7 +38,7 @@ class AddAnnounActionButtons extends StatelessWidget {
                 onTap: onDiscard,
               ),
             ),
-            const SizedBox(width: 12),
+            AppSpacing.w12,
             Expanded(
               flex: 2,
               child: AddAnnounPostButton(

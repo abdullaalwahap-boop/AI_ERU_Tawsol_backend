@@ -1,7 +1,7 @@
-import 'package:ai_eru_tawasol/constants.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/core/utils/assets.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/additional_pages_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_about_me_header.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_container_section.dart';
@@ -32,7 +32,7 @@ class AboutMeViewBody extends StatelessWidget {
               icon: Icon(
                 Icons.safety_check_outlined,
                 size: 36,
-                color: kPrimaryColor,
+                color: AppColors.primary,
               ),
               title: 'Our Mission',
               trailing: Icon(
@@ -48,7 +48,7 @@ class AboutMeViewBody extends StatelessWidget {
               icon: Icon(
                 Icons.contact_support_sharp,
                 size: 36,
-                color: kPrimaryColor,
+                color: AppColors.primary,
               ),
               title: 'Contact Us',
               trailing: Icon(
@@ -64,12 +64,12 @@ class AboutMeViewBody extends StatelessWidget {
               icon: Icon(
                 Icons.approval_outlined,
                 size: 36,
-                color: kPrimaryColor,
+                color: AppColors.primary,
               ),
               title: 'App Version',
               trailing: Text(
                 '1.0.0+1',
-                style: Styles.textStyle16.copyWith(color: Color(0xff9E9D97)),
+                style: AppTextStyles.bodyLarge.copyWith(color: Color(0xff9E9D97)),
               ),
               onTap: () {
                 GoRouter.of(context).push(AppRouter.kAppVersionView);
@@ -80,7 +80,7 @@ class AboutMeViewBody extends StatelessWidget {
               icon: Icon(
                 Icons.reply_all_outlined,
                 size: 36,
-                color: kPrimaryColor,
+                color: AppColors.primary,
               ),
               title: 'Follow Us',
               trailing: Row(

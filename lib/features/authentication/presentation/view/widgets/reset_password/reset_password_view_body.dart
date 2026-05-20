@@ -1,12 +1,14 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/reset_password_cubit/reset_password_cubit.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/reset_password/reset_password_form.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/shared/auth_gradient_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ResetPasswordViewBody extends StatelessWidget {
   const ResetPasswordViewBody({super.key, required this.email});
@@ -25,23 +27,20 @@ class ResetPasswordViewBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 32),
+              AppSpacing.h32,
               const AuthGradientTitle(
                 text: 'Reset Password',
                 fontSize: 28,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              AppSpacing.h8,
               Text(
                 'Create a strong new password',
-                style: GoogleFonts.plusJakartaSans(
-                  color: Colors.white54,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
               ),
-              const SizedBox(height: 32),
+              AppSpacing.h32,
               ResetPasswordForm(email: email),
-              const SizedBox(height: 32),
+              AppSpacing.h32,
             ],
           ),
         );
@@ -64,47 +63,42 @@ class _SuccessContent extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AuthColors.primary.withValues(alpha: 0.2),
+                color: AppColors.accent.withValues(alpha: 0.2),
               ),
               child: const Icon(
                 Icons.check_rounded,
-                color: AuthColors.primary,
+                color: AppColors.accent,
                 size: 40,
               ),
             ),
-            const SizedBox(height: 24),
+            AppSpacing.h24,
             const AuthGradientTitle(
               text: 'Password Reset!',
               fontSize: 26,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            AppSpacing.h12,
             Text(
               'Your password has been successfully reset.\nYou can now sign in with your new password.',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white54,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            AppSpacing.h32,
             SizedBox(
               width: double.infinity,
               height: 52,
               child: ElevatedButton(
                 onPressed: () => context.go(AppRouter.kLoginView),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AuthColors.primary,
+                  backgroundColor: AppColors.accent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: AppRadius.large,
                   ),
                 ),
                 child: Text(
                   'Back to Login',
-                  style: GoogleFonts.plusJakartaSans(
+                  style: AppTextStyles.buttonLarge.copyWith(
                     color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),

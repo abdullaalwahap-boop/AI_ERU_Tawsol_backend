@@ -1,5 +1,7 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingButton extends StatelessWidget {
   const OnBoardingButton({
@@ -21,14 +23,14 @@ class OnBoardingButton extends StatelessWidget {
         height: 54,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xff4A7AFF), Color(0xff003096)],
+            colors: [AppColors.accentLight, AppColors.primary],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: AppRadius.xlarge,
           boxShadow: [
             BoxShadow(
-              color: const Color(0xff3D6FFF).withValues(alpha: 0.42),
+              color: AppColors.accent.withValues(alpha: 0.42),
               blurRadius: 22,
               offset: const Offset(0, 7),
             ),
@@ -41,9 +43,7 @@ class OnBoardingButton extends StatelessWidget {
         child: Center(
           child: Text(
             isLastPage ? 'Enter Platform' : 'Continue',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
+            style: AppTextStyles.buttonLarge.copyWith(
               color: Colors.white,
               letterSpacing: 0.3,
             ),

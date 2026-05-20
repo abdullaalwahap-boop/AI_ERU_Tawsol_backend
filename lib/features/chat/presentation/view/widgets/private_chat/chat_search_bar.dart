@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class ChatSearchBar extends StatefulWidget {
   final void Function(String query) onChanged;
@@ -44,7 +45,7 @@ class _ChatSearchBarState extends State<ChatSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ChatColors.primary,
+      color: AppColors.primary,
       padding: const EdgeInsets.fromLTRB(4, 8, 12, 12),
       child: Row(
         children: [
@@ -63,12 +64,12 @@ class _ChatSearchBarState extends State<ChatSearchBar> {
               child: TextField(
                 controller: _controller,
                 autofocus: true,
-                style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white, fontSize: 14),
+                style: AppTextStyles.bodyMedium.copyWith(
+                    color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Search messages…',
-                  hintStyle: GoogleFonts.plusJakartaSans(
-                      color: Colors.white54, fontSize: 14),
+                  hintStyle: AppTextStyles.bodyMedium.copyWith(
+                      color: Colors.white54),
                   border: InputBorder.none,
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(vertical: 9),
@@ -78,7 +79,7 @@ class _ChatSearchBarState extends State<ChatSearchBar> {
             ),
           ),
           if (_controller.text.isNotEmpty) ...[
-            const SizedBox(width: 4),
+            AppSpacing.w4,
             GestureDetector(
               onTap: _clear,
               child: const Icon(Icons.close_rounded,

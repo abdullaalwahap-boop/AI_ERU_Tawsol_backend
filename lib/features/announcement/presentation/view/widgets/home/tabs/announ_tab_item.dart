@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class AnnounTabItem extends StatelessWidget {
   final String label;
@@ -28,8 +30,8 @@ class AnnounTabItem extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AnnounColors.surface : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            color: isSelected ? AppColors.surfaceLight : Colors.transparent,
+            borderRadius: AppRadius.medium,
             boxShadow: isSelected
                 ? [
                     BoxShadow(
@@ -47,18 +49,18 @@ class AnnounTabItem extends StatelessWidget {
                 icon,
                 size: 16,
                 color:
-                    isSelected ? AnnounColors.primary : AnnounColors.textHint,
+                    isSelected ? AppColors.primary : AppColors.textHint,
               ),
-              const SizedBox(width: 6),
+              AppSpacing.w6,
               Flexible(
                 child: Text(
                   label,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: AppTextStyles.labelMedium.copyWith(
                     fontSize: 12.5,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected
-                        ? AnnounColors.primary
-                        : AnnounColors.textSecondary,
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -79,15 +81,15 @@ class AnnounTabItem extends StatelessWidget {
       duration: const Duration(milliseconds: 220),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: isSelected ? AnnounColors.primary : AnnounColors.divider,
+        color: isSelected ? AppColors.primary : AppColors.dividerLight,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         '$count',
-        style: GoogleFonts.plusJakartaSans(
+        style: AppTextStyles.overline.copyWith(
           fontSize: 10,
           fontWeight: FontWeight.w700,
-          color: isSelected ? Colors.white : AnnounColors.textSecondary,
+          color: isSelected ? Colors.white : AppColors.textSecondary,
         ),
       ),
     );

@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class PasswordRequirements extends StatelessWidget {
@@ -22,10 +23,10 @@ class PasswordRequirements extends StatelessWidget {
             color: isValid ? Colors.green : Colors.red,
             size: 18,
           ),
-          SizedBox(width: 8),
+          AppSpacing.w8,
           Text(
             text,
-            style: Styles.textStyle18.copyWith(
+            style: AppTextStyles.heading4.copyWith(
               color: Color.fromARGB(255, 116, 116, 120),
             ),
           ),

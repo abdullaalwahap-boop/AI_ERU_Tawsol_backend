@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class SettingsOptionTile<T> extends StatelessWidget {
@@ -27,10 +27,10 @@ class SettingsOptionTile<T> extends StatelessWidget {
       leading: icon != null ? Icon(icon, size: 28) : null,
       title: Text(
         title,
-        style: Styles.textStyle20.copyWith(fontWeight: FontWeight.w400),
+        style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w400),
       ),
       subtitle: subtitle != null
-          ? Text(subtitle!, style: Styles.textStyle16)
+          ? Text(subtitle!, style: AppTextStyles.bodyLarge)
           : null,
       trailing: Icon(
         size: 28,

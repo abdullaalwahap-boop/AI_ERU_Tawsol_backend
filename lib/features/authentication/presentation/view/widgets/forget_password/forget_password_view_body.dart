@@ -1,7 +1,9 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/forget_password/forget_password_form.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/shared/auth_gradient_title.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ForgetPasswordViewBody extends StatelessWidget {
   const ForgetPasswordViewBody({super.key});
@@ -13,30 +15,27 @@ class ForgetPasswordViewBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 40),
+          AppSpacing.h40,
           const Icon(
             Icons.lock_reset_rounded,
-            color: Color(0xff3D6FFF),
+            color: AppColors.accent,
             size: 72,
           ),
-          const SizedBox(height: 24),
+          AppSpacing.h24,
           const AuthGradientTitle(
             text: 'Forgot Password?',
             fontSize: 28,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           Text(
             "Enter your email and we'll send you a verification code",
-            style: GoogleFonts.plusJakartaSans(
-              color: Colors.white54,
-              fontSize: 14,
-            ),
+            style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          AppSpacing.h32,
           const ForgetPasswordForm(),
-          const SizedBox(height: 32),
+          AppSpacing.h32,
         ],
       ),
     );

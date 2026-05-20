@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/card/course_card_header.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/card/course_card_info_row.dart';
 
@@ -14,14 +17,10 @@ class CourseCardContent extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: CourseColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.surfaceLight,
+        borderRadius: AppRadius.xlarge,
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.055),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
+          ...AppShadows.card,
           BoxShadow(
             color: course.accentColor.withValues(alpha: 0.07),
             blurRadius: 20,
@@ -35,9 +34,9 @@ class CourseCardContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CourseCardHeader(course: course),
-            const SizedBox(height: 12),
-            const Divider(color: CourseColors.divider, height: 1),
-            const SizedBox(height: 10),
+            AppSpacing.h12,
+            const Divider(color: AppColors.dividerLight, height: 1),
+            AppSpacing.h10,
             CourseCardInfoRow(course: course),
           ],
         ),

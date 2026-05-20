@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 /// Reusable section header: small colored bar + title (+ optional trailing widget).
 class SectionHeader extends StatelessWidget {
@@ -17,21 +18,20 @@ class SectionHeader extends StatelessWidget {
           width: 4,
           height: 18,
           decoration: BoxDecoration(
-            color: AnnounColors.primary,
+            color: AppColors.primary,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
-        const SizedBox(width: 10),
+        AppSpacing.w10,
         Text(
           title,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 14,
+          style: AppTextStyles.titleSmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: AnnounColors.textPrimary,
+            color: AppColors.textPrimary,
           ),
         ),
         if (trailing != null) ...[
-          const SizedBox(width: 6),
+          AppSpacing.w6,
           trailing!,
         ],
       ],

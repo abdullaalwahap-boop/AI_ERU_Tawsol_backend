@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingBackground extends StatelessWidget {
@@ -15,10 +16,10 @@ class OnBoardingBackground extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xff000D24),
-                Color(0xff001440),
-                Color(0xff001E6B),
-                Color(0xff000A1A),
+                AppColors.backgroundDark1,
+                AppColors.backgroundDark2,
+                AppColors.primaryDark,
+                AppColors.backgroundDark4,
               ],
               stops: [0.0, 0.35, 0.70, 1.0],
             ),
@@ -34,7 +35,7 @@ class OnBoardingBackground extends StatelessWidget {
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xff3D6FFF).withValues(alpha: 0.11),
+                  AppColors.accent.withValues(alpha: 0.11),
                   Colors.transparent,
                 ],
               ),
@@ -51,7 +52,7 @@ class OnBoardingBackground extends StatelessWidget {
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xff6B9FFF).withValues(alpha: 0.06),
+                  AppColors.accentSoft.withValues(alpha: 0.06),
                   Colors.transparent,
                 ],
               ),
@@ -68,7 +69,7 @@ class OnBoardingBackground extends StatelessWidget {
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xff003096).withValues(alpha: 0.18),
+                  AppColors.primary.withValues(alpha: 0.18),
                   Colors.transparent,
                 ],
               ),

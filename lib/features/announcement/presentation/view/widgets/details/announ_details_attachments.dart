@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_attachment_tile.dart';
 
 class AnnounDetailsAttachments extends StatelessWidget {
@@ -15,7 +16,7 @@ class AnnounDetailsAttachments extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AnnounColors.surface,
+        color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -31,35 +32,32 @@ class AnnounDetailsAttachments extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.attach_file_rounded,
-                  size: 18, color: AnnounColors.primary),
-              const SizedBox(width: 8),
+                  size: 18, color: AppColors.primary),
+              AppSpacing.w8,
               Text(
                 'Attachments',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: AnnounColors.textPrimary,
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(width: 6),
+              AppSpacing.w6,
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AnnounColors.background,
+                  color: AppColors.backgroundLight,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '${attachments.length}',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11,
+                  style: AppTextStyles.labelSmall.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AnnounColors.primary,
+                    color: AppColors.primary,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          AppSpacing.h14,
           ...attachments.map((a) => AnnounDetailsAttachmentTile(attachment: a)),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class CustomMessage extends StatelessWidget {
   const CustomMessage({super.key, required this.text, required this.icon});
@@ -22,7 +23,7 @@ class CustomMessage extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Color(0xff2C67F2).withOpacity(0.25),
+              color: Color(0xff2C67F2).withValues(alpha: 0.25),
               blurRadius: 15,
               offset: const Offset(0, 6),
             ),
@@ -33,12 +34,12 @@ class CustomMessage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: icon,
             ),
-            const SizedBox(width: 16),
+            AppSpacing.w16,
             Expanded(
               child: Text(
                 text,

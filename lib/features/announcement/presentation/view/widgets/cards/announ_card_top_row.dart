@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_subject_avatar.dart';
 
@@ -15,29 +16,25 @@ class AnnounCardTopRow extends StatelessWidget {
     return Row(
       children: [
         AnnounSubjectAvatar(announcement: announcement, size: 42),
-        const SizedBox(width: 10),
+        AppSpacing.w10,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '${announcement.subjectCode} · ${announcement.subjectName}',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.labelSmall.copyWith(
                   color: announcement.type.color,
                   letterSpacing: 0.1,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 2),
+              AppSpacing.h2,
               Text(
                 announcement.doctorName,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
-                  color: AnnounColors.textHint,
-                  fontWeight: FontWeight.w500,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textHint,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -45,20 +42,18 @@ class AnnounCardTopRow extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 8),
+        AppSpacing.w8,
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
               announcement.timeAgo,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 10.5,
-                color: AnnounColors.textHint,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyles.badgeText.copyWith(
+                color: AppColors.textHint,
               ),
             ),
             if (!announcement.isRead) ...[
-              const SizedBox(height: 4),
+              AppSpacing.h4,
               Container(
                 width: 8,
                 height: 8,

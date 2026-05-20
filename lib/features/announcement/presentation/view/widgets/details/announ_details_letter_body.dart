@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_letter_footer.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_letter_header_strip.dart';
 
@@ -15,7 +15,7 @@ class AnnounDetailsLetterBody extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AnnounColors.surface,
+        color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -29,19 +29,18 @@ class AnnounDetailsLetterBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AnnounDetailsLetterHeaderStrip(announcement: announcement),
-          Container(height: 1, color: AnnounColors.divider),
+          Container(height: 1, color: AppColors.dividerLight),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Text(
               announcement.body,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 14,
-                color: AnnounColors.textPrimary,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textPrimary,
                 height: 1.75,
               ),
             ),
           ),
-          Container(height: 1, color: AnnounColors.divider),
+          Container(height: 1, color: AppColors.dividerLight),
           AnnounDetailsLetterFooter(announcement: announcement),
         ],
       ),

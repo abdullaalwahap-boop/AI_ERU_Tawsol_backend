@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:flutter/material.dart';
 
 /// Shimmer-style wrapper. Pass a child built with SkeletonBone widgets.
@@ -54,7 +55,7 @@ class _SkeletonCardWrapperState extends State<SkeletonCardWrapper>
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.xlarge,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),

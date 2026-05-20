@@ -1,7 +1,8 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OtpInputRow extends StatefulWidget {
   const OtpInputRow({
@@ -71,27 +72,23 @@ class OtpInputRowState extends State<OtpInputRow> {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(1),
                 ],
-                style: GoogleFonts.plusJakartaSans(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppTextStyles.heading3.copyWith(color: Colors.white),
                 decoration: InputDecoration(
                   counterText: '',
                   filled: true,
-                  fillColor: AuthColors.fieldBackground,
+                  fillColor: AppColors.fieldDark,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: AppRadius.medium,
                     borderSide: BorderSide.none,
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: AppRadius.medium,
                     borderSide: const BorderSide(color: Colors.white12),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: AppRadius.medium,
                     borderSide: const BorderSide(
-                      color: AuthColors.primary,
+                      color: AppColors.accent,
                       width: 2,
                     ),
                   ),

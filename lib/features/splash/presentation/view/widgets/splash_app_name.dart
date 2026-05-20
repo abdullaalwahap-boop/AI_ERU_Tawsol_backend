@@ -1,5 +1,7 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashAppName extends StatelessWidget {
   const SplashAppName({super.key});
@@ -12,11 +14,11 @@ class SplashAppName extends StatelessWidget {
           shaderCallback: (bounds) => const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.white, Color(0xffA8C8FF)],
+            colors: [Colors.white, AppColors.accentGradientEnd],
           ).createShader(bounds),
           child: Text(
             'AI Connect',
-            style: GoogleFonts.plusJakartaSans(
+            style: AppTextStyles.display.copyWith(
               fontSize: 38,
               fontWeight: FontWeight.w800,
               color: Colors.white,
@@ -25,7 +27,7 @@ class SplashAppName extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        AppSpacing.h12,
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -36,29 +38,28 @@ class SplashAppName extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    const Color(0xff3D6FFF).withValues(alpha: 0.7),
+                    AppColors.accent.withValues(alpha: 0.7),
                   ],
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            AppSpacing.w10,
             Text(
               'SMART CAMPUS · ERU',
-              style: GoogleFonts.plusJakartaSans(
+              style: AppTextStyles.overline.copyWith(
                 fontSize: 10.5,
-                fontWeight: FontWeight.w600,
                 color: Colors.white.withValues(alpha: 0.50),
                 letterSpacing: 2.4,
               ),
             ),
-            const SizedBox(width: 10),
+            AppSpacing.w10,
             Container(
               width: 28,
               height: 1,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    const Color(0xff3D6FFF).withValues(alpha: 0.7),
+                    AppColors.accent.withValues(alpha: 0.7),
                     Colors.transparent,
                   ],
                 ),

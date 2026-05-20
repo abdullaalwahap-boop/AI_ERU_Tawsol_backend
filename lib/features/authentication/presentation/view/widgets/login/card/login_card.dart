@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_bottom_strip.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_chip.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_hub_badge.dart';
@@ -24,7 +25,7 @@ class LoginCard extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.xlarge,
             gradient: const LinearGradient(
               colors: [Color(0xff1A2E5A), Color(0xff0D1A3A)],
               begin: Alignment.topLeft,

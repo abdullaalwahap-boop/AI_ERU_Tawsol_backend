@@ -1,5 +1,5 @@
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingIllus3 extends StatelessWidget {
   const OnBoardingIllus3({super.key});
@@ -109,7 +109,7 @@ class OnBoardingIllus3 extends StatelessWidget {
             const SizedBox(height: 14),
             Text(
               label,
-              style: GoogleFonts.plusJakartaSans(
+              style: AppTextStyles.labelMedium.copyWith(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
                 color: Colors.white.withValues(alpha: 0.90),

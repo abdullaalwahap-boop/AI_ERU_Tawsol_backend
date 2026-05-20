@@ -1,5 +1,7 @@
-import 'package:ai_eru_tawasol/constants.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomContainerSection extends StatelessWidget {
@@ -11,24 +13,24 @@ class CustomContainerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: AppSpacing.pagePadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title != null)
             Text(
               title!,
-              style: Styles.textStyle20.copyWith(color: kPrimaryColor),
+              style: AppTextStyles.heading3.copyWith(color: AppColors.primary),
             ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceLight,
+              borderRadius: AppRadius.xlarge,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.08),
                   blurRadius: 10,
                   spreadRadius: 2,
                   offset: const Offset(0, 4),

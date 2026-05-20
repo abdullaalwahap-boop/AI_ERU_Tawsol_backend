@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 
 class AnnounSkeletonBone extends StatelessWidget {
   final double width;
@@ -19,7 +19,7 @@ class AnnounSkeletonBone extends StatelessWidget {
       width: width == double.infinity ? null : width,
       height: height,
       decoration: BoxDecoration(
-        color: AnnounColors.divider,
+        color: AppColors.dividerLight,
         borderRadius: BorderRadius.circular(radius),
       ),
     );

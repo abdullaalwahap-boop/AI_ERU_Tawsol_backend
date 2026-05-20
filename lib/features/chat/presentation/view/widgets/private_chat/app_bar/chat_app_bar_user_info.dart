@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class ChatAppBarUserInfo extends StatelessWidget {
@@ -20,36 +22,27 @@ class ChatAppBarUserInfo extends StatelessWidget {
                 user.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+                style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
               ),
             ),
-            const SizedBox(width: 6),
+            AppSpacing.w6,
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: AppRadius.xsmall,
               ),
               child: Text(
                 user.role.label,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+                style: AppTextStyles.badgeText.copyWith(color: Colors.white),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 2),
+        AppSpacing.h4,
         Text(
           user.statusText,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 12,
+          style: AppTextStyles.caption.copyWith(
             color: Colors.white.withValues(alpha: 0.75),
           ),
         ),

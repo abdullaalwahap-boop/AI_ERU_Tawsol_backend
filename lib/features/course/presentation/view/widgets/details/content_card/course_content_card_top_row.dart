@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/badges/content_type_badge.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/extensions/content_type_ui_ext.dart';
@@ -14,7 +15,7 @@ class CourseContentCardTopRow extends StatelessWidget {
     return Row(
       children: [
         CourseContentCardAuthor(content: content),
-        const SizedBox(width: 10),
+        AppSpacing.w10,
         const Spacer(),
         ContentTypeBadge(
           label: content.type.label,

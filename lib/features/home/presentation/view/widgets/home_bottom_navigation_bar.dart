@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_nav_item.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
@@ -70,11 +71,10 @@ class HomeBottomNavigationBar extends StatelessWidget {
                             color: selected ? _primaryColor : _inactiveColor,
                           ),
                         ),
-                        const SizedBox(height: 3),
+                        AppSpacing.h3,
                         Text(
                           _items[i].label,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 10,
+                          style: AppTextStyles.overline.copyWith(
                             fontWeight: selected
                                 ? FontWeight.w700
                                 : FontWeight.w500,

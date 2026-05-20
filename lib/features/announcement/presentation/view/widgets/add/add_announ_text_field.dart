@@ -1,6 +1,8 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AddAnnounTextField extends StatelessWidget {
   final String label;
@@ -25,34 +27,31 @@ class AddAnnounTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 13,
+          style: AppTextStyles.bodySmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: AnnounColors.textPrimary,
+            color: AppColors.textPrimary,
             letterSpacing: 0.1,
           ),
         ),
-        const SizedBox(height: 8),
+        AppSpacing.h8,
         Container(
           decoration: BoxDecoration(
-            color: AnnounColors.inputBg,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AnnounColors.divider, width: 1.2),
+            color: AppColors.inputBgLight,
+            borderRadius: AppRadius.large,
+            border: Border.all(color: AppColors.dividerLight, width: 1.2),
           ),
           child: TextField(
             controller: controller,
             maxLines: maxLines,
             onChanged: onChanged,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 14,
-              color: AnnounColors.textPrimary,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textPrimary,
               height: 1.5,
             ),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: GoogleFonts.plusJakartaSans(
-                fontSize: 14,
-                color: AnnounColors.textHint,
+              hintStyle: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textHint,
               ),
               border: InputBorder.none,
               contentPadding:

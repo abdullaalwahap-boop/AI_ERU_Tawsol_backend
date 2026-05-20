@@ -1,8 +1,14 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AddAnnounEveryoneInfo extends StatelessWidget {
   const AddAnnounEveryoneInfo({super.key});
+
+  static const _green = Color(0xff059669);
+  static const _greenBg = Color(0xffD1FAE5);
+  static const _greenText = Color(0xff065F46);
 
   @override
   Widget build(BuildContext context) {
@@ -10,10 +16,9 @@ class AddAnnounEveryoneInfo extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xffD1FAE5),
-        borderRadius: BorderRadius.circular(12),
-        border:
-            Border.all(color: const Color(0xff059669).withValues(alpha: 0.3)),
+        color: _greenBg,
+        borderRadius: AppRadius.medium,
+        border: Border.all(color: _green.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -21,20 +26,17 @@ class AddAnnounEveryoneInfo extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color(0xff059669).withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(10),
+              color: _green.withValues(alpha: 0.15),
+              borderRadius: AppRadius.small,
             ),
-            child: const Icon(Icons.public_rounded,
-                size: 18, color: Color(0xff059669)),
+            child: const Icon(Icons.public_rounded, size: 18, color: _green),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           Expanded(
             child: Text(
               'Visible to all students across all departments',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff065F46),
+              style: AppTextStyles.labelLarge.copyWith(
+                color: _greenText,
                 height: 1.4,
               ),
             ),

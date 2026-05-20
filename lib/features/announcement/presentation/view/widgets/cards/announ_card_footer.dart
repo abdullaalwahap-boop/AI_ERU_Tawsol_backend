@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_attachment_chip.dart';
@@ -15,10 +16,10 @@ class AnnounCardFooter extends StatelessWidget {
     return Row(
       children: [
         AnnounTypeBadge(type: announcement.type),
-        const SizedBox(width: 6),
+        AppSpacing.w6,
         AnnounPriorityBadge(priority: announcement.priority),
         if (announcement.attachments.isNotEmpty) ...[
-          const SizedBox(width: 6),
+          AppSpacing.w6,
           AnnounCardAttachmentChip(count: announcement.attachments.length),
         ],
         const Spacer(),

@@ -1,8 +1,10 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginRememberMeRow extends StatelessWidget {
   const LoginRememberMeRow({
@@ -24,20 +26,17 @@ class LoginRememberMeRow extends StatelessWidget {
           child: Checkbox(
             value: rememberMe,
             onChanged: (v) => onChanged(v ?? false),
-            activeColor: AuthColors.primary,
+            activeColor: AppColors.accent,
             side: const BorderSide(color: Colors.white38, width: 1.5),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: AppRadius.xsmall,
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        AppSpacing.w8,
         Text(
           'Remember me',
-          style: GoogleFonts.plusJakartaSans(
-            color: Colors.white60,
-            fontSize: 13,
-          ),
+          style: AppTextStyles.bodySmall.copyWith(color: Colors.white60),
         ),
         const Spacer(),
         TextButton(
@@ -48,11 +47,7 @@ class LoginRememberMeRow extends StatelessWidget {
           ),
           child: Text(
             'Forgot Password?',
-            style: GoogleFonts.plusJakartaSans(
-              color: AuthColors.primary,
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.labelLarge.copyWith(color: AppColors.accent),
           ),
         ),
       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class MessageTextContent extends StatelessWidget {
@@ -13,12 +14,12 @@ class MessageTextContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       child: Text(
         message.text ?? '',
-        style: GoogleFonts.plusJakartaSans(
+        style: AppTextStyles.bodyMedium.copyWith(
           fontSize: 14.5,
           height: 1.45,
           color: message.isFromMe
-              ? ChatColors.sentText
-              : ChatColors.receivedText,
+              ? AppColors.sentBubbleText
+              : AppColors.receivedBubbleText,
         ),
       ),
     );

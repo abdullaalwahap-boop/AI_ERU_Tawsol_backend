@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class LetterHeaderStrip extends StatelessWidget {
   final String label;
@@ -42,11 +43,10 @@ class LetterHeaderStrip extends StatelessWidget {
             ),
             child: Icon(icon, size: 18, color: color),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Text(
             label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 13,
+            style: AppTextStyles.bodySmall.copyWith(
               fontWeight: FontWeight.w700,
               color: color,
             ),

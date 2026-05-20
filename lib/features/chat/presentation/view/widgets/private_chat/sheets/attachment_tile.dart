@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class AttachmentTile extends StatelessWidget {
@@ -24,18 +27,14 @@ class AttachmentTile extends StatelessWidget {
             height: 52,
             decoration: BoxDecoration(
               color: option.color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: AppRadius.xlarge,
             ),
             child: Icon(option.icon, color: option.color, size: 24),
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           Text(
             option.label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: ChatColors.textSecondary,
-            ),
+            style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         ],

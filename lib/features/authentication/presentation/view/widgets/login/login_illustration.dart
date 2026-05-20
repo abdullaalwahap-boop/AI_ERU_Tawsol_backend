@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class LoginIllustration extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AuthColors.primary.withValues(alpha: 0.15),
+                      AppColors.accent.withValues(alpha: 0.15),
                       Colors.transparent,
                     ],
                   ),

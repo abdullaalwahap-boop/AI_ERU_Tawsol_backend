@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/filter/announ_filter_chip.dart';
 
@@ -26,10 +27,10 @@ class AnnounFilterRow extends StatelessWidget {
             label: 'All',
             icon: Icons.apps_rounded,
             isSelected: activeFilter == null,
-            color: AnnounColors.primary,
+            color: AppColors.primary,
             onTap: () => onFilterChanged(null),
           ),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           ...AnnouncementType.values.map(
             (type) => Padding(
               padding: const EdgeInsets.only(right: 8),

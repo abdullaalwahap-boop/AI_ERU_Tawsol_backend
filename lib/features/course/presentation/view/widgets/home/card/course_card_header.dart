@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/card/course_card_avatar.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/card/course_card_code_badge.dart';
 
@@ -15,31 +16,23 @@ class CourseCardHeader extends StatelessWidget {
     return Row(
       children: [
         CourseCardAvatar(course: course),
-        const SizedBox(width: 12),
+        AppSpacing.w12,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 course.name,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: CourseColors.textPrimary,
-                ),
+                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              AppSpacing.h4,
               CourseCardCodeBadge(course: course),
-              const SizedBox(height: 4),
+              AppSpacing.h4,
               Text(
                 course.doctorName,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12.5,
-                  color: CourseColors.textHint,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.labelSmall.copyWith(color: AppColors.textHint),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -47,9 +40,8 @@ class CourseCardHeader extends StatelessWidget {
           ),
         ),
         const Icon(Icons.chevron_right_rounded,
-            color: CourseColors.textHint, size: 22),
+            color: AppColors.textHint, size: 22),
       ],
     );
   }
 }
-

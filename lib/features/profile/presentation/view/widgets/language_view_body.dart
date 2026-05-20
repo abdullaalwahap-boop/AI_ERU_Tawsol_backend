@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/additional_pages_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_message.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/language_options.dart';
@@ -25,7 +26,7 @@ class _LanguageViewBodyState extends State<LanguageViewBody> {
     return Column(
       children: [
         AdditionalPagesAppBar(title: 'Language'),
-        SizedBox(height: 40),
+        AppSpacing.h40,
         SettingsOptionTile<LanguageOptions>(
           title: 'English',
           subtitle: 'English',
@@ -33,7 +34,7 @@ class _LanguageViewBodyState extends State<LanguageViewBody> {
           groupValue: selectedMode,
           onTap: () => selectMode(LanguageOptions.english),
         ),
-        const SizedBox(height: 20),
+        AppSpacing.h20,
         SettingsOptionTile<LanguageOptions>(
           title: 'العربية',
           subtitle: 'Arabic',

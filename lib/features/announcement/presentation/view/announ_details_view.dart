@@ -1,5 +1,6 @@
-﻿import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_app_bar.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_attachments.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/details/announ_details_header.dart';
@@ -17,7 +18,7 @@ class AnnounDetailsView extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: AnnounColors.background,
+        backgroundColor: AppColors.backgroundLight,
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
@@ -29,14 +30,14 @@ class AnnounDetailsView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AnnounDetailsHeader(announcement: announcement),
-                    const SizedBox(height: 20),
+                    AppSpacing.h20,
                     AnnounDetailsLetterBody(announcement: announcement),
                     if (announcement.attachments.isNotEmpty) ...[
-                      const SizedBox(height: 20),
+                      AppSpacing.h20,
                       AnnounDetailsAttachments(
                           attachments: announcement.attachments),
                     ],
-                    const SizedBox(height: 16),
+                    AppSpacing.h16,
                   ],
                 ),
               ),

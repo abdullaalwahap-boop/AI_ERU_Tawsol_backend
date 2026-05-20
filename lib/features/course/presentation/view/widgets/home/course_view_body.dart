@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/states/feature_error_state.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/manager/courses_cubit/courses_cubit.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/courses_app_bar.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/courses_list.dart';
@@ -18,7 +18,7 @@ class CourseViewBody extends StatelessWidget {
     return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: CourseColors.background,
+          backgroundColor: AppColors.backgroundLight,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,15 +37,15 @@ class CourseViewBody extends StatelessWidget {
     if (state is CoursesError) {
       return FeatureErrorState(
         message: state.message,
-        primaryColor: CourseColors.primary,
+        primaryColor: AppColors.primary,
         onRetry: () => context.read<CoursesCubit>().loadForRole(role),
       );
     }
 
     if (state is CoursesLoaded) {
       return RefreshIndicator(
-        color: CourseColors.primary,
-        backgroundColor: CourseColors.surface,
+        color: AppColors.primary,
+        backgroundColor: AppColors.surfaceLight,
         displacement: 20,
         onRefresh: () => context.read<CoursesCubit>().refresh(role),
         child: SingleChildScrollView(

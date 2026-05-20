@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthBackground extends StatelessWidget {
@@ -10,7 +11,7 @@ class AuthBackground extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xff0A0E1A), Color(0xff0D1730)],
+          colors: [AppColors.surfaceDark, AppColors.surfaceDarkCard],
         ),
       ),
     );

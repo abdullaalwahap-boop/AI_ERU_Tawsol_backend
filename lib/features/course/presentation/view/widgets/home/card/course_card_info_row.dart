@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/card/course_info_chip.dart';
 
 class CourseCardInfoRow extends StatelessWidget {
@@ -15,9 +16,9 @@ class CourseCardInfoRow extends StatelessWidget {
         CourseInfoChip(
           icon: Icons.people_rounded,
           label: '${course.studentCount} students',
-          color: CourseColors.primary,
+          color: AppColors.primary,
         ),
-        const SizedBox(width: 8),
+        AppSpacing.w8,
         CourseInfoChip(
           icon: Icons.library_books_rounded,
           label: '${course.contentCount} items',

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 
 class CourseCardCodeBadge extends StatelessWidget {
@@ -16,9 +16,8 @@ class CourseCardCodeBadge extends StatelessWidget {
       ),
       child: Text(
         course.code,
-        style: GoogleFonts.plusJakartaSans(
+        style: AppTextStyles.labelSmall.copyWith(
           fontSize: 11,
-          fontWeight: FontWeight.w700,
           color: course.accentColor,
           letterSpacing: 0.3,
         ),

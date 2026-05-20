@@ -1,5 +1,5 @@
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginCardBottomStrip extends StatelessWidget {
   const LoginCardBottomStrip({
@@ -29,16 +29,15 @@ class LoginCardBottomStrip extends StatelessWidget {
         children: [
           Text(
             'AI CONNECT',
-            style: GoogleFonts.plusJakartaSans(
+            style: AppTextStyles.buttonSmall.copyWith(
               color: Colors.white,
               fontSize: largeFontSize,
-              fontWeight: FontWeight.w700,
               letterSpacing: 1.5,
             ),
           ),
           Text(
             'SMART CAMPUS · ERU',
-            style: GoogleFonts.plusJakartaSans(
+            style: AppTextStyles.caption.copyWith(
               color: Colors.white54,
               fontSize: smallFontSize,
               letterSpacing: 0.8,

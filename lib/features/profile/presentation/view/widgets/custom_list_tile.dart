@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -22,11 +22,11 @@ class CustomListTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: icon,
-      title: Text(title, style: Styles.textStyle20),
+      title: Text(title, style: AppTextStyles.heading3),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: Styles.textStyle18.copyWith(
+              style: AppTextStyles.heading4.copyWith(
                 color: const Color(0xff9E9D97),
               ),
             )

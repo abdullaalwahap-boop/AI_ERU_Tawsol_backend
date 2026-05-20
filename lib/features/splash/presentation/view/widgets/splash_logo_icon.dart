@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashLogoIcon extends StatelessWidget {
@@ -15,7 +16,7 @@ class SplashLogoIcon extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                const Color(0xff3D6FFF).withValues(alpha: 0.06),
+                AppColors.accent.withValues(alpha: 0.06),
                 Colors.transparent,
               ],
             ),
@@ -28,7 +29,7 @@ class SplashLogoIcon extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                const Color(0xff3D6FFF).withValues(alpha: 0.11),
+                AppColors.accent.withValues(alpha: 0.11),
                 Colors.transparent,
               ],
             ),
@@ -40,7 +41,7 @@ class SplashLogoIcon extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: const Color(0xff3D6FFF).withValues(alpha: 0.22),
+              color: AppColors.accent.withValues(alpha: 0.22),
               width: 1,
             ),
           ),
@@ -53,9 +54,9 @@ class SplashLogoIcon extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xff4A7AFF),
-                Color(0xff003096),
-                Color(0xff001E6B),
+                AppColors.accentLight,
+                AppColors.primary,
+                AppColors.primaryDark,
               ],
               stops: [0.0, 0.55, 1.0],
             ),
@@ -66,12 +67,12 @@ class SplashLogoIcon extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xff3D6FFF).withValues(alpha: 0.50),
+                color: AppColors.accent.withValues(alpha: 0.50),
                 blurRadius: 36,
                 spreadRadius: 2,
               ),
               BoxShadow(
-                color: const Color(0xff001E6B).withValues(alpha: 0.55),
+                color: AppColors.primaryDark.withValues(alpha: 0.55),
                 blurRadius: 18,
                 offset: const Offset(0, 10),
               ),

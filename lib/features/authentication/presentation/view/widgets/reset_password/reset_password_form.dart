@@ -1,10 +1,12 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_validators.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/reset_password_cubit/reset_password_cubit.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/shared/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ResetPasswordForm extends StatefulWidget {
   const ResetPasswordForm({super.key, required this.email});
@@ -49,7 +51,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             textInputAction: TextInputAction.next,
             validator: AuthValidators.password,
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           AuthTextField(
             controller: _confirmCtrl,
             label: 'Confirm Password',
@@ -59,7 +61,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             onFieldSubmitted: (_) => _submit(),
             validator: AuthValidators.confirmPassword(_passwordCtrl),
           ),
-          const SizedBox(height: 24),
+          AppSpacing.h24,
           BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
             builder: (context, state) {
               final isLoading = state is ResetPasswordLoading;
@@ -69,9 +71,9 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AuthColors.primary,
+                    backgroundColor: AppColors.accent,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: AppRadius.large,
                     ),
                   ),
                   child: isLoading
@@ -81,10 +83,8 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                         )
                       : Text(
                           'Reset Password',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: AppTextStyles.buttonLarge.copyWith(
                             color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
                           ),
                         ),
                 ),

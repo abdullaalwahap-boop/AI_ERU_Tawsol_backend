@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 
 class ChatMicButton extends StatelessWidget {
   final VoidCallback onHold;
@@ -14,11 +14,11 @@ class ChatMicButton extends StatelessWidget {
         width: 44,
         height: 44,
         decoration: BoxDecoration(
-          color: ChatColors.primary.withValues(alpha: 0.1),
+          color: AppColors.primary.withValues(alpha: 0.1),
           shape: BoxShape.circle,
         ),
         child: const Icon(Icons.mic_rounded,
-            color: ChatColors.primary, size: 22),
+            color: AppColors.primary, size: 22),
       ),
     );
   }

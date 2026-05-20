@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/feature_filter_chip.dart';
 
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/filter_item.dart';
@@ -24,7 +25,7 @@ class FeatureFilterRow<T> extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => AppSpacing.w8,
         itemBuilder: (context, i) {
           final item = items[i];
           return FeatureFilterChip(

@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
+import 'package:flutter/material.dart';
 
 class AnnounSubjectAvatar extends StatelessWidget {
   final Announcement announcement;
@@ -31,7 +31,7 @@ class AnnounSubjectAvatar extends StatelessWidget {
           : Center(
               child: Text(
                 announcement.subjectInitials,
-                style: GoogleFonts.plusJakartaSans(
+                style: AppTextStyles.titleSmall.copyWith(
                   fontSize: size * 0.34,
                   fontWeight: FontWeight.w800,
                   color: color,

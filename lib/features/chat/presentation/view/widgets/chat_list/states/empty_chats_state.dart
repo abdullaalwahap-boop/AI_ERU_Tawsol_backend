@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class EmptyChatsState extends StatelessWidget {
   final VoidCallback onNewChat;
@@ -19,55 +21,47 @@ class EmptyChatsState extends StatelessWidget {
               width: 110,
               height: 110,
               decoration: BoxDecoration(
-                color: ChatColors.background,
+                color: AppColors.backgroundLight,
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: ChatColors.primary.withValues(alpha: 0.15),
+                    color: AppColors.primary.withValues(alpha: 0.15),
                     width: 2),
               ),
               child: const Icon(
                 Icons.chat_bubble_outline_rounded,
                 size: 48,
-                color: ChatColors.primary,
+                color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 24),
+            AppSpacing.h24,
             Text(
               'No Conversations Yet',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: ChatColors.textPrimary,
-              ),
+              style: AppTextStyles.heading3.copyWith(color: AppColors.textPrimary),
             ),
-            const SizedBox(height: 10),
+            AppSpacing.h10,
             Text(
               'Start a conversation with your professors,\nteaching assistants, or administrators.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 14,
+              style: AppTextStyles.bodyMedium.copyWith(
                 height: 1.6,
-                color: ChatColors.textSecondary,
+                color: AppColors.textSecondary,
               ),
             ),
-            const SizedBox(height: 32),
+            AppSpacing.h32,
             ElevatedButton.icon(
               onPressed: onNewChat,
               icon: const Icon(Icons.add_rounded, size: 18),
               label: Text(
                 'Start a New Chat',
-                style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.titleSmall,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: ChatColors.primary,
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                    borderRadius: AppRadius.large),
                 elevation: 0,
               ),
             ),

@@ -1,5 +1,5 @@
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginCardNumberRow extends StatelessWidget {
   const LoginCardNumberRow({
@@ -28,10 +28,9 @@ class LoginCardNumberRow extends StatelessWidget {
         SizedBox(width: groupSpacing + dotSize),
         Text(
           'ERU',
-          style: GoogleFonts.plusJakartaSans(
+          style: AppTextStyles.titleSmall.copyWith(
             color: Colors.white70,
             fontSize: fontSize,
-            fontWeight: FontWeight.w600,
             letterSpacing: 1.5,
           ),
         ),

@@ -1,5 +1,5 @@
-import 'package:ai_eru_tawasol/constants.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomSwitchTile extends StatelessWidget {
@@ -23,11 +23,11 @@ class CustomSwitchTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: Icon(icon, size: 36),
-      title: Text(title, style: Styles.textStyle20),
+      title: Text(title, style: AppTextStyles.heading3),
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: kPrimaryColor,
+        activeThumbColor: AppColors.primary,
       ),
     );
   }

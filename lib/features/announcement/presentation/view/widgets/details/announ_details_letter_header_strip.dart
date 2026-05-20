@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
+import 'package:flutter/material.dart';
 
 class AnnounDetailsLetterHeaderStrip extends StatelessWidget {
   final Announcement announcement;
@@ -31,16 +33,15 @@ class AnnounDetailsLetterHeaderStrip extends StatelessWidget {
             height: 36,
             decoration: BoxDecoration(
               color: announcement.type.lightColor,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: AppRadius.small,
             ),
             child: Icon(announcement.type.icon,
                 size: 18, color: announcement.type.color),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Text(
             'Message',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 13,
+            style: AppTextStyles.labelLarge.copyWith(
               fontWeight: FontWeight.w700,
               color: announcement.type.color,
             ),

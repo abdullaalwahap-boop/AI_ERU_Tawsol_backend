@@ -1,7 +1,7 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/shared/auth_field_focus_container.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AuthTextField extends StatefulWidget {
   const AuthTextField({
@@ -48,23 +48,18 @@ class _AuthTextFieldState extends State<AuthTextField> {
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onFieldSubmitted,
           validator: widget.validator,
-          style: GoogleFonts.plusJakartaSans(
-            color: Colors.white,
-            fontSize: 14,
-          ),
+          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
           decoration: InputDecoration(
             labelText: widget.label,
             hintText: widget.hint,
-            labelStyle: GoogleFonts.plusJakartaSans(
-              color: AuthColors.iconBlue,
-              fontSize: 13,
+            labelStyle: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.accentSoft,
             ),
-            hintStyle: GoogleFonts.plusJakartaSans(
+            hintStyle: AppTextStyles.bodySmall.copyWith(
               color: Colors.white24,
-              fontSize: 13,
             ),
             prefixIcon: widget.prefixIcon != null
-                ? Icon(widget.prefixIcon, color: AuthColors.iconBlue, size: 20)
+                ? Icon(widget.prefixIcon, color: AppColors.accentSoft, size: 20)
                 : null,
             suffixIcon: widget.obscurable
                 ? IconButton(
@@ -72,7 +67,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
                       _obscure
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      color: AuthColors.iconBlue,
+                      color: AppColors.accentSoft,
                       size: 20,
                     ),
                     onPressed: () => setState(() => _obscure = !_obscure),

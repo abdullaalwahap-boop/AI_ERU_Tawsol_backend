@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:flutter/material.dart';
 
 class LoginCardShimmer extends StatefulWidget {
@@ -32,7 +33,7 @@ class _LoginCardShimmerState extends State<LoginCardShimmer>
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.xlarge,
         child: AnimatedBuilder(
           animation: _animation,
           builder: (_, __) {

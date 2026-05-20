@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 
 class CourseBannerBackground extends StatelessWidget {
@@ -52,16 +53,14 @@ class CourseBannerBackground extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         course.initials,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
+                        style: AppTextStyles.heading3.copyWith(
                           color: Colors.white,
                           letterSpacing: 0.5,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 14),
+                  AppSpacing.w14,
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -69,22 +68,19 @@ class CourseBannerBackground extends StatelessWidget {
                       children: [
                         Text(
                           course.name,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
+                          style: AppTextStyles.heading3.copyWith(
                             color: Colors.white,
                             letterSpacing: -0.3,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        AppSpacing.h4,
                         Text(
                           '${course.code}  ·  ${course.doctorName}',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: AppTextStyles.labelMedium.copyWith(
                             fontSize: 12.5,
                             color: Colors.white.withValues(alpha: 0.75),
-                            fontWeight: FontWeight.w500,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

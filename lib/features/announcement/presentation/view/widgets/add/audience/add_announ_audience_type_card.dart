@@ -1,6 +1,8 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 
 class AddAnnounAudienceTypeCard extends StatelessWidget {
@@ -25,11 +27,11 @@ class AddAnnounAudienceTypeCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected
-              ? AnnounColors.primary.withValues(alpha: 0.08)
-              : AnnounColors.inputBg,
-          borderRadius: BorderRadius.circular(12),
+              ? AppColors.primary.withValues(alpha: 0.08)
+              : AppColors.inputBgLight,
+          borderRadius: AppRadius.medium,
           border: Border.all(
-            color: isSelected ? AnnounColors.primary : AnnounColors.divider,
+            color: isSelected ? AppColors.primary : AppColors.dividerLight,
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
@@ -41,24 +43,23 @@ class AddAnnounAudienceTypeCard extends StatelessWidget {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: isSelected ? AnnounColors.primary : AnnounColors.divider,
+                color: isSelected ? AppColors.primary : AppColors.dividerLight,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 type.icon,
                 size: 18,
-                color: isSelected ? Colors.white : AnnounColors.textHint,
+                color: isSelected ? Colors.white : AppColors.textHint,
               ),
             ),
-            const SizedBox(height: 6),
+            AppSpacing.h4,
             Text(
               type.label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
+              style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: isSelected
-                    ? AnnounColors.primary
-                    : AnnounColors.textSecondary,
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),

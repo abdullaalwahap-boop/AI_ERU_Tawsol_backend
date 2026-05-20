@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/chat_user_avatar.dart';
 
@@ -63,11 +65,11 @@ class _TypingIndicatorState extends State<TypingIndicator>
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           ChatUserAvatar(user: widget.user),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: ChatColors.receivedBubble,
+              color: AppColors.receivedBubble,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -76,7 +78,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
               ),
               boxShadow: [
                 BoxShadow(
-                  color: ChatColors.cardShadow,
+                  color: const Color(0x0D000000),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -95,7 +97,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
                       height: 7,
                       margin: const EdgeInsets.symmetric(horizontal: 2.5),
                       decoration: const BoxDecoration(
-                        color: ChatColors.textSecondary,
+                        color: AppColors.textSecondary,
                         shape: BoxShape.circle,
                       ),
                     ),

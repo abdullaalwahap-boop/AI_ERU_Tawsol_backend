@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class AddAnnounAddMoreButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -15,22 +17,22 @@ class AddAnnounAddMoreButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: AnnounColors.inputBg,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AnnounColors.divider, width: 1.2),
+          color: AppColors.inputBgLight,
+          borderRadius: AppRadius.medium,
+          border: Border.all(color: AppColors.dividerLight, width: 1.2),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.add_rounded,
-                size: 16, color: AnnounColors.textSecondary),
-            const SizedBox(width: 6),
+                size: 16, color: AppColors.textSecondary),
+            AppSpacing.w6,
             Text(
               'Add another file',
-              style: GoogleFonts.plusJakartaSans(
+              style: AppTextStyles.labelMedium.copyWith(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
-                color: AnnounColors.textSecondary,
+                color: AppColors.textSecondary,
               ),
             ),
           ],

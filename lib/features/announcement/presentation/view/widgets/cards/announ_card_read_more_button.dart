@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/announcement_display_ext.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 
 class AnnounCardReadMoreButton extends StatelessWidget {
   final Announcement announcement;
@@ -23,15 +23,14 @@ class AnnounCardReadMoreButton extends StatelessWidget {
         children: [
           Text(
             'Read more',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 11.5,
+            style: AppTextStyles.labelSmall.copyWith(
               fontWeight: FontWeight.w700,
-              color: AnnounColors.primary,
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(width: 3),
           const Icon(Icons.arrow_forward_ios_rounded,
-              size: 10, color: AnnounColors.primary),
+              size: 10, color: AppColors.primary),
         ],
       ),
     );

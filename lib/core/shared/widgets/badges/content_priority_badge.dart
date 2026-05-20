@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class ContentPriorityBadge extends StatelessWidget {
   final String label;
@@ -27,13 +28,11 @@ class ContentPriorityBadge extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 11, color: color),
-            const SizedBox(width: 4),
+            AppSpacing.w4,
           ],
           Text(
             label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 10.5,
-              fontWeight: FontWeight.w700,
+            style: AppTextStyles.overline.copyWith(
               color: color,
               letterSpacing: 0.2,
             ),

@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 
 class AddAnnounAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AnnounRole role;
@@ -19,7 +19,7 @@ class AddAnnounAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [AnnounColors.primaryDark, AnnounColors.primary],
+          colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -42,7 +42,7 @@ class AddAnnounAppBar extends StatelessWidget implements PreferredSizeWidget {
               Expanded(
                 child: Text(
                   _title,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: AppTextStyles.titleMedium.copyWith(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/password_requirements.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +24,14 @@ class PasswordRequirementsList extends StatelessWidget {
           text: 'At least 8 characters',
           isValid: hasMinLength,
         ),
-        const SizedBox(height: 8),
+        AppSpacing.h8,
         PasswordRequirements(text: 'Contains a number', isValid: hasNumber),
-        const SizedBox(height: 8),
+        AppSpacing.h8,
         PasswordRequirements(
           text: 'Contains uppercase letter',
           isValid: hasUpperCase,
         ),
-        const SizedBox(height: 8),
+        AppSpacing.h8,
         PasswordRequirements(text: 'Passwords match', isValid: isMatch),
       ],
     );

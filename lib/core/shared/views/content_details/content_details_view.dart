@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/widgets/content_details_app_bar.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/widgets/content_details_header_card.dart';
@@ -16,7 +18,7 @@ class ContentDetailsView extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: const Color(0xffF0F4FF),
+        backgroundColor: AppColors.backgroundLight,
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
@@ -28,14 +30,14 @@ class ContentDetailsView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ContentDetailsHeaderCard(item: item),
-                    const SizedBox(height: 20),
+                    AppSpacing.h20,
                     ContentDetailsLetterBody(item: item),
                     if (item.attachments.isNotEmpty) ...[
-                      const SizedBox(height: 20),
+                      AppSpacing.h20,
                       ContentDetailsAttachmentsSection(
                           attachments: item.attachments),
                     ],
-                    const SizedBox(height: 16),
+                    AppSpacing.h16,
                   ],
                 ),
               ),

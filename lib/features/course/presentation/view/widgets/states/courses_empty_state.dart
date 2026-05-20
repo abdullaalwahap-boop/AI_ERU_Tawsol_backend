@@ -1,6 +1,7 @@
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CoursesEmptyState extends StatelessWidget {
   const CoursesEmptyState({super.key});
@@ -17,37 +18,29 @@ class CoursesEmptyState extends StatelessWidget {
               width: 88,
               height: 88,
               decoration: BoxDecoration(
-                color: CourseColors.background,
+                color: AppColors.backgroundLight,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: CourseColors.primary.withValues(alpha: 0.15),
+                  color: AppColors.primary.withValues(alpha: 0.15),
                   width: 2,
                 ),
               ),
               child: const Icon(
                 Icons.school_outlined,
                 size: 40,
-                color: CourseColors.primary,
+                color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 20),
+            AppSpacing.h20,
             Text(
               'No Courses Yet',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: CourseColors.textPrimary,
-              ),
+              style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            AppSpacing.h8,
             Text(
               'You have no courses assigned this semester.\nCheck back later for updates.',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 13,
-                color: CourseColors.textSecondary,
-                height: 1.6,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary, height: 1.6),
               textAlign: TextAlign.center,
             ),
           ],

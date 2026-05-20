@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_priority_ui_ext.dart';
 
 class AddAnnounPriorityCard extends StatelessWidget {
@@ -27,10 +29,10 @@ class AddAnnounPriorityCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? priority.color.withValues(alpha: 0.08)
-              : AnnounColors.inputBg,
-          borderRadius: BorderRadius.circular(12),
+              : AppColors.inputBgLight,
+          borderRadius: AppRadius.medium,
           border: Border.all(
-            color: isSelected ? priority.color : AnnounColors.divider,
+            color: isSelected ? priority.color : AppColors.dividerLight,
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
@@ -42,23 +44,21 @@ class AddAnnounPriorityCard extends StatelessWidget {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: isSelected ? priority.color : AnnounColors.divider,
+                color: isSelected ? priority.color : AppColors.dividerLight,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 priority.icon,
                 size: 18,
-                color: isSelected ? Colors.white : AnnounColors.textHint,
+                color: isSelected ? Colors.white : AppColors.textHint,
               ),
             ),
-            const SizedBox(height: 6),
+            AppSpacing.h4,
             Text(
               priority.label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
+              style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color:
-                    isSelected ? priority.color : AnnounColors.textSecondary,
+                color: isSelected ? priority.color : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),

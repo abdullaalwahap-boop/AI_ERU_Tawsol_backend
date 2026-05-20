@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 
 class CourseCardAvatar extends StatelessWidget {
@@ -26,9 +26,7 @@ class CourseCardAvatar extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           course.initials,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
+          style: AppTextStyles.heading4.copyWith(
             color: Colors.white,
             letterSpacing: 0.5,
           ),

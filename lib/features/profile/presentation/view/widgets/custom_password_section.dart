@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_change_password_text_field_form.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class CustomPasswordSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Styles.textStyle20.copyWith(fontWeight: FontWeight.w400),
+            style: AppTextStyles.heading3.copyWith(fontWeight: FontWeight.w400),
           ),
           CustomChangePasswordTextFieldForm(
             controller: controller,

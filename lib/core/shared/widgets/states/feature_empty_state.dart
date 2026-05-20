@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class FeatureEmptyState extends StatelessWidget {
   final IconData icon;
@@ -38,21 +39,18 @@ class FeatureEmptyState extends StatelessWidget {
               ),
               child: Icon(icon, size: 40, color: accentColor),
             ),
-            const SizedBox(height: 20),
+            AppSpacing.h20,
             Text(
               title,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
+              style: AppTextStyles.titleMedium.copyWith(
                 color: const Color(0xff1E293B),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            AppSpacing.h8,
             Text(
               description,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 13,
+              style: AppTextStyles.bodySmall.copyWith(
                 color: const Color(0xff64748B),
                 height: 1.6,
               ),

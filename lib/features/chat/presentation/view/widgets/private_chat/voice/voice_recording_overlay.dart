@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/voice/recording_waveform.dart';
 
 class VoiceRecordingOverlay extends StatefulWidget {
@@ -96,11 +97,11 @@ class _VoiceRecordingOverlayState extends State<VoiceRecordingOverlay>
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           Expanded(
             child: RecordingWaveform(animation: _waveController),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           AnimatedBuilder(
             animation: _pulseAnim,
             builder: (context, child) => Row(
@@ -116,27 +117,25 @@ class _VoiceRecordingOverlayState extends State<VoiceRecordingOverlay>
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
+                AppSpacing.w6,
                 Text(
                   _timerText,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: ChatColors.textPrimary,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.textPrimary,
                     fontFeatures: [const FontFeature.tabularFigures()],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           GestureDetector(
             onTap: widget.onSend,
             child: Container(
               width: 44,
               height: 44,
               decoration: const BoxDecoration(
-                color: ChatColors.primary,
+                color: AppColors.primary,
                 shape: BoxShape.circle,
               ),
               child: const Icon(

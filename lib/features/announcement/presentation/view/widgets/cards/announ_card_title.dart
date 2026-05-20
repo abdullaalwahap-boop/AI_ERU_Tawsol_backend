@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class AnnounCardTitle extends StatelessWidget {
   final String title;
@@ -11,10 +11,10 @@ class AnnounCardTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.plusJakartaSans(
+      style: AppTextStyles.titleSmall.copyWith(
         fontSize: 14.5,
         fontWeight: FontWeight.w700,
-        color: AnnounColors.textPrimary,
+        color: AppColors.textPrimary,
         height: 1.35,
       ),
       maxLines: 2,

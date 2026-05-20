@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class ChatListItemTitle extends StatelessWidget {
@@ -31,28 +33,26 @@ class ChatListItemTitle extends StatelessWidget {
       children: [
         if (conversation.isPinned) ...[
           const Icon(Icons.push_pin_rounded,
-              size: 12, color: ChatColors.textHint),
-          const SizedBox(width: 4),
+              size: 12, color: AppColors.textHint),
+          AppSpacing.w4,
         ],
         Expanded(
           child: Text(
             user.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 15,
+            style: AppTextStyles.titleMedium.copyWith(
               fontWeight: unread > 0 ? FontWeight.w700 : FontWeight.w600,
-              color: ChatColors.textPrimary,
+              color: AppColors.textPrimary,
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        AppSpacing.w8,
         if (last != null)
           Text(
             _formatTime(last.timestamp),
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 12,
-              color: unread > 0 ? ChatColors.primary : ChatColors.textHint,
+            style: AppTextStyles.caption.copyWith(
+              color: unread > 0 ? AppColors.primary : AppColors.textHint,
               fontWeight: unread > 0 ? FontWeight.w600 : FontWeight.w400,
             ),
           ),

@@ -15,7 +15,10 @@
       "Bash(Get-ChildItem -Recurse \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\" -File)",
       "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\login\\\\card\\\\login_card_chip_painter.dart\" -Force)",
       "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\login\\\\card\\\\login_card_dot_group.dart\" -Force)",
-      "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\reset_password\\\\reset_password_success_content.dart\" -Force)"
+      "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\reset_password\\\\reset_password_success_content.dart\" -Force)",
+      "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\announcement\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
+      "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
+      "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\course\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")"
     ]
   }
 }

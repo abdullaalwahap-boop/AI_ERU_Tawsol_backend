@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 
 class AnnounDetailsAppBar extends StatelessWidget {
@@ -15,7 +15,7 @@ class AnnounDetailsAppBar extends StatelessWidget {
       expandedHeight: 130,
       pinned: true,
       elevation: 0,
-      backgroundColor: AnnounColors.primary,
+      backgroundColor: AppColors.primary,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded,
             color: Colors.white, size: 20),
@@ -25,16 +25,14 @@ class AnnounDetailsAppBar extends StatelessWidget {
         titlePadding: const EdgeInsets.fromLTRB(56, 0, 16, 14),
         title: Text(
           'Announcement Details',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
+          style: AppTextStyles.titleMedium.copyWith(
             color: Colors.white,
           ),
         ),
         background: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [AnnounColors.primaryDark, AnnounColors.primary],
+              colors: [AppColors.primaryDark, AppColors.primary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

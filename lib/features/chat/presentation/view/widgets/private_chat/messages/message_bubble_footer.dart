@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/message_status_icon.dart';
 
@@ -19,13 +21,10 @@ class MessageBubbleFooter extends StatelessWidget {
       children: [
         Text(
           time,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 11,
-            color: ChatColors.textHint,
-          ),
+          style: AppTextStyles.labelSmall.copyWith(color: AppColors.textHint),
         ),
         if (isMe) ...[
-          const SizedBox(width: 4),
+          AppSpacing.w4,
           MessageStatusIcon(status: message.status),
         ],
       ],

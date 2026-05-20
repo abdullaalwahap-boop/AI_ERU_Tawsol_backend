@@ -1,5 +1,5 @@
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_container_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_list_tile.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_switch_tile.dart';
@@ -33,7 +33,7 @@ class _PreferencesSectionState extends State<PreferencesSection> {
             children: [
               Text(
                 'Light',
-                style: Styles.textStyle16.copyWith(color: Color(0xff9E9D97)),
+                style: AppTextStyles.bodyLarge.copyWith(color: Color(0xff9E9D97)),
               ),
               Icon(Icons.arrow_forward_ios_rounded, color: Color(0xff9E9D97)),
             ],
@@ -63,7 +63,7 @@ class _PreferencesSectionState extends State<PreferencesSection> {
             children: [
               Text(
                 'English',
-                style: Styles.textStyle16.copyWith(color: Color(0xff9E9D97)),
+                style: AppTextStyles.bodyLarge.copyWith(color: Color(0xff9E9D97)),
               ),
               Icon(Icons.arrow_forward_ios_rounded, color: Color(0xff9E9D97)),
             ],

@@ -1,8 +1,9 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginSubmitButton extends StatelessWidget {
   const LoginSubmitButton({super.key, required this.onPressed});
@@ -20,9 +21,9 @@ class LoginSubmitButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AuthColors.primary,
+              backgroundColor: AppColors.accent,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: AppRadius.large,
               ),
             ),
             child: isLoading
@@ -32,10 +33,8 @@ class LoginSubmitButton extends StatelessWidget {
                   )
                 : Text(
                     'Sign In',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: AppTextStyles.buttonLarge.copyWith(
                       color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
                     ),
                   ),
           ),

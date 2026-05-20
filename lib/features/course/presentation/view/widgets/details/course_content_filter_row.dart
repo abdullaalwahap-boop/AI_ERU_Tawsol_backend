@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/feature_filter_chip.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/extensions/content_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 
@@ -26,10 +27,10 @@ class CourseContentFilterRow extends StatelessWidget {
             label: 'All',
             icon: Icons.apps_rounded,
             isSelected: activeFilter == null,
-            color: CourseColors.primary,
+            color: AppColors.primary,
             onTap: () => onFilterChanged(null),
           ),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           ...ContentType.values.map(
             (type) => Padding(
               padding: const EdgeInsets.only(right: 8),
@@ -48,4 +49,3 @@ class CourseContentFilterRow extends StatelessWidget {
     );
   }
 }
-

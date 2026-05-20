@@ -1,5 +1,7 @@
-import 'package:ai_eru_tawasol/constants.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/additional_pages_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_about_me_header.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +14,14 @@ class AppVersionViewBody extends StatelessWidget {
     return Column(
       children: [
         AdditionalPagesAppBar(title: 'App Version'),
-        const SizedBox(height: 20),
+        AppSpacing.h20,
         CustomAboutMeHeader(
           image: Placeholder(fallbackHeight: 200),
           title: 'App Version',
           subTitile: '1.0.0+1',
           paragraph: 'You are using the latest version of\nAI Connect.',
         ),
-        const SizedBox(height: 20),
+        AppSpacing.h20,
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
@@ -30,51 +32,51 @@ class AppVersionViewBody extends StatelessWidget {
               color: Colors.white70,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 10,
                   spreadRadius: 2,
                   offset: const Offset(0, 4),
                 ),
               ],
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: AppRadius.xxlarge,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("What's New?", style: Styles.textStyle24),
-                const SizedBox(height: 20),
+                Text("What's New?", style: AppTextStyles.heading2),
+                AppSpacing.h20,
                 Row(
                   children: [
-                    Text("• ", style: Styles.textStyle18),
+                    Text("• ", style: AppTextStyles.heading4),
                     Text(
                       " Performance improvements",
-                      style: Styles.textStyle18.copyWith(
-                        color: kSecondaryColor,
+                      style: AppTextStyles.heading4.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                AppSpacing.h10,
                 Row(
                   children: [
-                    Text("• ", style: Styles.textStyle18),
+                    Text("• ", style: AppTextStyles.heading4),
                     Text(
                       " Bug fixes",
-                      style: Styles.textStyle18.copyWith(
-                        color: kSecondaryColor,
+                      style: AppTextStyles.heading4.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                AppSpacing.h10,
                 Row(
                   children: [
-                    Text("• ", style: Styles.textStyle18),
+                    Text("• ", style: AppTextStyles.heading4),
                     Text(
                       " Better user experience",
-                      style: Styles.textStyle18.copyWith(
-                        color: kSecondaryColor,
+                      style: AppTextStyles.heading4.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],

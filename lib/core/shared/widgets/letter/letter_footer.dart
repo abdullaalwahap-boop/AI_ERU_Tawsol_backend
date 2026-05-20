@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class LetterFooter extends StatelessWidget {
   final String authorName;
@@ -28,35 +30,32 @@ class LetterFooter extends StatelessWidget {
             height: 32,
             decoration: BoxDecoration(
               color: lightColor,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
             ),
             child: Center(
               child: Text(
                 authorInitials,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
+                style: AppTextStyles.labelSmall.copyWith(
                   fontWeight: FontWeight.w800,
                   color: color,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 authorName,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12.5,
+                style: AppTextStyles.labelMedium.copyWith(
                   fontWeight: FontWeight.w700,
                   color: const Color(0xff1E293B),
                 ),
               ),
               Text(
                 subtitle,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
+                style: AppTextStyles.labelSmall.copyWith(
                   color: const Color(0xffA0AABB),
                 ),
               ),

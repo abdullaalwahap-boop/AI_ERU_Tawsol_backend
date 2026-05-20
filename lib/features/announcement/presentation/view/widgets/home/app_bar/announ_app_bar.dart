@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/app_bar/announ_app_bar_trailing.dart';
 
 class AnnounAppBar extends StatelessWidget {
@@ -25,7 +26,7 @@ class AnnounAppBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [AnnounColors.primaryDark, AnnounColors.primary],
+          colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -57,17 +58,17 @@ class AnnounAppBar extends StatelessWidget {
                       children: [
                         Text(
                           'Announcements',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: AppTextStyles.heading2.copyWith(
                             fontSize: 22,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                             letterSpacing: -0.3,
                           ),
                         ),
-                        const SizedBox(height: 3),
+                        AppSpacing.h3,
                         Text(
                           _subtitle,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: AppTextStyles.caption.copyWith(
                             fontSize: 12.5,
                             color: Colors.white.withValues(alpha: 0.75),
                           ),

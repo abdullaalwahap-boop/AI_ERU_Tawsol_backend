@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthFieldFocusContainer extends StatelessWidget {
@@ -16,12 +17,12 @@ class AuthFieldFocusContainer extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AuthColors.fieldBackground,
+        borderRadius: AppRadius.medium,
+        color: AppColors.fieldDark,
         boxShadow: isFocused
             ? [
                 BoxShadow(
-                  color: AuthColors.primary.withValues(alpha: 0.4),
+                  color: AppColors.accent.withValues(alpha: 0.4),
                   blurRadius: 12,
                   spreadRadius: 1,
                 ),

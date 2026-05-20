@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/post_type/add_announ_post_type_card.dart';
 
 class AddAnnounPostTypeSelector extends StatelessWidget {
@@ -21,14 +22,13 @@ class AddAnnounPostTypeSelector extends StatelessWidget {
       children: [
         Text(
           'Post Type',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 13,
+          style: AppTextStyles.bodySmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: AnnounColors.textPrimary,
+            color: AppColors.textPrimary,
             letterSpacing: 0.1,
           ),
         ),
-        const SizedBox(height: 10),
+        AppSpacing.h10,
         Row(
           children: AnnouncementType.values
               .map(

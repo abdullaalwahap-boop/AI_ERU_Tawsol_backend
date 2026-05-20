@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_validators.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
@@ -77,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
               textInputAction: TextInputAction.next,
               validator: AuthValidators.email,
             ),
-            const SizedBox(height: 16),
+            AppSpacing.h16,
             AuthTextField(
               controller: _passwordCtrl,
               label: 'Password',
@@ -87,12 +88,12 @@ class _LoginFormState extends State<LoginForm> {
               onFieldSubmitted: (_) => _submit(),
               validator: AuthValidators.password,
             ),
-            const SizedBox(height: 4),
+            AppSpacing.h4,
             LoginRememberMeRow(
               rememberMe: _rememberMe,
               onChanged: (v) => setState(() => _rememberMe = v),
             ),
-            const SizedBox(height: 8),
+            AppSpacing.h8,
             LoginSubmitButton(onPressed: _submit),
           ],
         ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/message_bubble_footer.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/content/message_file_content.dart';
@@ -28,7 +30,7 @@ class MessageBubble extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: isMe ? ChatColors.sentBubble : ChatColors.receivedBubble,
+              color: isMe ? AppColors.sentBubble : AppColors.receivedBubble,
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(20),
                 topRight: const Radius.circular(20),
@@ -38,7 +40,7 @@ class MessageBubble extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: isMe
-                      ? ChatColors.primary.withValues(alpha: 0.18)
+                      ? AppColors.primary.withValues(alpha: 0.18)
                       : Colors.black.withValues(alpha: 0.06),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
@@ -47,7 +49,7 @@ class MessageBubble extends StatelessWidget {
             ),
             child: _buildContent(),
           ),
-          const SizedBox(height: 3),
+          AppSpacing.h3,
           MessageBubbleFooter(message: message),
         ],
       ),

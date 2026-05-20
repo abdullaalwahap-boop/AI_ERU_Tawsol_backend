@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AddAnnounPostButton extends StatelessWidget {
   final bool canPost;
@@ -25,17 +26,17 @@ class AddAnnounPostButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: _isActive
               ? const LinearGradient(
-                  colors: [AnnounColors.primaryDark, AnnounColors.primary],
+                  colors: [AppColors.primaryDark, AppColors.primary],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 )
               : null,
-          color: _isActive ? null : AnnounColors.divider,
-          borderRadius: BorderRadius.circular(14),
+          color: _isActive ? null : AppColors.dividerLight,
+          borderRadius: AppRadius.large,
           boxShadow: _isActive
               ? [
                   BoxShadow(
-                    color: AnnounColors.primary.withValues(alpha: 0.35),
+                    color: AppColors.primary.withValues(alpha: 0.35),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -45,7 +46,7 @@ class AddAnnounPostButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: AppRadius.large,
             onTap: _isActive ? onTap : null,
             child: Center(child: _buildContent()),
           ),
@@ -68,15 +69,15 @@ class AddAnnounPostButton extends StatelessWidget {
         Icon(
           Icons.send_rounded,
           size: 17,
-          color: canPost ? Colors.white : AnnounColors.textHint,
+          color: canPost ? Colors.white : AppColors.textHint,
         ),
         const SizedBox(width: 7),
         Text(
           'Post Announcement',
-          style: GoogleFonts.plusJakartaSans(
+          style: AppTextStyles.bodySmall.copyWith(
             fontSize: 13.5,
             fontWeight: FontWeight.w700,
-            color: canPost ? Colors.white : AnnounColors.textHint,
+            color: canPost ? Colors.white : AppColors.textHint,
           ),
         ),
       ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class MetaRow extends StatelessWidget {
   final IconData icon;
@@ -25,31 +27,28 @@ class MetaRow extends StatelessWidget {
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: AnnounColors.inputBg,
-            borderRadius: BorderRadius.circular(8),
+            color: AppColors.inputBgLight,
+            borderRadius: AppRadius.small,
           ),
           child: Icon(icon, size: 16, color: color),
         ),
-        const SizedBox(width: 10),
+        AppSpacing.w10,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 10.5,
-                  color: AnnounColors.textHint,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.overline.copyWith(
+                  color: AppColors.textHint,
                   letterSpacing: 0.3,
                 ),
               ),
               const SizedBox(height: 1),
               Text(
                 value,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13,
-                  color: AnnounColors.textPrimary,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

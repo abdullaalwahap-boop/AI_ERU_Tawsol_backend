@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/extensions/content_type_ui_ext.dart';
 
 class CourseContentCardAuthor extends StatelessWidget {
@@ -21,30 +23,25 @@ class CourseContentCardAuthor extends StatelessWidget {
             height: 36,
             decoration: BoxDecoration(
               color: typeColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: AppRadius.medium,
             ),
             alignment: Alignment.center,
             child: Text(
               content.authorInitials,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
+              style: AppTextStyles.labelMedium.copyWith(
                 fontWeight: FontWeight.w800,
                 color: typeColor,
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   content.authorName,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w600,
-                    color: typeColor,
-                  ),
+                  style: AppTextStyles.labelSmall.copyWith(color: typeColor),
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.visible,
@@ -52,9 +49,8 @@ class CourseContentCardAuthor extends StatelessWidget {
                 const SizedBox(height: 1),
                 Text(
                   content.timeAgo,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11,
-                    color: CourseColors.textHint,
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: AppColors.textHint,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

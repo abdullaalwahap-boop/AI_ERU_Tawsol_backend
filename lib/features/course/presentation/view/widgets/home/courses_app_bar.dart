@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/course/presentation/constants/course_colors.dart';
 
 class CoursesAppBar extends StatelessWidget {
   final CourseRole role;
@@ -23,7 +24,7 @@ class CoursesAppBar extends StatelessWidget {
       width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [CourseColors.primaryDark, CourseColors.primary],
+          colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -52,18 +53,15 @@ class CoursesAppBar extends StatelessWidget {
                 children: [
                   Text(
                     'My Courses',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
+                    style: AppTextStyles.heading2.copyWith(
                       color: Colors.white,
                       letterSpacing: -0.3,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  AppSpacing.h3,
                   Text(
                     _subtitle,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12.5,
+                    style: AppTextStyles.caption.copyWith(
                       color: Colors.white.withValues(alpha: 0.75),
                     ),
                   ),

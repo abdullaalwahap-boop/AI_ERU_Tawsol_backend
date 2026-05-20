@@ -1,6 +1,6 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class AddAnnounOptionChip extends StatelessWidget {
   final String label;
@@ -23,16 +23,16 @@ class AddAnnounOptionChip extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
         decoration: BoxDecoration(
-          color: isSelected ? AnnounColors.primary : AnnounColors.surface,
+          color: isSelected ? AppColors.primary : AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: isSelected ? AnnounColors.primary : AnnounColors.divider,
+            color: isSelected ? AppColors.primary : AppColors.dividerLight,
             width: 1.5,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AnnounColors.primary.withValues(alpha: 0.2),
+                    color: AppColors.primary.withValues(alpha: 0.2),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -48,10 +48,10 @@ class AddAnnounOptionChip extends StatelessWidget {
             ],
             Text(
               label,
-              style: GoogleFonts.plusJakartaSans(
+              style: AppTextStyles.labelMedium.copyWith(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : AnnounColors.textSecondary,
+                color: isSelected ? Colors.white : AppColors.textSecondary,
               ),
             ),
           ],

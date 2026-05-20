@@ -1,5 +1,6 @@
-import 'package:ai_eru_tawasol/constants.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSection extends StatelessWidget {
@@ -16,20 +17,20 @@ class ProfileSection extends StatelessWidget {
             'https://i.ytimg.com/vi/lRdXqvpuVMk/hq720.jpg',
           ),
         ),
-        SizedBox(height: 10),
-        Text('Ziad Tamer', style: Styles.textStyle24),
-        SizedBox(height: 5),
+        AppSpacing.h10,
+        Text('Ziad Tamer', style: AppTextStyles.heading2),
+        AppSpacing.h5,
         Text(
           '225040@eru.edu.eg',
-          style: Styles.textStyle20.copyWith(
-            color: kPrimaryColor,
+          style: AppTextStyles.heading3.copyWith(
+            color: AppColors.primary,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 5),
+        AppSpacing.h5,
         Text(
           'Student ID: 225040',
-          style: Styles.textStyle18.copyWith(fontWeight: FontWeight.bold),
+          style: AppTextStyles.heading4.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );

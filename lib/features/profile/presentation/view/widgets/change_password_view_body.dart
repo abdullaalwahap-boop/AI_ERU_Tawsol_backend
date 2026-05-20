@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/additional_pages_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_password_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/password_requirements_list.dart';
@@ -43,7 +44,7 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AdditionalPagesAppBar(title: 'Change Password'),
-          SizedBox(height: 40),
+          AppSpacing.h40,
           CustomPasswordSection(title: 'Current Password'),
           SizedBox(height: 30),
           CustomPasswordSection(

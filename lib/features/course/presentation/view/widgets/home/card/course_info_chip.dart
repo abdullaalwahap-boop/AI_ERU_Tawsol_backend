@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class CourseInfoChip extends StatelessWidget {
   final IconData icon;
@@ -28,9 +28,8 @@ class CourseInfoChip extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             label,
-            style: GoogleFonts.plusJakartaSans(
+            style: AppTextStyles.labelSmall.copyWith(
               fontSize: 11.5,
-              fontWeight: FontWeight.w600,
               color: color,
             ),
           ),

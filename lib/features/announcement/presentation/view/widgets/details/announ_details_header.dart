@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_priority_badge.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_subject_avatar.dart';
@@ -18,7 +19,7 @@ class AnnounDetailsHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AnnounColors.surface,
+        color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -35,7 +36,7 @@ class AnnounDetailsHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AnnounSubjectAvatar(announcement: announcement, size: 52),
-              const SizedBox(width: 14),
+              AppSpacing.w16,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,17 +44,16 @@ class AnnounDetailsHeader extends StatelessWidget {
                     Row(
                       children: [
                         AnnounTypeBadge(type: announcement.type),
-                        const SizedBox(width: 6),
+                        AppSpacing.w6,
                         AnnounPriorityBadge(priority: announcement.priority),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    AppSpacing.h8,
                     Text(
                       announcement.title,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16,
+                      style: AppTextStyles.titleLarge.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: AnnounColors.textPrimary,
+                        color: AppColors.textPrimary,
                         height: 1.3,
                       ),
                     ),
@@ -62,42 +62,42 @@ class AnnounDetailsHeader extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          const Divider(color: AnnounColors.divider, height: 1),
-          const SizedBox(height: 14),
+          AppSpacing.h16,
+          const Divider(color: AppColors.dividerLight, height: 1),
+          AppSpacing.h14,
           MetaRow(
             icon: Icons.menu_book_rounded,
             label: 'Subject',
             value: '${announcement.subjectCode} · ${announcement.subjectName}',
             color: announcement.type.color,
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           MetaRow(
             icon: Icons.person_rounded,
             label: 'Posted by',
             value: announcement.doctorName,
-            color: AnnounColors.textSecondary,
+            color: AppColors.textSecondary,
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           MetaRow(
             icon: Icons.calendar_today_rounded,
             label: 'Date',
             value: announcement.formattedDate,
-            color: AnnounColors.textSecondary,
+            color: AppColors.textSecondary,
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           MetaRow(
             icon: Icons.access_time_rounded,
             label: 'Time',
             value: announcement.formattedTime,
-            color: AnnounColors.textSecondary,
+            color: AppColors.textSecondary,
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           MetaRow(
             icon: Icons.group_rounded,
             label: 'Audience',
             value: announcement.target.label,
-            color: AnnounColors.textSecondary,
+            color: AppColors.textSecondary,
           ),
         ],
       ),

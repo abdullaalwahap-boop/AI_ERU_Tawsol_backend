@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class AnnounCardPreview extends StatelessWidget {
   final String body;
@@ -13,9 +13,9 @@ class AnnounCardPreview extends StatelessWidget {
         body.replaceAll('\n', ' ').replaceAll(RegExp(r'\s+'), ' ').trim();
     return Text(
       preview,
-      style: GoogleFonts.plusJakartaSans(
+      style: AppTextStyles.labelMedium.copyWith(
         fontSize: 12.5,
-        color: AnnounColors.textSecondary,
+        color: AppColors.textSecondary,
         height: 1.5,
       ),
       maxLines: 2,

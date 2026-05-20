@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/app_bar/announ_app_bar.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/filter/announ_filter_row.dart';
@@ -20,7 +20,7 @@ class AnnounViewBody extends StatelessWidget {
     return BlocBuilder<AnnounCubit, AnnounState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AnnounColors.background,
+          backgroundColor: AppColors.backgroundLight,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -54,8 +54,8 @@ class AnnounViewBody extends StatelessWidget {
     final isAdmin = role == AnnounRole.admin;
 
     return RefreshIndicator(
-      color: AnnounColors.primary,
-      backgroundColor: AnnounColors.surface,
+      color: AppColors.primary,
+      backgroundColor: AppColors.surfaceLight,
       displacement: 20,
       onRefresh: () => cubit.refresh(role),
       child: CustomScrollView(

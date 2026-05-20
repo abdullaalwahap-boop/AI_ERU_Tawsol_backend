@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomProfileAppBar extends StatelessWidget {
@@ -10,7 +10,7 @@ class CustomProfileAppBar extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16),
       child: Row(
         children: [
-          Text('Profile', style: Styles.textStyle36),
+          Text('Profile', style: AppTextStyles.display),
           // Spacer(),
           // IconButton(
           //   onPressed: () {},

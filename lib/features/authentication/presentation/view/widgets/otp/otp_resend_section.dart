@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/otp_cubit/otp_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OtpResendSection extends StatefulWidget {
   const OtpResendSection({super.key, required this.email});
@@ -51,20 +51,15 @@ class _OtpResendSectionState extends State<OtpResendSection> {
       child: _seconds > 0
           ? Text(
               'Resend code in ${_seconds}s',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white38,
-                fontSize: 13,
-              ),
+              style: AppTextStyles.bodySmall.copyWith(color: Colors.white38),
             )
           : TextButton(
               onPressed: () =>
                   context.read<OtpCubit>().resendOtp(email: widget.email),
               child: Text(
                 'Resend Code',
-                style: GoogleFonts.plusJakartaSans(
-                  color: AuthColors.primary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.accent,
                 ),
               ),
             ),

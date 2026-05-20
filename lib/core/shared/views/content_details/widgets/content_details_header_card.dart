@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/widgets/content_details_author_avatar.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/badges/content_priority_badge.dart';
@@ -17,14 +20,8 @@ class ContentDetailsHeaderCard extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: AppRadius.large,
+        boxShadow: AppShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +30,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ContentDetailsAuthorAvatar(item: item),
-              const SizedBox(width: 14),
+              AppSpacing.w14,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +44,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
                           lightColor: item.typeLightColor,
                         ),
                         if (item.priorityLabel != null) ...[
-                          const SizedBox(width: 6),
+                          AppSpacing.w6,
                           ContentPriorityBadge(
                             label: item.priorityLabel!,
                             color: item.priorityColor!,
@@ -55,11 +52,10 @@ class ContentDetailsHeaderCard extends StatelessWidget {
                         ],
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    AppSpacing.h8,
                     Text(
                       item.title,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16,
+                      style: AppTextStyles.titleLarge.copyWith(
                         fontWeight: FontWeight.w800,
                         color: const Color(0xff1E293B),
                         height: 1.3,
@@ -70,9 +66,9 @@ class ContentDetailsHeaderCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           const Divider(color: Color(0xffE2E8F0), height: 1),
-          const SizedBox(height: 14),
+          AppSpacing.h14,
           if (item.contextLabel != null) ...[
             FeatureMetaRow(
               icon: Icons.menu_book_rounded,
@@ -82,7 +78,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
                   : item.contextLabel!,
               iconColor: item.typeColor,
             ),
-            const SizedBox(height: 10),
+            AppSpacing.h10,
           ],
           FeatureMetaRow(
             icon: Icons.person_rounded,
@@ -90,14 +86,14 @@ class ContentDetailsHeaderCard extends StatelessWidget {
             value: item.authorName,
             iconColor: const Color(0xff64748B),
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           FeatureMetaRow(
             icon: Icons.calendar_today_rounded,
             label: 'Date',
             value: item.formattedDate,
             iconColor: const Color(0xff64748B),
           ),
-          const SizedBox(height: 10),
+          AppSpacing.h10,
           FeatureMetaRow(
             icon: Icons.access_time_rounded,
             label: 'Time',
@@ -109,4 +105,3 @@ class ContentDetailsHeaderCard extends StatelessWidget {
     );
   }
 }
-

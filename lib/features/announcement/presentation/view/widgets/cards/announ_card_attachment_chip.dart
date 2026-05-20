@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AnnounCardAttachmentChip extends StatelessWidget {
   final int count;
@@ -12,21 +13,19 @@ class AnnounCardAttachmentChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: AnnounColors.inputBg,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.inputBgLight,
+        borderRadius: AppRadius.xxlarge,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(Icons.attach_file_rounded,
-              size: 11, color: AnnounColors.textSecondary),
+              size: 11, color: AppColors.textSecondary),
           const SizedBox(width: 3),
           Text(
             '$count',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 10.5,
-              fontWeight: FontWeight.w600,
-              color: AnnounColors.textSecondary,
+            style: AppTextStyles.badgeText.copyWith(
+              color: AppColors.textSecondary,
             ),
           ),
         ],

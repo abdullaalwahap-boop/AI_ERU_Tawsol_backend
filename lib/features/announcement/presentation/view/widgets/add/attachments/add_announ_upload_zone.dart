@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AddAnnounUploadZone extends StatelessWidget {
   final VoidCallback onTap;
@@ -15,10 +17,10 @@ class AddAnnounUploadZone extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 28),
         decoration: BoxDecoration(
-          color: AnnounColors.primary.withValues(alpha: 0.03),
-          borderRadius: BorderRadius.circular(14),
+          color: AppColors.primary.withValues(alpha: 0.03),
+          borderRadius: AppRadius.large,
           border: Border.all(
-            color: AnnounColors.primary.withValues(alpha: 0.25),
+            color: AppColors.primary.withValues(alpha: 0.25),
             width: 1.5,
             strokeAlign: BorderSide.strokeAlignInside,
           ),
@@ -30,28 +32,26 @@ class AddAnnounUploadZone extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AnnounColors.primary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(14),
+                color: AppColors.primary.withValues(alpha: 0.08),
+                borderRadius: AppRadius.large,
               ),
               child: const Icon(Icons.attach_file_rounded,
-                  size: 22, color: AnnounColors.primary),
+                  size: 22, color: AppColors.primary),
             ),
-            const SizedBox(height: 10),
+            AppSpacing.h10,
             Text(
               'Tap to attach files',
-              style: GoogleFonts.plusJakartaSans(
+              style: AppTextStyles.bodySmall.copyWith(
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
-                color: AnnounColors.textPrimary,
+                color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 4),
+            AppSpacing.h4,
             Text(
               'PDF · DOCX · PPT · Images · ZIP · Links',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11.5,
-                fontWeight: FontWeight.w500,
-                color: AnnounColors.textHint,
+              style: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.textHint,
               ),
             ),
           ],

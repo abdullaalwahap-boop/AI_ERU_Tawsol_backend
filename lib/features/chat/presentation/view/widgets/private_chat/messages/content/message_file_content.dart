@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class MessageFileContent extends StatelessWidget {
@@ -51,7 +53,7 @@ class MessageFileContent extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,35 +62,34 @@ class MessageFileContent extends StatelessWidget {
                   fileName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 13,
+                  style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.w600,
-                    color:
-                        isMe ? ChatColors.sentText : ChatColors.receivedText,
+                    color: isMe
+                        ? AppColors.sentBubbleText
+                        : AppColors.receivedBubbleText,
                   ),
                 ),
                 if (sizeText.isNotEmpty) ...[
-                  const SizedBox(height: 2),
+                  AppSpacing.h2,
                   Text(
                     sizeText,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
+                    style: AppTextStyles.labelSmall.copyWith(
                       color: isMe
                           ? Colors.white.withValues(alpha: 0.7)
-                          : ChatColors.textSecondary,
+                          : AppColors.textSecondary,
                     ),
                   ),
                 ],
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           Icon(
             Icons.download_rounded,
             size: 18,
             color: isMe
                 ? Colors.white.withValues(alpha: 0.8)
-                : ChatColors.primary,
+                : AppColors.primary,
           ),
         ],
       ),

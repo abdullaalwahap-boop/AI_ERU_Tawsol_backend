@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/letter/letter_footer.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/letter/letter_header_strip.dart';
 
@@ -33,13 +34,7 @@ class LetterBodyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: AppShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,8 +50,7 @@ class LetterBodyCard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Text(
               body,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 14,
+              style: AppTextStyles.bodyMedium.copyWith(
                 color: const Color(0xff1E293B),
                 height: 1.75,
               ),

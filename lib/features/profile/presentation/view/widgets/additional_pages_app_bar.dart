@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class AdditionalPagesAppBar extends StatelessWidget {
@@ -11,7 +11,7 @@ class AdditionalPagesAppBar extends StatelessWidget {
     return Column(
       children: [
         AppBar(backgroundColor: Colors.white),
-        Text(title, style: Styles.textStyle24),
+        Text(title, style: AppTextStyles.heading2),
       ],
     );
   }

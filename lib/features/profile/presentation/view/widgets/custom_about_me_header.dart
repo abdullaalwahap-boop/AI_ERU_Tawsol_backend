@@ -1,5 +1,6 @@
-import 'package:ai_eru_tawasol/constants.dart';
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomAboutMeHeader extends StatelessWidget {
@@ -21,19 +22,19 @@ class CustomAboutMeHeader extends StatelessWidget {
     return Column(
       children: [
         image,
-        const SizedBox(height: 10),
-        Text(title, style: Styles.textStyle24.copyWith(fontSize: 28)),
+        AppSpacing.h10,
+        Text(title, style: AppTextStyles.heading2.copyWith(fontSize: 28)),
         if (subTitile != null)
           Text(
             subTitile!,
-            style: Styles.textStyle18.copyWith(color: kSecondaryColor),
+            style: AppTextStyles.heading4.copyWith(color: AppColors.textSecondary),
           ),
-        const SizedBox(height: 10),
+        AppSpacing.h10,
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             paragraph,
-            style: Styles.textStyle18.copyWith(color: kSecondaryColor),
+            style: AppTextStyles.heading4.copyWith(color: AppColors.textSecondary),
             textAlign: TextAlign.center,
           ),
         ),

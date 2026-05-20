@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/picker/add_announ_pick_option.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/picker/add_announ_pick_tile.dart';
@@ -15,7 +17,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: AppRadius.xxxlarge,
       ),
       child: SafeArea(
         top: false,
@@ -28,20 +30,18 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AnnounColors.divider,
-                  borderRadius: BorderRadius.circular(2),
+                  color: AppColors.dividerLight,
+                  borderRadius: AppRadius.xsmall,
                 ),
               ),
-              const SizedBox(height: 16),
+              AppSpacing.h16,
               Text(
                 'Attach a file',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AnnounColors.textPrimary,
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 20),
+              AppSpacing.h20,
               GridView.count(
                 crossAxisCount: 3,
                 shrinkWrap: true,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/message_status_icon.dart';
 
@@ -39,15 +42,11 @@ class ChatListItemSubtitle extends StatelessWidget {
           margin: const EdgeInsets.only(right: 6),
           decoration: BoxDecoration(
             color: user.role.lightColor,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: AppRadius.xsmall,
           ),
           child: Text(
             user.role.label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
-              color: user.role.color,
-            ),
+            style: AppTextStyles.badgeText.copyWith(color: user.role.color),
           ),
         ),
         Expanded(
@@ -62,11 +61,10 @@ class ChatListItemSubtitle extends StatelessWidget {
                   last != null ? _lastMessagePreview(last) : 'No messages yet',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 13,
+                  style: AppTextStyles.bodySmall.copyWith(
                     color: unread > 0
-                        ? ChatColors.textPrimary
-                        : ChatColors.textSecondary,
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary,
                     fontWeight: unread > 0 ? FontWeight.w500 : FontWeight.w400,
                   ),
                 ),
@@ -75,21 +73,17 @@ class ChatListItemSubtitle extends StatelessWidget {
           ),
         ),
         if (unread > 0) ...[
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           Container(
             constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
             padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: const BoxDecoration(
-              color: ChatColors.primary,
+              color: AppColors.primary,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Text(
               unread > 99 ? '99+' : '$unread',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
+              style: AppTextStyles.labelSmall.copyWith(color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),

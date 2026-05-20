@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class ChatSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -21,15 +21,12 @@ class ChatSearchBar extends StatelessWidget {
       child: TextField(
         controller: controller,
         autofocus: true,
-        style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 14),
+        style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search_rounded,
               color: Colors.white60, size: 20),
           hintText: 'Search by name or student ID…',
-          hintStyle: GoogleFonts.plusJakartaSans(
-            color: Colors.white54,
-            fontSize: 14,
-          ),
+          hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
         ),

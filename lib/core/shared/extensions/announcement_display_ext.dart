@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/attachment_file_type_ui_ext.dart';
 
@@ -34,7 +34,7 @@ extension AnnouncementDisplayExt on Announcement {
             ),
           )
           .toList(),
-      accentColor: AnnounColors.primary,
+      accentColor: AppColors.primary,
       isFromAdmin: isFromAdmin,
     );
   }

@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/voice/voice_waveform.dart';
 
@@ -99,17 +101,17 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget>
               decoration: BoxDecoration(
                 color: isMe
                     ? Colors.white.withValues(alpha: 0.25)
-                    : ChatColors.primary.withValues(alpha: 0.12),
+                    : AppColors.primary.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                color: isMe ? Colors.white : ChatColors.primary,
+                color: isMe ? Colors.white : AppColors.primary,
                 size: 22,
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          AppSpacing.w10,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,17 +123,15 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget>
                   isPlaying: _isPlaying,
                   animation: _waveController,
                 ),
-                const SizedBox(height: 4),
+                AppSpacing.h4,
                 Text(
                   _isPlaying
                       ? _formatDuration(elapsed)
                       : _formatDuration(duration),
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                  style: AppTextStyles.overline.copyWith(
                     color: isMe
                         ? Colors.white.withValues(alpha: 0.8)
-                        : ChatColors.textSecondary,
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],

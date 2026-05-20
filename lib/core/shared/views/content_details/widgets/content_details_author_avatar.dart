@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 
 class ContentDetailsAuthorAvatar extends StatelessWidget {
@@ -20,7 +21,7 @@ class ContentDetailsAuthorAvatar extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: AppRadius.large,
         border: Border.all(
           color: item.typeColor.withValues(alpha: 0.2),
           width: 1.5,
@@ -29,8 +30,7 @@ class ContentDetailsAuthorAvatar extends StatelessWidget {
       child: Center(
         child: Text(
           item.authorInitials,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 16,
+          style: AppTextStyles.titleLarge.copyWith(
             fontWeight: FontWeight.w800,
             color: item.typeColor,
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/picker/add_announ_pick_option.dart';
 
 class AddAnnounPickTile extends StatelessWidget {
@@ -20,7 +21,7 @@ class AddAnnounPickTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: option.color.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: AppRadius.large,
           border: Border.all(
             color: option.color.withValues(alpha: 0.2),
             width: 1.2,
@@ -34,17 +35,16 @@ class AddAnnounPickTile extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 color: option.color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: AppRadius.medium,
               ),
               child: Icon(option.icon, size: 20, color: option.color),
             ),
             const SizedBox(height: 7),
             Text(
               option.label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
+              style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AnnounColors.textSecondary,
+                color: AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),

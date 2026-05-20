@@ -1,5 +1,5 @@
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OtpEmailLabel extends StatelessWidget {
   const OtpEmailLabel({super.key, required this.email});
@@ -13,18 +13,12 @@ class OtpEmailLabel extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-          style: GoogleFonts.plusJakartaSans(
-            color: Colors.white54,
-            fontSize: 14,
-          ),
+          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
           children: [
             const TextSpan(text: 'Enter the 6-digit code sent to\n'),
             TextSpan(
               text: email,
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyles.titleSmall.copyWith(color: Colors.white),
             ),
           ],
         ),

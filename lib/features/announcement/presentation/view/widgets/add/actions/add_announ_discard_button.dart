@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 
 class AddAnnounDiscardButton extends StatelessWidget {
   final bool isDisabled;
@@ -19,16 +20,14 @@ class AddAnnounDiscardButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: isDisabled ? null : onTap,
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AnnounColors.divider, width: 1.5),
+          side: const BorderSide(color: AppColors.dividerLight, width: 1.5),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              RoundedRectangleBorder(borderRadius: AppRadius.large),
         ),
         child: Text(
           'Discard',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AnnounColors.textSecondary,
+          style: AppTextStyles.titleSmall.copyWith(
+            color: AppColors.textSecondary,
           ),
         ),
       ),

@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/utils/styles.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class LogOutButton extends StatelessWidget {
@@ -36,7 +36,8 @@ class LogOutButton extends StatelessWidget {
               ),
               Text(
                 'Log Out',
-                style: Styles.textStyle22.copyWith(
+                style: AppTextStyles.heading3.copyWith(
+                  fontSize: 22,
                   color: Color.fromARGB(255, 158, 18, 8),
                 ),
               ),

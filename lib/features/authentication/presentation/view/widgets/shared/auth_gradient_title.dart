@@ -1,5 +1,6 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AuthGradientTitle extends StatelessWidget {
   const AuthGradientTitle({
@@ -20,16 +21,15 @@ class AuthGradientTitle extends StatelessWidget {
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) => const LinearGradient(
-        colors: [Colors.white, Color(0xffA8C8FF)],
+        colors: [Colors.white, AppColors.accentGradientEnd],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(bounds),
       child: Text(
         text,
         textAlign: textAlign,
-        style: GoogleFonts.plusJakartaSans(
+        style: AppTextStyles.heading1.copyWith(
           fontSize: fontSize,
-          fontWeight: FontWeight.bold,
           letterSpacing: letterSpacing,
           color: Colors.white,
         ),

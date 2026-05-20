@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/manager/private_chat_cubit/private_chat_cubit.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/chat_search_bar.dart';
@@ -52,8 +55,8 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
       SnackBar(
         content: Text('${option.label} selected'),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: ChatColors.primary,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
+        backgroundColor: AppColors.primary,
       ),
     );
   }
@@ -89,7 +92,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ),
             Expanded(
               child: Container(
-                color: ChatColors.background,
+                color: AppColors.backgroundLight,
                 child: messages.isEmpty && loaded.isSearching
                     ? _buildNoResults(loaded.searchQuery)
                     : ListView.builder(
@@ -144,7 +147,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         children: [
           const Icon(Icons.search_off_rounded,
               size: 48, color: Color(0xffA0AABB)),
-          const SizedBox(height: 12),
+          AppSpacing.h12,
           Text(
             'No messages found for "$query"',
             style: const TextStyle(color: Color(0xff64748B), fontSize: 14),

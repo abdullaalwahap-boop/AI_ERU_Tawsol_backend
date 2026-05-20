@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/announcement_display_ext.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_footer.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_preview.dart';
@@ -27,14 +29,10 @@ class AnnounCardContent extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: AnnounColors.surface,
+          color: AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.055),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
+            ...AppShadows.card,
             BoxShadow(
               color: typeColor.withValues(alpha: 0.06),
               blurRadius: 24,
@@ -56,11 +54,11 @@ class AnnounCardContent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AnnounCardTopRow(announcement: announcement),
-                        const SizedBox(height: 10),
+                        AppSpacing.h10,
                         AnnounCardTitle(title: announcement.title),
-                        const SizedBox(height: 6),
+                        AppSpacing.h6,
                         AnnounCardPreview(body: announcement.body),
-                        const SizedBox(height: 12),
+                        AppSpacing.h12,
                         AnnounCardFooter(announcement: announcement),
                       ],
                     ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/attachments/attachment_display_data.dart';
 
 class AttachmentTile extends StatelessWidget {
@@ -20,7 +22,7 @@ class AttachmentTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: const Color(0xffF1F5F9),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: AppRadius.medium,
           border: Border.all(color: const Color(0xffE2E8F0)),
         ),
         child: Row(
@@ -30,31 +32,28 @@ class AttachmentTile extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 color: attachment.iconColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: AppRadius.small,
               ),
               child:
                   Icon(attachment.icon, size: 20, color: attachment.iconColor),
             ),
-            const SizedBox(width: 12),
+            AppSpacing.w12,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     attachment.name,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
+                    style: AppTextStyles.labelMedium.copyWith(
                       color: const Color(0xff1E293B),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2),
+                  AppSpacing.h4,
                   Text(
                     attachment.sizeLabel,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
+                    style: AppTextStyles.labelSmall.copyWith(
                       color: const Color(0xffA0AABB),
                     ),
                   ),
@@ -66,7 +65,7 @@ class AttachmentTile extends StatelessWidget {
               height: 34,
               decoration: BoxDecoration(
                 color: primaryColor.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: AppRadius.small,
               ),
               child:
                   Icon(Icons.download_rounded, size: 18, color: primaryColor),

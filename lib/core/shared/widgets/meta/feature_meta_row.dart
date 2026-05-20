@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class FeatureMetaRow extends StatelessWidget {
   final IconData icon;
@@ -31,29 +33,26 @@ class FeatureMetaRow extends StatelessWidget {
           height: 32,
           decoration: BoxDecoration(
             color: iconBgColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: AppRadius.small,
           ),
           child: Icon(icon, size: 16, color: iconColor),
         ),
-        const SizedBox(width: 10),
+        AppSpacing.w10,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 10.5,
+                style: AppTextStyles.overline.copyWith(
                   color: labelColor,
-                  fontWeight: FontWeight.w600,
                   letterSpacing: 0.3,
                 ),
               ),
               const SizedBox(height: 1),
               Text(
                 value,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13,
+                style: AppTextStyles.bodySmall.copyWith(
                   color: valueColor,
                   fontWeight: FontWeight.w600,
                 ),

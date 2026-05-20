@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 
 class AddAnnounPostTypeCard extends StatelessWidget {
@@ -25,10 +27,10 @@ class AddAnnounPostTypeCard extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected ? type.lightColor : AnnounColors.inputBg,
-          borderRadius: BorderRadius.circular(14),
+          color: isSelected ? type.lightColor : AppColors.inputBgLight,
+          borderRadius: AppRadius.large,
           border: Border.all(
-            color: isSelected ? type.color : AnnounColors.divider,
+            color: isSelected ? type.color : AppColors.dividerLight,
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
@@ -40,22 +42,21 @@ class AddAnnounPostTypeCard extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: isSelected ? type.color : AnnounColors.divider,
+                color: isSelected ? type.color : AppColors.dividerLight,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 type.icon,
                 size: 18,
-                color: isSelected ? Colors.white : AnnounColors.textHint,
+                color: isSelected ? Colors.white : AppColors.textHint,
               ),
             ),
-            const SizedBox(height: 6),
+            AppSpacing.h4,
             Text(
               type.label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
+              style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: isSelected ? type.color : AnnounColors.textSecondary,
+                color: isSelected ? type.color : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),

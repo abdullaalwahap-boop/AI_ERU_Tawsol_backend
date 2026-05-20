@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_skeleton_bone.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_skeleton_footer_row.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_skeleton_top_row.dart';
@@ -49,7 +50,7 @@ class _AnnounLoadingSkeletonCardState extends State<AnnounLoadingSkeletonCard>
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: AnnounColors.surface,
+            color: AppColors.surfaceLight,
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
@@ -65,26 +66,26 @@ class _AnnounLoadingSkeletonCardState extends State<AnnounLoadingSkeletonCard>
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(width: 4, color: AnnounColors.divider),
+                  Container(width: 4, color: AppColors.dividerLight),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(14),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          AnnounSkeletonTopRow(),
-                          SizedBox(height: 12),
-                          AnnounSkeletonBone(
+                        children: [
+                          const AnnounSkeletonTopRow(),
+                          AppSpacing.h12,
+                          const AnnounSkeletonBone(
                               width: double.infinity, height: 13, radius: 6),
-                          SizedBox(height: 6),
-                          AnnounSkeletonBone(width: 220, height: 13, radius: 6),
-                          SizedBox(height: 10),
-                          AnnounSkeletonBone(
+                          AppSpacing.h6,
+                          const AnnounSkeletonBone(width: 220, height: 13, radius: 6),
+                          AppSpacing.h10,
+                          const AnnounSkeletonBone(
                               width: double.infinity, height: 11, radius: 5),
-                          SizedBox(height: 5),
-                          AnnounSkeletonBone(width: 180, height: 11, radius: 5),
-                          SizedBox(height: 14),
-                          AnnounSkeletonFooterRow(),
+                          AppSpacing.h5,
+                          const AnnounSkeletonBone(width: 180, height: 11, radius: 5),
+                          AppSpacing.h14,
+                          const AnnounSkeletonFooterRow(),
                         ],
                       ),
                     ),

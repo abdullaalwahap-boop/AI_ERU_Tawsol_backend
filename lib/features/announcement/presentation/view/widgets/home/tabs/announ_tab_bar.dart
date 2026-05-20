@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/tabs/announ_tab_item.dart';
 
@@ -23,8 +24,8 @@ class AnnounTabBar extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(16, 14, 16, 0),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AnnounColors.inputBg,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.inputBgLight,
+        borderRadius: AppRadius.xlarge,
       ),
       child: Row(
         children: [

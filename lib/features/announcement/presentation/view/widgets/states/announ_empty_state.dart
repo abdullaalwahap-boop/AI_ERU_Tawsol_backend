@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/constants/announ_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class AnnounEmptyState extends StatelessWidget {
   const AnnounEmptyState({super.key});
@@ -17,31 +18,28 @@ class AnnounEmptyState extends StatelessWidget {
               width: 88,
               height: 88,
               decoration: BoxDecoration(
-                color: AnnounColors.background,
+                color: AppColors.backgroundLight,
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: AnnounColors.primary.withValues(alpha: 0.15),
+                    color: AppColors.primary.withValues(alpha: 0.15),
                     width: 2),
               ),
               child: const Icon(Icons.campaign_outlined,
-                  size: 40, color: AnnounColors.primary),
+                  size: 40, color: AppColors.primary),
             ),
-            const SizedBox(height: 20),
+            AppSpacing.h20,
             Text(
               'No Announcements Yet',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: AnnounColors.textPrimary,
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            AppSpacing.h8,
             Text(
               'There are no announcements at the moment.\nCheck back later for updates.',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 13,
-                color: AnnounColors.textSecondary,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.textSecondary,
                 height: 1.6,
               ),
               textAlign: TextAlign.center,

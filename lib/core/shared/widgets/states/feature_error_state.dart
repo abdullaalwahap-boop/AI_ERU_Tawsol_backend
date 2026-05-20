@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class FeatureErrorState extends StatelessWidget {
   final String message;
@@ -35,21 +37,18 @@ class FeatureErrorState extends StatelessWidget {
               child: const Icon(Icons.wifi_off_rounded,
                   size: 38, color: Color(0xffDC2626)),
             ),
-            const SizedBox(height: 20),
+            AppSpacing.h20,
             Text(
               'Something Went Wrong',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
+              style: AppTextStyles.titleMedium.copyWith(
                 color: const Color(0xff1E293B),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            AppSpacing.h8,
             Text(
               message,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 13,
+              style: AppTextStyles.bodySmall.copyWith(
                 color: const Color(0xff64748B),
                 height: 1.6,
               ),
@@ -57,7 +56,7 @@ class FeatureErrorState extends StatelessWidget {
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 24),
+            AppSpacing.h24,
             FilledButton.icon(
               onPressed: onRetry,
               style: FilledButton.styleFrom(
@@ -65,16 +64,13 @@ class FeatureErrorState extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 28, vertical: 13),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: AppRadius.large,
                 ),
               ),
               icon: const Icon(Icons.refresh_rounded, size: 18),
               label: Text(
                 'Try Again',
-                style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.titleSmall,
               ),
             ),
           ],

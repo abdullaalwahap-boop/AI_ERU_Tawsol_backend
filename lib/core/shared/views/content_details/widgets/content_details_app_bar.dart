@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 
 class ContentDetailsAppBar extends StatelessWidget {
@@ -28,11 +28,7 @@ class ContentDetailsAppBar extends StatelessWidget {
         titlePadding: const EdgeInsets.fromLTRB(56, 0, 16, 14),
         title: Text(
           '${item.typeLabel} Details',
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
+          style: AppTextStyles.titleMedium.copyWith(color: Colors.white),
         ),
         background: Container(
           decoration: BoxDecoration(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/chat_list/header/chat_header_title.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/chat_list/header/chat_search_bar.dart';
 
@@ -22,7 +22,7 @@ class ChatHeader extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [ChatColors.primaryDark, ChatColors.primary],
+          colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

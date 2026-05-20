@@ -1,6 +1,9 @@
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/sheet_handle.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/sheets/attachment_tile.dart';
 
@@ -33,24 +36,17 @@ class AttachmentBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SheetHandle(),
-          const SizedBox(height: 20),
+          AppSpacing.h20,
           Text(
             'Share Content',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-              color: ChatColors.textPrimary,
-            ),
+            style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           Text(
             'Choose what you would like to send',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 13,
-              color: ChatColors.textSecondary,
-            ),
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
           ),
-          const SizedBox(height: 28),
+          AppSpacing.h28,
           GridView.count(
             crossAxisCount: 5,
             shrinkWrap: true,
@@ -67,21 +63,18 @@ class AttachmentBottomSheet extends StatelessWidget {
                     ))
                 .toList(),
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           TextButton(
             onPressed: () => Navigator.pop(context),
             style: TextButton.styleFrom(
-              foregroundColor: ChatColors.textSecondary,
+              foregroundColor: AppColors.textSecondary,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                  borderRadius: AppRadius.medium),
             ),
             child: Text(
               'Cancel',
-              style: GoogleFonts.plusJakartaSans(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+              style: AppTextStyles.titleSmall,
             ),
           ),
         ],

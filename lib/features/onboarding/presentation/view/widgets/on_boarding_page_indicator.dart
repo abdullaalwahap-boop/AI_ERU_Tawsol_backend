@@ -1,3 +1,5 @@
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingPageIndicator extends StatelessWidget {
@@ -23,17 +25,17 @@ class OnBoardingPageIndicator extends StatelessWidget {
           width: isActive ? 22.0 : 7.0,
           height: 7.0,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: AppRadius.xsmall,
             gradient: isActive
                 ? const LinearGradient(
-                    colors: [Color(0xff4A7AFF), Color(0xff3D6FFF)],
+                    colors: [AppColors.accentLight, AppColors.accent],
                   )
                 : null,
             color: isActive ? null : Colors.white.withValues(alpha: 0.22),
             boxShadow: isActive
                 ? [
                     BoxShadow(
-                      color: const Color(0xff3D6FFF).withValues(alpha: 0.50),
+                      color: AppColors.accent.withValues(alpha: 0.50),
                       blurRadius: 8,
                       spreadRadius: 0,
                     ),

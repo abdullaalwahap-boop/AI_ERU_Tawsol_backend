@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/additional_pages_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/custom_message.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/theme_mode_options.dart';
@@ -26,7 +27,7 @@ class _ThemeModeViewBodyState extends State<ThemeModeViewBody> {
     return Column(
       children: [
         AdditionalPagesAppBar(title: 'Theme Mode'),
-        const SizedBox(height: 40),
+        AppSpacing.h40,
         SettingsOptionTile<ThemeModeOptions>(
           icon: Icons.wb_sunny_outlined,
           title: 'Light',
@@ -34,7 +35,7 @@ class _ThemeModeViewBodyState extends State<ThemeModeViewBody> {
           groupValue: selectedMode,
           onTap: () => selectMode(ThemeModeOptions.light),
         ),
-        const SizedBox(height: 20),
+        AppSpacing.h20,
         SettingsOptionTile<ThemeModeOptions>(
           icon: Icons.nights_stay_outlined,
           title: 'Dark',
@@ -42,7 +43,7 @@ class _ThemeModeViewBodyState extends State<ThemeModeViewBody> {
           groupValue: selectedMode,
           onTap: () => selectMode(ThemeModeOptions.dark),
         ),
-        const SizedBox(height: 20),
+        AppSpacing.h20,
         SettingsOptionTile(
           icon: Icons.phone_iphone_sharp,
           title: 'System Default',

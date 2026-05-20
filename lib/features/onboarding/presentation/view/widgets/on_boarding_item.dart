@@ -1,6 +1,8 @@
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/onboarding/data/model/on_boarding_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingItem extends StatefulWidget {
   const OnBoardingItem({super.key, required this.model});
@@ -107,32 +109,30 @@ class _OnBoardingItemState extends State<OnBoardingItem>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 4),
+                    AppSpacing.h4,
                     FadeTransition(
                       opacity: _titleOpacity,
                       child: SlideTransition(
                         position: _titleSlide,
                         child: ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
-                            colors: [Colors.white, Color(0xffA8C8FF)],
+                            colors: [Colors.white, AppColors.accentGradientEnd],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ).createShader(bounds),
                           child: Text(
                             widget.model.title,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 28,
+                            style: AppTextStyles.heading1.copyWith(
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
-                              height: 1.25,
                               letterSpacing: -0.5,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    AppSpacing.h16,
                     FadeTransition(
                       opacity: _subtitleOpacity,
                       child: SlideTransition(
@@ -140,9 +140,8 @@ class _OnBoardingItemState extends State<OnBoardingItem>
                         child: Text(
                           widget.model.subtitle,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
+                          style: AppTextStyles.bodyMedium.copyWith(
                             fontSize: 14.5,
-                            fontWeight: FontWeight.w400,
                             color: Colors.white.withValues(alpha: 0.58),
                             height: 1.72,
                           ),

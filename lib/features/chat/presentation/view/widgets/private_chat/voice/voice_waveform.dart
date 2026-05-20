@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 
 class VoiceWaveform extends StatelessWidget {
   final List<double> heights;
@@ -50,8 +50,8 @@ class VoiceWaveform extends StatelessWidget {
                           ? Colors.white
                           : Colors.white.withValues(alpha: 0.4))
                       : (isPlayed
-                          ? ChatColors.primary
-                          : ChatColors.primary.withValues(alpha: 0.3)),
+                          ? AppColors.primary
+                          : AppColors.primary.withValues(alpha: 0.3)),
                   borderRadius: BorderRadius.circular(2),
                 ),
               );
