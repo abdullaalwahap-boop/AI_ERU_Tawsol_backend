@@ -4,7 +4,6 @@ import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_
 import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_background.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_loader.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_logo_icon.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -88,15 +87,17 @@ class _SplashViewBodyState extends State<SplashViewBody>
   void _navigate() async {
     await Future.delayed(const Duration(milliseconds: 2600));
 
-    final user = FirebaseAuth.instance.currentUser;
-    final rememberMe = await LocalStorageService().getRememberMe();
+    final storage = LocalStorageService();
+    final isLoggedIn = await storage.getIsLoggedIn();
+    final hasSeenOnboarding = await storage.getHasSeenOnboarding();
 
     if (!mounted) return;
 
-    if (user != null && rememberMe) {
-      context.go(AppRouter.kOnBoardingView);
+    if (isLoggedIn) {
+      context.go(AppRouter.kHomeView);
+    } else if (hasSeenOnboarding) {
+      context.go(AppRouter.kLoginView);
     } else {
-      await FirebaseAuth.instance.signOut();
       context.go(AppRouter.kOnBoardingView);
     }
   }

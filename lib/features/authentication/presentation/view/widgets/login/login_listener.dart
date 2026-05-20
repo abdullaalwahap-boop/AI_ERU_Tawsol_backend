@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_snackbar.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
@@ -12,9 +13,14 @@ class LoginListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is LoginSuccess) {
-          context.go(AppRouter.kHomeView);
+          final storage = LocalStorageService();
+          final rememberMe = await storage.getRememberMe();
+          if (rememberMe) {
+            await storage.saveIsLoggedIn(true);
+          }
+          if (context.mounted) context.go(AppRouter.kHomeView);
         } else if (state is LoginFailure) {
           AuthSnackbar.showError(context, state.errMessage);
         }

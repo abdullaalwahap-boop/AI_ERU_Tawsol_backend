@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/onboarding/data/model/on_boarding_data.dart';
 import 'package:ai_eru_tawasol/features/onboarding/presentation/view/widgets/on_boarding_background.dart';
@@ -21,7 +22,11 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
 
   bool get _isLastPage => _currentPage == onBoardingList.length - 1;
 
-  void _goToLogin() => context.go(AppRouter.kLoginView);
+  void _goToLogin() async {
+    await LocalStorageService().saveHasSeenOnboarding(true);
+    if (!mounted) return;
+    context.go(AppRouter.kLoginView);
+  }
 
   void _nextPage() {
     _pageController.nextPage(

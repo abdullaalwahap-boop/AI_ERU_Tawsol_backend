@@ -106,14 +106,11 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () => setState(() => _rememberMe = !_rememberMe),
-                  child: Text(
-                    'Remember me',
-                    style: GoogleFonts.plusJakartaSans(
-                      color: Colors.white60,
-                      fontSize: 13,
-                    ),
+                Text(
+                  'Remember me',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white60,
+                    fontSize: 13,
                   ),
                 ),
                 const Spacer(),
