@@ -10,6 +10,7 @@ import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/course_details_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/home_view.dart';
 import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding_view.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
 
 import 'package:ai_eru_tawasol/features/splash/presentation/view/splash_view.dart';
@@ -59,7 +60,11 @@ class AppRouter {
             ResetPasswordView(email: state.extra as String),
       ),
       GoRoute(path: kHomeView, builder: (context, state) => HomeView()),
-      GoRoute(path: kProfileView, builder: (context, state) => ProfileView()),
+      GoRoute(path: kProfileView, builder: (context, state) => const ProfileView()),
+      GoRoute(
+        path: kChangePasswordView,
+        builder: (context, state) => const ChangePasswordView(),
+      ),
       GoRoute(
         path: kAddAnnouncementView,
         builder: (context, state) =>

@@ -1,0 +1,101 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+import 'package:flutter/material.dart';
+
+enum ProfileRole { student, doctor, ta, admin }
+
+extension ProfileRoleExt on ProfileRole {
+  String get label {
+    switch (this) {
+      case ProfileRole.student:
+        return 'Student';
+      case ProfileRole.doctor:
+        return 'Professor';
+      case ProfileRole.ta:
+        return 'Teaching Assistant';
+      case ProfileRole.admin:
+        return 'Admin';
+    }
+  }
+
+  String get shortLabel {
+    switch (this) {
+      case ProfileRole.student:
+        return 'STU';
+      case ProfileRole.doctor:
+        return 'PROF';
+      case ProfileRole.ta:
+        return 'T.A';
+      case ProfileRole.admin:
+        return 'ADM';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case ProfileRole.student:
+        return AppColors.roleStudent;
+      case ProfileRole.doctor:
+        return AppColors.roleDoctor;
+      case ProfileRole.ta:
+        return AppColors.contentGreen;
+      case ProfileRole.admin:
+        return AppColors.roleAdmin;
+    }
+  }
+
+  Color get lightColor {
+    switch (this) {
+      case ProfileRole.student:
+        return AppColors.roleStudentLight;
+      case ProfileRole.doctor:
+        return AppColors.roleDoctorLight;
+      case ProfileRole.ta:
+        return AppColors.contentGreenLight;
+      case ProfileRole.admin:
+        return AppColors.roleAdminLight;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case ProfileRole.student:
+        return Icons.school_rounded;
+      case ProfileRole.doctor:
+        return Icons.cast_for_education_rounded;
+      case ProfileRole.ta:
+        return Icons.support_agent_rounded;
+      case ProfileRole.admin:
+        return Icons.admin_panel_settings_rounded;
+    }
+  }
+}
+
+class ProfileUser {
+  final String id;
+  final String name;
+  final String email;
+  final ProfileRole role;
+  final String? avatarUrl;
+  final String department;
+  final int? level;
+
+  const ProfileUser({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.role,
+    this.avatarUrl,
+    required this.department,
+    this.level,
+  });
+
+  ProfileUser copyWith({String? name, String? avatarUrl}) => ProfileUser(
+        id: id,
+        name: name ?? this.name,
+        email: email,
+        role: role,
+        avatarUrl: avatarUrl ?? this.avatarUrl,
+        department: department,
+        level: level,
+      );
+}
