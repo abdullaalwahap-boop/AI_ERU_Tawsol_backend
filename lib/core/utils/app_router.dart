@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
+﻿import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/content_details_view.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/add_announ_view.dart';
@@ -10,14 +10,8 @@ import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/course_details_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/home_view.dart';
 import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/about_me_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/app_version_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/contact_us_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/language_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/our_mission_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/theme_mode_view.dart';
+
 import 'package:ai_eru_tawasol/features/splash/presentation/view/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -66,28 +60,6 @@ class AppRouter {
       ),
       GoRoute(path: kHomeView, builder: (context, state) => HomeView()),
       GoRoute(path: kProfileView, builder: (context, state) => ProfileView()),
-      GoRoute(
-        path: kChangePasswordView,
-        builder: (context, state) => ChangePasswordView(),
-      ),
-      GoRoute(
-        path: kThemeModeView,
-        builder: (context, state) => ThemeModeView(),
-      ),
-      GoRoute(path: kLanguageView, builder: (context, state) => LanguageView()),
-      GoRoute(path: kAboutMeView, builder: (context, state) => AboutMeView()),
-      GoRoute(
-        path: kOurMissionView,
-        builder: (context, state) => OurMissionView(),
-      ),
-      GoRoute(
-        path: kContactUsView,
-        builder: (context, state) => ContactUsView(),
-      ),
-      GoRoute(
-        path: kAppVersionView,
-        builder: (context, state) => AppVersionView(),
-      ),
       GoRoute(
         path: kAddAnnouncementView,
         builder: (context, state) =>
