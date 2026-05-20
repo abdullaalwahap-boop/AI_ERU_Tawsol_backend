@@ -1,15 +1,18 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class AnnounColors {
-  static const Color primary = Color(0xff003096);
-  static const Color primaryDark = Color(0xff001E6B);
-  static const Color accent = Color(0xff3D6FFF);
-  static const Color background = Color(0xffF0F4FF);
-  static const Color surface = Colors.white;
-  static const Color textPrimary = Color(0xff1E293B);
-  static const Color textSecondary = Color(0xff64748B);
-  static const Color textHint = Color(0xffA0AABB);
-  static const Color divider = Color(0xffE2E8F0);
+/// Thin alias layer — all values delegate to AppColors.
+/// Keeps existing call-sites working while one source of truth lives in AppColors.
+abstract class AnnounColors {
+  static const Color primary = AppColors.primary;
+  static const Color primaryDark = AppColors.primaryDark;
+  static const Color accent = AppColors.accent;
+  static const Color background = AppColors.backgroundLight;
+  static const Color surface = AppColors.surfaceLight;
+  static const Color textPrimary = AppColors.textPrimary;
+  static const Color textSecondary = AppColors.textSecondary;
+  static const Color textHint = AppColors.textHint;
+  static const Color divider = AppColors.dividerLight;
   static const Color cardShadow = Color(0x0D000000);
-  static const Color inputBg = Color(0xffF1F5F9);
+  static const Color inputBg = AppColors.inputBgLight;
 }

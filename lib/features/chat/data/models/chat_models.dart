@@ -1,21 +1,23 @@
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class ChatColors {
-  static const Color primary = Color(0xff003096);
-  static const Color primaryDark = Color(0xff001E6B);
-  static const Color accent = Color(0xff3D6FFF);
-  static const Color background = Color(0xffF0F4FF);
-  static const Color surface = Colors.white;
-  static const Color sentBubble = Color(0xff003096);
-  static const Color receivedBubble = Color(0xffF1F5F9);
-  static const Color sentText = Colors.white;
-  static const Color receivedText = Color(0xff1E293B);
-  static const Color textPrimary = Color(0xff1E293B);
-  static const Color textSecondary = Color(0xff64748B);
-  static const Color textHint = Color(0xffA0AABB);
-  static const Color divider = Color(0xffE2E8F0);
-  static const Color online = Color(0xff10B981);
-  static const Color inputBg = Color(0xffF1F5F9);
+/// All values delegate to AppColors — one source of truth.
+abstract class ChatColors {
+  static const Color primary = AppColors.primary;
+  static const Color primaryDark = AppColors.primaryDark;
+  static const Color accent = AppColors.accent;
+  static const Color background = AppColors.backgroundLight;
+  static const Color surface = AppColors.surfaceLight;
+  static const Color sentBubble = AppColors.sentBubble;
+  static const Color receivedBubble = AppColors.receivedBubble;
+  static const Color sentText = AppColors.sentBubbleText;
+  static const Color receivedText = AppColors.receivedBubbleText;
+  static const Color textPrimary = AppColors.textPrimary;
+  static const Color textSecondary = AppColors.textSecondary;
+  static const Color textHint = AppColors.textHint;
+  static const Color divider = AppColors.dividerLight;
+  static const Color online = AppColors.online;
+  static const Color inputBg = AppColors.inputBgLight;
   static const Color cardShadow = Color(0x0D000000);
 }
 
@@ -36,22 +38,22 @@ extension UserRoleExt on UserRole {
   Color get color {
     switch (this) {
       case UserRole.student:
-        return const Color(0xff2563EB);
+        return AppColors.roleStudent;
       case UserRole.doctor:
-        return const Color(0xff7C3AED);
+        return AppColors.roleDoctor;
       case UserRole.admin:
-        return const Color(0xffDC2626);
+        return AppColors.roleAdmin;
     }
   }
 
   Color get lightColor {
     switch (this) {
       case UserRole.student:
-        return const Color(0xffDCEBFF);
+        return AppColors.roleStudentLight;
       case UserRole.doctor:
-        return const Color(0xffEDE9FE);
+        return AppColors.roleDoctorLight;
       case UserRole.admin:
-        return const Color(0xffFEE2E2);
+        return AppColors.roleAdminLight;
     }
   }
 
@@ -190,15 +192,15 @@ extension AttachmentOptionExt on AttachmentOption {
   Color get color {
     switch (this) {
       case AttachmentOption.camera:
-        return const Color(0xff2563EB);
+        return AppColors.roleStudent;
       case AttachmentOption.gallery:
-        return const Color(0xff7C3AED);
+        return AppColors.contentPurple;
       case AttachmentOption.document:
-        return const Color(0xffDC2626);
+        return AppColors.roleAdmin;
       case AttachmentOption.audio:
-        return const Color(0xff059669);
+        return AppColors.contentGreen;
       case AttachmentOption.link:
-        return const Color(0xff0891B2);
+        return AppColors.contentTeal;
     }
   }
 }
