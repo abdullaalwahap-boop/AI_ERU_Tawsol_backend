@@ -1,13 +1,11 @@
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
-import 'package:ai_eru_tawasol/core/utils/app_router.dart';
-import 'package:ai_eru_tawasol/features/authentication/presentation/constants/auth_colors.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_validators.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
+import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/login_remember_me_row.dart';
+import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/login_submit_button.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/shared/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -90,79 +88,12 @@ class _LoginFormState extends State<LoginForm> {
               validator: AuthValidators.password,
             ),
             const SizedBox(height: 4),
-            Row(
-              children: [
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: Checkbox(
-                    value: _rememberMe,
-                    onChanged: (v) => setState(() => _rememberMe = v ?? false),
-                    activeColor: AuthColors.primary,
-                    side: const BorderSide(color: Colors.white38, width: 1.5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Remember me',
-                  style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white60,
-                    fontSize: 13,
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => context.push(AppRouter.kForgetPasswordView),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    'Forgot Password?',
-                    style: GoogleFonts.plusJakartaSans(
-                      color: AuthColors.primary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
+            LoginRememberMeRow(
+              rememberMe: _rememberMe,
+              onChanged: (v) => setState(() => _rememberMe = v),
             ),
             const SizedBox(height: 8),
-            BlocBuilder<LoginCubit, LoginState>(
-              builder: (context, state) {
-                final isLoading = state is LoginLoading;
-                return SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: isLoading ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AuthColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          )
-                        : Text(
-                            'Sign In',
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                  ),
-                );
-              },
-            ),
+            LoginSubmitButton(onPressed: _submit),
           ],
         ),
       ),
