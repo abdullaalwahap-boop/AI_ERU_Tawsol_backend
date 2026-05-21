@@ -118,16 +118,15 @@ class _LoadingView extends StatelessWidget {
               children: [
                 AppSpacing.h16,
                 _Shimmer(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   height: 260,
                   radius: 20,
                 ),
                 AppSpacing.h12,
                 for (var i = 0; i < 3; i++) ...[
                   _Shimmer(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     height: 140,
                     radius: 16,
                   ),
