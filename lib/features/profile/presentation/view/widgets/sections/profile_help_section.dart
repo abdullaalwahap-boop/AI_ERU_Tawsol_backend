@@ -200,9 +200,8 @@ class _FaqTileState extends State<_FaqTile>
               ),
             ),
           ),
-          crossFadeState: _expanded
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
+          crossFadeState:
+              _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 200),
         ),
         Divider(
@@ -247,7 +246,10 @@ class _ReportSheetState extends State<_ReportSheet> {
           borderRadius: AppRadius.bottomSheet,
         ),
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.xxl, AppSpacing.lg, AppSpacing.xxl, AppSpacing.xxxl,
+          AppSpacing.xxl,
+          AppSpacing.lg,
+          AppSpacing.xxl,
+          AppSpacing.xxxl,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -272,7 +274,7 @@ class _ReportSheetState extends State<_ReportSheet> {
             ),
             AppSpacing.h4,
             Text(
-              'Help us improve ERU Tawasol',
+              'Help us improve AI Connect',
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -300,9 +302,8 @@ class _ReportSheetState extends State<_ReportSheet> {
                           vertical: AppSpacing.xs + 1,
                         ),
                         decoration: BoxDecoration(
-                          color: sel
-                              ? AppColors.primary
-                              : AppColors.inputBgLight,
+                          color:
+                              sel ? AppColors.primary : AppColors.inputBgLight,
                           borderRadius: AppRadius.circular,
                           border: sel
                               ? null

@@ -101,7 +101,7 @@ class _AppBannerCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ERU Tawasol',
+                  'AI Connect',
                   style: AppTextStyles.heading4.copyWith(
                     color: AppColors.textOnDark,
                     letterSpacing: 0.3,
