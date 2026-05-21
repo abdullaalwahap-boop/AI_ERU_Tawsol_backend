@@ -18,7 +18,8 @@
       "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\reset_password\\\\reset_password_success_content.dart\" -Force)",
       "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\announcement\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
       "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
-      "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\course\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")"
+      "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\course\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
+      "Bash(Get-ChildItem -Path \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\profile\\\\presentation\\\\view\\\\\" -Recurse -Force | Select-Object FullName, PSIsContainer | Sort-Object FullName)"
     ]
   }
 }

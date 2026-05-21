@@ -4,6 +4,7 @@ import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_avatar.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_level_chip.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_role_badge.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,10 @@ class ProfileHeader extends StatelessWidget {
                 ProfileRoleBadge(role: user.role),
                 if (user.role == ProfileRole.student && user.level != null) ...[
                   AppSpacing.h8,
-                  _LevelChip(level: user.level!, department: user.department),
+                  ProfileLevelChip(
+                    level: user.level!,
+                    department: user.department,
+                  ),
                 ],
                 AppSpacing.h4,
               ],
@@ -113,37 +117,6 @@ class _DecoCircle extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white.withValues(alpha: alpha),
-        ),
-      ),
-    );
-  }
-}
-
-class _LevelChip extends StatelessWidget {
-  final int level;
-  final String department;
-
-  const _LevelChip({required this.level, required this.department});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.xxs + 1,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.14),
-        borderRadius: AppRadius.circular,
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.22),
-          width: 1,
-        ),
-      ),
-      child: Text(
-        'Level $level  ·  $department',
-        style: AppTextStyles.labelSmall.copyWith(
-          color: Colors.white.withValues(alpha: 0.88),
         ),
       ),
     );

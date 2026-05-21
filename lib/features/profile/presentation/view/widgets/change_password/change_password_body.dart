@@ -4,7 +4,9 @@ import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_cubit.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_field.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/password_requirement_item.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_info_banner.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_requirements_panel.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,14 +84,13 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _InfoBanner(),
+              const ChangePasswordInfoBanner(),
               AppSpacing.h24,
               ChangePasswordField(
                 controller: _currentCtrl,
                 label: 'Current Password',
                 hint: 'Enter your current password',
-                validator: (v) =>
-                    (v == null || v.isEmpty) ? 'Required' : null,
+                validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               AppSpacing.h20,
               ChangePasswordField(
@@ -104,7 +105,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                 },
               ),
               AppSpacing.h12,
-              _RequirementsPanel(
+              ChangePasswordRequirementsPanel(
                 hasMin8: _hasMin8,
                 hasUpper: _hasUpper,
                 hasLower: _hasLower,
@@ -124,9 +125,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                 },
               ),
               AppSpacing.h32,
-              _SubmitButton(
-                onPressed: _submit,
-              ),
+              ChangePasswordSubmitButton(onPressed: _submit),
               AppSpacing.h24,
             ],
           ),
@@ -141,138 +140,5 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
           currentPassword: _currentCtrl.text,
           newPassword: _newCtrl.text,
         );
-  }
-}
-
-// ─── Info Banner ──────────────────────────────────────────────────────────────
-
-class _InfoBanner extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.infoLight,
-        borderRadius: AppRadius.large,
-        border: Border.all(
-          color: AppColors.info.withValues(alpha: 0.25),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.info_outline_rounded,
-              color: AppColors.info, size: 18),
-          AppSpacing.w10,
-          Expanded(
-            child: Text(
-              'Use a strong password with a mix of letters, numbers and symbols.',
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.info,
-                height: 1.5,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ─── Requirements Panel ───────────────────────────────────────────────────────
-
-class _RequirementsPanel extends StatelessWidget {
-  final bool hasMin8;
-  final bool hasUpper;
-  final bool hasLower;
-  final bool hasDigit;
-  final bool hasSpecial;
-
-  const _RequirementsPanel({
-    required this.hasMin8,
-    required this.hasUpper,
-    required this.hasLower,
-    required this.hasDigit,
-    required this.hasSpecial,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.inputBgLight,
-        borderRadius: AppRadius.large,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Password requirements',
-            style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
-            ),
-          ),
-          AppSpacing.h8,
-          PasswordRequirementItem(label: 'At least 8 characters', met: hasMin8),
-          PasswordRequirementItem(
-              label: 'One uppercase letter (A–Z)', met: hasUpper),
-          PasswordRequirementItem(
-              label: 'One lowercase letter (a–z)', met: hasLower),
-          PasswordRequirementItem(label: 'One number (0–9)', met: hasDigit),
-          PasswordRequirementItem(
-              label: 'One special character (!@#…)', met: hasSpecial),
-        ],
-      ),
-    );
-  }
-}
-
-// ─── Submit Button ────────────────────────────────────────────────────────────
-
-class _SubmitButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _SubmitButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
-      builder: (context, state) {
-        final loading = state is ChangePasswordLoading;
-        return SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: ElevatedButton(
-            onPressed: loading ? null : onPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.textOnPrimary,
-              disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
-              shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
-              elevation: 0,
-              shadowColor: Colors.transparent,
-            ),
-            child: loading
-                ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2.5,
-                    ),
-                  )
-                : Text(
-                    'Change Password',
-                    style: AppTextStyles.buttonLarge.copyWith(
-                      color: AppColors.textOnPrimary,
-                    ),
-                  ),
-          ),
-        );
-      },
-    );
   }
 }
