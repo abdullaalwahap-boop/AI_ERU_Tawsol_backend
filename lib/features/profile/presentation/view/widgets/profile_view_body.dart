@@ -3,6 +3,7 @@ import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_header.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_about_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_help_section.dart';
@@ -54,83 +55,42 @@ class _LoadedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      body: RefreshIndicator(
-        color: AppColors.primary,
-        backgroundColor: AppColors.surfaceLight,
-        displacement: 20,
-        onRefresh: () => context.read<ProfileCubit>().load(),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
-          ),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _SliverAppBar(),
-                  ProfileHeader(user: user),
-                  AppSpacing.h8,
-                  ProfileInfoSection(user: user),
-                  AppSpacing.h4,
-                  const ProfileSettingsSection(),
-                  AppSpacing.h4,
-                  const ProfileHelpSection(),
-                  AppSpacing.h4,
-                  const ProfileAboutSection(),
-                  AppSpacing.h16,
-                  const ProfileLogoutSection(),
-                  AppSpacing.h32,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const ProfileAppBar(),
+          Expanded(
+            child: RefreshIndicator(
+              color: AppColors.primary,
+              backgroundColor: AppColors.surfaceLight,
+              displacement: 20,
+              onRefresh: () => context.read<ProfileCubit>().load(),
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ProfileHeader(user: user),
+                        AppSpacing.h8,
+                        ProfileInfoSection(user: user),
+                        AppSpacing.h4,
+                        const ProfileSettingsSection(),
+                        AppSpacing.h4,
+                        const ProfileHelpSection(),
+                        AppSpacing.h4,
+                        const ProfileAboutSection(),
+                        AppSpacing.h16,
+                        const ProfileLogoutSection(),
+                        AppSpacing.h32,
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ─── Sliver App Bar ───────────────────────────────────────────────────────────
-
-class _SliverAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.backgroundLight,
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + AppSpacing.xs,
-        left: AppSpacing.lg,
-        right: AppSpacing.lg,
-        bottom: AppSpacing.xs,
-      ),
-      child: Row(
-        children: [
-          Text(
-            'Profile',
-            style: AppTextStyles.heading3.copyWith(
-              color: AppColors.textPrimary,
-            ),
-          ),
-          const Spacer(),
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: AppColors.surfaceLight,
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.edit_outlined,
-              color: AppColors.primary,
-              size: 18,
             ),
           ),
         ],
@@ -148,26 +108,34 @@ class _LoadingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: MediaQuery.of(context).padding.top + AppSpacing.lg),
-          // Header shimmer
-          _Shimmer(
-            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            height: 260,
-            radius: 20,
-          ),
-          AppSpacing.h12,
-          // Section shimmers
-          for (var i = 0; i < 3; i++) ...[
-            _Shimmer(
-              margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              height: 140,
-              radius: 16,
+          const ProfileAppBar(),
+          Expanded(
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                AppSpacing.h16,
+                _Shimmer(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  height: 260,
+                  radius: 20,
+                ),
+                AppSpacing.h12,
+                for (var i = 0; i < 3; i++) ...[
+                  _Shimmer(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg),
+                    height: 140,
+                    radius: 16,
+                  ),
+                  AppSpacing.h8,
+                ],
+              ],
             ),
-            AppSpacing.h8,
-          ],
+          ),
         ],
       ),
     );

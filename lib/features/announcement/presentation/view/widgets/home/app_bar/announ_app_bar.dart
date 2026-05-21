@@ -40,8 +40,8 @@ class AnnounAppBar extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              right: -10,
-              top: -8,
+              right: 0,
+              top: -10,
               child: Opacity(
                 opacity: 0.06,
                 child: const Icon(Icons.campaign_rounded,
@@ -59,8 +59,6 @@ class AnnounAppBar extends StatelessWidget {
                         Text(
                           'Announcements',
                           style: AppTextStyles.heading2.copyWith(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
                             color: Colors.white,
                             letterSpacing: -0.3,
                           ),
@@ -69,7 +67,6 @@ class AnnounAppBar extends StatelessWidget {
                         Text(
                           _subtitle,
                           style: AppTextStyles.caption.copyWith(
-                            fontSize: 12.5,
                             color: Colors.white.withValues(alpha: 0.75),
                           ),
                         ),

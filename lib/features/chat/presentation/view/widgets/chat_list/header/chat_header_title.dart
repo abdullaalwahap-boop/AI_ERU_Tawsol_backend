@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:flutter/material.dart';
 
 class ChatHeaderTitle extends StatelessWidget {
   final int totalConversations;
@@ -15,13 +16,14 @@ class ChatHeaderTitle extends StatelessWidget {
           'Messages',
           style: AppTextStyles.heading2.copyWith(
             color: Colors.white,
-            letterSpacing: -0.5,
+            letterSpacing: -0.3,
           ),
         ),
+        AppSpacing.h3,
         Text(
           '$totalConversations conversations',
-          style: AppTextStyles.bodySmall.copyWith(
-            color: Colors.white.withValues(alpha: 0.7),
+          style: AppTextStyles.caption.copyWith(
+            color: Colors.white.withValues(alpha: 0.75),
           ),
         ),
       ],
