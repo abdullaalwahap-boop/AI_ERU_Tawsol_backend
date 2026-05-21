@@ -39,29 +39,7 @@ abstract class AppTheme {
             textStyle: AppTextStyles.buttonLarge,
           ),
         ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: AppColors.inputBgLight,
-          border: OutlineInputBorder(
-            borderRadius: AppRadius.medium,
-            borderSide: const BorderSide(color: AppColors.dividerLight),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: AppRadius.medium,
-            borderSide: const BorderSide(color: AppColors.dividerLight),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: AppRadius.medium,
-            borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-          ),
-          hintStyle: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textHint,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
-        ),
+        inputDecorationTheme: const InputDecorationTheme(),
         cardTheme: CardThemeData(
           color: AppColors.surfaceLight,
           elevation: 0,
