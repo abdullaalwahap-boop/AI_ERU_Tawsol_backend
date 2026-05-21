@@ -19,6 +19,12 @@ class AuthFieldFocusContainer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: AppRadius.medium,
         color: AppColors.fieldDark,
+        border: Border.all(
+          color: isFocused
+              ? AppColors.accent.withValues(alpha: 0.65)
+              : AppColors.accentSoft.withValues(alpha: 0.2),
+          width: 1.0,
+        ),
         boxShadow: isFocused
             ? [
                 BoxShadow(

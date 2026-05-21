@@ -73,7 +73,12 @@ class _AuthTextFieldState extends State<AuthTextField> {
                     onPressed: () => setState(() => _obscure = !_obscure),
                   )
                 : null,
+            filled: false,
             border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,
