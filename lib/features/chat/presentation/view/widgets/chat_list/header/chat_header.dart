@@ -59,11 +59,6 @@ class ChatHeader extends StatelessWidget {
                     ),
                     onPressed: onToggleSearch,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.filter_list_rounded,
-                        color: Colors.white, size: 22),
-                    onPressed: () {},
-                  ),
                 ],
               ),
             ),
