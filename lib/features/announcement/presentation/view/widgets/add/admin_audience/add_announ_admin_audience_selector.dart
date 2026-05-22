@@ -32,9 +32,7 @@ class AddAnnounAdminAudienceSelector extends StatelessWidget {
       children: [
         SectionHeader(
           title: 'Target Audience',
-          trailing: state.adminUserType == null
-              ? const AddAnnounRequiredBadge()
-              : null,
+          trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,
         AddAnnounUserTypeSelector(
