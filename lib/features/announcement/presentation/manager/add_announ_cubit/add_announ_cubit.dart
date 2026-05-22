@@ -11,13 +11,6 @@ part 'add_announ_state.dart';
 
 // ── Mock audience data (replace with real API data) ──────────────────────────
 
-const _doctorDepartments = [
-  'Computer Science',
-  'Electrical Engineering',
-  'Business Administration',
-  'Architecture',
-];
-
 const _doctorSubjects = [
   'Data Structures · CS301',
   'Algorithms · CS302',
@@ -81,9 +74,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   List<String> get audienceOptions {
     switch (state.audienceType) {
       case AddAnnounAudienceType.department:
-        return state.role == AnnounRole.doctor
-            ? _doctorDepartments
-            : _adminDepartments;
+        return _adminDepartments;
       case AddAnnounAudienceType.subject:
         return _doctorSubjects;
       case AddAnnounAudienceType.level:

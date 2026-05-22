@@ -6,7 +6,7 @@ import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/pages.dar
 import 'package:flutter/material.dart';
 
 // TODO: Replace with real role from auth state
-const kHomeRole = AnnounRole.student;
+const kHomeRole = AnnounRole.doctor;
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});

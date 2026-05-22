@@ -32,6 +32,9 @@ class AddAnnounState extends Equatable {
         postType: AnnouncementType.normal,
         title: '',
         details: '',
+        // Doctor always targets a subject — pre-select the type so no extra tap needed.
+        audienceType:
+            role == AnnounRole.doctor ? AddAnnounAudienceType.subject : null,
         selectedOptions: const {},
       );
 
@@ -49,11 +52,7 @@ class AddAnnounState extends Equatable {
   List<AddAnnounAudienceType> audienceTypesForRole() {
     switch (role) {
       case AnnounRole.doctor:
-        return [
-          AddAnnounAudienceType.everyone,
-          AddAnnounAudienceType.department,
-          AddAnnounAudienceType.subject,
-        ];
+        return [AddAnnounAudienceType.subject];
       case AnnounRole.admin:
         return [
           AddAnnounAudienceType.everyone,
