@@ -4,12 +4,14 @@ import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/ca
 
 class CourseCard extends StatefulWidget {
   final Course course;
+  final CourseRole role;
   final VoidCallback onTap;
   final int index;
 
   const CourseCard({
     super.key,
     required this.course,
+    required this.role,
     required this.onTap,
     required this.index,
   });
@@ -42,7 +44,7 @@ class _CourseCardState extends State<CourseCard> {
         child: AnimatedScale(
           scale: _pressed ? 0.97 : 1.0,
           duration: const Duration(milliseconds: 120),
-          child: CourseCardContent(course: widget.course),
+          child: CourseCardContent(course: widget.course, role: widget.role),
         ),
       ),
     );

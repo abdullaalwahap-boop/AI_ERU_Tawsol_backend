@@ -31,6 +31,7 @@ class CoursesList extends StatelessWidget {
       itemCount: courses.length,
       itemBuilder: (context, index) => CourseCard(
         course: courses[index],
+        role: role,
         index: index,
         onTap: () => context.push(
           AppRouter.kCourseDetailsView,

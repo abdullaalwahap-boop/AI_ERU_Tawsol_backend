@@ -9,8 +9,9 @@ import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/ca
 
 class CourseCardContent extends StatelessWidget {
   final Course course;
+  final CourseRole role;
 
-  const CourseCardContent({super.key, required this.course});
+  const CourseCardContent({super.key, required this.course, required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class CourseCardContent extends StatelessWidget {
             AppSpacing.h12,
             const Divider(color: AppColors.dividerLight, height: 1),
             AppSpacing.h10,
-            CourseCardInfoRow(course: course),
+            CourseCardInfoRow(course: course, role: role),
           ],
         ),
       ),
