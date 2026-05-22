@@ -1,6 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_bottom_strip.dart';
-import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_chip.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_hub_badge.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_number_row.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card_shimmer.dart';
@@ -16,8 +15,6 @@ class LoginCard extends StatelessWidget {
         final w = constraints.maxWidth;
         final h = constraints.maxHeight;
 
-        final chipW = w * 0.127;
-        final chipH = chipW * 0.74;
         final badgeSize = w * 0.167;
         final stripH = h * 0.228;
         final hPad = w * 0.053;
@@ -47,12 +44,9 @@ class LoginCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        LoginCardChip(width: chipW, height: chipH),
-                        LoginCardHubBadge(size: badgeSize),
-                      ],
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: LoginCardHubBadge(size: badgeSize),
                     ),
                     const Spacer(),
                     LoginCardNumberRow(dotSize: dotSize, cardWidth: w),

@@ -21,7 +21,8 @@
       "Bash(Get-ChildItem \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\course\\\\presentation\\\\view\\\\widgets\" -Recurse -Filter \"*.dart\")",
       "Bash(Get-ChildItem -Path \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\profile\\\\presentation\\\\view\\\\\" -Recurse -Force | Select-Object FullName, PSIsContainer | Sort-Object FullName)",
       "Bash(Get-ChildItem -Path \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\announcement\\\\\" -Recurse -File | Select-Object FullName | Sort-Object FullName)",
-      "Bash(Get-ChildItem -Path \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\" -Directory)"
+      "Bash(Get-ChildItem -Path \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\" -Directory)",
+      "Bash(Remove-Item \"d:\\\\Courses\\\\Flutter Projects\\\\ai_connect\\\\frontend\\\\lib\\\\features\\\\authentication\\\\presentation\\\\view\\\\widgets\\\\login\\\\card\\\\login_card_chip.dart\")"
     ]
   }
 }
