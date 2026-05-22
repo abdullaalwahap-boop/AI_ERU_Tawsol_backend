@@ -52,9 +52,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
           decoration: InputDecoration(
             labelText: widget.label,
             hintText: widget.hint,
-            labelStyle: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.accentSoft,
-            ),
+            labelStyle: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.accentSoft, fontSize: 15),
             hintStyle: AppTextStyles.bodySmall.copyWith(
               color: Colors.white24,
             ),
