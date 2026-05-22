@@ -5,7 +5,7 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_an
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/actions/add_announ_action_buttons.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/add_announ_text_field.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/add_announ_attachment_section.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/audience/add_announ_audience_selector.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_audience_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/post_type/add_announ_post_type_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/priority/add_announ_priority_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/subject/add_announ_subject_selector.dart';
@@ -87,11 +87,13 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                         onSelect: cubit.toggleOption,
                       )
                     else
-                      AddAnnounAudienceSelector(
+                      AddAnnounAdminAudienceSelector(
                         state: state,
-                        onTypeSelected: cubit.selectAudienceType,
-                        onOptionToggled: cubit.toggleOption,
-                        availableOptions: cubit.audienceOptions,
+                        onUserTypeSelected: cubit.setAdminUserType,
+                        onDeptToggle: cubit.toggleDepartment,
+                        onLevelToggle: cubit.toggleLevel,
+                        departments: cubit.adminDepartments,
+                        levels: cubit.adminLevels,
                       ),
                     if (isDoctor) ...[
                       const SizedBox(height: 24),

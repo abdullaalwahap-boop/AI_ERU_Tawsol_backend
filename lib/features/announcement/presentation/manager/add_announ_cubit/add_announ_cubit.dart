@@ -1,15 +1,15 @@
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_audience_type.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
 
 export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
-export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_audience_type.dart';
+export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'add_announ_state.dart';
 
-// ── Mock audience data (replace with real API data) ──────────────────────────
+// ── Mock data (replace with real API data) ────────────────────────────────────
 
 const _doctorSubjects = [
   'Data Structures · CS301',
@@ -34,6 +34,8 @@ const _adminLevels = ['Level 1', 'Level 2', 'Level 3', 'Level 4'];
 class AddAnnounCubit extends Cubit<AddAnnounState> {
   AddAnnounCubit(AnnounRole role) : super(AddAnnounState.initial(role));
 
+  // ── Doctor ────────────────────────────────────────────────────────────────
+
   void selectPostType(AnnouncementType type) => emit(state.copyWith(
         postType: type,
         attachments: type == AnnouncementType.normal ? [] : null,
@@ -55,9 +57,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   void setDetails(String v) => emit(state.copyWith(details: v));
 
-  void selectAudienceType(AddAnnounAudienceType type) =>
-      emit(state.copyWith(audienceType: type, selectedOptions: {}));
-
   void setPriority(AnnouncementPriority priority) =>
       emit(state.copyWith(priority: priority));
 
@@ -71,24 +70,45 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     emit(state.copyWith(selectedOptions: updated));
   }
 
-  List<String> get audienceOptions {
-    switch (state.audienceType) {
-      case AddAnnounAudienceType.department:
-        return _adminDepartments;
-      case AddAnnounAudienceType.subject:
-        return _doctorSubjects;
-      case AddAnnounAudienceType.level:
-        return _adminLevels;
-      default:
-        return [];
+  List<String> get audienceOptions => _doctorSubjects;
+
+  // ── Admin ─────────────────────────────────────────────────────────────────
+
+  void setAdminUserType(AdminUserType type) => emit(state.copyWith(
+        adminUserType: type,
+        selectedDepartments: <String>{},
+        selectedLevels: <String>{},
+      ));
+
+  void toggleDepartment(String dept) {
+    final updated = Set<String>.from(state.selectedDepartments);
+    if (updated.contains(dept)) {
+      updated.remove(dept);
+    } else {
+      updated.add(dept);
     }
+    emit(state.copyWith(selectedDepartments: updated));
   }
+
+  void toggleLevel(String level) {
+    final updated = Set<String>.from(state.selectedLevels);
+    if (updated.contains(level)) {
+      updated.remove(level);
+    } else {
+      updated.add(level);
+    }
+    emit(state.copyWith(selectedLevels: updated));
+  }
+
+  List<String> get adminDepartments => _adminDepartments;
+  List<String> get adminLevels => _adminLevels;
+
+  // ── Shared ────────────────────────────────────────────────────────────────
 
   Future<void> post() async {
     if (!state.canPost) return;
     emit(state.copyWith(isPosting: true, error: null));
     try {
-      // Simulate API call
       await Future.delayed(const Duration(milliseconds: 1200));
       emit(state.copyWith(isPosting: false, isPosted: true));
     } catch (e) {

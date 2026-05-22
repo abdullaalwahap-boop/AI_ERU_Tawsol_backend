@@ -1,17 +1,47 @@
-import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
+import 'package:flutter/material.dart';
 
-class AddAnnounAudienceTypeCard extends StatelessWidget {
-  final AddAnnounAudienceType type;
+class AddAnnounUserTypeSelector extends StatelessWidget {
+  final AdminUserType? selected;
+  final void Function(AdminUserType) onSelected;
+
+  const AddAnnounUserTypeSelector({
+    super.key,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final types = AdminUserType.values;
+    return Row(
+      children: types.map((type) {
+        final isLast = type == types.last;
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: isLast ? 0 : 10),
+            child: _UserTypePill(
+              type: type,
+              isSelected: selected == type,
+              onTap: () => onSelected(type),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class _UserTypePill extends StatelessWidget {
+  final AdminUserType type;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const AddAnnounAudienceTypeCard({
-    super.key,
+  const _UserTypePill({
     required this.type,
     required this.isSelected,
     required this.onTap,
@@ -24,31 +54,31 @@ class AddAnnounAudienceTypeCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        height: 52,
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.08)
               : AppColors.inputBgLight,
-          borderRadius: AppRadius.medium,
+          borderRadius: AppRadius.large,
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.dividerLight,
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedContainer(
               duration: const Duration(milliseconds: 220),
-              width: 38,
-              height: 38,
+              width: 28,
+              height: 28,
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.primary : AppColors.dividerLight,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 type.icon,
-                size: 18,
+                size: 14,
                 color: isSelected ? Colors.white : AppColors.textHint,
               ),
             ),
@@ -57,11 +87,8 @@ class AddAnnounAudienceTypeCard extends StatelessWidget {
               type.label,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: isSelected
-                    ? AppColors.primary
-                    : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : AppColors.textSecondary,
               ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),

@@ -5,8 +5,16 @@ class AddAnnounState extends Equatable {
   final AnnouncementType postType;
   final String title;
   final String details;
-  final AddAnnounAudienceType? audienceType;
+
+  // ── Doctor audience ───────────────────────────────────────────────────────
   final Set<String> selectedOptions;
+
+  // ── Admin audience ────────────────────────────────────────────────────────
+  final AdminUserType? adminUserType;
+  final Set<String> selectedDepartments;
+  final Set<String> selectedLevels;
+
+  // ── Shared ────────────────────────────────────────────────────────────────
   final List<AddAnnounAttachmentItem> attachments;
   final AnnouncementPriority priority;
   final bool isPosting;
@@ -18,8 +26,10 @@ class AddAnnounState extends Equatable {
     required this.postType,
     required this.title,
     required this.details,
-    this.audienceType,
     required this.selectedOptions,
+    this.adminUserType,
+    required this.selectedDepartments,
+    required this.selectedLevels,
     this.attachments = const [],
     this.priority = AnnouncementPriority.normal,
     this.isPosting = false,
@@ -32,10 +42,9 @@ class AddAnnounState extends Equatable {
         postType: AnnouncementType.normal,
         title: '',
         details: '',
-        // Doctor always targets a subject — pre-select the type so no extra tap needed.
-        audienceType:
-            role == AnnounRole.doctor ? AddAnnounAudienceType.subject : null,
         selectedOptions: const {},
+        selectedDepartments: const {},
+        selectedLevels: const {},
       );
 
   bool get supportsAttachments =>
@@ -44,24 +53,8 @@ class AddAnnounState extends Equatable {
 
   bool get canPost {
     if (title.trim().isEmpty || details.trim().isEmpty) return false;
-    if (audienceType == null) return false;
-    if (audienceType == AddAnnounAudienceType.everyone) return true;
+    if (role == AnnounRole.admin) return adminUserType != null;
     return selectedOptions.isNotEmpty;
-  }
-
-  List<AddAnnounAudienceType> audienceTypesForRole() {
-    switch (role) {
-      case AnnounRole.doctor:
-        return [AddAnnounAudienceType.subject];
-      case AnnounRole.admin:
-        return [
-          AddAnnounAudienceType.everyone,
-          AddAnnounAudienceType.department,
-          AddAnnounAudienceType.level,
-        ];
-      case AnnounRole.student:
-        return [];
-    }
   }
 
   @override
@@ -70,8 +63,10 @@ class AddAnnounState extends Equatable {
         postType,
         title,
         details,
-        audienceType,
         selectedOptions,
+        adminUserType,
+        selectedDepartments,
+        selectedLevels,
         attachments,
         priority,
         isPosting,
@@ -83,8 +78,10 @@ class AddAnnounState extends Equatable {
     AnnouncementType? postType,
     String? title,
     String? details,
-    AddAnnounAudienceType? audienceType,
     Set<String>? selectedOptions,
+    AdminUserType? adminUserType,
+    Set<String>? selectedDepartments,
+    Set<String>? selectedLevels,
     List<AddAnnounAttachmentItem>? attachments,
     AnnouncementPriority? priority,
     bool? isPosting,
@@ -97,8 +94,10 @@ class AddAnnounState extends Equatable {
       postType: postType ?? this.postType,
       title: title ?? this.title,
       details: details ?? this.details,
-      audienceType: audienceType ?? this.audienceType,
       selectedOptions: selectedOptions ?? this.selectedOptions,
+      adminUserType: adminUserType ?? this.adminUserType,
+      selectedDepartments: selectedDepartments ?? this.selectedDepartments,
+      selectedLevels: selectedLevels ?? this.selectedLevels,
       attachments: attachments ?? this.attachments,
       priority: priority ?? this.priority,
       isPosting: isPosting ?? this.isPosting,
