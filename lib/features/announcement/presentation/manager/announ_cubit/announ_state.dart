@@ -25,9 +25,9 @@ final class AnnounLoaded extends AnnounState {
   });
 
   List<Announcement> get current {
-    final list = activeTab == AnnounTab.admin ? secondary : primary;
-    if (activeFilter == null) return list;
-    return list.where((a) => a.type == activeFilter).toList();
+    if (activeTab == AnnounTab.admin) return secondary;
+    if (activeFilter == null) return primary;
+    return primary.where((a) => a.type == activeFilter).toList();
   }
 
   @override

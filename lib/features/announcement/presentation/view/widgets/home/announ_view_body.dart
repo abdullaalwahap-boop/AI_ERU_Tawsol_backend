@@ -71,7 +71,7 @@ class AnnounViewBody extends StatelessWidget {
                 adminCount: state.secondary.length,
               ),
             ),
-          if (!isAdmin)
+          if (!isAdmin && !(isDoctor && state.activeTab == AnnounTab.admin))
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(top: isDoctor ? 12 : 14, bottom: 4),
