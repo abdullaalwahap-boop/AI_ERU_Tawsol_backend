@@ -1,0 +1,1 @@
+enum ChangePasswordMode { profile, firstLogin }

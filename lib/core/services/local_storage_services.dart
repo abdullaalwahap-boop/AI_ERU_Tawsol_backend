@@ -50,6 +50,24 @@ class LocalStorageService {
     await prefs.remove(_keyIsLoggedIn);
   }
 
+  // ─── First-login password change ────────────────────────────────────────────
+
+  /// Persisted per-user so a second user on the same device gets their own flag.
+  static String _keyPasswordChanged(int userId) => 'password_changed_$userId';
+
+  Future<void> savePasswordChanged({
+    required int userId,
+    required bool value,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyPasswordChanged(userId), value);
+  }
+
+  Future<bool> getPasswordChanged(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyPasswordChanged(userId)) ?? false;
+  }
+
   // ─── Onboarding ──────────────────────────────────────────────────────────────
 
   Future<void> saveHasSeenOnboarding(bool value) async {

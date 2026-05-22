@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/services/auth_flow_service.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_snackbar.dart';
@@ -17,10 +18,17 @@ class LoginListener extends StatelessWidget {
         if (state is LoginSuccess) {
           final storage = LocalStorageService();
           final rememberMe = await storage.getRememberMe();
-          if (rememberMe) {
-            await storage.saveIsLoggedIn(true);
+          if (rememberMe) await storage.saveIsLoggedIn(true);
+
+          final route = await AuthFlowService(storage)
+              .resolvePostLoginRoute(state.user);
+
+          if (!context.mounted) return;
+          if (route == AppRouter.kFirstLoginChangePasswordView) {
+            context.go(route, extra: state.user.userId);
+          } else {
+            context.go(route);
           }
-          if (context.mounted) context.go(AppRouter.kHomeView);
         } else if (state is LoginFailure) {
           AuthSnackbar.showError(context, state.errMessage);
         }

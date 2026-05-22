@@ -16,6 +16,9 @@ class AuthRepoImpl implements AuthRepo {
       typeCode: 'STU',
       totalHours: 60,
       level: 2,
+      // Mock: simulate first-login with a backend-generated temporary password.
+      // Replace with actual backend field once API is integrated.
+      isTemporaryPassword: true,
     );
   }
 

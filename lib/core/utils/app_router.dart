@@ -10,6 +10,7 @@ import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/course_details_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/home_view.dart';
 import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding_view.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
 
@@ -34,6 +35,7 @@ class AppRouter {
   static const kAddAnnouncementView = '/addAnnouncementView';
   static const kCourseDetailsView = '/courseDetailsView';
   static const kContentDetailsView = '/contentDetailsView';
+  static const kFirstLoginChangePasswordView = '/firstLoginChangePasswordView';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -79,6 +81,13 @@ class AppRouter {
         path: kContentDetailsView,
         builder: (context, state) =>
             ContentDetailsView(item: state.extra as ContentDisplayItem),
+      ),
+      GoRoute(
+        path: kFirstLoginChangePasswordView,
+        builder: (context, state) => ChangePasswordView(
+          mode: ChangePasswordMode.firstLogin,
+          userId: state.extra as int?,
+        ),
       ),
     ],
   );

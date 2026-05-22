@@ -1,17 +1,31 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/services/auth_flow_service.dart';
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_cubit.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_field.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_info_banner.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_requirements_panel.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ChangePasswordBody extends StatefulWidget {
-  const ChangePasswordBody({super.key});
+  final ChangePasswordMode mode;
+
+  /// Only required in [ChangePasswordMode.firstLogin].
+  final int? userId;
+
+  const ChangePasswordBody({
+    super.key,
+    this.mode = ChangePasswordMode.profile,
+    this.userId,
+  });
 
   @override
   State<ChangePasswordBody> createState() => _ChangePasswordBodyState();
@@ -43,23 +57,35 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChangePasswordCubit, ChangePasswordState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ChangePasswordSuccess) {
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Password changed successfully!',
-                style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+          if (widget.mode == ChangePasswordMode.firstLogin) {
+            if (widget.userId != null) {
+              await AuthFlowService(LocalStorageService())
+                  .markPasswordChanged(widget.userId!);
+            }
+            if (context.mounted) context.go(AppRouter.kHomeView);
+          } else {
+            if (!context.mounted) return;
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Password changed successfully!',
+                  style:
+                      AppTextStyles.bodySmall.copyWith(color: Colors.white),
+                ),
+                backgroundColor: AppColors.success,
+                behavior: SnackBarBehavior.floating,
+                shape:
+                    RoundedRectangleBorder(borderRadius: AppRadius.large),
+                margin: AppSpacing.pagePadding,
               ),
-              backgroundColor: AppColors.success,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
-              margin: AppSpacing.pagePadding,
-            ),
-          );
+            );
+          }
         }
         if (state is ChangePasswordError) {
+          if (!context.mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -84,13 +110,14 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ChangePasswordInfoBanner(),
+              ChangePasswordInfoBanner(mode: widget.mode),
               AppSpacing.h24,
               ChangePasswordField(
                 controller: _currentCtrl,
                 label: 'Current Password',
                 hint: 'Enter your current password',
-                validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
+                validator: (v) =>
+                    (v == null || v.isEmpty) ? 'Required' : null,
               ),
               AppSpacing.h20,
               ChangePasswordField(

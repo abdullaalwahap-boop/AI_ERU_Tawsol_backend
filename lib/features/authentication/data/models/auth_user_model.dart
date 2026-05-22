@@ -8,6 +8,10 @@ class AuthUserModel {
   final int level;
   final String? profilePicture;
 
+  /// True when the backend assigned a system-generated temporary password.
+  /// Backend fields: `is_temporary_password`, `requires_password_reset`, `first_login`.
+  final bool isTemporaryPassword;
+
   const AuthUserModel({
     required this.userId,
     required this.uniCode,
@@ -17,6 +21,7 @@ class AuthUserModel {
     required this.totalHours,
     required this.level,
     this.profilePicture,
+    this.isTemporaryPassword = false,
   });
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +34,10 @@ class AuthUserModel {
       totalHours: json['total_hours'] as int,
       level: json['level'] as int,
       profilePicture: json['profile_picture'] as String?,
+      isTemporaryPassword: json['is_temporary_password'] as bool? ??
+          json['requires_password_reset'] as bool? ??
+          json['first_login'] as bool? ??
+          false,
     );
   }
 }
