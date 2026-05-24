@@ -1,39 +1,27 @@
-import 'package:ai_eru_tawasol/features/course/data/mock/course_mock_data.dart';
+import 'package:ai_eru_tawasol/features/course/data/datasources/course_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 
 class CourseRepoImpl implements CourseRepo {
-  static const _delay = Duration(milliseconds: 800);
+  const CourseRepoImpl(this._datasource);
+
+  final CourseRemoteDatasource _datasource;
 
   @override
-  Future<List<Course>> getStudentCourses() async {
-    await Future.delayed(_delay);
-    return mockStudentCourses;
-  }
+  Future<List<Course>> getStudentCourses() => _datasource.getStudentCourses();
 
   @override
-  Future<List<Course>> getDoctorCourses() async {
-    await Future.delayed(_delay);
-    return mockDoctorCourses;
-  }
+  Future<List<Course>> getDoctorCourses() => _datasource.getTeacherCourses();
 
   @override
-  Future<List<CourseContent>> getAllCourseContent(String courseId) async {
-    await Future.delayed(_delay);
-    return mockCourseContentMap[courseId] ?? [];
-  }
+  Future<List<CourseContent>> getAllCourseContent(String courseId) =>
+      _datasource.getCourseContent(courseId);
 
   @override
-  Future<List<CourseContent>> getDoctorCourseContent(String courseId) async {
-    await Future.delayed(_delay);
-    final all = mockCourseContentMap[courseId] ?? [];
-    return all.where((c) => !c.isFromAdmin).toList();
-  }
+  Future<List<CourseContent>> getDoctorCourseContent(String courseId) =>
+      _datasource.getCourseContent(courseId);
 
   @override
-  Future<List<CourseContent>> getAdminCourseContent(String courseId) async {
-    await Future.delayed(_delay);
-    final all = mockCourseContentMap[courseId] ?? [];
-    return all.where((c) => c.isFromAdmin).toList();
-  }
+  Future<List<CourseContent>> getAdminCourseContent(String courseId) async =>
+      const [];
 }

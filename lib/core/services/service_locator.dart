@@ -6,6 +6,9 @@ import 'package:ai_eru_tawasol/features/authentication/data/datasources/auth_rem
 import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo.dart';
 import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo_impl.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/course/data/datasources/course_remote_datasource.dart';
+import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
+import 'package:ai_eru_tawasol/features/course/data/repos/course_repo_impl.dart';
 import 'package:ai_eru_tawasol/features/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo_impl.dart';
@@ -41,6 +44,14 @@ Future<void> setupServiceLocator() async {
 
   // ─── Session ──────────────────────────────────────────────────────────────────
   getIt.registerSingleton<SessionCubit>(SessionCubit(storageService));
+
+  // ─── Course ───────────────────────────────────────────────────────────────────
+  final courseDatasource = CourseRemoteDatasource(
+    dio: dioClient.dio,
+    storage: storageService,
+  );
+  getIt.registerSingleton<CourseRemoteDatasource>(courseDatasource);
+  getIt.registerSingleton<CourseRepo>(CourseRepoImpl(courseDatasource));
 
   // ─── Other Features ───────────────────────────────────────────────────────────
   getIt.registerSingleton<ChatRepoImpl>(ChatRepoImpl());

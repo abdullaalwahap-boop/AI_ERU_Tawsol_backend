@@ -29,13 +29,28 @@ class CourseCardHeader extends StatelessWidget {
               ),
               AppSpacing.h4,
               CourseCardCodeBadge(course: course),
-              AppSpacing.h4,
-              Text(
-                course.doctorName,
-                style: AppTextStyles.labelSmall.copyWith(color: AppColors.textHint),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+              if (course.doctorName.isNotEmpty) ...[
+                AppSpacing.h5,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.person_outline_rounded,
+                      size: 12,
+                      color: AppColors.textHint,
+                    ),
+                    AppSpacing.w4,
+                    Expanded(
+                      child: Text(
+                        course.doctorName,
+                        style: AppTextStyles.labelSmall
+                            .copyWith(color: AppColors.textHint),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),

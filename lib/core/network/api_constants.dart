@@ -19,6 +19,15 @@ class ApiConstants {
   static const String changePassword = '/users/me/password';
   static const String updatePicture = '/users/me/picture';
 
+  // ─── Materials (Courses) ─────────────────────────────────────────────────────
+  static String studentMaterials(int userId) => '/materials/student/$userId';
+  static String teacherMaterials(int userId) => '/materials/teacher/$userId';
+
+  // ─── Course Content ───────────────────────────────────────────────────────────
+  static const String announcements = '/announcements';
+  static String courseAssignments(String materialId) => '/assignments/$materialId';
+  static String courseFiles(String materialId) => '/files/$materialId';
+
   // ─── Support ──────────────────────────────────────────────────────────────────
   static const String contactUs = '/contact/';
 
