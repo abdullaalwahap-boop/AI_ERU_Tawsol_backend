@@ -25,10 +25,12 @@ class CourseBannerInfoColumn extends StatelessWidget {
         ),
         AppSpacing.h4,
         Text(
-          course.code,
+          course.doctorName.isEmpty
+              ? course.code
+              : '${course.code}  ·  ${course.doctorName}',
           style: AppTextStyles.labelMedium.copyWith(
-            color: Colors.white.withValues(alpha: 0.65),
-            letterSpacing: 0.5,
+            fontSize: 12.5,
+            color: Colors.white.withValues(alpha: 0.72),
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -41,7 +43,7 @@ class CourseBannerInfoColumn extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.78),
               height: 1.55,
             ),
-            maxLines: 2,
+            maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),
         ],

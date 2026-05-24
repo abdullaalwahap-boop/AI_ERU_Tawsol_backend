@@ -11,7 +11,7 @@ class CourseBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 250,
+      expandedHeight: 220,
       pinned: true,
       backgroundColor: course.accentColor,
       leading: const WhiteBackButton(),
