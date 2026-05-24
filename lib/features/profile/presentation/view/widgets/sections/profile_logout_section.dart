@@ -1,9 +1,12 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
+import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/logout/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -41,7 +44,16 @@ class ProfileLogoutSection extends StatelessWidget {
       builder: (_) => const ProfileLogoutDialog(),
     );
     if (confirmed != true || !context.mounted) return;
+
+    // Blacklist JWT on server + wipe secure storage.
+    await getIt<AuthRepo>().logout();
+
+    // Clear non-sensitive session flag.
     await LocalStorageService().clearIsLoggedIn();
+
+    // Clear in-memory session state.
+    getIt<SessionCubit>().clear();
+
     if (context.mounted) context.go(AppRouter.kLoginView);
   }
 }

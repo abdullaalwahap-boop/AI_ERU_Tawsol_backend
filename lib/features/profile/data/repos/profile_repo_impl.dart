@@ -1,38 +1,30 @@
+import 'package:ai_eru_tawasol/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:ai_eru_tawasol/features/profile/data/models/contact_model.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 
 class ProfileRepoImpl implements ProfileRepo {
-  static const _mockUser = ProfileUser(
-    id: '2100123',
-    name: 'Ziad Tamer',
-    email: 'ziad.tamer@eru.edu.eg',
-    role: ProfileRole.student,
-    department: 'Computer Science',
-    level: 3,
-  );
+  const ProfileRepoImpl(this._datasource);
 
-  ProfileUser _current = _mockUser;
+  final ProfileRemoteDatasource _datasource;
 
   @override
-  Future<ProfileUser> getProfile() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _current;
-  }
+  Future<ProfileUser> getProfile() => _datasource.getProfile();
 
   @override
-  Future<void> updateName(String name) async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    _current = _current.copyWith(name: name);
-  }
+  Future<void> updateName(String name) => _datasource.updateName(name);
 
   @override
   Future<void> changePassword({
     required String currentPassword,
     required String newPassword,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (currentPassword == 'wrongpassword') {
-      throw Exception('Current password is incorrect.');
-    }
-  }
+  }) =>
+      _datasource.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
+
+  @override
+  Future<void> sendContactUs(ContactRequest request) =>
+      _datasource.sendContactUs(request);
 }

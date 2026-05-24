@@ -1,4 +1,7 @@
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
+import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_app_name.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/widgets/splash_background.dart';
@@ -84,16 +87,22 @@ class _SplashViewBodyState extends State<SplashViewBody>
     );
   }
 
-  void _navigate() async {
+  Future<void> _navigate() async {
     await Future.delayed(const Duration(milliseconds: 2600));
+    if (!mounted) return;
 
-    final storage = LocalStorageService();
-    final isLoggedIn = await storage.getIsLoggedIn();
-    final hasSeenOnboarding = await storage.getHasSeenOnboarding();
+    final local = LocalStorageService();
+    final secure = getIt<SecureStorageService>();
+
+    final hasSeenOnboarding = await local.getHasSeenOnboarding();
+    final hasToken = await secure.hasToken();
 
     if (!mounted) return;
 
-    if (isLoggedIn) {
+    if (hasToken) {
+      // Restore role + userId into SessionCubit before entering the app.
+      await getIt<SessionCubit>().restoreFromStorage();
+      if (!mounted) return;
       context.go(AppRouter.kHomeView);
     } else if (hasSeenOnboarding) {
       context.go(AppRouter.kLoginView);

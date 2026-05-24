@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordListener extends StatelessWidget {
-  const ResetPasswordListener({super.key, required this.email});
+  const ResetPasswordListener({super.key, required this.resetToken});
 
-  final String email;
+  final String resetToken;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ResetPasswordListener extends StatelessWidget {
           AuthSnackbar.showError(context, state.errMessage);
         }
       },
-      child: ResetPasswordViewBody(email: email),
+      child: ResetPasswordViewBody(resetToken: resetToken),
     );
   }
 }

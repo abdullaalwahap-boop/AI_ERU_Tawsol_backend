@@ -10,12 +10,15 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   final AuthRepo _repo;
 
   Future<void> resetPassword({
-    required String email,
+    required String resetToken,
     required String newPassword,
   }) async {
     emit(ResetPasswordLoading());
     try {
-      await _repo.resetPassword(email: email, newPassword: newPassword);
+      await _repo.resetPassword(
+        resetToken: resetToken,
+        newPassword: newPassword,
+      );
       if (isClosed) return;
       emit(ResetPasswordSuccess());
     } catch (e) {

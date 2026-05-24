@@ -1,5 +1,6 @@
-import 'package:ai_eru_tawasol/core/services/auth_flow_service.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_snackbar.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
@@ -14,26 +15,39 @@ class LoginListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) async {
-        if (state is LoginSuccess) {
-          final storage = LocalStorageService();
-          final rememberMe = await storage.getRememberMe();
-          if (rememberMe) await storage.saveIsLoggedIn(true);
-
-          final route = await AuthFlowService(storage)
-              .resolvePostLoginRoute(state.user);
-
-          if (!context.mounted) return;
-          if (route == AppRouter.kFirstLoginChangePasswordView) {
-            context.go(route, extra: state.user.userId);
-          } else {
-            context.go(route);
-          }
-        } else if (state is LoginFailure) {
-          AuthSnackbar.showError(context, state.errMessage);
-        }
-      },
+      listener: _onStateChange,
       child: const LoginViewBody(),
     );
+  }
+
+  Future<void> _onStateChange(BuildContext context, LoginState state) async {
+    if (state is LoginSuccess) {
+      getIt<SessionCubit>().initFromAuth(
+        typeCode: state.user.typeCode,
+        userId: state.user.userId,
+      );
+      await _persistSession();
+      if (!context.mounted) return;
+      context.go(AppRouter.kHomeView);
+    } else if (state is LoginPasswordChangeRequired) {
+      getIt<SessionCubit>().initFromAuth(
+        typeCode: state.user.typeCode,
+        userId: state.user.userId,
+      );
+      await _persistSession();
+      if (!context.mounted) return;
+      context.go(
+        AppRouter.kFirstLoginChangePasswordView,
+        extra: state.user.userId,
+      );
+    } else if (state is LoginFailure) {
+      AuthSnackbar.showError(context, state.errMessage);
+    }
+  }
+
+  Future<void> _persistSession() async {
+    final storage = LocalStorageService();
+    final rememberMe = await storage.getRememberMe();
+    if (rememberMe) await storage.saveIsLoggedIn(true);
   }
 }

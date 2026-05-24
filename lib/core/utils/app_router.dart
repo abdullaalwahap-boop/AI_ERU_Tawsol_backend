@@ -1,4 +1,4 @@
-﻿import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
+import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/content_details_view.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/add_announ_view.dart';
@@ -13,7 +13,6 @@ import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
-
 import 'package:ai_eru_tawasol/features/splash/presentation/view/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,11 +57,15 @@ class AppRouter {
       ),
       GoRoute(
         path: kResetPasswordView,
+        // extra carries the reset_token string from the OTP verification step.
         builder: (context, state) =>
-            ResetPasswordView(email: state.extra as String),
+            ResetPasswordView(resetToken: state.extra as String),
       ),
       GoRoute(path: kHomeView, builder: (context, state) => HomeView()),
-      GoRoute(path: kProfileView, builder: (context, state) => const ProfileView()),
+      GoRoute(
+        path: kProfileView,
+        builder: (context, state) => const ProfileView(),
+      ),
       GoRoute(
         path: kChangePasswordView,
         builder: (context, state) => const ChangePasswordView(),

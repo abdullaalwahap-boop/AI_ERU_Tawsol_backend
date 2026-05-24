@@ -12,6 +12,10 @@ class AboutTeamCard extends StatelessWidget {
       titleIcon: Icons.groups_rounded,
       children: [
         AboutTeamMember(name: 'Ziad Tamer', role: 'Flutter Developer'),
+        AboutTeamMember(name: 'Alfred Ayman', role: 'Flutter Developer'),
+        AboutTeamMember(name: 'Omar Hesham', role: 'Flutter Developer'),
+        AboutTeamMember(name: 'Mohamed Ashraf', role: 'Flutter Developer'),
+        AboutTeamMember(name: 'Seif Tolba', role: 'Flutter Developer'),
         AboutTeamMember(
             name: 'ERU CS Department', role: 'Backend & Architecture'),
       ],

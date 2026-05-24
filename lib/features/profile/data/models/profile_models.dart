@@ -72,6 +72,11 @@ extension ProfileRoleExt on ProfileRole {
 
 class ProfileUser {
   final String id;
+
+  /// University-issued code (e.g. "225040"). Distinct from [id] which is
+  /// the internal database primary key used for API calls.
+  final String uniCode;
+
   final String name;
   final String email;
   final ProfileRole role;
@@ -81,6 +86,7 @@ class ProfileUser {
 
   const ProfileUser({
     required this.id,
+    required this.uniCode,
     required this.name,
     required this.email,
     required this.role,
@@ -91,6 +97,7 @@ class ProfileUser {
 
   ProfileUser copyWith({String? name, String? avatarUrl}) => ProfileUser(
         id: id,
+        uniCode: uniCode,
         name: name ?? this.name,
         email: email,
         role: role,

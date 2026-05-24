@@ -13,10 +13,14 @@ final class OtpLoading extends OtpState {}
 final class OtpResending extends OtpState {}
 
 final class OtpSuccess extends OtpState {
-  final String email;
-  const OtpSuccess(this.email);
+  /// The short-lived reset token returned by the backend after OTP validation.
+  /// Must be forwarded to the Reset Password screen.
+  final String resetToken;
+
+  const OtpSuccess(this.resetToken);
+
   @override
-  List<Object?> get props => [email];
+  List<Object?> get props => [resetToken];
 }
 
 final class OtpFailure extends OtpState {

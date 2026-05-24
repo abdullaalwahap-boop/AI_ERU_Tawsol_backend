@@ -11,9 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ResetPasswordViewBody extends StatelessWidget {
-  const ResetPasswordViewBody({super.key, required this.email});
+  const ResetPasswordViewBody({super.key, required this.resetToken});
 
-  final String email;
+  final String resetToken;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ResetPasswordViewBody extends StatelessWidget {
                 style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
               ),
               AppSpacing.h32,
-              ResetPasswordForm(email: email),
+              ResetPasswordForm(resetToken: resetToken),
               AppSpacing.h32,
             ],
           ),

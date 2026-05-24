@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo_impl.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/profile_view_body.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(ProfileRepoImpl())..load(),
+      create: (_) => ProfileCubit(getIt<ProfileRepo>())..load(),
       child: const ProfileViewBody(),
     );
   }

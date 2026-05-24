@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordForm extends StatefulWidget {
-  const ResetPasswordForm({super.key, required this.email});
+  const ResetPasswordForm({super.key, required this.resetToken});
 
-  final String email;
+  final String resetToken;
 
   @override
   State<ResetPasswordForm> createState() => _ResetPasswordFormState();
@@ -32,7 +32,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
   void _submit() {
     if (_formKey.currentState?.validate() != true) return;
     context.read<ResetPasswordCubit>().resetPassword(
-          email: widget.email,
+          resetToken: widget.resetToken,
           newPassword: _passwordCtrl.text,
         );
   }

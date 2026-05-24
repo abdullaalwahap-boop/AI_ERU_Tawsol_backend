@@ -1,28 +1,33 @@
 class AuthUserModel {
-  final int userId;
-  final String uniCode;
-  final String name;
-  final String email;
-  final String typeCode;
-  final int totalHours;
-  final int level;
-  final String? profilePicture;
-
-  /// True when the backend assigned a system-generated temporary password.
-  /// Backend fields: `is_temporary_password`, `requires_password_reset`, `first_login`.
-  final bool isTemporaryPassword;
-
   const AuthUserModel({
     required this.userId,
     required this.uniCode,
     required this.name,
     required this.email,
     required this.typeCode,
-    required this.totalHours,
     required this.level,
+    this.department,
     this.profilePicture,
     this.isTemporaryPassword = false,
   });
+
+  final int userId;
+  final String uniCode;
+  final String name;
+  final String email;
+
+  /// "STU" | "DR" | "TA" | "ADM"
+  final String typeCode;
+
+  /// 1–4 for students; 100 for admins.
+  final int level;
+
+  final String? department;
+  final String? profilePicture;
+
+  /// True when the backend signals the user must change their password.
+  /// Maps from `current_password` in the UserOut schema.
+  final bool isTemporaryPassword;
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) {
     return AuthUserModel(
@@ -31,13 +36,28 @@ class AuthUserModel {
       name: json['name'] as String,
       email: json['email'] as String,
       typeCode: json['type_code'] as String,
-      totalHours: json['total_hours'] as int,
-      level: json['level'] as int,
+      level: json['level'] as int? ?? 0,
+      department: json['department'] as String?,
       profilePicture: json['profile_picture'] as String?,
-      isTemporaryPassword: json['is_temporary_password'] as bool? ??
-          json['requires_password_reset'] as bool? ??
-          json['first_login'] as bool? ??
-          false,
+      isTemporaryPassword: json['current_password'] as bool? ?? false,
+    );
+  }
+
+  AuthUserModel copyWith({
+    String? name,
+    String? profilePicture,
+    bool? isTemporaryPassword,
+  }) {
+    return AuthUserModel(
+      userId: userId,
+      uniCode: uniCode,
+      name: name ?? this.name,
+      email: email,
+      typeCode: typeCode,
+      level: level,
+      department: department,
+      profilePicture: profilePicture ?? this.profilePicture,
+      isTemporaryPassword: isTemporaryPassword ?? this.isTemporaryPassword,
     );
   }
 }

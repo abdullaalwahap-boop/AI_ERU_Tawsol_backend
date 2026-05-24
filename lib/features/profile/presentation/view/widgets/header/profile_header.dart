@@ -48,37 +48,40 @@ class ProfileHeader extends StatelessWidget {
               horizontal: AppSpacing.xxl,
               vertical: AppSpacing.xxl,
             ),
-            child: Column(
-              children: [
-                ProfileAvatar(name: user.name, avatarUrl: user.avatarUrl),
-                AppSpacing.h16,
-                Text(
-                  user.name,
-                  style: AppTextStyles.heading3.copyWith(
-                    color: AppColors.textOnDark,
-                    letterSpacing: 0.3,
+            child: Center(
+              child: Column(
+                children: [
+                  ProfileAvatar(name: user.name, avatarUrl: user.avatarUrl),
+                  AppSpacing.h16,
+                  Text(
+                    user.name,
+                    style: AppTextStyles.heading3.copyWith(
+                      color: AppColors.textOnDark,
+                      letterSpacing: 0.3,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                AppSpacing.h4,
-                Text(
-                  user.email,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: Colors.white.withValues(alpha: 0.70),
+                  AppSpacing.h4,
+                  Text(
+                    user.email,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: Colors.white.withValues(alpha: 0.70),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                AppSpacing.h14,
-                ProfileRoleBadge(role: user.role),
-                if (user.role == ProfileRole.student && user.level != null) ...[
-                  AppSpacing.h8,
-                  ProfileLevelChip(
-                    level: user.level!,
-                    department: user.department,
-                  ),
+                  AppSpacing.h14,
+                  ProfileRoleBadge(role: user.role),
+                  if (user.role == ProfileRole.student &&
+                      user.level != null) ...[
+                    AppSpacing.h8,
+                    ProfileLevelChip(
+                      level: user.level!,
+                      department: user.department,
+                    ),
+                  ],
+                  AppSpacing.h4,
                 ],
-                AppSpacing.h4,
-              ],
+              ),
             ),
           ),
         ],

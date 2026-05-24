@@ -16,7 +16,8 @@ class OtpListener extends StatelessWidget {
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
         if (state is OtpSuccess) {
-          context.push(AppRouter.kResetPasswordView, extra: state.email);
+          // Forward the reset_token (not the email) to the next screen.
+          context.push(AppRouter.kResetPasswordView, extra: state.resetToken);
         } else if (state is OtpFailure) {
           AuthSnackbar.showError(context, state.errMessage);
         }

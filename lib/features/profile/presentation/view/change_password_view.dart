@@ -1,5 +1,6 @@
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
-import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_cubit.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/change_password/change_password_app_bar.dart';
@@ -23,7 +24,7 @@ class ChangePasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChangePasswordCubit(ProfileRepoImpl()),
+      create: (_) => ChangePasswordCubit(getIt<ProfileRepo>()),
       child: PopScope(
         // Prevent hardware-back and swipe-back in first-login mode.
         canPop: mode == ChangePasswordMode.profile,

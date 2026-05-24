@@ -1,11 +1,9 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
-import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
+import 'package:ai_eru_tawasol/features/profile/data/models/contact_model.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common/profile_nav_tile.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common/profile_section_card.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_sheet.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/help_faq_tile.dart';
-import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/help_report_sheet.dart';
 import 'package:flutter/material.dart';
 
 class ProfileHelpSection extends StatelessWidget {
@@ -46,20 +44,12 @@ class ProfileHelpSection extends StatelessWidget {
           titleIcon: Icons.headset_mic_outlined,
           children: [
             ProfileNavTile(
-              icon: Icons.mail_outline_rounded,
-              iconColor: AppColors.accent,
-              iconBg: AppColors.accentLight.withValues(alpha: 0.13),
-              title: 'Contact Us',
-              subtitle: 'support@eru.edu.eg',
-              onTap: () => _launchEmail(context),
-            ),
-            ProfileNavTile(
               icon: Icons.flag_outlined,
               iconColor: AppColors.error,
               iconBg: AppColors.errorLight,
               title: 'Report an Issue',
               subtitle: 'Something broken? Tell us',
-              onTap: () => _showReportSheet(context),
+              onTap: () => _openContactSheet(context, IssueType.technical),
             ),
           ],
         ),
@@ -67,27 +57,12 @@ class ProfileHelpSection extends StatelessWidget {
     );
   }
 
-  void _launchEmail(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Opening email client…',
-          style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
-        ),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
-        margin: AppSpacing.pagePadding,
-      ),
-    );
-  }
-
-  void _showReportSheet(BuildContext context) {
+  void _openContactSheet(BuildContext context, IssueType initialType) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => const HelpReportSheet(),
+      builder: (_) => ContactUsSheet(initialType: initialType),
     );
   }
 }
