@@ -45,29 +45,6 @@ class CourseBannerInfoColumn extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ],
-        if (course.doctorName.isNotEmpty) ...[
-          AppSpacing.h8,
-          Row(
-            children: [
-              Icon(
-                Icons.person_outline_rounded,
-                color: Colors.white.withValues(alpha: 0.65),
-                size: 13,
-              ),
-              AppSpacing.w4,
-              Expanded(
-                child: Text(
-                  course.doctorName,
-                  style: AppTextStyles.labelMedium.copyWith(
-                    color: Colors.white.withValues(alpha: 0.65),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ],
       ],
     );
   }
