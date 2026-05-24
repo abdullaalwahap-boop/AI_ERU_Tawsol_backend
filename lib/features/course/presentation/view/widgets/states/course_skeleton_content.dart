@@ -35,9 +35,11 @@ class CourseSkeletonContent extends StatelessWidget {
         AppSpacing.h10,
         const Row(
           children: [
-            SkeletonBone(width: 96, height: 24, radius: 12),
+            SkeletonBone(width: 88, height: 24, radius: 12),
             AppSpacing.w8,
-            SkeletonBone(width: 80, height: 24, radius: 12),
+            SkeletonBone(width: 72, height: 24, radius: 12),
+            AppSpacing.w8,
+            SkeletonBone(width: 64, height: 24, radius: 12),
           ],
         ),
       ],

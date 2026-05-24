@@ -37,31 +37,19 @@ enum AppRole {
   // ── Feature adapters ──────────────────────────────────────────────────────
 
   /// TA follows the Doctor flow for announcements (can create and manage).
-  AnnounRole get toAnnounRole {
-    switch (this) {
-      case student:
-        return AnnounRole.student;
-      case doctor:
-      case ta:
-        return AnnounRole.doctor;
-      case admin:
-        return AnnounRole.admin;
-    }
-  }
+  AnnounRole get toAnnounRole => switch (this) {
+        student => AnnounRole.student,
+        doctor || ta => AnnounRole.doctor,
+        admin => AnnounRole.admin,
+      };
 
   CourseRole get toCourseRole =>
       this == student ? CourseRole.student : CourseRole.doctor;
 
-  ProfileRole get toProfileRole {
-    switch (this) {
-      case student:
-        return ProfileRole.student;
-      case doctor:
-        return ProfileRole.doctor;
-      case ta:
-        return ProfileRole.ta;
-      case admin:
-        return ProfileRole.admin;
-    }
-  }
+  ProfileRole get toProfileRole => switch (this) {
+        student => ProfileRole.student,
+        doctor => ProfileRole.doctor,
+        ta => ProfileRole.ta,
+        admin => ProfileRole.admin,
+      };
 }

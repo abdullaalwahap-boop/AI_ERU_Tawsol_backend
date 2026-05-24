@@ -14,6 +14,7 @@ final List<Course> mockStudentCourses = [
     accentColor: Color(0xff3D6FFF),
     studentCount: 28,
     contentCount: 12,
+    duration: 48,
   ),
   const Course(
     id: 'cs302',
@@ -25,6 +26,7 @@ final List<Course> mockStudentCourses = [
     accentColor: Color(0xff7C3AED),
     studentCount: 31,
     contentCount: 8,
+    duration: 36,
   ),
   const Course(
     id: 'cs303',
@@ -36,6 +38,7 @@ final List<Course> mockStudentCourses = [
     accentColor: Color(0xff059669),
     studentCount: 25,
     contentCount: 15,
+    duration: 54,
   ),
   const Course(
     id: 'cs401',
@@ -47,6 +50,7 @@ final List<Course> mockStudentCourses = [
     accentColor: Color(0xffEA580C),
     studentCount: 22,
     contentCount: 6,
+    duration: 42,
   ),
 ];
 
@@ -63,6 +67,7 @@ final List<Course> mockDoctorCourses = [
     accentColor: Color(0xff3D6FFF),
     studentCount: 28,
     contentCount: 12,
+    duration: 48,
   ),
   const Course(
     id: 'cs401adv',
@@ -74,6 +79,7 @@ final List<Course> mockDoctorCourses = [
     accentColor: Color(0xff3D6FFF),
     studentCount: 19,
     contentCount: 9,
+    duration: 60,
   ),
 ];
 

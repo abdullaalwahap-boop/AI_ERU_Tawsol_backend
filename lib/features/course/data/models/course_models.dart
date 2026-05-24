@@ -26,6 +26,7 @@ class Course {
   final Color accentColor;
   final int studentCount;
   final int contentCount;
+  final int duration;
 
   const Course({
     required this.id,
@@ -36,6 +37,7 @@ class Course {
     required this.accentColor,
     required this.studentCount,
     required this.contentCount,
+    this.duration = 0,
   });
 
   String get initials {
