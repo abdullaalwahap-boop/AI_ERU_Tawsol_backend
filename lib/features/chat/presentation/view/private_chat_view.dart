@@ -14,7 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PrivateChatView extends StatelessWidget {
   final ChatConversation conversation;
 
-  const PrivateChatView({super.key, required this.conversation});
+  /// Called just before the route pops with the last message in the
+  /// conversation so that the chat list can sync immediately.
+  final ValueChanged<ChatMessage?>? onLastMessageChanged;
+
+  const PrivateChatView({
+    super.key,
+    required this.conversation,
+    this.onLastMessageChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +32,26 @@ class PrivateChatView extends StatelessWidget {
         getIt<ChatWebSocketService>(),
         getIt<SecureStorageService>(),
       )..loadMessages(conversation.otherUser.id),
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: Scaffold(
-          backgroundColor: AppColors.backgroundLight,
-          appBar: ChatAppBar(user: conversation.otherUser),
-          body: PrivateChatBody(conversation: conversation),
+      // Builder gives us a context that has access to PrivateChatCubit,
+      // so PopScope can read the cubit state on back-navigation.
+      child: Builder(
+        builder: (ctx) => PopScope(
+          onPopInvokedWithResult: (bool didPop, Object? result) {
+            if (!didPop || onLastMessageChanged == null) return;
+            final s = ctx.read<PrivateChatCubit>().state;
+            final last = s is PrivateChatLoaded && s.messages.isNotEmpty
+                ? s.messages.last
+                : null;
+            onLastMessageChanged!(last);
+          },
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light,
+            child: Scaffold(
+              backgroundColor: AppColors.backgroundLight,
+              appBar: ChatAppBar(user: conversation.otherUser),
+              body: PrivateChatBody(conversation: conversation),
+            ),
+          ),
         ),
       ),
     );

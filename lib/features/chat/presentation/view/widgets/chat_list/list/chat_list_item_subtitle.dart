@@ -12,6 +12,7 @@ class ChatListItemSubtitle extends StatelessWidget {
   const ChatListItemSubtitle({super.key, required this.conversation});
 
   String _lastMessagePreview(ChatMessage msg) {
+    if (msg.isDeleted) return 'Message deleted';
     switch (msg.type) {
       case MessageType.text:
         return msg.text ?? '';
@@ -52,8 +53,16 @@ class ChatListItemSubtitle extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              if (last != null && last.isFromMe) ...[
+              if (last != null && last.isFromMe && !last.isDeleted) ...[
                 MessageStatusIcon(status: last.status, size: 13),
+                const SizedBox(width: 3),
+              ],
+              if (last != null && last.isDeleted) ...[
+                const Icon(
+                  Icons.not_interested_rounded,
+                  size: 13,
+                  color: AppColors.textHint,
+                ),
                 const SizedBox(width: 3),
               ],
               Expanded(
@@ -62,10 +71,17 @@ class ChatListItemSubtitle extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: unread > 0
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary,
-                    fontWeight: unread > 0 ? FontWeight.w500 : FontWeight.w400,
+                    color: last?.isDeleted == true
+                        ? AppColors.textHint
+                        : (unread > 0
+                            ? AppColors.textPrimary
+                            : AppColors.textSecondary),
+                    fontWeight: unread > 0 && last?.isDeleted != true
+                        ? FontWeight.w500
+                        : FontWeight.w400,
+                    fontStyle: last?.isDeleted == true
+                        ? FontStyle.italic
+                        : FontStyle.normal,
                   ),
                 ),
               ),

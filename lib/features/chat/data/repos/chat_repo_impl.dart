@@ -22,4 +22,20 @@ class ChatRepoImpl implements ChatRepo {
   @override
   Future<void> markSeen(String otherUserId) =>
       _datasource.markSeen(otherUserId);
+
+  @override
+  Future<ChatMessage> editMessage(String chatId, String newText) =>
+      _datasource.editMessage(int.parse(chatId), newText);
+
+  @override
+  Future<void> deleteMessage(String chatId) =>
+      _datasource.deleteMessage(int.parse(chatId));
+
+  @override
+  Future<void> pinConversation(String partnerId) =>
+      _datasource.pinConversation(int.parse(partnerId));
+
+  @override
+  Future<void> unpinConversation(String partnerId) =>
+      _datasource.unpinConversation(int.parse(partnerId));
 }

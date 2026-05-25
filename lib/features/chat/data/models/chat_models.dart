@@ -201,6 +201,8 @@ class ChatMessage {
   final DateTime timestamp;
   final MessageStatus status;
   final bool isFromMe;
+  final bool isDeleted;
+  final DateTime? editedAt;
 
   const ChatMessage({
     required this.id,
@@ -214,7 +216,22 @@ class ChatMessage {
     required this.timestamp,
     required this.status,
     required this.isFromMe,
+    this.isDeleted = false,
+    this.editedAt,
   });
+
+  /// Returns true if the message can be edited by the sender (text only, within 15 min).
+  bool get canEdit =>
+      isFromMe &&
+      type == MessageType.text &&
+      !isDeleted &&
+      DateTime.now().difference(timestamp).inMinutes < 15;
+
+  /// Returns true if the message can be deleted by the sender (within 15 min).
+  bool get canDelete =>
+      isFromMe &&
+      !isDeleted &&
+      DateTime.now().difference(timestamp).inMinutes < 15;
 
   /// Maps a backend [MessageOut] JSON object.
   /// [myUserId] is used to determine [isFromMe].
@@ -226,8 +243,9 @@ class ChatMessage {
     return ChatMessage(
       id: (json['chat_id'] as int).toString(),
       senderId: senderId.toString(),
+      // Backend field is content_type, not message_type.
       type: MessageTypeExt.fromString(
-          json['message_type'] as String? ?? 'text'),
+          json['content_type'] as String? ?? 'text'),
       text: json['message'] as String?,
       fileUrl: json['file_url'] as String?,
       fileName: json['file_name'] as String?,
@@ -238,15 +256,24 @@ class ChatMessage {
       status: MessageStatusExt.fromString(
           json['status'] as String? ?? 'sent'),
       isFromMe: senderId == myUserId,
+      isDeleted: json['is_deleted'] as bool? ?? false,
+      editedAt: json['edited_at'] != null
+          ? DateTime.tryParse(json['edited_at'] as String)
+          : null,
     );
   }
 
-  ChatMessage copyWith({MessageStatus? status}) {
+  ChatMessage copyWith({
+    MessageStatus? status,
+    String? text,
+    bool? isDeleted,
+    DateTime? editedAt,
+  }) {
     return ChatMessage(
       id: id,
       senderId: senderId,
       type: type,
-      text: text,
+      text: text ?? this.text,
       fileUrl: fileUrl,
       fileName: fileName,
       fileSizeMB: fileSizeMB,
@@ -254,6 +281,8 @@ class ChatMessage {
       timestamp: timestamp,
       status: status ?? this.status,
       isFromMe: isFromMe,
+      isDeleted: isDeleted ?? this.isDeleted,
+      editedAt: editedAt ?? this.editedAt,
     );
   }
 }
@@ -290,6 +319,20 @@ class ChatConversation {
           : null,
       unreadCount: json['unread_count'] as int? ?? 0,
       isPinned: json['is_pinned'] as bool? ?? false,
+    );
+  }
+
+  ChatConversation copyWith({
+    bool? isPinned,
+    int? unreadCount,
+    ChatMessage? lastMessage,
+  }) {
+    return ChatConversation(
+      id: id,
+      otherUser: otherUser,
+      lastMessage: lastMessage ?? this.lastMessage,
+      unreadCount: unreadCount ?? this.unreadCount,
+      isPinned: isPinned ?? this.isPinned,
     );
   }
 }

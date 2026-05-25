@@ -49,6 +49,26 @@ final class WsDeliveredEvent extends WsEvent {
   WsDeliveredEvent(this.receiverId);
 }
 
+/// The partner edited one of their messages.
+final class WsMessageEditedEvent extends WsEvent {
+  final int chatId;
+  final String newText;
+  final String editedAt;
+
+  WsMessageEditedEvent({
+    required this.chatId,
+    required this.newText,
+    required this.editedAt,
+  });
+}
+
+/// The partner deleted one of their messages.
+final class WsMessageDeletedEvent extends WsEvent {
+  final int chatId;
+
+  WsMessageDeletedEvent(this.chatId);
+}
+
 /// A server-side error event.
 final class WsErrorEvent extends WsEvent {
   final String detail;

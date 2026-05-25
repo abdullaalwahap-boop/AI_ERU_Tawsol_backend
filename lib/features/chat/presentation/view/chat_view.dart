@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo.dart';
 import 'package:ai_eru_tawasol/features/chat/data/services/chat_websocket_service.dart';
@@ -15,6 +16,7 @@ class ChatView extends StatelessWidget {
       create: (_) => ChatCubit(
         getIt<ChatRepo>(),
         getIt<ChatWebSocketService>(),
+        getIt<SecureStorageService>(),
       )..loadConversations(),
       child: const ChatViewBody(),
     );

@@ -35,12 +35,14 @@ class ChatWebSocketService {
 
   // ── Connection lifecycle ───────────────────────────────────────────────────
 
-  /// Connects if not already connected. Safe to call multiple times.
+  /// Connects if not already connected as the current user.
+  /// If connected as a different user (e.g. after logout/login), disconnects first.
   Future<void> ensureConnected() async {
-    if (isConnected) return;
     final userId = await _storage.getUserId();
     final token = await _storage.getAccessToken();
     if (userId == null || token == null) return;
+    if (isConnected && _connectedUserId == userId) return;
+    if (isConnected) disconnect();
     await _connect(userId, token);
   }
 
@@ -88,16 +90,15 @@ class ChatWebSocketService {
       'type': 'message',
       'receiver_id': receiverId,
       'message': text,
-      'message_type': 'text',
+      'content_type': 'text',
     });
   }
 
-  void sendVoice(
-      {required int receiverId, required int durationSeconds}) {
+  void sendVoice({required int receiverId, required int durationSeconds}) {
     _send({
       'type': 'message',
       'receiver_id': receiverId,
-      'message_type': 'voice',
+      'content_type': 'voice',
       'voice_duration_seconds': durationSeconds,
     });
   }
@@ -130,8 +131,7 @@ class ChatWebSocketService {
       final WsEvent? event = switch (type) {
         'connected' => WsConnectedEvent(
             userId: data['user_id'] as int,
-            onlineUsers:
-                List<int>.from(data['online_users'] as List? ?? []),
+            onlineUsers: List<int>.from(data['online_users'] as List? ?? []),
           ),
         'message' => WsMessageReceivedEvent(data),
         'sent' => WsMessageSentEvent(data),
@@ -141,6 +141,12 @@ class ChatWebSocketService {
           ),
         'seen' => WsSeenEvent(data['receiver_id'] as int),
         'delivered' => WsDeliveredEvent(data['receiver_id'] as int),
+        'message_edited' => WsMessageEditedEvent(
+            chatId: data['chat_id'] as int,
+            newText: data['message'] as String? ?? '',
+            editedAt: data['edited_at'] as String? ?? '',
+          ),
+        'message_deleted' => WsMessageDeletedEvent(data['chat_id'] as int),
         'error' =>
           WsErrorEvent(data['detail'] as String? ?? 'Unknown WS error'),
         _ => null,

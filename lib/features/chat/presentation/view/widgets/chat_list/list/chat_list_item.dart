@@ -9,17 +9,20 @@ import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/chat_list
 class ChatListItem extends StatelessWidget {
   final ChatConversation conversation;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
 
   const ChatListItem({
     super.key,
     required this.conversation,
     required this.onTap,
+    this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       splashColor: AppColors.primary.withValues(alpha: 0.05),
       highlightColor: AppColors.backgroundLight,
       child: Padding(

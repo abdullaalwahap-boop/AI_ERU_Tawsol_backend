@@ -4,6 +4,7 @@ import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/message_status_icon.dart';
+import 'package:ai_eru_tawasol/features/chat/utils/chat_time_formatter.dart';
 
 class MessageBubbleFooter extends StatelessWidget {
   final ChatMessage message;
@@ -13,8 +14,7 @@ class MessageBubbleFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMe = message.isFromMe;
-    final time =
-        '${message.timestamp.hour.toString().padLeft(2, '0')}:${message.timestamp.minute.toString().padLeft(2, '0')}';
+    final time = ChatTimeFormatter.formatMessageTime(message.timestamp);
 
     return Row(
       mainAxisSize: MainAxisSize.min,

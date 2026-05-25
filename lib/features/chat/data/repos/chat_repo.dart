@@ -12,4 +12,16 @@ abstract class ChatRepo {
 
   /// Marks all messages from [otherUserId] as seen (REST fallback).
   Future<void> markSeen(String otherUserId);
+
+  /// Edits a sent message within the 15-minute window (text only).
+  Future<ChatMessage> editMessage(String chatId, String newText);
+
+  /// Deletes a sent message within the 15-minute window.
+  Future<void> deleteMessage(String chatId);
+
+  /// Pins a conversation with [partnerId].
+  Future<void> pinConversation(String partnerId);
+
+  /// Unpins a conversation with [partnerId].
+  Future<void> unpinConversation(String partnerId);
 }

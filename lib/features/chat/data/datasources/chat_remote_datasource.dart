@@ -5,12 +5,6 @@ import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:dio/dio.dart';
 
 /// Remote data source for all chat-related REST API calls.
-///
-/// - Conversations  → GET /chat/conversations
-/// - Message history → GET /chat/history/{u1}/{u2}
-/// - Send message   → POST /chat/send  (fallback when WS is unavailable)
-/// - User search    → GET /chat/search?q=
-/// - Mark seen      → PUT /chat/seen/{other_user_id}
 class ChatRemoteDatasource {
   const ChatRemoteDatasource({
     required Dio dio,
@@ -72,7 +66,7 @@ class ChatRemoteDatasource {
   Future<ChatMessage> sendMessage({
     required String receiverId,
     required String text,
-    String messageType = 'text',
+    String contentType = 'text',
   }) async {
     final myId = await _requireUserId();
     try {
@@ -81,7 +75,7 @@ class ChatRemoteDatasource {
         data: {
           'receiver_id': int.parse(receiverId),
           'message': text,
-          'message_type': messageType,
+          'content_type': contentType,
         },
       );
       _assertOk(response);
@@ -96,11 +90,43 @@ class ChatRemoteDatasource {
     }
   }
 
+  // ── Edit Message ───────────────────────────────────────────────────────────
+
+  Future<ChatMessage> editMessage(int chatId, String newText) async {
+    final myId = await _requireUserId();
+    try {
+      final response = await _dio.put(
+        ApiConstants.chatMessage(chatId),
+        data: {'message': newText},
+      );
+      _assertOk(response);
+      return ChatMessage.fromJson(
+        response.data as Map<String, dynamic>,
+        myUserId: myId,
+      );
+    } on NetworkException {
+      rethrow;
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
+    }
+  }
+
+  // ── Delete Message ─────────────────────────────────────────────────────────
+
+  Future<void> deleteMessage(int chatId) async {
+    try {
+      final response =
+          await _dio.delete(ApiConstants.chatMessage(chatId));
+      _assertOk(response);
+    } on NetworkException {
+      rethrow;
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
+    }
+  }
+
   // ── User Search ────────────────────────────────────────────────────────────
 
-  /// Searches users by name or student ID.
-  /// Results are scoped by the backend's role-permission rules when the
-  /// search endpoint is updated; currently returns globally matched users.
   Future<List<ChatUser>> searchUsers(String q) async {
     try {
       final response = await _dio.get(
@@ -123,6 +149,24 @@ class ChatRemoteDatasource {
       await _dio.put(ApiConstants.chatSeen(int.parse(otherUserId)));
     } on DioException {
       // Non-critical — best effort.
+    }
+  }
+
+  // ── Pin / Unpin ────────────────────────────────────────────────────────────
+
+  Future<void> pinConversation(int partnerId) async {
+    try {
+      await _dio.post(ApiConstants.chatPin(partnerId));
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<void> unpinConversation(int partnerId) async {
+    try {
+      await _dio.delete(ApiConstants.chatPin(partnerId));
+    } on DioException {
+      rethrow;
     }
   }
 

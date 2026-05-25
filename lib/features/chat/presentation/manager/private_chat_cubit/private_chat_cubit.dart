@@ -19,6 +19,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   final SecureStorageService _storage;
 
   StreamSubscription<WsEvent>? _wsSub;
+  Timer? _typingTimer;
   int? _myUserId;
   int? _partnerUserId;
 
@@ -54,9 +55,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       switch (event) {
         case WsMessageReceivedEvent(:final data):
           final senderId = data['sender_id'] as int?;
-          if (senderId == _partnerUserId) {
-            _onIncomingMessage(data);
-          }
+          if (senderId == _partnerUserId) _onIncomingMessage(data);
 
         case WsMessageSentEvent(:final data):
           final senderId = data['sender_id'] as int?;
@@ -71,6 +70,12 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
         case WsDeliveredEvent(:final receiverId):
           if (receiverId == _partnerUserId) _onMessagesDelivered();
 
+        case WsMessageEditedEvent(:final chatId, :final newText, :final editedAt):
+          _onMessageEdited(chatId, newText, editedAt);
+
+        case WsMessageDeletedEvent(:final chatId):
+          _onMessageDeleted(chatId);
+
         default:
           break;
       }
@@ -82,15 +87,13 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   void _onIncomingMessage(Map<String, dynamic> data) {
     final current = state;
     if (current is! PrivateChatLoaded) return;
-    final msg =
-        ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
+    final msg = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final updated = List<ChatMessage>.from(current.messages)..add(msg);
     emit(current.copyWith(
       messages: updated,
       filteredMessages: _applySearch(updated, current.searchQuery),
       isOtherTyping: false,
     ));
-    // Notify backend we've read the message.
     _wsService.sendSeen(_partnerUserId!);
   }
 
@@ -99,10 +102,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   void _onMessageConfirmed(Map<String, dynamic> data) {
     final current = state;
     if (current is! PrivateChatLoaded) return;
-    final confirmed =
-        ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
+    final confirmed = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final messages = current.messages.toList();
-    // Replace the first pending "sending" message with matching text.
     final idx = messages.indexWhere((m) =>
         m.status == MessageStatus.sending &&
         m.isFromMe &&
@@ -123,7 +124,17 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   void _onTyping(bool isTyping) {
     final current = state;
     if (current is! PrivateChatLoaded) return;
+    _typingTimer?.cancel();
     emit(current.copyWith(isOtherTyping: isTyping));
+    if (isTyping) {
+      // Auto-clear after 5 s in case the partner disconnects mid-typing.
+      _typingTimer = Timer(const Duration(seconds: 5), () {
+        final s = state;
+        if (s is PrivateChatLoaded && s.isOtherTyping) {
+          emit(s.copyWith(isOtherTyping: false));
+        }
+      });
+    }
   }
 
   // ── Read receipts ──────────────────────────────────────────────────────────
@@ -156,6 +167,41 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     ));
   }
 
+  // ── Message edited (from partner via WS) ──────────────────────────────────
+
+  void _onMessageEdited(int chatId, String newText, String editedAt) {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+    final messages = current.messages.map((m) {
+      if (m.id == chatId.toString()) {
+        return m.copyWith(
+          text: newText,
+          editedAt: DateTime.tryParse(editedAt),
+        );
+      }
+      return m;
+    }).toList();
+    emit(current.copyWith(
+      messages: messages,
+      filteredMessages: _applySearch(messages, current.searchQuery),
+    ));
+  }
+
+  // ── Message deleted (from partner via WS) ─────────────────────────────────
+
+  void _onMessageDeleted(int chatId) {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+    final messages = current.messages.map((m) {
+      if (m.id == chatId.toString()) return m.copyWith(isDeleted: true);
+      return m;
+    }).toList();
+    emit(current.copyWith(
+      messages: messages,
+      filteredMessages: _applySearch(messages, current.searchQuery),
+    ));
+  }
+
   // ── Send ───────────────────────────────────────────────────────────────────
 
   Future<void> sendTextMessage(String text) async {
@@ -164,7 +210,6 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
         _partnerUserId == null ||
         _myUserId == null) return;
 
-    // Optimistic UI — add a "sending" bubble immediately.
     final temp = ChatMessage(
       id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
       senderId: _myUserId.toString(),
@@ -182,10 +227,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     ));
 
     if (_wsService.isConnected) {
-      // WS path — confirmation arrives as WsMessageSentEvent.
       _wsService.sendText(receiverId: _partnerUserId!, text: text);
     } else {
-      // REST fallback — update temp message with server response.
       try {
         await _repo.markSeen(_partnerUserId.toString());
         final msgs = (state as PrivateChatLoaded).messages.toList();
@@ -221,6 +264,64 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     if (_wsService.isConnected) {
       _wsService.sendVoice(
           receiverId: _partnerUserId!, durationSeconds: durationSeconds);
+    }
+  }
+
+  // ── Edit message ───────────────────────────────────────────────────────────
+
+  Future<void> editMessage(String chatId, String newText) async {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+
+    // Optimistic update.
+    final now = DateTime.now();
+    final optimistic = current.messages.map((m) {
+      if (m.id == chatId) return m.copyWith(text: newText, editedAt: now);
+      return m;
+    }).toList();
+    emit(current.copyWith(
+      messages: optimistic,
+      filteredMessages: _applySearch(optimistic, current.searchQuery),
+    ));
+
+    try {
+      final confirmed = await _repo.editMessage(chatId, newText);
+      final s = state;
+      if (s is! PrivateChatLoaded) return;
+      final updated = s.messages
+          .map((m) => m.id == chatId ? confirmed : m)
+          .toList();
+      emit(s.copyWith(
+        messages: updated,
+        filteredMessages: _applySearch(updated, s.searchQuery),
+      ));
+    } catch (_) {
+      // Revert on failure.
+      emit(current);
+    }
+  }
+
+  // ── Delete message ─────────────────────────────────────────────────────────
+
+  Future<void> deleteMessage(String chatId) async {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+
+    // Optimistic update.
+    final optimistic = current.messages.map((m) {
+      if (m.id == chatId) return m.copyWith(isDeleted: true);
+      return m;
+    }).toList();
+    emit(current.copyWith(
+      messages: optimistic,
+      filteredMessages: _applySearch(optimistic, current.searchQuery),
+    ));
+
+    try {
+      await _repo.deleteMessage(chatId);
+    } catch (_) {
+      // Revert on failure.
+      emit(current);
     }
   }
 
@@ -265,6 +366,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   @override
   Future<void> close() {
     _wsSub?.cancel();
+    _typingTimer?.cancel();
     return super.close();
   }
 }
