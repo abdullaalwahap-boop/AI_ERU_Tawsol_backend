@@ -1,6 +1,8 @@
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
+// ─── Chat Colors ──────────────────────────────────────────────────────────────
+
 /// All values delegate to AppColors — one source of truth.
 abstract class ChatColors {
   static const Color primary = AppColors.primary;
@@ -21,7 +23,9 @@ abstract class ChatColors {
   static const Color cardShadow = Color(0x0D000000);
 }
 
-enum UserRole { student, doctor, admin }
+// ─── UserRole ─────────────────────────────────────────────────────────────────
+
+enum UserRole { student, doctor, ta, admin }
 
 extension UserRoleExt on UserRole {
   String get label {
@@ -30,6 +34,8 @@ extension UserRoleExt on UserRole {
         return 'Student';
       case UserRole.doctor:
         return 'Doctor';
+      case UserRole.ta:
+        return 'Teaching Assistant';
       case UserRole.admin:
         return 'Admin';
     }
@@ -41,6 +47,8 @@ extension UserRoleExt on UserRole {
         return AppColors.roleStudent;
       case UserRole.doctor:
         return AppColors.roleDoctor;
+      case UserRole.ta:
+        return AppColors.contentTeal;
       case UserRole.admin:
         return AppColors.roleAdmin;
     }
@@ -52,6 +60,8 @@ extension UserRoleExt on UserRole {
         return AppColors.roleStudentLight;
       case UserRole.doctor:
         return AppColors.roleDoctorLight;
+      case UserRole.ta:
+        return AppColors.contentTealLight;
       case UserRole.admin:
         return AppColors.roleAdminLight;
     }
@@ -63,15 +73,65 @@ extension UserRoleExt on UserRole {
         return Icons.school_rounded;
       case UserRole.doctor:
         return Icons.menu_book_rounded;
+      case UserRole.ta:
+        return Icons.assignment_ind_rounded;
       case UserRole.admin:
         return Icons.admin_panel_settings_rounded;
     }
   }
+
+  /// Maps a backend type_code string (STU | DR | TA | ADM) to [UserRole].
+  static UserRole fromTypeCode(String typeCode) {
+    switch (typeCode.toUpperCase()) {
+      case 'DR':
+        return UserRole.doctor;
+      case 'TA':
+        return UserRole.ta;
+      case 'ADM':
+        return UserRole.admin;
+      default:
+        return UserRole.student;
+    }
+  }
 }
+
+// ─── MessageStatus ────────────────────────────────────────────────────────────
 
 enum MessageStatus { sending, sent, delivered, seen }
 
+extension MessageStatusExt on MessageStatus {
+  static MessageStatus fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'delivered':
+        return MessageStatus.delivered;
+      case 'seen':
+        return MessageStatus.seen;
+      default:
+        return MessageStatus.sent;
+    }
+  }
+}
+
+// ─── MessageType ──────────────────────────────────────────────────────────────
+
 enum MessageType { text, image, voice, file }
+
+extension MessageTypeExt on MessageType {
+  static MessageType fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'image':
+        return MessageType.image;
+      case 'voice':
+        return MessageType.voice;
+      case 'file':
+        return MessageType.file;
+      default:
+        return MessageType.text;
+    }
+  }
+}
+
+// ─── ChatUser ─────────────────────────────────────────────────────────────────
 
 class ChatUser {
   final String id;
@@ -92,6 +152,21 @@ class ChatUser {
     this.studentId,
   });
 
+  /// Maps a backend [ConversationUserOut] JSON object.
+  factory ChatUser.fromJson(Map<String, dynamic> json) {
+    return ChatUser(
+      id: (json['id'] as int).toString(),
+      name: json['name'] as String,
+      avatarUrl: json['profile_picture'] as String?,
+      role: UserRoleExt.fromTypeCode(json['type_code'] as String? ?? 'STU'),
+      isOnline: json['is_online'] as bool? ?? false,
+      lastSeen: json['last_seen'] != null
+          ? DateTime.tryParse(json['last_seen'] as String)
+          : null,
+      studentId: json['student_id'] as String?,
+    );
+  }
+
   String get initials {
     final parts = name.trim().split(' ');
     if (parts.length >= 2) {
@@ -111,6 +186,8 @@ class ChatUser {
     return 'Offline';
   }
 }
+
+// ─── ChatMessage ──────────────────────────────────────────────────────────────
 
 class ChatMessage {
   final String id;
@@ -138,7 +215,50 @@ class ChatMessage {
     required this.status,
     required this.isFromMe,
   });
+
+  /// Maps a backend [MessageOut] JSON object.
+  /// [myUserId] is used to determine [isFromMe].
+  factory ChatMessage.fromJson(Map<String, dynamic> json,
+      {required int myUserId}) {
+    final senderId = json['sender_id'] as int;
+    final sizeBytes = json['file_size_bytes'] as int?;
+    final voiceSecs = json['voice_duration_seconds'] as int?;
+    return ChatMessage(
+      id: (json['chat_id'] as int).toString(),
+      senderId: senderId.toString(),
+      type: MessageTypeExt.fromString(
+          json['message_type'] as String? ?? 'text'),
+      text: json['message'] as String?,
+      fileUrl: json['file_url'] as String?,
+      fileName: json['file_name'] as String?,
+      fileSizeMB: sizeBytes != null ? sizeBytes / (1024 * 1024) : null,
+      voiceDuration:
+          voiceSecs != null ? Duration(seconds: voiceSecs) : null,
+      timestamp: DateTime.parse(json['sent_at'] as String),
+      status: MessageStatusExt.fromString(
+          json['status'] as String? ?? 'sent'),
+      isFromMe: senderId == myUserId,
+    );
+  }
+
+  ChatMessage copyWith({MessageStatus? status}) {
+    return ChatMessage(
+      id: id,
+      senderId: senderId,
+      type: type,
+      text: text,
+      fileUrl: fileUrl,
+      fileName: fileName,
+      fileSizeMB: fileSizeMB,
+      voiceDuration: voiceDuration,
+      timestamp: timestamp,
+      status: status ?? this.status,
+      isFromMe: isFromMe,
+    );
+  }
 }
+
+// ─── ChatConversation ─────────────────────────────────────────────────────────
 
 class ChatConversation {
   final String id;
@@ -154,7 +274,27 @@ class ChatConversation {
     this.unreadCount = 0,
     this.isPinned = false,
   });
+
+  /// Maps a backend [ConversationOut] JSON object.
+  factory ChatConversation.fromJson(Map<String, dynamic> json,
+      {required int myUserId}) {
+    return ChatConversation(
+      id: json['id'] as String,
+      otherUser: ChatUser.fromJson(
+          json['other_user'] as Map<String, dynamic>),
+      lastMessage: json['last_message'] != null
+          ? ChatMessage.fromJson(
+              json['last_message'] as Map<String, dynamic>,
+              myUserId: myUserId,
+            )
+          : null,
+      unreadCount: json['unread_count'] as int? ?? 0,
+      isPinned: json['is_pinned'] as bool? ?? false,
+    );
+  }
 }
+
+// ─── AttachmentOption ─────────────────────────────────────────────────────────
 
 enum AttachmentOption { camera, gallery, document, audio, link }
 

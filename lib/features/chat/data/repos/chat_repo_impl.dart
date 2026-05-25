@@ -1,22 +1,25 @@
-import 'package:ai_eru_tawasol/features/chat/data/mock/chat_mock_data.dart';
+import 'package:ai_eru_tawasol/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo.dart';
 
 class ChatRepoImpl implements ChatRepo {
-  @override
-  Future<List<ChatConversation>> getConversations() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return mockConversations;
-  }
+  const ChatRepoImpl(this._datasource);
+
+  final ChatRemoteDatasource _datasource;
 
   @override
-  Future<List<ChatMessage>> getMessages(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return getMockMessages(userId);
-  }
+  Future<List<ChatConversation>> getConversations() =>
+      _datasource.getConversations();
 
   @override
-  Future<void> sendMessage(ChatMessage message) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-  }
+  Future<List<ChatMessage>> getMessages(String otherUserId) =>
+      _datasource.getMessages(otherUserId);
+
+  @override
+  Future<List<ChatUser>> searchUsers(String q) =>
+      _datasource.searchUsers(q);
+
+  @override
+  Future<void> markSeen(String otherUserId) =>
+      _datasource.markSeen(otherUserId);
 }

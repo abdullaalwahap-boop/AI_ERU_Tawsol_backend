@@ -28,6 +28,18 @@ class ApiConstants {
   static String courseAssignments(String materialId) => '/assignments/$materialId';
   static String courseFiles(String materialId) => '/files/$materialId';
 
+  // ─── Chat ─────────────────────────────────────────────────────────────────────
+  static const String chatConversations = '/chat/conversations';
+  static const String chatSend = '/chat/send';
+  static const String chatSearch = '/chat/search';
+  static String chatHistory(int userId1, int userId2) =>
+      '/chat/history/$userId1/$userId2';
+  static String chatSeen(int otherUserId) => '/chat/seen/$otherUserId';
+  static String chatOnlineStatus(int userId) => '/chat/online/$userId';
+  static String chatPin(int partnerId) => '/chat/pin/$partnerId';
+  static String wsChat(int userId) =>
+      '${baseUrl.replaceFirst('http://', 'ws://').replaceFirst('https://', 'wss://')}/chat/ws/$userId';
+
   // ─── Support ──────────────────────────────────────────────────────────────────
   static const String contactUs = '/contact/';
 
