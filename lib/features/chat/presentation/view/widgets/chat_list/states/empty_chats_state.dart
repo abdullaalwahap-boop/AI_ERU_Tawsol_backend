@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 
 class EmptyChatsState extends StatelessWidget {
-  final VoidCallback onNewChat;
-
-  const EmptyChatsState({super.key, required this.onNewChat});
+  const EmptyChatsState({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +21,9 @@ class EmptyChatsState extends StatelessWidget {
                 color: AppColors.backgroundLight,
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.15),
-                    width: 2),
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  width: 2,
+                ),
               ),
               child: const Icon(
                 Icons.chat_bubble_outline_rounded,
@@ -36,7 +34,8 @@ class EmptyChatsState extends StatelessWidget {
             AppSpacing.h24,
             Text(
               'No Conversations Yet',
-              style: AppTextStyles.heading3.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.heading3
+                  .copyWith(color: AppColors.textPrimary),
             ),
             AppSpacing.h10,
             Text(
@@ -47,23 +46,22 @@ class EmptyChatsState extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
             ),
-            AppSpacing.h32,
-            ElevatedButton.icon(
-              onPressed: onNewChat,
-              icon: const Icon(Icons.add_rounded, size: 18),
-              label: Text(
-                'Start a New Chat',
-                style: AppTextStyles.titleSmall,
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                shape: RoundedRectangleBorder(
-                    borderRadius: AppRadius.large),
-                elevation: 0,
-              ),
+            AppSpacing.h16,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.edit_rounded,
+                  size: 14,
+                  color: AppColors.textHint,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'Tap the button below to start',
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textHint),
+                ),
+              ],
             ),
           ],
         ),

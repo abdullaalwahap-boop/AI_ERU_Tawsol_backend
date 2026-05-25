@@ -21,6 +21,8 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription<WsEvent>? _wsSub;
   int? _myUserId;
   String? _openChatPartnerId;
+  // Guards against stale async results when user types quickly in new-chat sheet.
+  String _activeNewUserQuery = '';
 
   // ── Load ───────────────────────────────────────────────────────────────────
 
@@ -52,7 +54,6 @@ class ChatCubit extends Cubit<ChatState> {
       emit(current.copyWith(
         conversations: list,
         filtered: _applyFilter(list, current.query),
-        userSearchResults: const [],
       ));
     } catch (_) {}
   }
@@ -77,7 +78,7 @@ class ChatCubit extends Cubit<ChatState> {
     _openChatPartnerId = null;
   }
 
-  // ── Conversation filter (client-side) ──────────────────────────────────────
+  // ── Conversation search (header — client-side only) ────────────────────────
 
   void toggleSearch() {
     final current = state;
@@ -87,28 +88,77 @@ class ChatCubit extends Cubit<ChatState> {
         isSearching: false,
         query: '',
         filtered: current.conversations,
-        userSearchResults: const [],
       ));
     } else {
       emit(current.copyWith(isSearching: true));
     }
   }
 
-  void search(String query) {
+  /// Filters existing conversations locally — no backend call.
+  void searchConversations(String query) {
     final current = state;
     if (current is! ChatLoaded) return;
     emit(current.copyWith(
       query: query,
       filtered: _applyFilter(current.conversations, query),
-      userSearchResults: query.isEmpty ? const [] : current.userSearchResults,
-      isLoadingUserSearch: query.isNotEmpty,
     ));
+  }
+
+  // ── New-chat user search (FAB sheet — backend) ────────────────────────────
+
+  /// Triggers a debounced backend user search for the "New Chat" sheet.
+  void searchNewUsers(String q) {
     _searchDebounce?.cancel();
-    if (query.isNotEmpty) {
-      _searchDebounce = Timer(
-        const Duration(milliseconds: 350),
-        () => _searchUsers(query),
-      );
+    final current = state;
+    if (current is! ChatLoaded) return;
+
+    if (q.isEmpty) {
+      _activeNewUserQuery = '';
+      emit(current.copyWith(
+        userSearchResults: const [],
+        isLoadingUserSearch: false,
+      ));
+      return;
+    }
+
+    emit(current.copyWith(isLoadingUserSearch: true));
+    _searchDebounce = Timer(
+      const Duration(milliseconds: 350),
+      () => _doSearchNewUsers(q),
+    );
+  }
+
+  /// Clears new-user search results — call when the "New Chat" sheet closes.
+  void clearNewUserSearch() {
+    _searchDebounce?.cancel();
+    _activeNewUserQuery = '';
+    final current = state;
+    if (current is! ChatLoaded) return;
+    emit(current.copyWith(
+      userSearchResults: const [],
+      isLoadingUserSearch: false,
+    ));
+  }
+
+  Future<void> _doSearchNewUsers(String q) async {
+    _activeNewUserQuery = q;
+    final current = state;
+    if (current is! ChatLoaded) return;
+    try {
+      final results = await _repo.searchUsers(q);
+      if (isClosed || _activeNewUserQuery != q) return;
+      final loaded = state;
+      if (loaded is! ChatLoaded) return;
+      emit(loaded.copyWith(
+        userSearchResults: results,
+        isLoadingUserSearch: false,
+      ));
+    } catch (_) {
+      if (isClosed || _activeNewUserQuery != q) return;
+      final loaded = state;
+      if (loaded is ChatLoaded) {
+        emit(loaded.copyWith(isLoadingUserSearch: false));
+      }
     }
   }
 
@@ -168,7 +218,6 @@ class ChatCubit extends Cubit<ChatState> {
       if (c.lastMessage?.id == chatId.toString()) {
         return c.copyWith(
           lastMessage: c.lastMessage!.copyWith(isDeleted: true),
-          // The deleted message was from the partner and was unread — decrement.
           unreadCount: c.unreadCount > 0 ? c.unreadCount - 1 : 0,
         );
       }
@@ -180,8 +229,8 @@ class ChatCubit extends Cubit<ChatState> {
     ));
   }
 
-  /// Called when exiting a private chat to sync the last message
-  /// (handles sender-side edits/deletes that don't emit WS events to self).
+  /// Syncs the chat list's last message after exiting a private chat.
+  /// Covers sender-side edits/deletes that don't emit WS events back to self.
   void syncLastMessage(String partnerId, ChatMessage? lastMsg) {
     final current = state;
     if (current is! ChatLoaded || lastMsg == null) return;
@@ -208,7 +257,6 @@ class ChatCubit extends Cubit<ChatState> {
     final idx = conversations.indexWhere((c) => c.otherUser.id == partnerId);
 
     if (idx == -1) {
-      // New conversation partner not yet in list — refresh to populate it.
       refresh();
       return;
     }
@@ -216,17 +264,14 @@ class ChatCubit extends Cubit<ChatState> {
     final convo = conversations[idx];
     final updated = convo.copyWith(
       lastMessage: newMsg,
-      unreadCount:
-          incrementUnread ? convo.unreadCount + 1 : convo.unreadCount,
+      unreadCount: incrementUnread ? convo.unreadCount + 1 : convo.unreadCount,
     );
 
     conversations.removeAt(idx);
 
     if (convo.isPinned) {
-      // Pinned conversations stay in their relative position.
       conversations.insert(idx, updated);
     } else {
-      // Non-pinned: bubble to front of non-pinned section.
       final firstNonPinned = conversations.indexWhere((c) => !c.isPinned);
       final insertAt =
           firstNonPinned == -1 ? conversations.length : firstNonPinned;
@@ -237,30 +282,6 @@ class ChatCubit extends Cubit<ChatState> {
       conversations: conversations,
       filtered: _applyFilter(conversations, current.query),
     ));
-  }
-
-  // ── User search (backend) ──────────────────────────────────────────────────
-
-  Future<void> _searchUsers(String q) async {
-    final current = state;
-    if (current is! ChatLoaded) return;
-    emit(current.copyWith(isLoadingUserSearch: true));
-    try {
-      final results = await _repo.searchUsers(q);
-      if (isClosed) return;
-      final loaded = state;
-      if (loaded is! ChatLoaded || loaded.query != q) return;
-      emit(loaded.copyWith(
-        userSearchResults: results,
-        isLoadingUserSearch: false,
-      ));
-    } catch (_) {
-      if (isClosed) return;
-      final loaded = state;
-      if (loaded is ChatLoaded) {
-        emit(loaded.copyWith(isLoadingUserSearch: false));
-      }
-    }
   }
 
   // ── Pin / Unpin ────────────────────────────────────────────────────────────

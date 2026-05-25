@@ -5,7 +5,7 @@ class ApiConstants {
   ApiConstants._();
 
   // ─── Base ─────────────────────────────────────────────────────────────────────
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'http://10.0.2.2:8000'; //http://127.0.0.1:8000
 
   // ─── Auth ─────────────────────────────────────────────────────────────────────
   static const String login = '/auth/login';
@@ -25,7 +25,8 @@ class ApiConstants {
 
   // ─── Course Content ───────────────────────────────────────────────────────────
   static const String announcements = '/announcements';
-  static String courseAssignments(String materialId) => '/assignments/$materialId';
+  static String courseAssignments(String materialId) =>
+      '/assignments/$materialId';
   static String courseFiles(String materialId) => '/files/$materialId';
 
   // ─── Chat ─────────────────────────────────────────────────────────────────────
