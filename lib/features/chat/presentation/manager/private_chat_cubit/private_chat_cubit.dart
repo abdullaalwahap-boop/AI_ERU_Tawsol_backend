@@ -70,11 +70,18 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
         case WsDeliveredEvent(:final receiverId):
           if (receiverId == _partnerUserId) _onMessagesDelivered();
 
-        case WsMessageEditedEvent(:final chatId, :final newText, :final editedAt):
+        case WsMessageEditedEvent(
+            :final chatId,
+            :final newText,
+            :final editedAt
+          ):
           _onMessageEdited(chatId, newText, editedAt);
 
         case WsMessageDeletedEvent(:final chatId):
           _onMessageDeleted(chatId);
+
+        case WsErrorEvent(:final detail):
+          _onSendError(detail);
 
         default:
           break;
@@ -104,12 +111,20 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     if (current is! PrivateChatLoaded) return;
     final confirmed = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final messages = current.messages.toList();
+    // Match by type AND text so voice (text==null) and text messages don't collide.
     final idx = messages.indexWhere((m) =>
         m.status == MessageStatus.sending &&
         m.isFromMe &&
+        m.type == confirmed.type &&
         m.text == confirmed.text);
     if (idx != -1) {
-      messages[idx] = confirmed;
+      final existing = messages[idx];
+      // WS 'sent' events often omit file_url / voice_duration — keep them
+      // from the optimistic message so the play button stays functional.
+      messages[idx] = confirmed.copyWith(
+        fileUrl: confirmed.fileUrl ?? existing.fileUrl,
+        voiceDuration: confirmed.voiceDuration ?? existing.voiceDuration,
+      );
     } else {
       messages.add(confirmed);
     }
@@ -143,8 +158,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     final current = state;
     if (current is! PrivateChatLoaded) return;
     final updated = current.messages
-        .map((m) =>
-            m.isFromMe ? m.copyWith(status: MessageStatus.seen) : m)
+        .map((m) => m.isFromMe ? m.copyWith(status: MessageStatus.seen) : m)
         .toList();
     emit(current.copyWith(
       messages: updated,
@@ -156,10 +170,9 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     final current = state;
     if (current is! PrivateChatLoaded) return;
     final updated = current.messages
-        .map((m) =>
-            m.isFromMe && m.status == MessageStatus.sending
-                ? m.copyWith(status: MessageStatus.delivered)
-                : m)
+        .map((m) => m.isFromMe && m.status == MessageStatus.sending
+            ? m.copyWith(status: MessageStatus.delivered)
+            : m)
         .toList();
     emit(current.copyWith(
       messages: updated,
@@ -202,13 +215,46 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     ));
   }
 
+  // ── Server send error ─────────────────────────────────────────────────────
+
+  void _onSendError(String detail) {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+    // Roll back any optimistic messages that are still in "sending" state.
+    final messages = current.messages
+        .where((m) => m.status != MessageStatus.sending)
+        .toList();
+    emit(current.copyWith(
+      messages: messages,
+      filteredMessages: _applySearch(messages, current.searchQuery),
+      sendError: detail,
+    ));
+  }
+
+  // ── Reply ──────────────────────────────────────────────────────────────────
+
+  void setReplyTo(ChatMessage? message) {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+    if (message == null) {
+      emit(current.copyWith(clearReplyingTo: true));
+    } else {
+      emit(current.copyWith(replyingTo: message));
+    }
+  }
+
   // ── Send ───────────────────────────────────────────────────────────────────
 
   Future<void> sendTextMessage(String text) async {
     final current = state;
     if (current is! PrivateChatLoaded ||
         _partnerUserId == null ||
-        _myUserId == null) return;
+        _myUserId == null) {
+      return;
+    }
+
+    final replyToId = current.replyingTo?.id;
+    final replyToIdInt = replyToId != null ? int.tryParse(replyToId) : null;
 
     final temp = ChatMessage(
       id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
@@ -218,16 +264,22 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       timestamp: DateTime.now(),
       status: MessageStatus.sending,
       isFromMe: true,
+      replyToId: replyToId,
     );
     final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
     emit(current.copyWith(
       messages: optimistic,
       filteredMessages: _applySearch(optimistic, current.searchQuery),
       isOtherTyping: false,
+      clearReplyingTo: true,
     ));
 
     if (_wsService.isConnected) {
-      _wsService.sendText(receiverId: _partnerUserId!, text: text);
+      _wsService.sendText(
+        receiverId: _partnerUserId!,
+        text: text,
+        replyToId: replyToIdInt,
+      );
     } else {
       try {
         await _repo.markSeen(_partnerUserId.toString());
@@ -243,27 +295,62 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     }
   }
 
-  Future<void> sendVoiceMessage({int durationSeconds = 0}) async {
+  Future<void> sendVoiceMessage({
+    required String filePath,
+    required int durationSeconds,
+  }) async {
     final current = state;
-    if (current is! PrivateChatLoaded || _partnerUserId == null) return;
+    if (current is! PrivateChatLoaded ||
+        _partnerUserId == null ||
+        _myUserId == null) {
+      return;
+    }
 
+    final replyToId = current.replyingTo?.id;
+    final replyToIdInt = replyToId != null ? int.tryParse(replyToId) : null;
+
+    final tempId = 'temp_${DateTime.now().millisecondsSinceEpoch}';
     final temp = ChatMessage(
-      id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
-      senderId: (_myUserId ?? 0).toString(),
+      id: tempId,
+      senderId: _myUserId.toString(),
       type: MessageType.voice,
       voiceDuration: Duration(seconds: durationSeconds),
       timestamp: DateTime.now(),
       status: MessageStatus.sending,
       isFromMe: true,
+      replyToId: replyToId,
     );
     final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
     emit(current.copyWith(
-        messages: optimistic,
-        filteredMessages: _applySearch(optimistic, current.searchQuery)));
+      messages: optimistic,
+      filteredMessages: _applySearch(optimistic, current.searchQuery),
+      clearReplyingTo: true,
+    ));
 
-    if (_wsService.isConnected) {
-      _wsService.sendVoice(
-          receiverId: _partnerUserId!, durationSeconds: durationSeconds);
+    try {
+      final upload = await _repo.uploadVoiceFile(filePath);
+      if (isClosed) return;
+
+      if (_wsService.isConnected) {
+        _wsService.sendVoice(
+          receiverId: _partnerUserId!,
+          durationSeconds: durationSeconds,
+          fileUrl: upload.fileUrl,
+          fileName: upload.fileName,
+          fileSizeBytes: upload.fileSizeBytes,
+          replyToId: replyToIdInt,
+        );
+      }
+    } catch (_) {
+      if (isClosed) return;
+      final s = state;
+      if (s is PrivateChatLoaded) {
+        final msgs = s.messages.where((m) => m.id != tempId).toList();
+        emit(s.copyWith(
+          messages: msgs,
+          filteredMessages: _applySearch(msgs, s.searchQuery),
+        ));
+      }
     }
   }
 
@@ -288,9 +375,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       final confirmed = await _repo.editMessage(chatId, newText);
       final s = state;
       if (s is! PrivateChatLoaded) return;
-      final updated = s.messages
-          .map((m) => m.id == chatId ? confirmed : m)
-          .toList();
+      final updated =
+          s.messages.map((m) => m.id == chatId ? confirmed : m).toList();
       emit(s.copyWith(
         messages: updated,
         filteredMessages: _applySearch(updated, s.searchQuery),
@@ -358,8 +444,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   List<ChatMessage> _applySearch(List<ChatMessage> messages, String query) {
     if (query.isEmpty) return messages;
     return messages
-        .where((m) =>
-            m.text?.toLowerCase().contains(query.toLowerCase()) ?? false)
+        .where(
+            (m) => m.text?.toLowerCase().contains(query.toLowerCase()) ?? false)
         .toList();
   }
 

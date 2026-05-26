@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/models/voice_upload_result.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo.dart';
 
 class ChatRepoImpl implements ChatRepo {
@@ -38,4 +39,8 @@ class ChatRepoImpl implements ChatRepo {
   @override
   Future<void> unpinConversation(String partnerId) =>
       _datasource.unpinConversation(int.parse(partnerId));
+
+  @override
+  Future<VoiceUploadResult> uploadVoiceFile(String filePath) =>
+      _datasource.uploadVoiceFile(filePath);
 }

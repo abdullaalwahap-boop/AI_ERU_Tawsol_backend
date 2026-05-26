@@ -203,6 +203,7 @@ class ChatMessage {
   final bool isFromMe;
   final bool isDeleted;
   final DateTime? editedAt;
+  final String? replyToId;
 
   const ChatMessage({
     required this.id,
@@ -218,6 +219,7 @@ class ChatMessage {
     required this.isFromMe,
     this.isDeleted = false,
     this.editedAt,
+    this.replyToId,
   });
 
   /// Returns true if the message can be edited by the sender (text only, within 15 min).
@@ -260,6 +262,7 @@ class ChatMessage {
       editedAt: json['edited_at'] != null
           ? DateTime.tryParse(json['edited_at'] as String)
           : null,
+      replyToId: (json['reply_to_id'] as int?)?.toString(),
     );
   }
 
@@ -268,21 +271,25 @@ class ChatMessage {
     String? text,
     bool? isDeleted,
     DateTime? editedAt,
+    String? fileUrl,
+    Duration? voiceDuration,
+    String? replyToId,
   }) {
     return ChatMessage(
       id: id,
       senderId: senderId,
       type: type,
       text: text ?? this.text,
-      fileUrl: fileUrl,
+      fileUrl: fileUrl ?? this.fileUrl,
       fileName: fileName,
       fileSizeMB: fileSizeMB,
-      voiceDuration: voiceDuration,
+      voiceDuration: voiceDuration ?? this.voiceDuration,
       timestamp: timestamp,
       status: status ?? this.status,
       isFromMe: isFromMe,
       isDeleted: isDeleted ?? this.isDeleted,
       editedAt: editedAt ?? this.editedAt,
+      replyToId: replyToId ?? this.replyToId,
     );
   }
 }

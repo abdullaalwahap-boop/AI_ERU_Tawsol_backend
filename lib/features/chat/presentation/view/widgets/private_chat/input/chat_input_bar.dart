@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/voice_recorder_service.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_emoji_picker.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_input_text_field.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_mic_button.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_send_button.dart';
+import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/reply_preview_bar.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/sheets/attachment_bottom_sheet.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/voice/voice_recording_overlay.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/chat_icon_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatInputBar extends StatefulWidget {
   final void Function(String text) onSendText;
-  final VoidCallback? onSendVoice;
+  final void Function(String filePath, int durationSeconds)? onSendVoice;
   final void Function(AttachmentOption) onAttachment;
+
+  /// Currently active reply target (null when not replying).
+  final ChatMessage? replyingTo;
+
+  /// Display name of the original sender — "You" or partner's name.
+  final String? replyingToSenderName;
+
+  /// Called when the user taps the X button on the reply bar.
+  final VoidCallback? onCancelReply;
 
   const ChatInputBar({
     super.key,
     required this.onSendText,
     this.onSendVoice,
     required this.onAttachment,
+    this.replyingTo,
+    this.replyingToSenderName,
+    this.onCancelReply,
   });
 
   @override
@@ -29,6 +45,8 @@ class ChatInputBar extends StatefulWidget {
 class _ChatInputBarState extends State<ChatInputBar> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
+  late final VoiceRecorderService _recorder;
+
   bool _hasText = false;
   bool _isRecording = false;
   bool _showEmojiPicker = false;
@@ -36,6 +54,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   @override
   void initState() {
     super.initState();
+    _recorder = getIt<VoiceRecorderService>();
     _controller.addListener(_handleTextChange);
     _focusNode.addListener(_handleFocusChange);
   }
@@ -53,7 +72,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
   }
 
   void _handleFocusChange() {
-    // Close emoji picker when the user taps directly into the text field
     if (_focusNode.hasFocus && _showEmojiPicker) {
       setState(() => _showEmojiPicker = false);
     }
@@ -66,16 +84,50 @@ class _ChatInputBarState extends State<ChatInputBar> {
     _controller.clear();
   }
 
-  void _startRecording() => setState(() {
-        _isRecording = true;
-        _showEmojiPicker = false;
-      });
+  Future<void> _startRecording() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final granted = await _recorder.requestPermission();
+    if (!granted) {
+      if (!mounted) return;
+      final permanentlyDenied = await _recorder.isPermanentlyDenied();
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(permanentlyDenied
+              ? 'Microphone permission denied. Enable it in Settings.'
+              : 'Microphone permission is required to record voice messages.'),
+          action: permanentlyDenied
+              ? SnackBarAction(
+                  label: 'Settings',
+                  onPressed: openAppSettings,
+                )
+              : null,
+        ),
+      );
+      return;
+    }
 
-  void _cancelRecording() => setState(() => _isRecording = false);
+    final started = await _recorder.startRecording();
+    if (!started || !mounted) return;
 
-  void _sendVoice() {
+    setState(() {
+      _isRecording = true;
+      _showEmojiPicker = false;
+    });
+  }
+
+  Future<void> _cancelRecording() async {
+    await _recorder.cancelRecording();
+    if (mounted) setState(() => _isRecording = false);
+  }
+
+  Future<void> _sendVoice() async {
+    final result = await _recorder.stopRecording();
+    if (!mounted) return;
     setState(() => _isRecording = false);
-    widget.onSendVoice?.call();
+    if (result != null) {
+      widget.onSendVoice?.call(result.filePath, result.durationSeconds);
+    }
   }
 
   void _toggleEmojiPicker() {
@@ -92,6 +144,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   Widget build(BuildContext context) {
     if (_isRecording) {
       return VoiceRecordingOverlay(
+        amplitudeStream: _recorder.amplitudeStream,
         onCancel: _cancelRecording,
         onSend: _sendVoice,
       );
@@ -100,6 +153,12 @@ class _ChatInputBarState extends State<ChatInputBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (widget.replyingTo != null)
+          ReplyPreviewBar(
+            replyingTo: widget.replyingTo!,
+            senderName: widget.replyingToSenderName ?? '',
+            onDismiss: widget.onCancelReply ?? () {},
+          ),
         _buildInputRow(),
         if (_showEmojiPicker) ChatEmojiPicker(controller: _controller),
       ],
@@ -151,7 +210,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ? ChatSendButton(key: const ValueKey('send'), onTap: _send)
                   : ChatMicButton(
                       key: const ValueKey('mic'),
-                      onHold: _startRecording,
+                      onTap: _startRecording,
                     ),
             ),
           ],

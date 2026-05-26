@@ -20,6 +20,7 @@ class PrivateChatBody extends StatefulWidget {
 
 class _PrivateChatBodyState extends State<PrivateChatBody> {
   final _scrollController = ScrollController();
+  final _highlightedId = ValueNotifier<String?>(null);
   bool _showScrollToBottom = false;
 
   @override
@@ -31,11 +32,11 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _highlightedId.dispose();
     super.dispose();
   }
 
   // In a reverse:true list, pixel offset 0 IS the bottom.
-  // The user is "away from bottom" when pixels > threshold.
   void _onScroll() {
     if (!_scrollController.hasClients) return;
     final shouldShow = _scrollController.position.pixels > 120;
@@ -44,11 +45,71 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
     }
   }
 
-  // Instant jump — no animation, like WhatsApp.
   void _jumpToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(0);
+      }
+    });
+  }
+
+  /// Scroll the list so [messageId] becomes visible, then briefly highlight it.
+  /// Handles both visible items (direct ensureVisible) and off-screen items
+  /// (fraction-based jump first, then ensureVisible).
+  Future<void> _scrollToMessage(String messageId) async {
+    // Capture cubit reference before any await to avoid context-across-async-gap.
+    final cubit = context.read<PrivateChatCubit>();
+
+    // Fast path: item already in viewport.
+    var ctx = GlobalObjectKey(messageId).currentContext;
+    if (ctx != null) {
+      await Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 420),
+        curve: Curves.easeInOut,
+        alignment: 0.5,
+      );
+      _triggerHighlight(messageId);
+      return;
+    }
+
+    // Item is outside the built range — jump to an approximate position so
+    // ListView.builder constructs it, then fine-tune with ensureVisible.
+    if (!_scrollController.hasClients) return;
+    final cubitState = cubit.state;
+    if (cubitState is! PrivateChatLoaded) return;
+
+    final reversed = cubitState.displayMessages.reversed.toList();
+    final idx = reversed.indexWhere((m) => m.id == messageId);
+    if (idx == -1) return;
+
+    final maxExtent = _scrollController.position.maxScrollExtent;
+    if (maxExtent > 0) {
+      final fraction = idx / reversed.length.toDouble();
+      _scrollController.jumpTo((maxExtent * fraction).clamp(0.0, maxExtent));
+    }
+
+    // Give the builder one frame to construct the now-visible item.
+    await Future.delayed(const Duration(milliseconds: 80));
+    if (!mounted) return;
+
+    ctx = GlobalObjectKey(messageId).currentContext;
+    if (ctx != null) {
+      await Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeInOut,
+        alignment: 0.5,
+      );
+    }
+    _triggerHighlight(messageId);
+  }
+
+  void _triggerHighlight(String messageId) {
+    _highlightedId.value = messageId;
+    Future.delayed(const Duration(milliseconds: 1400), () {
+      if (mounted && _highlightedId.value == messageId) {
+        _highlightedId.value = null;
       }
     });
   }
@@ -64,17 +125,41 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
     );
   }
 
+  String _senderName(ChatMessage message) =>
+      message.isFromMe ? 'You' : widget.conversation.otherUser.name;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PrivateChatCubit, PrivateChatState>(
-      // Only auto-scroll when a new message is added — not on typing or search.
-      // Initial load needs no scroll because reverse:true starts at the bottom.
       listenWhen: (prev, curr) {
         if (curr is! PrivateChatLoaded || curr.isSearching) return false;
         if (prev is! PrivateChatLoaded) return false;
+        if (curr.sendError != null && curr.sendError != prev.sendError) {
+          return true;
+        }
         return curr.messages.length > prev.messages.length;
       },
       listener: (context, state) {
+        if (state is! PrivateChatLoaded) return;
+        if (state.sendError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.sendError!),
+              backgroundColor: Colors.red.shade700,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          return;
+        }
+        // Always jump to bottom when the current user sends a message,
+        // regardless of scroll position. For incoming messages, only jump
+        // when already near the bottom (< 120 px from it).
+        final lastMsg =
+            state.messages.isNotEmpty ? state.messages.last : null;
+        if (lastMsg?.isFromMe == true) {
+          _jumpToBottom();
+          return;
+        }
         final isNearBottom = !_scrollController.hasClients ||
             _scrollController.position.pixels < 120;
         if (isNearBottom) _jumpToBottom();
@@ -95,7 +180,8 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ChatSearchBar(
                 onChanged: (q) =>
                     context.read<PrivateChatCubit>().searchMessages(q),
-                onClose: () => context.read<PrivateChatCubit>().toggleSearch(),
+                onClose: () =>
+                    context.read<PrivateChatCubit>().toggleSearch(),
               ),
             Expanded(
               child: Stack(
@@ -109,6 +195,8 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
                       isOtherTyping: loaded.isOtherTyping,
                       searchQuery: loaded.searchQuery,
                       otherUser: widget.conversation.otherUser,
+                      highlightedId: _highlightedId,
+                      onScrollToMessage: _scrollToMessage,
                     ),
                   ),
                   Positioned(
@@ -130,9 +218,19 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ChatInputBar(
                 onSendText: (text) =>
                     context.read<PrivateChatCubit>().sendTextMessage(text),
-                onSendVoice: () =>
-                    context.read<PrivateChatCubit>().sendVoiceMessage(),
+                onSendVoice: (filePath, durationSeconds) => context
+                    .read<PrivateChatCubit>()
+                    .sendVoiceMessage(
+                      filePath: filePath,
+                      durationSeconds: durationSeconds,
+                    ),
                 onAttachment: _onAttachment,
+                replyingTo: loaded.replyingTo,
+                replyingToSenderName: loaded.replyingTo != null
+                    ? _senderName(loaded.replyingTo!)
+                    : null,
+                onCancelReply: () =>
+                    context.read<PrivateChatCubit>().setReplyTo(null),
               ),
           ],
         );

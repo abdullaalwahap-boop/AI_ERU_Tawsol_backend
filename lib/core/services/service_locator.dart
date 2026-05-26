@@ -8,7 +8,9 @@ import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo_impl
 import 'package:ai_eru_tawasol/features/chat/data/datasources/chat_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo.dart';
 import 'package:ai_eru_tawasol/features/chat/data/repos/chat_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/audio_player_service.dart';
 import 'package:ai_eru_tawasol/features/chat/data/services/chat_websocket_service.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/voice_recorder_service.dart';
 import 'package:ai_eru_tawasol/features/course/data/datasources/course_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo_impl.dart';
@@ -65,6 +67,8 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<ChatRepo>(ChatRepoImpl(chatDatasource));
   getIt.registerSingleton<ChatWebSocketService>(
       ChatWebSocketService(storageService));
+  getIt.registerSingleton<VoiceRecorderService>(VoiceRecorderService());
+  getIt.registerSingleton<AudioPlayerService>(AudioPlayerService());
 
   // ─── Other Features ───────────────────────────────────────────────────────────
   getIt.registerSingleton<AnnounRepoImpl>(AnnounRepoImpl());

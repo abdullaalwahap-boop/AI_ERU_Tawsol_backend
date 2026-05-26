@@ -2,6 +2,7 @@ import 'package:ai_eru_tawasol/core/errors/network_exception.dart';
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/models/voice_upload_result.dart';
 import 'package:dio/dio.dart';
 
 /// Remote data source for all chat-related REST API calls.
@@ -149,6 +150,28 @@ class ChatRemoteDatasource {
       await _dio.put(ApiConstants.chatSeen(int.parse(otherUserId)));
     } on DioException {
       // Non-critical — best effort.
+    }
+  }
+
+  // ── Voice Upload ──────────────────────────────────────────────────────────
+
+  Future<VoiceUploadResult> uploadVoiceFile(String filePath) async {
+    final fileName = filePath.split(RegExp(r'[/\\]')).last;
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath, filename: fileName),
+      });
+      final response = await _dio.post(
+        ApiConstants.chatUploadVoice,
+        data: formData,
+      );
+      _assertOk(response);
+      return VoiceUploadResult.fromJson(
+          response.data as Map<String, dynamic>);
+    } on NetworkException {
+      rethrow;
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
     }
   }
 

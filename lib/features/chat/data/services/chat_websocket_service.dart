@@ -85,21 +85,37 @@ class ChatWebSocketService {
 
   // ── Outgoing messages ──────────────────────────────────────────────────────
 
-  void sendText({required int receiverId, required String text}) {
+  void sendText({
+    required int receiverId,
+    required String text,
+    int? replyToId,
+  }) {
     _send({
       'type': 'message',
       'receiver_id': receiverId,
       'message': text,
       'content_type': 'text',
+      if (replyToId != null) 'reply_to_id': replyToId,
     });
   }
 
-  void sendVoice({required int receiverId, required int durationSeconds}) {
+  void sendVoice({
+    required int receiverId,
+    required int durationSeconds,
+    String? fileUrl,
+    String? fileName,
+    int? fileSizeBytes,
+    int? replyToId,
+  }) {
     _send({
       'type': 'message',
       'receiver_id': receiverId,
       'content_type': 'voice',
       'voice_duration_seconds': durationSeconds,
+      if (fileUrl != null) 'file_url': fileUrl,
+      if (fileName != null) 'file_name': fileName,
+      if (fileSizeBytes != null) 'file_size_bytes': fileSizeBytes,
+      if (replyToId != null) 'reply_to_id': replyToId,
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/models/voice_upload_result.dart';
 
 abstract class ChatRepo {
   /// Returns all conversations for the authenticated user, pinned first.
@@ -24,4 +25,7 @@ abstract class ChatRepo {
 
   /// Unpins a conversation with [partnerId].
   Future<void> unpinConversation(String partnerId);
+
+  /// Uploads a voice recording file and returns the remote URL + metadata.
+  Future<VoiceUploadResult> uploadVoiceFile(String filePath);
 }

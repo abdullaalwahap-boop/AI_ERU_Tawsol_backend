@@ -17,6 +17,8 @@ final class PrivateChatLoaded extends PrivateChatState {
   final bool isSearching;
   final String searchQuery;
   final List<ChatMessage> filteredMessages;
+  final String? sendError;
+  final ChatMessage? replyingTo;
 
   const PrivateChatLoaded({
     required this.messages,
@@ -24,14 +26,23 @@ final class PrivateChatLoaded extends PrivateChatState {
     this.isOtherTyping = false,
     this.isSearching = false,
     this.searchQuery = '',
+    this.sendError,
+    this.replyingTo,
   });
 
   List<ChatMessage> get displayMessages =>
       isSearching ? filteredMessages : messages;
 
   @override
-  List<Object?> get props =>
-      [messages, isOtherTyping, isSearching, searchQuery, filteredMessages];
+  List<Object?> get props => [
+        messages,
+        isOtherTyping,
+        isSearching,
+        searchQuery,
+        filteredMessages,
+        sendError,
+        replyingTo,
+      ];
 
   PrivateChatLoaded copyWith({
     List<ChatMessage>? messages,
@@ -39,6 +50,9 @@ final class PrivateChatLoaded extends PrivateChatState {
     bool? isSearching,
     String? searchQuery,
     List<ChatMessage>? filteredMessages,
+    String? sendError,
+    ChatMessage? replyingTo,
+    bool clearReplyingTo = false,
   }) {
     return PrivateChatLoaded(
       messages: messages ?? this.messages,
@@ -46,6 +60,8 @@ final class PrivateChatLoaded extends PrivateChatState {
       isSearching: isSearching ?? this.isSearching,
       searchQuery: searchQuery ?? this.searchQuery,
       filteredMessages: filteredMessages ?? this.filteredMessages,
+      sendError: sendError,
+      replyingTo: clearReplyingTo ? null : (replyingTo ?? this.replyingTo),
     );
   }
 }

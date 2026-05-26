@@ -6,15 +6,29 @@ import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class MessageActionsSheet extends StatelessWidget {
   final ChatMessage message;
+  final VoidCallback onReply;
+  final VoidCallback? onCopy;
   final void Function(String newText) onEdit;
   final VoidCallback onDelete;
 
   const MessageActionsSheet({
     super.key,
     required this.message,
+    required this.onReply,
+    this.onCopy,
     required this.onEdit,
     required this.onDelete,
   });
+
+  void _handleReply(BuildContext context) {
+    Navigator.pop(context);
+    onReply();
+  }
+
+  void _handleCopy(BuildContext context) {
+    Navigator.pop(context);
+    onCopy?.call();
+  }
 
   void _handleEdit(BuildContext context) {
     Navigator.pop(context);
@@ -35,6 +49,8 @@ class MessageActionsSheet extends StatelessWidget {
       onEdit(confirmed);
     }
   }
+
+  bool get _hasDestructiveActions => message.canEdit || message.canDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +80,33 @@ class MessageActionsSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
+
+          // Reply — always available for non-deleted messages
+          _ActionTile(
+            icon: Icons.reply_rounded,
+            label: 'Reply',
+            color: AppColors.primary,
+            onTap: () => _handleReply(context),
+          ),
+
+          // Copy — only for text messages with content
+          if (onCopy != null)
+            _ActionTile(
+              icon: Icons.copy_rounded,
+              label: 'Copy message',
+              color: AppColors.textSecondary,
+              onTap: () => _handleCopy(context),
+            ),
+
+          // Divider between safe and destructive actions
+          if (_hasDestructiveActions)
+            Divider(
+              height: 1,
+              indent: 16,
+              endIndent: 16,
+              color: AppColors.dividerLight,
+            ),
+
           if (message.canEdit)
             _ActionTile(
               icon: Icons.edit_rounded,
@@ -71,6 +114,7 @@ class MessageActionsSheet extends StatelessWidget {
               color: AppColors.primary,
               onTap: () => _handleEdit(context),
             ),
+
           if (message.canEdit && message.canDelete)
             Divider(
               height: 1,
@@ -78,6 +122,7 @@ class MessageActionsSheet extends StatelessWidget {
               endIndent: 16,
               color: AppColors.dividerLight,
             ),
+
           if (message.canDelete)
             _ActionTile(
               icon: Icons.delete_outline_rounded,
@@ -85,6 +130,7 @@ class MessageActionsSheet extends StatelessWidget {
               color: AppColors.error,
               onTap: () => _handleDelete(context),
             ),
+
           const SizedBox(height: 8),
         ],
       ),
@@ -92,7 +138,7 @@ class MessageActionsSheet extends StatelessWidget {
   }
 }
 
-// ─── Edit dialog (StatefulWidget owns the controller lifecycle) ───────────────
+// ─── Edit dialog ──────────────────────────────────────────────────────────────
 
 class _EditMessageDialog extends StatefulWidget {
   final String initialText;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -5,64 +7,72 @@ import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/voice/recording_waveform.dart';
 
 class VoiceRecordingOverlay extends StatefulWidget {
+  final Stream<double> amplitudeStream;
   final VoidCallback onCancel;
   final VoidCallback onSend;
 
   const VoiceRecordingOverlay({
     super.key,
+    required this.amplitudeStream,
     required this.onCancel,
     required this.onSend,
   });
 
   @override
-  State<VoiceRecordingOverlay> createState() => _VoiceRecordingOverlayState();
+  State<VoiceRecordingOverlay> createState() =>
+      _VoiceRecordingOverlayState();
 }
 
 class _VoiceRecordingOverlayState extends State<VoiceRecordingOverlay>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final AnimationController _pulseController;
-  late final AnimationController _waveController;
   late final Animation<double> _pulseAnim;
+
+  Timer? _timer;
+  StreamSubscription<double>? _ampSub;
   int _seconds = 0;
+
+  // Rolling 22-entry buffer → 22 bars in the waveform.
+  final List<double> _amplitudes = List.filled(22, 0.05, growable: true);
 
   @override
   void initState() {
     super.initState();
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
 
-    _waveController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    )..repeat();
-
-    _pulseAnim = Tween<double>(begin: 0.95, end: 1.1).animate(
+    _pulseAnim = Tween<double>(begin: 0.85, end: 1.15).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
 
-    _startTimer();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() => _seconds++);
+    });
+
+    _ampSub = widget.amplitudeStream.listen((amp) {
+      if (!mounted) return;
+      setState(() {
+        _amplitudes.removeAt(0);
+        _amplitudes.add(amp);
+      });
+    });
   }
 
-  void _startTimer() async {
-    while (mounted) {
-      await Future.delayed(const Duration(seconds: 1));
-      if (mounted) setState(() => _seconds++);
-    }
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _timer?.cancel();
+    _ampSub?.cancel();
+    super.dispose();
   }
 
   String get _timerText {
     final m = (_seconds ~/ 60).toString().padLeft(2, '0');
     final s = (_seconds % 60).toString().padLeft(2, '0');
     return '$m:$s';
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    _waveController.dispose();
-    super.dispose();
   }
 
   @override
@@ -98,13 +108,12 @@ class _VoiceRecordingOverlayState extends State<VoiceRecordingOverlay>
             ),
           ),
           AppSpacing.w12,
-          Expanded(
-            child: RecordingWaveform(animation: _waveController),
-          ),
+          Expanded(child: RecordingWaveform(amplitudes: _amplitudes)),
           AppSpacing.w12,
           AnimatedBuilder(
             animation: _pulseAnim,
-            builder: (context, child) => Row(
+            builder: (context, _) => Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Transform.scale(
                   scale: _pulseAnim.value,
