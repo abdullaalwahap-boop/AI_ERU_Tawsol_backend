@@ -54,6 +54,7 @@ dependencies:
   path_provider: ^2.1.4
   image_picker: ^1.1.2
   file_picker: ^8.1.7
+  gal: ^2.3.0
 
 dependency_overrides:
   # record_linux 0.7.2 (pulled by record ^5.0.0) is incompatible with
