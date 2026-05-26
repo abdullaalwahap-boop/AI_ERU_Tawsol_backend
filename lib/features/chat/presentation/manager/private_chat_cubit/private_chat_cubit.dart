@@ -38,7 +38,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       await _wsService.ensureConnected();
       final messages = await _repo.getMessages(partnerUserIdStr);
       if (isClosed) return;
-      emit(PrivateChatLoaded(messages: messages, filteredMessages: messages));
+      emit(PrivateChatLoaded(messages: messages));
       _subscribeToWsEvents();
       _wsService.sendSeen(_partnerUserId!);
     } catch (e) {
@@ -96,11 +96,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     if (current is! PrivateChatLoaded) return;
     final msg = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final updated = List<ChatMessage>.from(current.messages)..add(msg);
-    emit(current.copyWith(
-      messages: updated,
-      filteredMessages: _applySearch(updated, current.searchQuery),
-      isOtherTyping: false,
-    ));
+    emit(_withMessages(current, updated, isOtherTyping: false));
     _wsService.sendSeen(_partnerUserId!);
   }
 
@@ -111,14 +107,11 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     if (current is! PrivateChatLoaded) return;
     final confirmed = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final messages = current.messages.toList();
-    // For text: match by type + text content.
-    // For file/image/audio: match by type + fileName (text is null for these).
-    // For voice: match by type (fileName may differ after upload rename).
     final idx = messages.indexWhere((m) {
       if (m.status != MessageStatus.sending || !m.isFromMe) return false;
       if (m.type != confirmed.type) return false;
       if (m.type == MessageType.text) return m.text == confirmed.text;
-      if (m.type == MessageType.voice) return true; // only one voice at a time
+      if (m.type == MessageType.voice) return true;
       return m.fileName == confirmed.fileName || m.fileUrl == confirmed.fileUrl;
     });
     if (idx != -1) {
@@ -130,10 +123,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     } else {
       messages.add(confirmed);
     }
-    emit(current.copyWith(
-      messages: messages,
-      filteredMessages: _applySearch(messages, current.searchQuery),
-    ));
+    emit(_withMessages(current, messages));
   }
 
   // ── Typing indicator ───────────────────────────────────────────────────────
@@ -144,7 +134,6 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     _typingTimer?.cancel();
     emit(current.copyWith(isOtherTyping: isTyping));
     if (isTyping) {
-      // Auto-clear after 5 s in case the partner disconnects mid-typing.
       _typingTimer = Timer(const Duration(seconds: 5), () {
         final s = state;
         if (s is PrivateChatLoaded && s.isOtherTyping) {
@@ -162,10 +151,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     final updated = current.messages
         .map((m) => m.isFromMe ? m.copyWith(status: MessageStatus.seen) : m)
         .toList();
-    emit(current.copyWith(
-      messages: updated,
-      filteredMessages: _applySearch(updated, current.searchQuery),
-    ));
+    emit(_withMessages(current, updated));
   }
 
   void _onMessagesDelivered() {
@@ -176,10 +162,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
             ? m.copyWith(status: MessageStatus.delivered)
             : m)
         .toList();
-    emit(current.copyWith(
-      messages: updated,
-      filteredMessages: _applySearch(updated, current.searchQuery),
-    ));
+    emit(_withMessages(current, updated));
   }
 
   // ── Message edited (from partner via WS) ──────────────────────────────────
@@ -196,10 +179,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       }
       return m;
     }).toList();
-    emit(current.copyWith(
-      messages: messages,
-      filteredMessages: _applySearch(messages, current.searchQuery),
-    ));
+    emit(_withMessages(current, messages));
   }
 
   // ── Message deleted (from partner via WS) ─────────────────────────────────
@@ -211,10 +191,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       if (m.id == chatId.toString()) return m.copyWith(isDeleted: true);
       return m;
     }).toList();
-    emit(current.copyWith(
-      messages: messages,
-      filteredMessages: _applySearch(messages, current.searchQuery),
-    ));
+    emit(_withMessages(current, messages));
   }
 
   // ── Server send error ─────────────────────────────────────────────────────
@@ -222,15 +199,10 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   void _onSendError(String detail) {
     final current = state;
     if (current is! PrivateChatLoaded) return;
-    // Roll back any optimistic messages that are still in "sending" state.
     final messages = current.messages
         .where((m) => m.status != MessageStatus.sending)
         .toList();
-    emit(current.copyWith(
-      messages: messages,
-      filteredMessages: _applySearch(messages, current.searchQuery),
-      sendError: detail,
-    ));
+    emit(_withMessages(current, messages, sendError: detail));
   }
 
   // ── Reply ──────────────────────────────────────────────────────────────────
@@ -269,12 +241,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       replyToId: replyToId,
     );
     final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
-    emit(current.copyWith(
-      messages: optimistic,
-      filteredMessages: _applySearch(optimistic, current.searchQuery),
-      isOtherTyping: false,
-      clearReplyingTo: true,
-    ));
+    emit(_withMessages(current, optimistic,
+        isOtherTyping: false, clearReplyingTo: true));
 
     if (_wsService.isConnected) {
       _wsService.sendText(
@@ -285,14 +253,12 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     } else {
       try {
         await _repo.markSeen(_partnerUserId.toString());
-        final msgs = (state as PrivateChatLoaded).messages.toList();
+        final s = state;
+        if (s is! PrivateChatLoaded) return;
+        final msgs = s.messages.toList();
         final idx = msgs.indexWhere((m) => m.id == temp.id);
         if (idx != -1) msgs[idx] = temp.copyWith(status: MessageStatus.sent);
-        final s = state as PrivateChatLoaded;
-        emit(s.copyWith(
-          messages: msgs,
-          filteredMessages: _applySearch(msgs, s.searchQuery),
-        ));
+        emit(_withMessages(s, msgs));
       } catch (_) {}
     }
   }
@@ -323,11 +289,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       replyToId: replyToId,
     );
     final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
-    emit(current.copyWith(
-      messages: optimistic,
-      filteredMessages: _applySearch(optimistic, current.searchQuery),
-      clearReplyingTo: true,
-    ));
+    emit(_withMessages(current, optimistic, clearReplyingTo: true));
 
     try {
       final upload = await _repo.uploadVoiceFile(filePath);
@@ -348,10 +310,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       final s = state;
       if (s is PrivateChatLoaded) {
         final msgs = s.messages.where((m) => m.id != tempId).toList();
-        emit(s.copyWith(
-          messages: msgs,
-          filteredMessages: _applySearch(msgs, s.searchQuery),
-        ));
+        emit(_withMessages(s, msgs));
       }
     }
   }
@@ -361,7 +320,7 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
   Future<void> sendAttachment({
     required String filePath,
     required String fileName,
-    required String pickedType, // 'image' | 'video' | 'audio' | 'file'
+    required String pickedType,
   }) async {
     final current = state;
     if (current is! PrivateChatLoaded ||
@@ -390,18 +349,14 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       senderId: _myUserId.toString(),
       type: msgType,
       fileName: fileName,
-      fileUrl: filePath, // local path for optimistic display
+      fileUrl: filePath,
       timestamp: DateTime.now(),
       status: MessageStatus.sending,
       isFromMe: true,
       replyToId: replyToId,
     );
     final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
-    emit(current.copyWith(
-      messages: optimistic,
-      filteredMessages: _applySearch(optimistic, current.searchQuery),
-      clearReplyingTo: true,
-    ));
+    emit(_withMessages(current, optimistic, clearReplyingTo: true));
 
     try {
       final upload = await _repo.uploadFile(filePath);
@@ -418,30 +373,24 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
         );
       }
 
-      // Update temp message with real server URL immediately.
       final s = state;
       if (s is PrivateChatLoaded) {
         final msgs = s.messages.map((m) {
           if (m.id == tempId) {
-            return m.copyWith(fileUrl: upload.fileUrl, fileName: upload.fileName ?? fileName);
+            return m.copyWith(
+                fileUrl: upload.fileUrl,
+                fileName: upload.fileName ?? fileName);
           }
           return m;
         }).toList();
-        emit(s.copyWith(
-          messages: msgs,
-          filteredMessages: _applySearch(msgs, s.searchQuery),
-        ));
+        emit(_withMessages(s, msgs));
       }
     } catch (_) {
       if (isClosed) return;
       final s = state;
       if (s is PrivateChatLoaded) {
         final msgs = s.messages.where((m) => m.id != tempId).toList();
-        emit(s.copyWith(
-          messages: msgs,
-          filteredMessages: _applySearch(msgs, s.searchQuery),
-          sendError: 'Failed to upload file.',
-        ));
+        emit(_withMessages(s, msgs, sendError: 'Failed to upload file.'));
       }
     }
   }
@@ -452,16 +401,12 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     final current = state;
     if (current is! PrivateChatLoaded) return;
 
-    // Optimistic update.
     final now = DateTime.now();
     final optimistic = current.messages.map((m) {
       if (m.id == chatId) return m.copyWith(text: newText, editedAt: now);
       return m;
     }).toList();
-    emit(current.copyWith(
-      messages: optimistic,
-      filteredMessages: _applySearch(optimistic, current.searchQuery),
-    ));
+    emit(_withMessages(current, optimistic));
 
     try {
       final confirmed = await _repo.editMessage(chatId, newText);
@@ -469,12 +414,8 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       if (s is! PrivateChatLoaded) return;
       final updated =
           s.messages.map((m) => m.id == chatId ? confirmed : m).toList();
-      emit(s.copyWith(
-        messages: updated,
-        filteredMessages: _applySearch(updated, s.searchQuery),
-      ));
+      emit(_withMessages(s, updated));
     } catch (_) {
-      // Revert on failure.
       emit(current);
     }
   }
@@ -485,20 +426,15 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     final current = state;
     if (current is! PrivateChatLoaded) return;
 
-    // Optimistic update.
     final optimistic = current.messages.map((m) {
       if (m.id == chatId) return m.copyWith(isDeleted: true);
       return m;
     }).toList();
-    emit(current.copyWith(
-      messages: optimistic,
-      filteredMessages: _applySearch(optimistic, current.searchQuery),
-    ));
+    emit(_withMessages(current, optimistic));
 
     try {
       await _repo.deleteMessage(chatId);
     } catch (_) {
-      // Revert on failure.
       emit(current);
     }
   }
@@ -518,27 +454,82 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     emit(current.copyWith(
       isSearching: !current.isSearching,
       searchQuery: '',
-      filteredMessages: current.messages,
+      searchResults: const <String>[],
+      searchResultIndex: 0,
     ));
   }
 
   void searchMessages(String query) {
     final current = state;
     if (current is! PrivateChatLoaded) return;
+    final results = _computeSearchResults(current.messages, query);
+    // Start at the newest match.
+    final idx = results.isEmpty ? 0 : results.length - 1;
     emit(current.copyWith(
       searchQuery: query,
-      filteredMessages: _applySearch(current.messages, query),
+      searchResults: results,
+      searchResultIndex: idx,
     ));
+  }
+
+  /// Go to the next newer result (higher index = more recent message).
+  void navigateSearchUp() {
+    final current = state;
+    if (current is! PrivateChatLoaded || current.searchResults.isEmpty) return;
+    final newIdx =
+        (current.searchResultIndex + 1).clamp(0, current.searchResults.length - 1);
+    if (newIdx == current.searchResultIndex) return;
+    emit(current.copyWith(searchResultIndex: newIdx));
+  }
+
+  /// Go to the next older result (lower index = earlier message).
+  void navigateSearchDown() {
+    final current = state;
+    if (current is! PrivateChatLoaded || current.searchResults.isEmpty) return;
+    final newIdx =
+        (current.searchResultIndex - 1).clamp(0, current.searchResults.length - 1);
+    if (newIdx == current.searchResultIndex) return;
+    emit(current.copyWith(searchResultIndex: newIdx));
   }
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
-  List<ChatMessage> _applySearch(List<ChatMessage> messages, String query) {
-    if (query.isEmpty) return messages;
+  /// Returns message IDs (oldest-first) that match [query] in text or fileName.
+  List<String> _computeSearchResults(
+      List<ChatMessage> messages, String query) {
+    if (query.isEmpty) return const <String>[];
+    final lower = query.toLowerCase();
     return messages
-        .where(
-            (m) => m.text?.toLowerCase().contains(query.toLowerCase()) ?? false)
+        .where((m) =>
+            (m.text?.toLowerCase().contains(lower) ?? false) ||
+            (m.fileName?.toLowerCase().contains(lower) ?? false))
+        .map((m) => m.id)
         .toList();
+  }
+
+  /// Builds a new state with [msgs] as the message list, re-computing search
+  /// results if a search is currently active.
+  PrivateChatLoaded _withMessages(
+    PrivateChatLoaded s,
+    List<ChatMessage> msgs, {
+    String? sendError,
+    bool clearReplyingTo = false,
+    bool? isOtherTyping,
+  }) {
+    List<String> results = s.searchResults;
+    int idx = s.searchResultIndex;
+    if (s.isSearching && s.searchQuery.isNotEmpty) {
+      results = _computeSearchResults(msgs, s.searchQuery);
+      idx = results.isEmpty ? 0 : idx.clamp(0, results.length - 1);
+    }
+    return s.copyWith(
+      messages: msgs,
+      searchResults: results,
+      searchResultIndex: idx,
+      sendError: sendError,
+      clearReplyingTo: clearReplyingTo,
+      isOtherTyping: isOtherTyping,
+    );
   }
 
   @override

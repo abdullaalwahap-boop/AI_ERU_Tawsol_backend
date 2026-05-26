@@ -28,6 +28,32 @@ class _MessageFileContentState extends State<MessageFileContent> {
 
   ChatMessage get _msg => widget.message;
 
+  @override
+  void initState() {
+    super.initState();
+    _checkAlreadyDownloaded();
+  }
+
+  // ── Check if file already downloaded from a previous session ──────────────
+
+  Future<void> _checkAlreadyDownloaded() async {
+    final fn = _msg.fileName;
+    if (fn == null) return;
+    try {
+      final dir = await getExternalStorageDirectory() ??
+          await getApplicationDocumentsDirectory();
+      final path = '${dir.path}/$fn';
+      if (await File(path).exists()) {
+        if (mounted) {
+          setState(() {
+            _state = _DownloadState.done;
+            _savedPath = path;
+          });
+        }
+      }
+    } catch (_) {}
+  }
+
   // ── URL resolution ─────────────────────────────────────────────────────────
 
   bool get _isLocalFile =>
@@ -48,13 +74,21 @@ class _MessageFileContentState extends State<MessageFileContent> {
   Future<void> _download() async {
     if (_state == _DownloadState.downloading) return;
 
-    // Already downloaded in this session — just open.
+    // Sent by me — open directly if local, or download to temp then open.
+    if (_msg.isFromMe) {
+      if (_isLocalFile && _msg.fileUrl != null) {
+        await OpenFilex.open(_msg.fileUrl!);
+      } else {
+        await _downloadAndOpen(toTemp: true);
+      }
+      return;
+    }
+
     if (_state == _DownloadState.done && _savedPath != null) {
       await OpenFilex.open(_savedPath!);
       return;
     }
 
-    // Local optimistic file — open directly.
     if (_isLocalFile) {
       await OpenFilex.open(_msg.fileUrl!);
       return;
@@ -103,16 +137,37 @@ class _MessageFileContentState extends State<MessageFileContent> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       );
-      // Reset to idle after showing error.
       await Future.delayed(const Duration(seconds: 2));
       if (mounted) setState(() => _state = _DownloadState.idle);
     }
   }
 
-  String _urlFileName(String url) =>
-      url.split('/').last.split('?').first.isNotEmpty
-          ? url.split('/').last.split('?').first
-          : 'file';
+  /// Downloads the file to a temp directory and opens it.
+  /// Used for sent messages (no download state shown).
+  Future<void> _downloadAndOpen({required bool toTemp}) async {
+    final url = _remoteUrl;
+    if (url == null) return;
+    try {
+      final dir = toTemp
+          ? await getTemporaryDirectory()
+          : (await getExternalStorageDirectory() ??
+              await getApplicationDocumentsDirectory());
+      final fileName = _msg.fileName ?? _urlFileName(url);
+      final savePath = '${dir.path}/$fileName';
+      if (!await File(savePath).exists()) {
+        await Dio().download(url, savePath);
+      }
+      await OpenFilex.open(savePath);
+      if (!toTemp) {
+        if (mounted) setState(() { _state = _DownloadState.done; _savedPath = savePath; });
+      }
+    } catch (_) {}
+  }
+
+  String _urlFileName(String url) {
+    final name = url.split('/').last.split('?').first;
+    return name.isNotEmpty ? name : 'file';
+  }
 
   // ── Build ──────────────────────────────────────────────────────────────────
 
@@ -140,9 +195,15 @@ class _MessageFileContentState extends State<MessageFileContent> {
               height: 44,
               decoration: BoxDecoration(
                 color: isMe
-                    ? Colors.white.withValues(alpha: 0.2)
-                    : const Color(0xffEEF2FF),
+                    ? Colors.white.withValues(alpha: 0.18)
+                    : _colorForExt(ext).withValues(alpha: 0.13),
                 borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: isMe
+                      ? Colors.white.withValues(alpha: 0.3)
+                      : _colorForExt(ext).withValues(alpha: 0.4),
+                  width: 1.5,
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -199,17 +260,16 @@ class _MessageFileContentState extends State<MessageFileContent> {
 
             AppSpacing.w8,
 
-            // ── Action button ────────────────────────────────────────────────
-            _buildActionIcon(isMe),
+            // ── Action button (only for received messages) ───────────────────
+            if (!isMe) _buildActionIcon(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildActionIcon(bool isMe) {
-    final color =
-        isMe ? Colors.white.withValues(alpha: 0.9) : AppColors.primary;
+  Widget _buildActionIcon() {
+    const color = AppColors.primary;
 
     switch (_state) {
       case _DownloadState.downloading:
@@ -227,40 +287,59 @@ class _MessageFileContentState extends State<MessageFileContent> {
         return Icon(Icons.check_circle_rounded, size: 22, color: color);
 
       case _DownloadState.error:
-        return Icon(Icons.error_rounded,
-            size: 22, color: Colors.red.shade300);
+        return Icon(Icons.error_rounded, size: 22, color: Colors.red.shade300);
 
       case _DownloadState.idle:
-        // Local file ready to open — show open icon.
-        if (_isLocalFile && File(_msg.fileUrl!).existsSync()) {
-          return Icon(Icons.open_in_new_rounded, size: 18, color: color);
-        }
-        return Icon(Icons.download_rounded, size: 18, color: color);
+        return const Icon(Icons.download_rounded, size: 18, color: color);
     }
   }
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
-  IconData _iconForExt(String ext) {
-    return switch (ext.toLowerCase()) {
-      'pdf' => Icons.picture_as_pdf_rounded,
-      'doc' || 'docx' => Icons.description_rounded,
-      'xls' || 'xlsx' => Icons.table_chart_rounded,
-      'ppt' || 'pptx' => Icons.slideshow_rounded,
-      'zip' || 'rar' => Icons.folder_zip_rounded,
-      'txt' => Icons.text_snippet_rounded,
-      _ => Icons.insert_drive_file_rounded,
-    };
+  Color _colorForExt(String ext) {
+    switch (ext.toLowerCase()) {
+      case 'pdf':
+        return const Color(0xffDC2626);
+      case 'doc':
+      case 'docx':
+        return const Color(0xff2563EB);
+      case 'xls':
+      case 'xlsx':
+        return const Color(0xff16A34A);
+      case 'ppt':
+      case 'pptx':
+        return const Color(0xffEA580C);
+      case 'zip':
+      case 'rar':
+        return const Color(0xff7C3AED);
+      case 'txt':
+        return const Color(0xff64748B);
+      default:
+        return AppColors.primary;
+    }
   }
 
-  Color _colorForExt(String ext) {
-    return switch (ext.toLowerCase()) {
-      'pdf' => const Color(0xffDC2626),
-      'doc' || 'docx' => const Color(0xff2563EB),
-      'xls' || 'xlsx' => const Color(0xff16A34A),
-      'ppt' || 'pptx' => const Color(0xffEA580C),
-      'zip' || 'rar' => const Color(0xff7C3AED),
-      _ => AppColors.primary,
-    };
+  IconData _iconForExt(String ext) {
+    switch (ext.toLowerCase()) {
+      case 'pdf':
+        return Icons.picture_as_pdf_rounded;
+      case 'doc':
+      case 'docx':
+        return Icons.description_rounded;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart_rounded;
+      case 'ppt':
+      case 'pptx':
+        return Icons.slideshow_rounded;
+      case 'zip':
+      case 'rar':
+        return Icons.folder_zip_rounded;
+      case 'txt':
+        return Icons.text_snippet_rounded;
+      default:
+        return Icons.insert_drive_file_rounded;
+    }
   }
+
 }

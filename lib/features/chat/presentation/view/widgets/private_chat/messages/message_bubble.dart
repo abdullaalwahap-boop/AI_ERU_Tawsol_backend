@@ -28,6 +28,9 @@ class MessageBubble extends StatelessWidget {
   /// Shared notifier — when value == message.id, briefly highlight this bubble.
   final ValueNotifier<String?> highlightedId;
 
+  /// True when this message matches the active search query.
+  final bool isSearchMatch;
+
   const MessageBubble({
     super.key,
     required this.message,
@@ -35,6 +38,7 @@ class MessageBubble extends StatelessWidget {
     required this.highlightedId,
     this.replyToMessage,
     this.onScrollToMessage,
+    this.isSearchMatch = false,
   });
 
   // ── Actions ────────────────────────────────────────────────────────────────
@@ -91,8 +95,10 @@ class MessageBubble extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
             color: isHighlighted
-                ? AppColors.primary.withValues(alpha: 0.12)
-                : Colors.transparent,
+                ? AppColors.primary.withValues(alpha: 0.18)
+                : isSearchMatch
+                    ? const Color(0xffFEF08A).withValues(alpha: 0.35)
+                    : Colors.transparent,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

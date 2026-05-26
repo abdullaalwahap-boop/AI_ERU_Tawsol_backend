@@ -15,6 +15,10 @@ class ChatMessageList extends StatelessWidget {
   final bool isSearching;
   final bool isOtherTyping;
   final String searchQuery;
+
+  /// IDs of messages that match the current search query (empty when not searching).
+  final Set<String> searchMatchIds;
+
   final ChatUser otherUser;
   final void Function(String messageId)? onScrollToMessage;
   final ValueNotifier<String?> highlightedId;
@@ -28,10 +32,10 @@ class ChatMessageList extends StatelessWidget {
     required this.searchQuery,
     required this.otherUser,
     required this.highlightedId,
+    this.searchMatchIds = const <String>{},
     this.onScrollToMessage,
   });
 
-  // Build a quick lookup map: message id → ChatMessage.
   Map<String, ChatMessage> _buildIndex(List<ChatMessage> msgs) {
     return {for (final m in msgs) m.id: m};
   }
@@ -47,7 +51,9 @@ class ChatMessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (messages.isEmpty && isSearching) {
+    // Show no-results state only when actively searching with a non-empty query
+    // that yields no matches.
+    if (isSearching && searchQuery.isNotEmpty && searchMatchIds.isEmpty) {
       return _NoResults(query: searchQuery);
     }
 
@@ -83,6 +89,7 @@ class ChatMessageList extends StatelessWidget {
               replyToMessage: replyToMessage,
               otherUserName: otherUser.name,
               highlightedId: highlightedId,
+              isSearchMatch: searchMatchIds.contains(message.id),
               onScrollToMessage: onScrollToMessage,
             ),
           ],

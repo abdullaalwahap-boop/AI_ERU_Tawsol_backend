@@ -16,22 +16,34 @@ final class PrivateChatLoaded extends PrivateChatState {
   final bool isOtherTyping;
   final bool isSearching;
   final String searchQuery;
-  final List<ChatMessage> filteredMessages;
+
+  /// IDs of messages that match the current query, in chronological order.
+  final List<String> searchResults;
+
+  /// Index into [searchResults] for the currently focused result.
+  /// 0 = oldest match, length-1 = newest match.
+  final int searchResultIndex;
+
   final String? sendError;
   final ChatMessage? replyingTo;
 
   const PrivateChatLoaded({
     required this.messages,
-    required this.filteredMessages,
     this.isOtherTyping = false,
     this.isSearching = false,
     this.searchQuery = '',
+    this.searchResults = const <String>[],
+    this.searchResultIndex = 0,
     this.sendError,
     this.replyingTo,
   });
 
-  List<ChatMessage> get displayMessages =>
-      isSearching ? filteredMessages : messages;
+  /// Always the full message list — search is shown as an overlay, not a filter.
+  List<ChatMessage> get displayMessages => messages;
+
+  /// The message ID of the currently focused search result, or null.
+  String? get currentResultId =>
+      searchResults.isEmpty ? null : searchResults[searchResultIndex];
 
   @override
   List<Object?> get props => [
@@ -39,7 +51,8 @@ final class PrivateChatLoaded extends PrivateChatState {
         isOtherTyping,
         isSearching,
         searchQuery,
-        filteredMessages,
+        searchResults,
+        searchResultIndex,
         sendError,
         replyingTo,
       ];
@@ -49,7 +62,8 @@ final class PrivateChatLoaded extends PrivateChatState {
     bool? isOtherTyping,
     bool? isSearching,
     String? searchQuery,
-    List<ChatMessage>? filteredMessages,
+    List<String>? searchResults,
+    int? searchResultIndex,
     String? sendError,
     ChatMessage? replyingTo,
     bool clearReplyingTo = false,
@@ -59,7 +73,8 @@ final class PrivateChatLoaded extends PrivateChatState {
       isOtherTyping: isOtherTyping ?? this.isOtherTyping,
       isSearching: isSearching ?? this.isSearching,
       searchQuery: searchQuery ?? this.searchQuery,
-      filteredMessages: filteredMessages ?? this.filteredMessages,
+      searchResults: searchResults ?? this.searchResults,
+      searchResultIndex: searchResultIndex ?? this.searchResultIndex,
       sendError: sendError,
       replyingTo: clearReplyingTo ? null : (replyingTo ?? this.replyingTo),
     );
