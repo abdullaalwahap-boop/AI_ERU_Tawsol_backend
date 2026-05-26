@@ -43,4 +43,8 @@ class ChatRepoImpl implements ChatRepo {
   @override
   Future<VoiceUploadResult> uploadVoiceFile(String filePath) =>
       _datasource.uploadVoiceFile(filePath);
+
+  @override
+  Future<VoiceUploadResult> uploadFile(String filePath) =>
+      _datasource.uploadFile(filePath);
 }

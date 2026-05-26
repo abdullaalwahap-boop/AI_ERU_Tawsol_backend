@@ -272,6 +272,7 @@ class ChatMessage {
     bool? isDeleted,
     DateTime? editedAt,
     String? fileUrl,
+    String? fileName,
     Duration? voiceDuration,
     String? replyToId,
   }) {
@@ -281,7 +282,7 @@ class ChatMessage {
       type: type,
       text: text ?? this.text,
       fileUrl: fileUrl ?? this.fileUrl,
-      fileName: fileName,
+      fileName: fileName ?? this.fileName,
       fileSizeMB: fileSizeMB,
       voiceDuration: voiceDuration ?? this.voiceDuration,
       timestamp: timestamp,

@@ -36,6 +36,7 @@ class ApiConstants {
   static const String chatConversations = '/chat/conversations';
   static const String chatSend = '/chat/send';
   static const String chatUploadVoice = '/chat/upload/voice';
+  static const String chatUploadFile  = '/chat/upload/file';
   static const String chatSearch = '/chat/search';
   static const String chatOnline = '/chat/online';
   static String chatHistory(int userId1, int userId2) =>

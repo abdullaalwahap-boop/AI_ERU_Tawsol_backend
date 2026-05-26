@@ -111,16 +111,18 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     if (current is! PrivateChatLoaded) return;
     final confirmed = ChatMessage.fromJson(data, myUserId: _myUserId ?? 0);
     final messages = current.messages.toList();
-    // Match by type AND text so voice (text==null) and text messages don't collide.
-    final idx = messages.indexWhere((m) =>
-        m.status == MessageStatus.sending &&
-        m.isFromMe &&
-        m.type == confirmed.type &&
-        m.text == confirmed.text);
+    // For text: match by type + text content.
+    // For file/image/audio: match by type + fileName (text is null for these).
+    // For voice: match by type (fileName may differ after upload rename).
+    final idx = messages.indexWhere((m) {
+      if (m.status != MessageStatus.sending || !m.isFromMe) return false;
+      if (m.type != confirmed.type) return false;
+      if (m.type == MessageType.text) return m.text == confirmed.text;
+      if (m.type == MessageType.voice) return true; // only one voice at a time
+      return m.fileName == confirmed.fileName || m.fileUrl == confirmed.fileUrl;
+    });
     if (idx != -1) {
       final existing = messages[idx];
-      // WS 'sent' events often omit file_url / voice_duration — keep them
-      // from the optimistic message so the play button stays functional.
       messages[idx] = confirmed.copyWith(
         fileUrl: confirmed.fileUrl ?? existing.fileUrl,
         voiceDuration: confirmed.voiceDuration ?? existing.voiceDuration,
@@ -349,6 +351,96 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
         emit(s.copyWith(
           messages: msgs,
           filteredMessages: _applySearch(msgs, s.searchQuery),
+        ));
+      }
+    }
+  }
+
+  // ── Send attachment (image / file / audio) ────────────────────────────────
+
+  Future<void> sendAttachment({
+    required String filePath,
+    required String fileName,
+    required String pickedType, // 'image' | 'video' | 'audio' | 'file'
+  }) async {
+    final current = state;
+    if (current is! PrivateChatLoaded ||
+        _partnerUserId == null ||
+        _myUserId == null) {
+      return;
+    }
+
+    final replyToId = current.replyingTo?.id;
+    final replyToIdInt = replyToId != null ? int.tryParse(replyToId) : null;
+
+    final msgType = switch (pickedType) {
+      'image' || 'video' => MessageType.image,
+      'audio' => MessageType.voice,
+      _ => MessageType.file,
+    };
+    final wsContentType = switch (pickedType) {
+      'image' || 'video' => 'image',
+      'audio' => 'audio',
+      _ => 'file',
+    };
+
+    final tempId = 'temp_${DateTime.now().millisecondsSinceEpoch}';
+    final temp = ChatMessage(
+      id: tempId,
+      senderId: _myUserId.toString(),
+      type: msgType,
+      fileName: fileName,
+      fileUrl: filePath, // local path for optimistic display
+      timestamp: DateTime.now(),
+      status: MessageStatus.sending,
+      isFromMe: true,
+      replyToId: replyToId,
+    );
+    final optimistic = List<ChatMessage>.from(current.messages)..add(temp);
+    emit(current.copyWith(
+      messages: optimistic,
+      filteredMessages: _applySearch(optimistic, current.searchQuery),
+      clearReplyingTo: true,
+    ));
+
+    try {
+      final upload = await _repo.uploadFile(filePath);
+      if (isClosed) return;
+
+      if (_wsService.isConnected) {
+        _wsService.sendFile(
+          receiverId: _partnerUserId!,
+          contentType: wsContentType,
+          fileUrl: upload.fileUrl,
+          fileName: upload.fileName ?? fileName,
+          fileSizeBytes: upload.fileSizeBytes ?? 0,
+          replyToId: replyToIdInt,
+        );
+      }
+
+      // Update temp message with real server URL immediately.
+      final s = state;
+      if (s is PrivateChatLoaded) {
+        final msgs = s.messages.map((m) {
+          if (m.id == tempId) {
+            return m.copyWith(fileUrl: upload.fileUrl, fileName: upload.fileName ?? fileName);
+          }
+          return m;
+        }).toList();
+        emit(s.copyWith(
+          messages: msgs,
+          filteredMessages: _applySearch(msgs, s.searchQuery),
+        ));
+      }
+    } catch (_) {
+      if (isClosed) return;
+      final s = state;
+      if (s is PrivateChatLoaded) {
+        final msgs = s.messages.where((m) => m.id != tempId).toList();
+        emit(s.copyWith(
+          messages: msgs,
+          filteredMessages: _applySearch(msgs, s.searchQuery),
+          sendError: 'Failed to upload file.',
         ));
       }
     }

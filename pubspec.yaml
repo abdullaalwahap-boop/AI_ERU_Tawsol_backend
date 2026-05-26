@@ -52,6 +52,8 @@ dependencies:
   audio_session: ^0.1.25
   permission_handler: ^11.3.1
   path_provider: ^2.1.4
+  image_picker: ^1.1.2
+  file_picker: ^8.1.7
 
 dependency_overrides:
   # record_linux 0.7.2 (pulled by record ^5.0.0) is incompatible with

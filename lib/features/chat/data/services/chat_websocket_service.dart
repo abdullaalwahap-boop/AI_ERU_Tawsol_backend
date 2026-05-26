@@ -119,6 +119,25 @@ class ChatWebSocketService {
     });
   }
 
+  void sendFile({
+    required int receiverId,
+    required String contentType, // 'image' | 'audio' | 'file'
+    required String fileUrl,
+    required String fileName,
+    required int fileSizeBytes,
+    int? replyToId,
+  }) {
+    _send({
+      'type': 'message',
+      'receiver_id': receiverId,
+      'content_type': contentType,
+      'file_url': fileUrl,
+      'file_name': fileName,
+      'file_size_bytes': fileSizeBytes,
+      if (replyToId != null) 'reply_to_id': replyToId,
+    });
+  }
+
   void sendTyping({required int receiverId, required bool isTyping}) {
     _send({
       'type': 'typing',

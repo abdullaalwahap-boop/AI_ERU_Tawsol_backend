@@ -175,6 +175,25 @@ class ChatRemoteDatasource {
     }
   }
 
+  Future<VoiceUploadResult> uploadFile(String filePath) async {
+    final fileName = filePath.split(RegExp(r'[/\\]')).last;
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath, filename: fileName),
+      });
+      final response = await _dio.post(
+        ApiConstants.chatUploadFile,
+        data: formData,
+      );
+      _assertOk(response);
+      return VoiceUploadResult.fromJson(response.data as Map<String, dynamic>);
+    } on NetworkException {
+      rethrow;
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
+    }
+  }
+
   // ── Pin / Unpin ────────────────────────────────────────────────────────────
 
   Future<void> pinConversation(int partnerId) async {

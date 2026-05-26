@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/attachment_service.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/manager/private_chat_cubit/private_chat_cubit.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/chat_search_bar.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_input_bar.dart';
@@ -114,14 +114,27 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
     });
   }
 
-  void _onAttachment(AttachmentOption option) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${option.label} selected'),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
-        backgroundColor: AppColors.primary,
-      ),
+  Future<void> _onAttachment(AttachmentOption option) async {
+    final cubit = context.read<PrivateChatCubit>();
+    final svc = AttachmentService.instance;
+
+    PickedFile? picked;
+    switch (option) {
+      case AttachmentOption.camera:
+        picked = await svc.pickFromCamera();
+      case AttachmentOption.gallery:
+        picked = await svc.pickFromGallery();
+      case AttachmentOption.document:
+        picked = await svc.pickDocument();
+      default:
+        return;
+    }
+
+    if (picked == null || !mounted) return;
+    cubit.sendAttachment(
+      filePath: picked.path,
+      fileName: picked.name,
+      pickedType: picked.type,
     );
   }
 
@@ -154,8 +167,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         // Always jump to bottom when the current user sends a message,
         // regardless of scroll position. For incoming messages, only jump
         // when already near the bottom (< 120 px from it).
-        final lastMsg =
-            state.messages.isNotEmpty ? state.messages.last : null;
+        final lastMsg = state.messages.isNotEmpty ? state.messages.last : null;
         if (lastMsg?.isFromMe == true) {
           _jumpToBottom();
           return;
@@ -180,8 +192,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ChatSearchBar(
                 onChanged: (q) =>
                     context.read<PrivateChatCubit>().searchMessages(q),
-                onClose: () =>
-                    context.read<PrivateChatCubit>().toggleSearch(),
+                onClose: () => context.read<PrivateChatCubit>().toggleSearch(),
               ),
             Expanded(
               child: Stack(
@@ -218,12 +229,11 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ChatInputBar(
                 onSendText: (text) =>
                     context.read<PrivateChatCubit>().sendTextMessage(text),
-                onSendVoice: (filePath, durationSeconds) => context
-                    .read<PrivateChatCubit>()
-                    .sendVoiceMessage(
-                      filePath: filePath,
-                      durationSeconds: durationSeconds,
-                    ),
+                onSendVoice: (filePath, durationSeconds) =>
+                    context.read<PrivateChatCubit>().sendVoiceMessage(
+                          filePath: filePath,
+                          durationSeconds: durationSeconds,
+                        ),
                 onAttachment: _onAttachment,
                 replyingTo: loaded.replyingTo,
                 replyingToSenderName: loaded.replyingTo != null

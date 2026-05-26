@@ -28,4 +28,7 @@ abstract class ChatRepo {
 
   /// Uploads a voice recording file and returns the remote URL + metadata.
   Future<VoiceUploadResult> uploadVoiceFile(String filePath);
+
+  /// Uploads any attachment (image, document, audio) to the general endpoint.
+  Future<VoiceUploadResult> uploadFile(String filePath);
 }

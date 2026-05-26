@@ -47,13 +47,13 @@ class AttachmentBottomSheet extends StatelessWidget {
             style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
           ),
           AppSpacing.h28,
-          GridView.count(
-            crossAxisCount: 5,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 4,
-            children: AttachmentOption.values
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AttachmentOption.camera,
+              AttachmentOption.gallery,
+              AttachmentOption.document,
+            ]
                 .map((opt) => AttachmentTile(
                       option: opt,
                       onTap: () {
