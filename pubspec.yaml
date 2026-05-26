@@ -58,6 +58,7 @@ dependencies:
   url_launcher: ^6.3.2
   flutter_linkify: ^6.0.0
   any_link_preview: ^3.0.3
+  open_filex: ^4.7.0
 
 dependency_overrides:
   # record_linux 0.7.2 (pulled by record ^5.0.0) is incompatible with
