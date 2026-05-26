@@ -55,6 +55,9 @@ dependencies:
   image_picker: ^1.1.2
   file_picker: ^8.1.7
   gal: ^2.3.0
+  url_launcher: ^6.3.2
+  flutter_linkify: ^6.0.0
+  any_link_preview: ^3.0.3
 
 dependency_overrides:
   # record_linux 0.7.2 (pulled by record ^5.0.0) is incompatible with
