@@ -6,8 +6,13 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/ann
 
 class AnnounDetailsAppBar extends StatelessWidget {
   final Announcement announcement;
+  final List<Widget>? actions;
 
-  const AnnounDetailsAppBar({super.key, required this.announcement});
+  const AnnounDetailsAppBar({
+    super.key,
+    required this.announcement,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class AnnounDetailsAppBar extends StatelessWidget {
       pinned: true,
       elevation: 0,
       backgroundColor: AppColors.primary,
+      actions: actions,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new_rounded,
             color: Colors.white, size: 20),

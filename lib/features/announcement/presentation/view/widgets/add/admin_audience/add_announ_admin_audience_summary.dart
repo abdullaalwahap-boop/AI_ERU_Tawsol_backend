@@ -68,6 +68,8 @@ class _SummaryBanner extends StatelessWidget {
         AdminUserType.all => 'Visible to all students and doctors',
         AdminUserType.students => 'Visible to all students',
         AdminUserType.doctors => 'Visible to all doctors',
+        AdminUserType.ta => 'Visible to all teaching assistants',
+        AdminUserType.specificUsers => 'Visible to selected users',
       };
     }
 
@@ -75,6 +77,8 @@ class _SummaryBanner extends StatelessWidget {
       AdminUserType.all => 'all users',
       AdminUserType.students => 'students',
       AdminUserType.doctors => 'doctors',
+      AdminUserType.ta => 'teaching assistants',
+      AdminUserType.specificUsers => 'selected users',
     };
 
     final parts = <String>[];

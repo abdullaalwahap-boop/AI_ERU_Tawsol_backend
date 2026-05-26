@@ -2,9 +2,41 @@
 
 enum AnnounRole { student, doctor, admin }
 
-enum AnnouncementPriority { normal, important, urgent }
+enum AnnouncementPriority {
+  normal,
+  important,
+  urgent;
 
-enum AnnouncementType { normal, materialFile, assignment }
+  static AnnouncementPriority fromString(String v) => switch (v) {
+        'important' => important,
+        'urgent' => urgent,
+        _ => normal,
+      };
+
+  String get toApiString => switch (this) {
+        important => 'important',
+        urgent => 'urgent',
+        normal => 'normal',
+      };
+}
+
+enum AnnouncementType {
+  normal,
+  materialFile,
+  assignment;
+
+  static AnnouncementType fromString(String v) => switch (v) {
+        'material_file' => materialFile,
+        'assignment' => assignment,
+        _ => normal,
+      };
+
+  String get toApiString => switch (this) {
+        materialFile => 'material_file',
+        assignment => 'assignment',
+        normal => 'normal',
+      };
+}
 
 enum AnnouncementTarget {
   all,
@@ -13,30 +45,106 @@ enum AnnouncementTarget {
   department,
   level,
   student,
+  users;
+
+  static AnnouncementTarget fromString(String v) => switch (v) {
+        'course' => course,
+        'course_department' => courseDepartment,
+        'department' => department,
+        'level' => level,
+        'student' => student,
+        'users' => users,
+        _ => all,
+      };
+
+  String get toApiString => switch (this) {
+        course => 'course',
+        courseDepartment => 'course_department',
+        department => 'department',
+        level => 'level',
+        student => 'student',
+        users => 'users',
+        all => 'all',
+      };
 }
 
 extension AnnouncementTargetExt on AnnouncementTarget {
-  String get label {
-    switch (this) {
-      case AnnouncementTarget.all:
-        return 'All Students';
-      case AnnouncementTarget.course:
-        return 'Course';
-      case AnnouncementTarget.courseDepartment:
-        return 'Dept. Course';
-      case AnnouncementTarget.department:
-        return 'Department';
-      case AnnouncementTarget.level:
-        return 'Level';
-      case AnnouncementTarget.student:
-        return 'Student';
-    }
-  }
+  String get label => switch (this) {
+        AnnouncementTarget.all => 'All Students',
+        AnnouncementTarget.course => 'Course',
+        AnnouncementTarget.courseDepartment => 'Dept. Course',
+        AnnouncementTarget.department => 'Department',
+        AnnouncementTarget.level => 'Level',
+        AnnouncementTarget.student => 'Student',
+        AnnouncementTarget.users => 'Selected Users',
+      };
 }
 
 enum AttachmentFileType { pdf, image, doc, other }
 
-// ---------- Data Classes ----------
+// ---------- Helper Models ----------
+
+class CourseOption {
+  final String id;
+  final String name;
+  final String? departmentCourse;
+
+  const CourseOption({
+    required this.id,
+    required this.name,
+    this.departmentCourse,
+  });
+
+  factory CourseOption.fromJson(Map<String, dynamic> json) => CourseOption(
+        id: json['material_id'] as String,
+        name: json['name'] as String,
+        departmentCourse: json['department_course'] as String?,
+      );
+
+  String get displayName => '$name · $id';
+}
+
+class RecipientUser {
+  final int userId;
+  final String name;
+  final String uniCode;
+  final String typeCode;
+  final String? department;
+  final int? level;
+
+  const RecipientUser({
+    required this.userId,
+    required this.name,
+    required this.uniCode,
+    required this.typeCode,
+    this.department,
+    this.level,
+  });
+
+  factory RecipientUser.fromJson(Map<String, dynamic> json) => RecipientUser(
+        userId: json['user_id'] as int,
+        name: json['name'] as String,
+        uniCode: json['uni_code'] as String,
+        typeCode: json['type_code'] as String,
+        department: json['department'] as String?,
+        level: json['level'] as int?,
+      );
+}
+
+/// Passed as [state.extra] when navigating to the add/edit announcement screen.
+class AddAnnounArgs {
+  final AnnounRole role;
+  final int userId;
+  final Announcement? announcementToEdit;
+
+  const AddAnnounArgs({
+    required this.role,
+    required this.userId,
+    this.announcementToEdit,
+  });
+}
+
+// ---------- Attachment ----------
 
 class AnnounAttachment {
   final String name;
@@ -51,6 +159,8 @@ class AnnounAttachment {
     required this.fileType,
   });
 }
+
+// ---------- Announcement ----------
 
 class Announcement {
   final String id;
@@ -67,6 +177,14 @@ class Announcement {
   final List<AnnounAttachment> attachments;
   final bool isFromAdmin;
 
+  // Extended API fields
+  final int authorId;
+  final String? targetCourseId;
+  final String? targetDepartment;
+  final int? targetYear;
+  final int? targetStudentId;
+  final List<int> targetUserIds;
+
   const Announcement({
     required this.id,
     required this.title,
@@ -81,7 +199,97 @@ class Announcement {
     this.isRead = false,
     this.attachments = const [],
     this.isFromAdmin = false,
+    this.authorId = 0,
+    this.targetCourseId,
+    this.targetDepartment,
+    this.targetYear,
+    this.targetStudentId,
+    this.targetUserIds = const [],
   });
+
+  factory Announcement.fromJson(Map<String, dynamic> json) => Announcement(
+        id: json['announcement_id'].toString(),
+        title: json['title'] as String? ?? '',
+        body: json['content'] as String? ?? '',
+        doctorName: json['author_name'] as String? ?? '',
+        subjectName: json['subject_name'] as String? ?? '',
+        subjectCode: json['subject_code'] as String? ?? '',
+        type: AnnouncementType.fromString(
+            json['announcement_type'] as String? ?? 'normal'),
+        target: AnnouncementTarget.fromString(
+            json['target_type'] as String? ?? 'all'),
+        priority: AnnouncementPriority.fromString(
+            json['priority'] as String? ?? 'normal'),
+        createdAt: DateTime.parse(json['created_at'] as String),
+        isRead: json['is_read'] as bool? ?? false,
+        authorId: json['author_id'] as int? ?? 0,
+        targetCourseId: json['target_course_id'] as String?,
+        targetDepartment: json['target_department'] as String?,
+        targetYear: json['target_year'] as int?,
+        targetStudentId: json['target_student_id'] as int?,
+        targetUserIds: (json['target_user_ids'] as List<dynamic>?)
+                ?.map((e) => e as int)
+                .toList() ??
+            const [],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'content': body,
+        'announcement_type': type.toApiString,
+        'priority': priority.toApiString,
+        'target_type': target.toApiString,
+        if (targetCourseId != null) 'target_course_id': targetCourseId,
+        if (targetDepartment != null) 'target_department': targetDepartment,
+        if (targetYear != null) 'target_year': targetYear,
+        if (targetStudentId != null) 'target_student_id': targetStudentId,
+        if (targetUserIds.isNotEmpty) 'target_user_ids': targetUserIds,
+      };
+
+  Announcement copyWith({
+    String? id,
+    String? title,
+    String? body,
+    String? doctorName,
+    String? subjectName,
+    String? subjectCode,
+    AnnouncementType? type,
+    AnnouncementTarget? target,
+    AnnouncementPriority? priority,
+    DateTime? createdAt,
+    bool? isRead,
+    List<AnnounAttachment>? attachments,
+    bool? isFromAdmin,
+    int? authorId,
+    String? targetCourseId,
+    String? targetDepartment,
+    int? targetYear,
+    int? targetStudentId,
+    List<int>? targetUserIds,
+  }) =>
+      Announcement(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        body: body ?? this.body,
+        doctorName: doctorName ?? this.doctorName,
+        subjectName: subjectName ?? this.subjectName,
+        subjectCode: subjectCode ?? this.subjectCode,
+        type: type ?? this.type,
+        target: target ?? this.target,
+        priority: priority ?? this.priority,
+        createdAt: createdAt ?? this.createdAt,
+        isRead: isRead ?? this.isRead,
+        attachments: attachments ?? this.attachments,
+        isFromAdmin: isFromAdmin ?? this.isFromAdmin,
+        authorId: authorId ?? this.authorId,
+        targetCourseId: targetCourseId ?? this.targetCourseId,
+        targetDepartment: targetDepartment ?? this.targetDepartment,
+        targetYear: targetYear ?? this.targetYear,
+        targetStudentId: targetStudentId ?? this.targetStudentId,
+        targetUserIds: targetUserIds ?? this.targetUserIds,
+      );
+
+  // ---------- Display helpers ----------
 
   String get doctorInitials {
     final parts = doctorName.trim().split(' ');
@@ -106,18 +314,8 @@ class Announcement {
 
   String get formattedDate {
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     return '${months[createdAt.month - 1]} ${createdAt.day}, ${createdAt.year}';
   }

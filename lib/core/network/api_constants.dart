@@ -8,7 +8,7 @@ class ApiConstants {
 
   //?http://127.0.0.1:8000 android //http://10.0.2.2:8000 VS
 
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'http://127.0.0.1:8000';
 
   // ─── Auth ─────────────────────────────────────────────────────────────────────
   static const String login = '/auth/login';
@@ -26,17 +26,47 @@ class ApiConstants {
   static String studentMaterials(int userId) => '/materials/student/$userId';
   static String teacherMaterials(int userId) => '/materials/teacher/$userId';
 
-  // ─── Course Content ───────────────────────────────────────────────────────────
+  // ─── Announcements ────────────────────────────────────────────────────────────
   static const String announcements = '/announcements';
+  static String announcementById(int id) => '/announcements/$id';
+  static String announcementMarkRead(int id) => '/announcements/$id/read';
+  static const String announcementsUnreadCount = '/announcements/unread-count';
+  static const String announcementsSent = '/announcements/sent';
+  static const String announcementsRecipients = '/announcements/recipients';
+
+  // ─── Assignments ──────────────────────────────────────────────────────────────
+  static const String assignments = '/assignments';
+  static const String assignmentsUpcoming = '/assignments/upcoming';
+  static String assignmentDetail(int id) => '/assignments/detail/$id';
+  static String assignmentById(int id) => '/assignments/$id';
   static String courseAssignments(String materialId) =>
       '/assignments/$materialId';
+
+  // ─── Files ────────────────────────────────────────────────────────────────────
+  static const String files = '/files';
+  static String fileById(int id) => '/files/$id';
   static String courseFiles(String materialId) => '/files/$materialId';
+
+  // ─── Submissions ──────────────────────────────────────────────────────────────
+  static const String submissions = '/submissions';
+  static String submissionById(int id) => '/submissions/$id';
+  static String assignmentSubmissions(int assignmentId) =>
+      '/submissions/$assignmentId';
+  static String mySubmission(int assignmentId) =>
+      '/submissions/my/$assignmentId';
+
+  // ─── Notifications ────────────────────────────────────────────────────────────
+  static const String notifications = '/notifications';
+  static const String notificationsUnreadCount = '/notifications/unread-count';
+  static const String notificationsReadAll = '/notifications/read-all';
+  static String notificationMarkRead(int id) => '/notifications/$id/read';
+  static String notificationDelete(int id) => '/notifications/$id';
 
   // ─── Chat ─────────────────────────────────────────────────────────────────────
   static const String chatConversations = '/chat/conversations';
   static const String chatSend = '/chat/send';
   static const String chatUploadVoice = '/chat/upload/voice';
-  static const String chatUploadFile  = '/chat/upload/file';
+  static const String chatUploadFile = '/chat/upload/file';
   static const String chatSearch = '/chat/search';
   static const String chatOnline = '/chat/online';
   static String chatHistory(int userId1, int userId2) =>

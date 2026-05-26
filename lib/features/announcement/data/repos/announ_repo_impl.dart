@@ -1,23 +1,80 @@
-﻿import 'package:ai_eru_tawasol/features/announcement/data/mock/announ_mock_data.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/datasources/announ_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 
 class AnnounRepoImpl implements AnnounRepo {
-  @override
-  Future<List<Announcement>> getAllAnnouncements() async {
-    await Future.delayed(const Duration(milliseconds: 900));
-    return mockAnnouncements;
-  }
+  const AnnounRepoImpl(this._ds);
+  final AnnounRemoteDatasource _ds;
 
   @override
-  Future<List<Announcement>> getMyAnnouncements() async {
-    await Future.delayed(const Duration(milliseconds: 900));
-    return myMockAnnouncements;
-  }
+  Future<List<Announcement>> getAllAnnouncements({
+    String? announcementType,
+    String? priority,
+    bool unreadOnly = false,
+    String? search,
+    int skip = 0,
+    int limit = 50,
+  }) =>
+      _ds.getAnnouncements(
+        announcementType: announcementType,
+        priority: priority,
+        unreadOnly: unreadOnly,
+        search: search,
+        skip: skip,
+        limit: limit,
+      );
 
   @override
-  Future<List<Announcement>> getAdminAnnouncements() async {
-    await Future.delayed(const Duration(milliseconds: 900));
-    return adminMockAnnouncements;
-  }
+  Future<List<Announcement>> getMyAnnouncements({
+    int skip = 0,
+    int limit = 50,
+  }) =>
+      _ds.getSentAnnouncements(skip: skip, limit: limit);
+
+  @override
+  Future<List<Announcement>> getAdminAnnouncements({
+    int skip = 0,
+    int limit = 50,
+  }) =>
+      _ds.getSentAnnouncements(skip: skip, limit: limit);
+
+  @override
+  Future<int> getUnreadCount() => _ds.getUnreadCount();
+
+  @override
+  Future<Announcement> getAnnouncementDetail(int id) =>
+      _ds.getAnnouncementDetail(id);
+
+  @override
+  Future<List<RecipientUser>> getRecipients({
+    String? role,
+    String? courseId,
+    String? department,
+    String? search,
+    int skip = 0,
+    int limit = 100,
+  }) =>
+      _ds.getRecipients(
+        role: role,
+        courseId: courseId,
+        department: department,
+        search: search,
+        skip: skip,
+        limit: limit,
+      );
+
+  @override
+  Future<Announcement> createAnnouncement(Map<String, dynamic> payload) =>
+      _ds.createAnnouncement(payload);
+
+  @override
+  Future<Announcement> updateAnnouncement(
+          int id, Map<String, dynamic> payload) =>
+      _ds.updateAnnouncement(id, payload);
+
+  @override
+  Future<void> deleteAnnouncement(int id) => _ds.deleteAnnouncement(id);
+
+  @override
+  Future<void> markRead(int id) => _ds.markRead(id);
 }

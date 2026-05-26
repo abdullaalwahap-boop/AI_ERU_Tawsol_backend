@@ -13,6 +13,8 @@ class AnnounCubit extends Cubit<AnnounState> {
 
   final AnnounRepo _repo;
 
+  // ── Load ──────────────────────────────────────────────────────────────────
+
   Future<void> loadForStudent() async {
     emit(AnnounLoading());
     try {
@@ -30,7 +32,7 @@ class AnnounCubit extends Cubit<AnnounState> {
     try {
       final results = await Future.wait([
         _repo.getMyAnnouncements(),
-        _repo.getAdminAnnouncements(),
+        _repo.getAllAnnouncements(),
       ]);
       if (isClosed) return;
       emit(AnnounLoaded(
@@ -47,9 +49,9 @@ class AnnounCubit extends Cubit<AnnounState> {
   Future<void> loadForAdmin() async {
     emit(AnnounLoading());
     try {
-      final admin = await _repo.getAdminAnnouncements();
+      final sent = await _repo.getAdminAnnouncements();
       if (isClosed) return;
-      emit(AnnounLoaded(primary: admin));
+      emit(AnnounLoaded(primary: sent));
     } catch (e) {
       if (isClosed) return;
       emit(AnnounError(e.toString()));
@@ -69,6 +71,8 @@ class AnnounCubit extends Cubit<AnnounState> {
 
   Future<void> refresh(AnnounRole role) => loadForRole(role);
 
+  // ── Tabs & filters ────────────────────────────────────────────────────────
+
   void switchTab(AnnounTab tab) {
     final current = state;
     if (current is! AnnounLoaded) return;
@@ -83,5 +87,63 @@ class AnnounCubit extends Cubit<AnnounState> {
       activeFilter: type,
       clearFilter: type == null,
     ));
+  }
+
+  void filterByPriority(AnnouncementPriority? priority) {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    emit(current.copyWith(
+      priorityFilter: priority,
+      clearPriorityFilter: priority == null,
+    ));
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+  Future<void> markAsRead(int id) async {
+    try {
+      await _repo.markRead(id);
+      final current = state;
+      if (current is! AnnounLoaded) return;
+      final updated = current.primary
+          .map((a) => a.id == id.toString() ? a.copyWith(isRead: true) : a)
+          .toList();
+      emit(current.copyWith(primary: updated));
+    } catch (_) {
+      // silently ignore mark-read failures
+    }
+  }
+
+  Future<bool> deleteAnnouncement(int id) async {
+    final current = state;
+    if (current is! AnnounLoaded) return false;
+    try {
+      await _repo.deleteAnnouncement(id);
+      final updatedPrimary =
+          current.primary.where((a) => a.id != id.toString()).toList();
+      final updatedSecondary =
+          current.secondary.where((a) => a.id != id.toString()).toList();
+      emit(current.copyWith(
+          primary: updatedPrimary, secondary: updatedSecondary));
+      return true;
+    } catch (e) {
+      emit(AnnounError(e.toString()));
+      return false;
+    }
+  }
+
+  void replaceAnnouncement(Announcement updated) {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    final updatedPrimary = current.primary
+        .map((a) => a.id == updated.id ? updated : a)
+        .toList();
+    emit(current.copyWith(primary: updatedPrimary));
+  }
+
+  void prependAnnouncement(Announcement ann) {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    emit(current.copyWith(primary: [ann, ...current.primary]));
   }
 }

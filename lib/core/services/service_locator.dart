@@ -1,7 +1,12 @@
 import 'package:ai_eru_tawasol/core/network/dio_client.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/datasources/announ_remote_datasource.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/datasources/assignment_remote_datasource.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/assignment_repo.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/assignment_repo_impl.dart';
 import 'package:ai_eru_tawasol/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo.dart';
 import 'package:ai_eru_tawasol/features/authentication/data/repos/auth_repo_impl.dart';
@@ -70,6 +75,13 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<VoiceRecorderService>(VoiceRecorderService());
   getIt.registerSingleton<AudioPlayerService>(AudioPlayerService());
 
-  // ─── Other Features ───────────────────────────────────────────────────────────
-  getIt.registerSingleton<AnnounRepoImpl>(AnnounRepoImpl());
+  // ─── Announcements ────────────────────────────────────────────────────────────
+  final announDs = AnnounRemoteDatasource(dioClient.dio);
+  getIt.registerSingleton<AnnounRemoteDatasource>(announDs);
+  getIt.registerSingleton<AnnounRepo>(AnnounRepoImpl(announDs));
+
+  // ─── Assignments ──────────────────────────────────────────────────────────────
+  final assignmentDs = AssignmentRemoteDatasource(dioClient.dio);
+  getIt.registerSingleton<AssignmentRemoteDatasource>(assignmentDs);
+  getIt.registerSingleton<AssignmentRepo>(AssignmentRepoImpl(assignmentDs));
 }

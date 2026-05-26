@@ -1,5 +1,6 @@
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/announ_view_body.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class AnnounView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AnnounCubit(AnnounRepoImpl())..loadForRole(role),
+      create: (_) => AnnounCubit(getIt<AnnounRepo>())..loadForRole(role),
       child: AnnounViewBody(role: role),
     );
   }

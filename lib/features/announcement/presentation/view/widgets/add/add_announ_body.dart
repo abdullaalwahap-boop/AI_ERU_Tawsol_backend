@@ -93,7 +93,9 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                         onDeptToggle: cubit.toggleDepartment,
                         onLevelToggle: cubit.toggleLevel,
                         departments: cubit.adminDepartments,
-                        levels: cubit.adminLevels,
+                        levels: cubit.availableYears
+                            .map((y) => 'Level $y')
+                            .toList(),
                       ),
                     if (isDoctor) ...[
                       const SizedBox(height: 24),

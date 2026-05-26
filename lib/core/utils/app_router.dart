@@ -2,6 +2,7 @@ import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/content_details_view.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/add_announ_view.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/announ_details_view.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/forget_password_view.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/login_view.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/otp_view.dart';
@@ -32,6 +33,7 @@ class AppRouter {
   static const kOtpView = '/otpView';
   static const kResetPasswordView = '/resetPasswordView';
   static const kAddAnnouncementView = '/addAnnouncementView';
+  static const kAnnouncementDetailsView = '/announcementDetailsView';
   static const kCourseDetailsView = '/courseDetailsView';
   static const kContentDetailsView = '/contentDetailsView';
   static const kFirstLoginChangePasswordView = '/firstLoginChangePasswordView';
@@ -57,7 +59,6 @@ class AppRouter {
       ),
       GoRoute(
         path: kResetPasswordView,
-        // extra carries the reset_token string from the OTP verification step.
         builder: (context, state) =>
             ResetPasswordView(resetToken: state.extra as String),
       ),
@@ -72,8 +73,23 @@ class AppRouter {
       ),
       GoRoute(
         path: kAddAnnouncementView,
-        builder: (context, state) =>
-            AddAnnounView(role: state.extra as AnnounRole),
+        builder: (context, state) {
+          final extra = state.extra;
+          // Support both old AnnounRole and new AddAnnounArgs
+          if (extra is AddAnnounArgs) {
+            return AddAnnounView(
+              role: extra.role,
+              announcementToEdit: extra.announcementToEdit,
+            );
+          }
+          return AddAnnounView(role: extra as AnnounRole);
+        },
+      ),
+      GoRoute(
+        path: kAnnouncementDetailsView,
+        builder: (context, state) => AnnounDetailsView(
+          announcement: state.extra as Announcement,
+        ),
       ),
       GoRoute(
         path: kCourseDetailsView,
