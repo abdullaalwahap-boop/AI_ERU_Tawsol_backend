@@ -54,13 +54,9 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
   }
 
   /// Scroll the list so [messageId] becomes visible, then briefly highlight it.
-  /// Handles both visible items (direct ensureVisible) and off-screen items
-  /// (fraction-based jump first, then ensureVisible).
   Future<void> _scrollToMessage(String messageId) async {
-    // Capture cubit reference before any await to avoid context-across-async-gap.
     final cubit = context.read<PrivateChatCubit>();
 
-    // Fast path: item already in viewport.
     var ctx = GlobalObjectKey(messageId).currentContext;
     if (ctx != null) {
       await Scrollable.ensureVisible(
@@ -69,12 +65,10 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         curve: Curves.easeInOut,
         alignment: 0.5,
       );
-      _triggerHighlight(messageId);
+      if (mounted) _triggerHighlight(messageId);
       return;
     }
 
-    // Item is outside the built range — jump to an approximate position so
-    // ListView.builder constructs it, then fine-tune with ensureVisible.
     if (!_scrollController.hasClients) return;
     final cubitState = cubit.state;
     if (cubitState is! PrivateChatLoaded) return;
@@ -89,12 +83,11 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
       _scrollController.jumpTo((maxExtent * fraction).clamp(0.0, maxExtent));
     }
 
-    // Give the builder one frame to construct the now-visible item.
     await Future.delayed(const Duration(milliseconds: 80));
     if (!mounted) return;
 
     ctx = GlobalObjectKey(messageId).currentContext;
-    if (ctx != null) {
+    if (ctx != null && ctx.mounted) {
       await Scrollable.ensureVisible(
         ctx,
         duration: const Duration(milliseconds: 350),
@@ -102,7 +95,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         alignment: 0.5,
       );
     }
-    _triggerHighlight(messageId);
+    if (mounted) _triggerHighlight(messageId);
   }
 
   void _triggerHighlight(String messageId) {
@@ -145,15 +138,27 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
   Widget build(BuildContext context) {
     return BlocConsumer<PrivateChatCubit, PrivateChatState>(
       listenWhen: (prev, curr) {
-        if (curr is! PrivateChatLoaded || curr.isSearching) return false;
+        if (curr is! PrivateChatLoaded) return false;
         if (prev is! PrivateChatLoaded) return false;
         if (curr.sendError != null && curr.sendError != prev.sendError) {
           return true;
+        }
+        if (curr.isSearching) {
+          // Scroll when the focused result changes or when new results arrive.
+          if (curr.searchResultIndex != prev.searchResultIndex) {
+            return true;
+          }
+          if (curr.searchResults != prev.searchResults &&
+              curr.searchResults.isNotEmpty) {
+            return true;
+          }
+          return false;
         }
         return curr.messages.length > prev.messages.length;
       },
       listener: (context, state) {
         if (state is! PrivateChatLoaded) return;
+
         if (state.sendError != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -164,9 +169,16 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
           );
           return;
         }
-        // Always jump to bottom when the current user sends a message,
-        // regardless of scroll position. For incoming messages, only jump
-        // when already near the bottom (< 120 px from it).
+
+        // Search navigation: scroll to the focused result.
+        if (state.isSearching) {
+          final id = state.currentResultId;
+          if (id != null) _scrollToMessage(id);
+          return;
+        }
+
+        // Normal chat: jump to bottom on own send; jump if already near bottom
+        // for incoming messages.
         final lastMsg = state.messages.isNotEmpty ? state.messages.last : null;
         if (lastMsg?.isFromMe == true) {
           _jumpToBottom();
@@ -174,7 +186,9 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         }
         final isNearBottom = !_scrollController.hasClients ||
             _scrollController.position.pixels < 120;
-        if (isNearBottom) _jumpToBottom();
+        if (isNearBottom) {
+          _jumpToBottom();
+        }
       },
       builder: (context, state) {
         if (state is PrivateChatInitial || state is PrivateChatLoading) {
@@ -185,6 +199,15 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
         }
 
         final loaded = state as PrivateChatLoaded;
+        final searchMatchIds = loaded.isSearching
+            ? Set<String>.from(loaded.searchResults)
+            : const <String>{};
+
+        // Display position: position 1 = newest match.
+        final totalResults = loaded.searchResults.length;
+        final currentPosition = totalResults > 0
+            ? totalResults - loaded.searchResultIndex
+            : null;
 
         return Column(
           children: [
@@ -192,7 +215,21 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               ChatSearchBar(
                 onChanged: (q) =>
                     context.read<PrivateChatCubit>().searchMessages(q),
-                onClose: () => context.read<PrivateChatCubit>().toggleSearch(),
+                onClose: () =>
+                    context.read<PrivateChatCubit>().toggleSearch(),
+                resultCount: totalResults,
+                currentPosition: currentPosition,
+                // ↑ = newer = higher index
+                onPrev: totalResults > 1 &&
+                        loaded.searchResultIndex < totalResults - 1
+                    ? () =>
+                        context.read<PrivateChatCubit>().navigateSearchUp()
+                    : null,
+                // ↓ = older = lower index
+                onNext: totalResults > 1 && loaded.searchResultIndex > 0
+                    ? () =>
+                        context.read<PrivateChatCubit>().navigateSearchDown()
+                    : null,
               ),
             Expanded(
               child: Stack(
@@ -205,6 +242,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
                       isSearching: loaded.isSearching,
                       isOtherTyping: loaded.isOtherTyping,
                       searchQuery: loaded.searchQuery,
+                      searchMatchIds: searchMatchIds,
                       otherUser: widget.conversation.otherUser,
                       highlightedId: _highlightedId,
                       onScrollToMessage: _scrollToMessage,
@@ -216,9 +254,12 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
                     child: ScrollToBottomButton(
                       visible: _showScrollToBottom,
                       onTap: () {
-                        if (_scrollController.hasClients) {
-                          _scrollController.jumpTo(0);
-                        }
+                        if (!_scrollController.hasClients) return;
+                        _scrollController.animateTo(
+                          0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
                       },
                     ),
                   ),
