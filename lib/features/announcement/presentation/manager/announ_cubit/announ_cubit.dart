@@ -76,6 +76,38 @@ class AnnounCubit extends Cubit<AnnounState> {
 
   Future<void> refresh(AnnounRole role) => loadForRole(role);
 
+  /// Re-fetches data in the background without emitting AnnounLoading,
+  /// so the list updates silently (used by the WebSocket listener).
+  Future<void> silentRefresh(AnnounRole role) async {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    try {
+      switch (role) {
+        case AnnounRole.student:
+          final all = await _repo.getAllAnnouncements();
+          if (isClosed) return;
+          emit((state as AnnounLoaded? ?? current).copyWith(primary: all));
+        case AnnounRole.doctor:
+          final results = await Future.wait([
+            _repo.getMyAnnouncements(),
+            _repo.getAllAnnouncements(),
+          ]);
+          if (isClosed) return;
+          final adminOnly = _doctorUserId == 0
+              ? results[1]
+              : results[1].where((a) => a.authorId != _doctorUserId).toList();
+          emit((state as AnnounLoaded? ?? current)
+              .copyWith(primary: results[0], secondary: adminOnly));
+        case AnnounRole.admin:
+          final sent = await _repo.getAdminAnnouncements();
+          if (isClosed) return;
+          emit((state as AnnounLoaded? ?? current).copyWith(primary: sent));
+      }
+    } catch (_) {
+      // silently ignore — user still sees previous data
+    }
+  }
+
   // ── Tabs & filters ────────────────────────────────────────────────────────
 
   void switchTab(AnnounTab tab) {

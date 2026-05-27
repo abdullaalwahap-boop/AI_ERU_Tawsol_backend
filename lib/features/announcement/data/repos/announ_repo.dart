@@ -50,4 +50,6 @@ abstract class AnnounRepo {
   });
 
   Future<void> deleteFile(int fileId);
+
+  Future<void> notifyAnnouncement(int id);
 }

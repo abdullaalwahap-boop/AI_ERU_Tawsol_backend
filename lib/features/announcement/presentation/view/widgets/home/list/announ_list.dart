@@ -18,6 +18,7 @@ class AnnounList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 6, bottom: 20),
       itemCount: announcements.length,
       itemBuilder: (context, index) => AnnounCard(
+        key: ValueKey(announcements[index].id),
         announcement: announcements[index],
         index: index,
       ),

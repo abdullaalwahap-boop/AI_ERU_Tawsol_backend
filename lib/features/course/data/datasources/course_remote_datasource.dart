@@ -48,20 +48,14 @@ class CourseRemoteDatasource {
 
   // ── Course Content ─────────────────────────────────────────────────────────
 
-  /// Fetches all content for [materialId] in parallel (announcements that
-  /// target this course + all assignments + all files), merges the lists, and
-  /// returns them sorted by [CourseContent.createdAt] descending.
+  /// Fetches all announcements for [materialId] (all types: normal,
+  /// material_file, assignment) and returns them sorted newest-first.
+  /// Each item maps to the appropriate [ContentType] for client-side filtering.
   Future<List<CourseContent>> getCourseContent(String materialId) async {
     try {
-      final results = await Future.wait([
-        _fetchCourseAnnouncements(materialId),
-        _fetchAssignments(materialId),
-        _fetchFiles(materialId),
-      ]);
-
-      final merged = [...results[0], ...results[1], ...results[2]];
-      merged.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      return merged;
+      final items = await _fetchCourseAnnouncements(materialId);
+      items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return items;
     } on NetworkException {
       rethrow;
     } catch (_) {
@@ -71,45 +65,19 @@ class CourseRemoteDatasource {
 
   // ── Private fetchers ───────────────────────────────────────────────────────
 
-  /// Fetches the authenticated user's announcements and returns only those
-  /// that target [materialId] with type "normal" (pure announcements, not
-  /// assignment/file notifications which are fetched via dedicated endpoints).
   Future<List<CourseContent>> _fetchCourseAnnouncements(
       String materialId) async {
     try {
-      final response = await _dio.get(ApiConstants.announcements);
+      final response = await _dio.get(
+        ApiConstants.announcements,
+        queryParameters: {
+          'target_course_id': materialId,
+          'limit': 200,
+        },
+      );
       if ((response.statusCode ?? 0) >= 400) return const [];
       return (response.data as List)
-          .where((j) =>
-              j['target_course_id'] == materialId &&
-              j['announcement_type'] == 'normal')
           .map((j) => CourseContent.fromAnnouncement(j as Map<String, dynamic>))
-          .toList();
-    } on DioException {
-      return const [];
-    }
-  }
-
-  Future<List<CourseContent>> _fetchAssignments(String materialId) async {
-    try {
-      final response =
-          await _dio.get(ApiConstants.courseAssignments(materialId));
-      if ((response.statusCode ?? 0) >= 400) return const [];
-      return (response.data as List)
-          .map((j) =>
-              CourseContent.fromAssignment(j as Map<String, dynamic>))
-          .toList();
-    } on DioException {
-      return const [];
-    }
-  }
-
-  Future<List<CourseContent>> _fetchFiles(String materialId) async {
-    try {
-      final response = await _dio.get(ApiConstants.courseFiles(materialId));
-      if ((response.statusCode ?? 0) >= 400) return const [];
-      return (response.data as List)
-          .map((j) => CourseContent.fromFile(j as Map<String, dynamic>))
           .toList();
     } on DioException {
       return const [];

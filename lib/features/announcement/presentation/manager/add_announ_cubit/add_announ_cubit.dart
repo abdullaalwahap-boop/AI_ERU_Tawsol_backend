@@ -261,27 +261,47 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (!state.canPost) return;
     emit(state.copyWith(isPosting: true, clearError: true));
     try {
-      if (state.postType == AnnouncementType.assignment && !isEditMode) {
-        final ann = await _createAssignment();
-        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: ann));
-      } else {
-        if (isEditMode && state.postType == AnnouncementType.assignment) {
-          await _updateAssignmentRecord(); // sync deadline first so ann.deadline is fresh
+      // Edit always targets the one existing announcement — no looping.
+      if (isEditMode) {
+        if (state.postType == AnnouncementType.assignment) {
+          await _updateAssignmentRecord();
         }
         final ann = await _postAnnouncement();
+        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: ann));
+        return;
+      }
+
+      // Create: for doctor/TA, iterate over every selected course so one
+      // announcement (or assignment) is created per course.
+      // Admin has no course selector → courseIds stays [null] → single call.
+      final courseIds = state.role != AnnounRole.admin
+          ? state.selectedOptions.toList()
+          : <String?>[null];
+
+      if (state.postType == AnnouncementType.assignment) {
+        final results = await Future.wait(
+          courseIds.map((id) => _createAssignment(courseId: id ?? '')),
+        );
+        final first = results.whereType<Announcement>().firstOrNull;
+        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: first));
+      } else {
+        final results = await Future.wait(
+          courseIds.map((id) => _postAnnouncement(courseId: id)),
+        );
         emit(state.copyWith(
-            isPosting: false, isPosted: true, postedAnnouncement: ann));
+          isPosting: false,
+          isPosted: true,
+          postedAnnouncement: results.isNotEmpty ? results.first : null,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(isPosting: false, error: e.toString()));
     }
   }
 
-  /// Creates the Assignment (which auto-creates a linked Announcement), then
-  /// uploads any selected files to that announcement, and returns the full
-  /// Announcement so the feed can display it immediately.
-  Future<Announcement?> _createAssignment() async {
-    final courseId = state.selectedCourseId ?? state.selectedOptions.first;
+  /// Creates one Assignment (which auto-creates a linked Announcement) for
+  /// [courseId], uploads any selected files, and returns the Announcement.
+  Future<Announcement?> _createAssignment({required String courseId}) async {
     final assignment = await _assignmentDs.createAssignment(
       materialId: courseId,
       title: state.title,
@@ -308,7 +328,11 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     }
 
     if (annId != null) {
-      try { return await _repo.getAnnouncementDetail(annId); } catch (_) {}
+      try {
+        final ann = await _repo.getAnnouncementDetail(annId);
+        try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+        return ann;
+      } catch (_) {}
     }
     return null;
   }
@@ -327,14 +351,16 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     } catch (_) {}
   }
 
-  Future<Announcement> _postAnnouncement() async {
-    final payload = _buildAnnouncementPayload();
+  /// Creates or updates a single announcement, optionally targeting [courseId].
+  /// In edit mode [courseId] is ignored — the existing course is preserved.
+  Future<Announcement> _postAnnouncement({String? courseId}) async {
+    final payload = _buildAnnouncementPayload(courseId: courseId);
     final Announcement base;
 
     if (isEditMode) {
       final id = int.parse(_announcementToEdit!.id);
 
-      // Delete server files that the user removed from the edit form
+      // Delete server files removed from the edit form
       final originalIds = _announcementToEdit!.attachments
           .where((a) => a.fileId != null)
           .map((a) => a.fileId!)
@@ -354,17 +380,17 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     }
 
     // Upload new local files (best-effort)
-    final courseId =
-        state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+    final effectiveCourseId =
+        courseId ?? state.selectedCourseId ?? state.selectedOptions.firstOrNull;
     final newFiles = state.attachments.where((a) => !a.isServerFile).toList();
 
-    if (courseId != null && newFiles.isNotEmpty) {
-      final annId = int.parse(base.id);
+    final annId = int.parse(base.id);
+    if (effectiveCourseId != null && newFiles.isNotEmpty) {
       await Future.wait(newFiles.map((item) async {
         try {
           await _repo.uploadAnnouncementFile(
             announcementId: annId,
-            materialId: courseId,
+            materialId: effectiveCourseId,
             title: item.name,
             fileType: _toBackendFileType(item),
             filePath: item.filePath,
@@ -372,9 +398,12 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           );
         } catch (_) {}
       }));
-      return _repo.getAnnouncementDetail(annId);
+      final full = await _repo.getAnnouncementDetail(annId);
+      try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+      return full;
     }
 
+    try { await _repo.notifyAnnouncement(annId); } catch (_) {}
     return base;
   }
 
@@ -392,7 +421,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return 'file';
   }
 
-  Map<String, dynamic> _buildAnnouncementPayload() {
+  Map<String, dynamic> _buildAnnouncementPayload({String? courseId}) {
     final s = state;
     final payload = <String, dynamic>{
       'title': s.title,
@@ -404,7 +433,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (s.role == AnnounRole.admin) {
       _applyAdminTarget(payload);
     } else {
-      _applyDoctorTarget(payload);
+      _applyDoctorTarget(payload, courseId: courseId);
     }
 
     return payload;
@@ -443,10 +472,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     }
   }
 
-  void _applyDoctorTarget(Map<String, dynamic> p) {
-    final courseId = state.selectedCourseId ?? state.selectedOptions.firstOrNull;
-    if (courseId == null) return;
+  void _applyDoctorTarget(Map<String, dynamic> p, {String? courseId}) {
+    final id = courseId ?? state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+    if (id == null) return;
     p['target_type'] = 'course';
-    p['target_course_id'] = courseId;
+    p['target_course_id'] = id;
   }
 }

@@ -183,19 +183,35 @@ class CourseContent {
 
   // ── Backend factories ──────────────────────────────────────────────────────
 
-  /// Maps a backend `AnnouncementOut` JSON object.
-  /// Only call with announcements where `announcement_type == 'normal'`.
+  /// Maps a backend `AnnouncementOut` JSON object (all announcement_types).
+  /// announcement_type → ContentType:  normal → announcement,
+  ///                                   material_file → material,
+  ///                                   assignment → assignment.
   factory CourseContent.fromAnnouncement(Map<String, dynamic> json) {
     final ann = Announcement.fromJson(json);
+    final contentType = switch (ann.type) {
+      AnnouncementType.materialFile => ContentType.material,
+      AnnouncementType.assignment   => ContentType.assignment,
+      _                             => ContentType.announcement,
+    };
     return CourseContent(
       id: ann.id,
       title: ann.title,
       body: ann.body,
-      type: ContentType.announcement,
+      type: contentType,
       createdAt: ann.createdAt,
       authorName: ann.doctorName,
-      attachments: const [],
+      attachments: ann.attachments
+          .map((a) => ContentAttachment(
+                name: a.name,
+                sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
+                fileType: _contentFileTypeFrom(a.fileType),
+                url: a.url.isNotEmpty ? a.url : null,
+                isImage: a.fileType == AttachmentFileType.image,
+              ))
+          .toList(),
       isFromAdmin: ann.isFromAdmin,
+      deadline: ann.deadline,
       announcement: ann,
     );
   }

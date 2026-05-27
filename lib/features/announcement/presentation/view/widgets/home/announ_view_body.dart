@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/services/announcement_ws_service.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/app_bar/announ_app_bar.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/home/filter/announ_filter_row.dart';
@@ -22,14 +25,26 @@ class AnnounViewBody extends StatefulWidget {
 }
 
 class _AnnounViewBodyState extends State<AnnounViewBody> {
+  StreamSubscription<int>? _wsSub;
+
   @override
   void initState() {
     super.initState();
     getIt<AnnouncementChangeNotifier>().addListener(_onAnnouncementChanged);
+    _connectWs();
+  }
+
+  void _connectWs() {
+    final wsService = getIt<AnnouncementWsService>();
+    wsService.ensureConnected();
+    _wsSub = wsService.newAnnouncements.listen((_) {
+      if (mounted) context.read<AnnounCubit>().silentRefresh(widget.role);
+    });
   }
 
   @override
   void dispose() {
+    _wsSub?.cancel();
     getIt<AnnouncementChangeNotifier>().removeListener(_onAnnouncementChanged);
     super.dispose();
   }

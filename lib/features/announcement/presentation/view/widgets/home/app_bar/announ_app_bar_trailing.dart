@@ -45,10 +45,7 @@ class AnnounAppBarTrailing extends StatelessWidget {
           onTap: () {},
         );
       case AnnounRole.doctor:
-        return AppBarIconButton(
-          icon: Icons.add_rounded,
-          onTap: () => _openCreate(context, AnnounRole.doctor),
-        );
+        return const SizedBox.shrink();
     }
   }
 

@@ -97,4 +97,7 @@ class AnnounRepoImpl implements AnnounRepo {
 
   @override
   Future<void> deleteFile(int fileId) => _ds.deleteFile(fileId);
+
+  @override
+  Future<void> notifyAnnouncement(int id) => _ds.notifyAnnouncement(id);
 }

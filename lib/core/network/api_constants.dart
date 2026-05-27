@@ -8,7 +8,7 @@ class ApiConstants {
 
   //?http://127.0.0.1:8000 android //http://10.0.2.2:8000 VS
 
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'http://127.0.0.1:8000';
 
   // ─── Auth ─────────────────────────────────────────────────────────────────────
   static const String login = '/auth/login';
@@ -30,6 +30,7 @@ class ApiConstants {
   static const String announcements = '/announcements';
   static String announcementById(int id) => '/announcements/$id';
   static String announcementMarkRead(int id) => '/announcements/$id/read';
+  static String announcementNotify(int id) => '/announcements/$id/notify';
   static const String announcementsUnreadCount = '/announcements/unread-count';
   static const String announcementsSent = '/announcements/sent';
   static const String announcementsRecipients = '/announcements/recipients';
@@ -77,6 +78,8 @@ class ApiConstants {
   static String chatPin(int partnerId) => '/chat/pin/$partnerId';
   static String wsChat(int userId) =>
       '${baseUrl.replaceFirst('http://', 'ws://').replaceFirst('https://', 'wss://')}/chat/ws/$userId';
+  static String wsAnnouncements(int userId) =>
+      '${baseUrl.replaceFirst('http://', 'ws://').replaceFirst('https://', 'wss://')}/announcements/ws/$userId';
 
   // ─── Support ──────────────────────────────────────────────────────────────────
   static const String contactUs = '/contact/';

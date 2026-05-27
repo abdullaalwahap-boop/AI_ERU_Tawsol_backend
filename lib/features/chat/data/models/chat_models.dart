@@ -273,6 +273,7 @@ class ChatMessage {
     DateTime? editedAt,
     String? fileUrl,
     String? fileName,
+    double? fileSizeMB,
     Duration? voiceDuration,
     String? replyToId,
   }) {
@@ -283,7 +284,7 @@ class ChatMessage {
       text: text ?? this.text,
       fileUrl: fileUrl ?? this.fileUrl,
       fileName: fileName ?? this.fileName,
-      fileSizeMB: fileSizeMB,
+      fileSizeMB: fileSizeMB ?? this.fileSizeMB,
       voiceDuration: voiceDuration ?? this.voiceDuration,
       timestamp: timestamp,
       status: status ?? this.status,

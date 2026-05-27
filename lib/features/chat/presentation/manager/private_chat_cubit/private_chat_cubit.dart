@@ -379,7 +379,10 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
           if (m.id == tempId) {
             return m.copyWith(
                 fileUrl: upload.fileUrl,
-                fileName: upload.fileName ?? fileName);
+                fileName: upload.fileName ?? fileName,
+                fileSizeMB: upload.fileSizeBytes != null
+                    ? upload.fileSizeBytes! / (1024 * 1024)
+                    : null);
           }
           return m;
         }).toList();

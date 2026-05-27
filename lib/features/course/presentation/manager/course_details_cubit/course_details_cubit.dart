@@ -74,4 +74,21 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
 
   Future<void> refresh(CourseRole role, Course course) =>
       loadForRole(role, course);
+
+  /// Re-fetches content without emitting CourseDetailsLoading,
+  /// so the list updates silently when a WS event arrives.
+  Future<void> silentRefresh(CourseRole role, Course course) async {
+    final current = state;
+    if (current is! CourseDetailsLoaded) return;
+    try {
+      final content = switch (role) {
+        CourseRole.student => await _repo.getAllCourseContent(course.id),
+        CourseRole.doctor  => await _repo.getDoctorCourseContent(course.id),
+      };
+      if (isClosed) return;
+      emit(current.copyWith(content: content));
+    } catch (_) {
+      // silently ignore — user still sees previous data
+    }
+  }
 }
