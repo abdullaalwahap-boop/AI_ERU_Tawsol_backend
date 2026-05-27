@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -34,26 +35,19 @@ class AddAnnounFileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: item.fileType.color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child:
-                Icon(item.fileType.icon, size: 20, color: item.fileType.color),
-          ),
+          _buildLeading(),
           AppSpacing.w12,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.name,
+                  item.isLink ? _shortenUrl(item.url!) : item.name,
                   style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: item.isLink
+                        ? const Color(0xff059669)
+                        : AppColors.textPrimary,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -84,5 +78,51 @@ class AddAnnounFileCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildLeading() {
+    if (item.isImage && item.filePath != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.file(
+          File(item.filePath!),
+          width: 40,
+          height: 40,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => _iconBox(
+            item.fileType.color,
+            item.fileType.icon,
+          ),
+        ),
+      );
+    }
+
+    if (item.isLink) {
+      return _iconBox(const Color(0xff059669), Icons.link_rounded);
+    }
+
+    return _iconBox(item.fileType.color, item.fileType.icon);
+  }
+
+  Widget _iconBox(Color color, IconData icon) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Icon(icon, size: 20, color: color),
+    );
+  }
+
+  String _shortenUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return url;
+    final host = uri.host.replaceFirst('www.', '');
+    final path = uri.path.length > 20
+        ? '${uri.path.substring(0, 20)}…'
+        : uri.path;
+    return path.isEmpty || path == '/' ? host : '$host$path';
   }
 }

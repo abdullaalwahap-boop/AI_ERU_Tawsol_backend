@@ -34,6 +34,7 @@ class AddAnnounState extends Equatable {
   // ── Post state ────────────────────────────────────────────────────────────
   final bool isPosting;
   final bool isPosted;
+  final Announcement? postedAnnouncement;
   final String? error;
 
   const AddAnnounState({
@@ -57,6 +58,7 @@ class AddAnnounState extends Equatable {
     this.attachments = const [],
     this.isPosting = false,
     this.isPosted = false,
+    this.postedAnnouncement,
     this.error,
   });
 
@@ -80,6 +82,12 @@ class AddAnnounState extends Equatable {
 
   bool get canPost {
     if (title.trim().isEmpty || details.trim().isEmpty) return false;
+    // Types that show the attachment section require at least one attachment
+    if (supportsAttachments && attachments.isEmpty) return false;
+    // Assignments require a deadline
+    if (postType == AnnouncementType.assignment && deadline == null) {
+      return false;
+    }
     if (role == AnnounRole.admin) {
       if (adminUserType == null) return false;
       if (adminUserType!.needsDepartment && selectedDepartments.isEmpty) {
@@ -124,6 +132,7 @@ class AddAnnounState extends Equatable {
         attachments,
         isPosting,
         isPosted,
+        postedAnnouncement,
         error,
       ];
 
@@ -150,6 +159,7 @@ class AddAnnounState extends Equatable {
     List<AddAnnounAttachmentItem>? attachments,
     bool? isPosting,
     bool? isPosted,
+    Announcement? postedAnnouncement,
     String? error,
     bool clearError = false,
   }) {
@@ -175,6 +185,7 @@ class AddAnnounState extends Equatable {
       attachments: attachments ?? this.attachments,
       isPosting: isPosting ?? this.isPosting,
       isPosted: isPosted ?? this.isPosted,
+      postedAnnouncement: postedAnnouncement ?? this.postedAnnouncement,
       error: clearError ? null : (error ?? this.error),
     );
   }

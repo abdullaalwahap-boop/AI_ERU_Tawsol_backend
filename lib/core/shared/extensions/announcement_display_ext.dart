@@ -31,11 +31,13 @@ extension AnnouncementDisplayExt on Announcement {
               sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
               icon: a.fileType.icon,
               iconColor: a.fileType.color,
+              url: a.url.isNotEmpty ? a.url : null,
             ),
           )
           .toList(),
       accentColor: AppColors.primary,
       isFromAdmin: isFromAdmin,
+      deadline: deadline,
     );
   }
 }

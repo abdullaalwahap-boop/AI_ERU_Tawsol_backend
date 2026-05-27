@@ -6,6 +6,7 @@ import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.d
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/add_announ_scaffold.dart';
+import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 
 class AddAnnounView extends StatelessWidget {
   final AnnounRole role;
@@ -24,8 +25,9 @@ class AddAnnounView extends StatelessWidget {
         role: role,
         repo: getIt<AnnounRepo>(),
         assignmentDs: getIt<AssignmentRemoteDatasource>(),
+        courseRepo: getIt<CourseRepo>(),
         announcementToEdit: announcementToEdit,
-      ),
+      )..loadDoctorCourses(),
       child: AddAnnounScaffold(role: role),
     );
   }

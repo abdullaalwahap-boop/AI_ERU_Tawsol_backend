@@ -158,6 +158,37 @@ class AnnounAttachment {
     required this.sizeMB,
     required this.fileType,
   });
+
+  factory AnnounAttachment.fromJson(Map<String, dynamic> json) {
+    final rawSize = json['file_size'] ?? json['size'] ?? 0;
+    final sizeMB = _toMB(rawSize);
+    final typeStr =
+        (json['file_type'] ?? json['type'] ?? '').toString().toLowerCase();
+    return AnnounAttachment(
+      name: json['file_name'] as String? ?? json['name'] as String? ?? '',
+      url: json['file_url'] as String? ?? json['url'] as String? ?? '',
+      sizeMB: sizeMB,
+      fileType: _fileTypeFromString(typeStr),
+    );
+  }
+
+  static double _toMB(dynamic raw) {
+    if (raw is double) return raw < 1000 ? raw : raw / (1024 * 1024);
+    if (raw is int) return raw < 1000 ? raw.toDouble() : raw / (1024 * 1024);
+    return 0.0;
+  }
+
+  static AttachmentFileType _fileTypeFromString(String type) {
+    if (type == 'pdf') return AttachmentFileType.pdf;
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'image']
+        .contains(type)) {
+      return AttachmentFileType.image;
+    }
+    if (['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'].contains(type)) {
+      return AttachmentFileType.doc;
+    }
+    return AttachmentFileType.other;
+  }
 }
 
 // ---------- Announcement ----------
@@ -184,6 +215,7 @@ class Announcement {
   final int? targetYear;
   final int? targetStudentId;
   final List<int> targetUserIds;
+  final DateTime? deadline;
 
   const Announcement({
     required this.id,
@@ -205,6 +237,7 @@ class Announcement {
     this.targetYear,
     this.targetStudentId,
     this.targetUserIds = const [],
+    this.deadline,
   });
 
   factory Announcement.fromJson(Map<String, dynamic> json) => Announcement(
@@ -222,6 +255,11 @@ class Announcement {
             json['priority'] as String? ?? 'normal'),
         createdAt: DateTime.parse(json['created_at'] as String),
         isRead: json['is_read'] as bool? ?? false,
+        attachments: (json['attachments'] as List<dynamic>?)
+                ?.map((a) =>
+                    AnnounAttachment.fromJson(a as Map<String, dynamic>))
+                .toList() ??
+            const [],
         authorId: json['author_id'] as int? ?? 0,
         targetCourseId: json['target_course_id'] as String?,
         targetDepartment: json['target_department'] as String?,
@@ -231,6 +269,9 @@ class Announcement {
                 ?.map((e) => e as int)
                 .toList() ??
             const [],
+        deadline: json['deadline'] != null
+            ? DateTime.tryParse(json['deadline'] as String)
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -266,6 +307,7 @@ class Announcement {
     int? targetYear,
     int? targetStudentId,
     List<int>? targetUserIds,
+    DateTime? deadline,
   }) =>
       Announcement(
         id: id ?? this.id,
@@ -287,6 +329,7 @@ class Announcement {
         targetYear: targetYear ?? this.targetYear,
         targetStudentId: targetStudentId ?? this.targetStudentId,
         targetUserIds: targetUserIds ?? this.targetUserIds,
+        deadline: deadline ?? this.deadline,
       );
 
   // ---------- Display helpers ----------

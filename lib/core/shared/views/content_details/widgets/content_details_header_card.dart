@@ -100,8 +100,30 @@ class ContentDetailsHeaderCard extends StatelessWidget {
             value: item.formattedTime,
             iconColor: const Color(0xff64748B),
           ),
+          if (item.deadline != null) ...[
+            AppSpacing.h10,
+            FeatureMetaRow(
+              icon: Icons.timer_outlined,
+              label: 'Deadline',
+              value: _formatDeadline(item.deadline!),
+              iconColor: const Color(0xffDC2626),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  static String _formatDeadline(DateTime dt) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    final date = '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+    final h = dt.hour;
+    final hour = h > 12 ? h - 12 : (h == 0 ? 12 : h);
+    final minute = dt.minute.toString().padLeft(2, '0');
+    final period = h >= 12 ? 'PM' : 'AM';
+    return '$date  ·  $hour:$minute $period';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -32,7 +33,9 @@ class AddAnnounScaffold extends StatelessWidget {
   }
 
   void _onPosted(BuildContext context, AddAnnounState state) {
-    Navigator.pop(context);
+    final label = state.postType == AnnouncementType.assignment
+        ? 'Assignment created successfully!'
+        : 'Announcement posted successfully!';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -40,12 +43,14 @@ class AddAnnounScaffold extends StatelessWidget {
             const Icon(Icons.check_circle_rounded,
                 color: Colors.white, size: 18),
             AppSpacing.w8,
-            Text(
-              'Announcement posted successfully!',
-              style: AppTextStyles.bodySmall.copyWith(
-                fontSize: 13.5,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.bodySmall.copyWith(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
@@ -57,5 +62,10 @@ class AddAnnounScaffold extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
+    if (state.postType == AnnouncementType.assignment) {
+      context.pop(true);
+    } else {
+      context.pop(state.postedAnnouncement);
+    }
   }
 }

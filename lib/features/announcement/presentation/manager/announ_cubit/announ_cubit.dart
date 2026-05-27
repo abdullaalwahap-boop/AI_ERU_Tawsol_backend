@@ -12,6 +12,7 @@ class AnnounCubit extends Cubit<AnnounState> {
   AnnounCubit(this._repo) : super(AnnounInitial());
 
   final AnnounRepo _repo;
+  int _doctorUserId = 0;
 
   // ── Load ──────────────────────────────────────────────────────────────────
 
@@ -35,9 +36,12 @@ class AnnounCubit extends Cubit<AnnounState> {
         _repo.getAllAnnouncements(),
       ]);
       if (isClosed) return;
+      final adminOnly = _doctorUserId == 0
+          ? results[1]
+          : results[1].where((a) => a.authorId != _doctorUserId).toList();
       emit(AnnounLoaded(
         primary: results[0],
-        secondary: results[1],
+        secondary: adminOnly,
         activeTab: AnnounTab.mine,
       ));
     } catch (e) {
@@ -58,7 +62,8 @@ class AnnounCubit extends Cubit<AnnounState> {
     }
   }
 
-  Future<void> loadForRole(AnnounRole role) async {
+  Future<void> loadForRole(AnnounRole role, {int userId = 0}) async {
+    if (userId != 0) _doctorUserId = userId;
     switch (role) {
       case AnnounRole.student:
         return loadForStudent();

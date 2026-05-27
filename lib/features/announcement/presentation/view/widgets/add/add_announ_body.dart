@@ -6,6 +6,7 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/a
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/add_announ_text_field.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/add_announ_attachment_section.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_audience_selector.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/deadline/add_announ_deadline_picker.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/post_type/add_announ_post_type_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/priority/add_announ_priority_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/subject/add_announ_subject_selector.dart';
@@ -20,8 +21,16 @@ class AddAnnounBody extends StatefulWidget {
 }
 
 class _AddAnnounBodyState extends State<AddAnnounBody> {
-  final _titleController = TextEditingController();
-  final _detailsController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _detailsController;
+
+  @override
+  void initState() {
+    super.initState();
+    final state = context.read<AddAnnounCubit>().state;
+    _titleController = TextEditingController(text: state.title);
+    _detailsController = TextEditingController(text: state.details);
+  }
 
   @override
   void dispose() {
@@ -80,13 +89,25 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                           ? const SizedBox(height: 24)
                           : const SizedBox.shrink(),
                     ),
-                    if (isDoctor)
+                    if (isDoctor) ...[
+                      AddAnnounDeadlinePicker(
+                        visible: state.postType == AnnouncementType.assignment,
+                        deadline: state.deadline,
+                        onPick: cubit.setDeadline,
+                      ),
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCubic,
+                        child: state.postType == AnnouncementType.assignment
+                            ? const SizedBox(height: 24)
+                            : const SizedBox.shrink(),
+                      ),
                       AddAnnounSubjectSelector(
-                        subjects: cubit.audienceOptions,
+                        courses: cubit.courseList,
                         selected: state.selectedOptions,
                         onSelect: cubit.toggleOption,
-                      )
-                    else
+                      ),
+                    ] else
                       AddAnnounAdminAudienceSelector(
                         state: state,
                         onUserTypeSelected: cubit.setAdminUserType,

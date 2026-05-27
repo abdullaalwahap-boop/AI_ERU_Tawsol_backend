@@ -4,7 +4,9 @@ import 'package:ai_eru_tawasol/features/announcement/data/models/assignment_mode
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
+import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
@@ -30,14 +32,17 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     required AnnounRole role,
     required AnnounRepo repo,
     required AssignmentRemoteDatasource assignmentDs,
+    required CourseRepo courseRepo,
     Announcement? announcementToEdit,
   })  : _repo = repo,
         _assignmentDs = assignmentDs,
+        _courseRepo = courseRepo,
         _announcementToEdit = announcementToEdit,
         super(_buildInitial(role, announcementToEdit));
 
   final AnnounRepo _repo;
   final AssignmentRemoteDatasource _assignmentDs;
+  final CourseRepo _courseRepo;
   final Announcement? _announcementToEdit;
 
   bool get isEditMode => _announcementToEdit != null;
@@ -45,19 +50,33 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   static AddAnnounState _buildInitial(
       AnnounRole role, Announcement? toEdit) {
     if (toEdit == null) return AddAnnounState.initial(role);
+    final preSelectedOptions = toEdit.targetCourseId != null
+        ? {toEdit.targetCourseId!}
+        : const <String>{};
+    final preAttachments = toEdit.attachments
+        .map((a) => AddAnnounAttachmentItem(
+              id: a.url,
+              name: a.name,
+              sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
+              fileType: a.fileType,
+              url: a.url,
+              isServerFile: true,
+            ))
+        .toList();
     return AddAnnounState(
       role: role,
       postType: toEdit.type,
       title: toEdit.title,
       details: toEdit.body,
       priority: toEdit.priority,
-      selectedOptions: const {},
+      selectedOptions: preSelectedOptions,
       selectedCourseId: toEdit.targetCourseId,
       selectedDepartments: toEdit.targetDepartment != null
           ? {toEdit.targetDepartment!}
           : const {},
       selectedLevels: const {},
       targetYear: toEdit.targetYear,
+      attachments: preAttachments,
     );
   }
 
@@ -76,6 +95,33 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         selectedOptions: {courses.first.id},
       ));
     } else {
+      emit(state.copyWith(isLoadingCourses: false));
+    }
+  }
+
+  /// Fetches the doctor's assigned courses from the backend and populates
+  /// the course selector. Auto-selects when only one course is available.
+  Future<void> loadDoctorCourses() async {
+    if (state.role == AnnounRole.admin) return;
+    emit(state.copyWith(isLoadingCourses: true));
+    try {
+      final courses = await _courseRepo.getDoctorCourses();
+      if (isClosed) return;
+      final options =
+          courses.map((c) => CourseOption(id: c.id, name: c.name)).toList();
+      final alreadySelected = state.selectedCourseId != null;
+      if (options.length == 1 && !alreadySelected) {
+        emit(state.copyWith(
+          isLoadingCourses: false,
+          courses: options,
+          selectedCourseId: options.first.id,
+          selectedOptions: {options.first.id},
+        ));
+      } else {
+        emit(state.copyWith(isLoadingCourses: false, courses: options));
+      }
+    } catch (_) {
+      if (isClosed) return;
       emit(state.copyWith(isLoadingCourses: false));
     }
   }
@@ -126,6 +172,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     emit(state.copyWith(
       selectedOptions: updated,
       selectedCourseId: newCourseId,
+      clearCourse: newCourseId == null,
     ));
   }
 
@@ -215,10 +262,12 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     try {
       if (state.postType == AnnouncementType.assignment) {
         await _postAssignment();
+        emit(state.copyWith(isPosting: false, isPosted: true));
       } else {
-        await _postAnnouncement();
+        final ann = await _postAnnouncement();
+        emit(state.copyWith(
+            isPosting: false, isPosted: true, postedAnnouncement: ann));
       }
-      emit(state.copyWith(isPosting: false, isPosted: true));
     } catch (e) {
       emit(state.copyWith(isPosting: false, error: e.toString()));
     }

@@ -21,6 +21,7 @@ class ContentDetailsAttachmentsSection extends StatelessWidget {
                 sizeLabel: a.sizeLabel,
                 icon: a.icon,
                 iconColor: a.iconColor,
+                url: a.url,
               ))
           .toList(),
     );

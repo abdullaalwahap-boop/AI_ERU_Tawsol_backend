@@ -117,7 +117,11 @@ class AnnounRemoteDatasource {
 
   // ── Write ─────────────────────────────────────────────────────────────────
 
-  Future<Announcement> createAnnouncement(Map<String, dynamic> payload) async {
+  Future<Announcement> createAnnouncement(
+    Map<String, dynamic> payload, {
+    List<MultipartFile> files = const [],
+    List<String> linkUrls = const [],
+  }) async {
     try {
       final response = await _dio.post(
         ApiConstants.announcements,
@@ -133,7 +137,11 @@ class AnnounRemoteDatasource {
   }
 
   Future<Announcement> updateAnnouncement(
-      int id, Map<String, dynamic> payload) async {
+    int id,
+    Map<String, dynamic> payload, {
+    List<MultipartFile> files = const [],
+    List<String> linkUrls = const [],
+  }) async {
     try {
       final response = await _dio.put(
         ApiConstants.announcementById(id),

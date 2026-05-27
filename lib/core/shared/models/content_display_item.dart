@@ -23,6 +23,7 @@ class ContentDisplayItem {
   final List<ContentDisplayAttachment> attachments;
   final Color accentColor;
   final bool isFromAdmin;
+  final DateTime? deadline;
 
   const ContentDisplayItem({
     required this.id,
@@ -44,5 +45,6 @@ class ContentDisplayItem {
     this.attachments = const [],
     required this.accentColor,
     this.isFromAdmin = false,
+    this.deadline,
   });
 }

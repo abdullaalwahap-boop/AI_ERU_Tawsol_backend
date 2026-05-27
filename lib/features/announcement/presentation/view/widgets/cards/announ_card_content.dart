@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/announcement_display_ext.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_actions_sheet.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_footer.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_preview.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_title.dart';
@@ -20,6 +25,9 @@ class AnnounCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeColor = announcement.type.color;
+    final session = context.watch<SessionCubit>().state;
+    final isOwner = session is SessionAuthenticated &&
+        session.userId == announcement.authorId;
 
     return GestureDetector(
       onTap: () => context.push(
@@ -53,7 +61,21 @@ class AnnounCardContent extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AnnounCardTopRow(announcement: announcement),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: AnnounCardTopRow(
+                                  announcement: announcement),
+                            ),
+                            if (isOwner) ...[
+                              AppSpacing.w4,
+                              _ActionsButton(
+                                onTap: () => _showActionsSheet(context),
+                              ),
+                            ],
+                          ],
+                        ),
                         AppSpacing.h10,
                         AnnounCardTitle(title: announcement.title),
                         AppSpacing.h6,
@@ -67,6 +89,98 @@ class AnnounCardContent extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showActionsSheet(BuildContext context) async {
+    final action = await showModalBottomSheet<AnnounCardAction>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) =>
+          AnnounCardActionsSheet(announcementTitle: announcement.title),
+    );
+    if (action == null || !context.mounted) return;
+
+    if (action == AnnounCardAction.edit) {
+      await _handleEdit(context);
+    } else {
+      await _handleDelete(context);
+    }
+  }
+
+  Future<void> _handleEdit(BuildContext context) async {
+    final session = context.read<SessionCubit>().state;
+    if (session is! SessionAuthenticated) return;
+
+    final result = await context.push<Announcement?>(
+      AppRouter.kAddAnnouncementView,
+      extra: AddAnnounArgs(
+        role: session.role.toAnnounRole,
+        userId: session.userId,
+        announcementToEdit: announcement,
+      ),
+    );
+
+    if (result != null && context.mounted) {
+      context.read<AnnounCubit>().replaceAnnouncement(result);
+    }
+  }
+
+  Future<void> _handleDelete(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
+        title: const Text('Delete Announcement'),
+        content: const Text(
+          'This will permanently delete the announcement. This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(
+                foregroundColor: const Color(0xffDC2626)),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    final success = await context
+        .read<AnnounCubit>()
+        .deleteAnnouncement(int.parse(announcement.id));
+
+    if (!success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to delete announcement')),
+      );
+    }
+  }
+}
+
+class _ActionsButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _ActionsButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Icon(
+          Icons.more_horiz_rounded,
+          size: 20,
+          color: AppColors.textHint,
         ),
       ),
     );
