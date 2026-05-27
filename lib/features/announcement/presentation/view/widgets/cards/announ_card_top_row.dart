@@ -3,7 +3,9 @@ import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_priority_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_priority_badge.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_subject_avatar.dart';
 
 class AnnounCardTopRow extends StatelessWidget {
@@ -13,7 +15,11 @@ class AnnounCardTopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final priority = announcement.priority;
+    final hasPriority = priority != AnnouncementPriority.normal;
+
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AnnounSubjectAvatar(announcement: announcement, size: 42),
         AppSpacing.w10,
@@ -46,6 +52,10 @@ class AnnounCardTopRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            if (hasPriority) ...[
+              AnnounPriorityBadge(priority: priority),
+              AppSpacing.h4,
+            ],
             Text(
               announcement.timeAgo,
               style: AppTextStyles.badgeText.copyWith(
@@ -58,7 +68,7 @@ class AnnounCardTopRow extends StatelessWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: announcement.type.color,
+                  color: priority.color,
                   shape: BoxShape.circle,
                 ),
               ),

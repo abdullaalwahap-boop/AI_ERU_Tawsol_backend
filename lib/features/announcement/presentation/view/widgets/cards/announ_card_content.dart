@@ -11,6 +11,7 @@ import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_priority_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_actions_sheet.dart';
@@ -34,6 +35,10 @@ class AnnounCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeColor = announcement.type.color;
+    final priority = announcement.priority;
+    final barColor = priority != AnnouncementPriority.normal
+        ? priority.color
+        : typeColor;
     final session = context.watch<SessionCubit>().state;
     final isOwner = session is SessionAuthenticated &&
         session.userId == announcement.authorId;
@@ -51,7 +56,7 @@ class AnnounCardContent extends StatelessWidget {
           boxShadow: [
             ...AppShadows.card,
             BoxShadow(
-              color: typeColor.withValues(alpha: 0.06),
+              color: barColor.withValues(alpha: 0.06),
               blurRadius: 24,
               offset: const Offset(0, 8),
             ),
@@ -63,7 +68,7 @@ class AnnounCardContent extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(width: 4, color: typeColor),
+                Container(width: 4, color: barColor),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
