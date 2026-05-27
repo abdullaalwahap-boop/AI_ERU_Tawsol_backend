@@ -42,7 +42,7 @@ abstract class AnnounRepo {
 
   Future<void> uploadAnnouncementFile({
     required int announcementId,
-    required String materialId,
+    String? materialId,
     required String title,
     required String fileType,
     String? filePath,

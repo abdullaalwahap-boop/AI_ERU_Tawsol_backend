@@ -21,9 +21,9 @@ const kDepartments = [
   'General',
 ];
 
-// Year options per department type
-const kSpecializedYears = [3, 4]; // AI, DS, CB, SE
-const kGeneralYears = [1, 2];
+// Year pools by department context
+const kSpecializedYears = [3, 4]; // specific departments
+const kGeneralYears = [1, 2];      // General department
 
 class AddAnnounCubit extends Cubit<AddAnnounState> {
   AddAnnounCubit({
@@ -200,9 +200,15 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     } else {
       updated.add(dept);
     }
-    emit(state.copyWith(selectedDepartments: updated, clearYear: true));
+    // Clear level whenever available levels may change
+    emit(state.copyWith(
+      selectedDepartments: updated,
+      clearYear: true,
+      selectedLevels: <String>{},
+    ));
   }
 
+  /// Multi-select: toggles a level in/out of the selected set.
   void toggleLevel(String level) {
     final updated = Set<String>.from(state.selectedLevels);
     if (updated.contains(level)) {
@@ -218,10 +224,18 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   List<String> get adminDepartments => kDepartments;
 
+  /// Available levels depend on which departments are selected.
+  /// No dept selected → no levels (post to all students directly).
+  /// General only → levels 1, 2.
+  /// Specific dept(s) only → levels 3, 4.
+  /// General + specific dept → levels 1, 2, 3, 4.
   List<int> get availableYears {
     final depts = state.selectedDepartments;
-    if (depts.isEmpty) return [...kGeneralYears, ...kSpecializedYears];
-    if (depts.contains('General')) return kGeneralYears;
+    if (depts.isEmpty) return [];
+    final hasGeneral = depts.contains('General');
+    final hasSpecific = depts.any((d) => d != 'General');
+    if (hasGeneral && hasSpecific) return [...kGeneralYears, ...kSpecializedYears];
+    if (hasGeneral) return kGeneralYears;
     return kSpecializedYears;
   }
 
@@ -230,13 +244,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   Future<void> searchRecipients(String query) async {
     emit(state.copyWith(isLoadingRecipients: true));
     try {
-      final role = state.adminUserType?.roleFilter;
-      final dept = state.selectedDepartments.isNotEmpty
-          ? state.selectedDepartments.first
-          : null;
       final results = await _repo.getRecipients(
-        role: role,
-        department: dept,
+        role: state.adminUserType?.roleFilter, // 'STU' for specificUsers
         search: query.isNotEmpty ? query : null,
       );
       emit(state.copyWith(recipients: results, isLoadingRecipients: false));
@@ -271,12 +280,36 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         return;
       }
 
+      // Admin + students + multiple levels: one announcement per level.
+      if (state.role == AnnounRole.admin &&
+          state.adminUserType == AdminUserType.students &&
+          state.selectedLevels.length > 1) {
+        final years = state.selectedLevels
+            .map((l) => int.tryParse(l.replaceAll('Level ', '')))
+            .whereType<int>()
+            .toList();
+        final results = await Future.wait(
+          years.map((y) => _postAnnouncement(overrideYear: y)),
+        );
+        final first = results.whereType<Announcement>().firstOrNull;
+        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: first));
+        return;
+      }
+
       // Create: for doctor/TA, iterate over every selected course so one
       // announcement (or assignment) is created per course.
       // Admin has no course selector → courseIds stays [null] → single call.
       final courseIds = state.role != AnnounRole.admin
           ? state.selectedOptions.toList()
           : <String?>[null];
+
+      // For admin students with exactly one level selected, extract the year.
+      final adminStudentYear = (state.role == AnnounRole.admin &&
+              state.adminUserType == AdminUserType.students &&
+              state.selectedLevels.length == 1)
+          ? int.tryParse(
+              state.selectedLevels.first.replaceAll('Level ', ''))
+          : null;
 
       if (state.postType == AnnouncementType.assignment) {
         final results = await Future.wait(
@@ -286,7 +319,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: first));
       } else {
         final results = await Future.wait(
-          courseIds.map((id) => _postAnnouncement(courseId: id)),
+          courseIds.map((id) => _postAnnouncement(
+                courseId: id,
+                overrideYear: adminStudentYear,
+              )),
         );
         emit(state.copyWith(
           isPosting: false,
@@ -351,10 +387,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     } catch (_) {}
   }
 
-  /// Creates or updates a single announcement, optionally targeting [courseId].
-  /// In edit mode [courseId] is ignored — the existing course is preserved.
-  Future<Announcement> _postAnnouncement({String? courseId}) async {
-    final payload = _buildAnnouncementPayload(courseId: courseId);
+  /// Creates or updates a single announcement.
+  /// [overrideYear] is used when admin targets multiple student levels (one call per level).
+  Future<Announcement> _postAnnouncement({String? courseId, int? overrideYear}) async {
+    final payload = _buildAnnouncementPayload(courseId: courseId, overrideYear: overrideYear);
     final Announcement base;
 
     if (isEditMode) {
@@ -385,12 +421,14 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     final newFiles = state.attachments.where((a) => !a.isServerFile).toList();
 
     final annId = int.parse(base.id);
-    if (effectiveCourseId != null && newFiles.isNotEmpty) {
+    // Admin has no course; DR/TA require a courseId to upload
+    final canUpload = state.role == AnnounRole.admin || effectiveCourseId != null;
+    if (canUpload && newFiles.isNotEmpty) {
       await Future.wait(newFiles.map((item) async {
         try {
           await _repo.uploadAnnouncementFile(
             announcementId: annId,
-            materialId: effectiveCourseId,
+            materialId: effectiveCourseId, // null for admin → backend accepts it
             title: item.name,
             fileType: _toBackendFileType(item),
             filePath: item.filePath,
@@ -421,7 +459,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return 'file';
   }
 
-  Map<String, dynamic> _buildAnnouncementPayload({String? courseId}) {
+  Map<String, dynamic> _buildAnnouncementPayload({String? courseId, int? overrideYear}) {
     final s = state;
     final payload = <String, dynamic>{
       'title': s.title,
@@ -431,7 +469,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     };
 
     if (s.role == AnnounRole.admin) {
-      _applyAdminTarget(payload);
+      _applyAdminTarget(payload, overrideYear: overrideYear);
     } else {
       _applyDoctorTarget(payload, courseId: courseId);
     }
@@ -439,33 +477,40 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return payload;
   }
 
-  void _applyAdminTarget(Map<String, dynamic> p) {
+  void _applyAdminTarget(Map<String, dynamic> p, {int? overrideYear}) {
     final ut = state.adminUserType;
     if (ut == null) return;
 
     switch (ut) {
       case AdminUserType.all:
         p['target_type'] = 'all';
+
       case AdminUserType.students:
-        if (state.selectedDepartments.contains('General')) {
-          p['target_type'] = 'level';
-          p['target_year'] = state.targetYear;
-        } else if (state.selectedDepartments.length == 1) {
-          p['target_type'] = 'level';
-          p['target_department'] = state.selectedDepartments.first;
-          p['target_year'] = state.targetYear;
+        if (state.selectedLevels.isEmpty) {
+          // No level filter → all students
+          p['target_type'] = 'role';
+          p['target_role'] = 'STU';
         } else {
+          // overrideYear is set from post() loop
           p['target_type'] = 'level';
-          p['target_year'] = state.targetYear;
+          p['target_year'] = overrideYear;
+          // Levels 3/4 belong to specific departments; 1/2 are General
+          if (overrideYear != null && overrideYear >= 3) {
+            final specificDept = state.selectedDepartments
+                .where((d) => d != 'General')
+                .firstOrNull;
+            if (specificDept != null) p['target_department'] = specificDept;
+          }
         }
+
       case AdminUserType.doctors:
+        p['target_type'] = 'role';
+        p['target_role'] = 'DR';
+
       case AdminUserType.ta:
-        if (state.selectedDepartments.length == 1) {
-          p['target_type'] = 'department';
-          p['target_department'] = state.selectedDepartments.first;
-        } else {
-          p['target_type'] = 'all';
-        }
+        p['target_type'] = 'role';
+        p['target_role'] = 'TA';
+
       case AdminUserType.specificUsers:
         p['target_type'] = 'users';
         p['target_user_ids'] = state.selectedRecipientIds.toList();

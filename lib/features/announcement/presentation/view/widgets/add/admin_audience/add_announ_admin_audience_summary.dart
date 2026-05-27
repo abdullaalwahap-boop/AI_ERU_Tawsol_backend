@@ -65,7 +65,7 @@ class _SummaryBanner extends StatelessWidget {
   String get _summaryText {
     if (!_hasFilters) {
       return switch (userType) {
-        AdminUserType.all => 'Visible to all students and doctors',
+        AdminUserType.all => 'Visible to all students, doctors and assistants',
         AdminUserType.students => 'Visible to all students',
         AdminUserType.doctors => 'Visible to all doctors',
         AdminUserType.ta => 'Visible to all teaching assistants',
@@ -73,27 +73,21 @@ class _SummaryBanner extends StatelessWidget {
       };
     }
 
-    final who = switch (userType) {
-      AdminUserType.all => 'all users',
-      AdminUserType.students => 'students',
-      AdminUserType.doctors => 'doctors',
-      AdminUserType.ta => 'teaching assistants',
-      AdminUserType.specificUsers => 'selected users',
-    };
-
     final parts = <String>[];
     if (selectedDepartments.isNotEmpty) {
-      final names =
-          selectedDepartments.map((d) => d.split(' ').take(2).join(' ')).join(', ');
+      final names = selectedDepartments
+          .map((d) => d.split(' ').take(2).join(' '))
+          .join(', ');
       parts.add('$names dept.');
     }
     if (selectedLevels.isNotEmpty) {
-      final names =
-          selectedLevels.map((l) => l.replaceFirst('Level ', 'L')).join(' & ');
+      final names = selectedLevels
+          .map((l) => l.replaceFirst('Level ', 'L'))
+          .join(' & ');
       parts.add(names);
     }
 
-    return 'Visible to $who in ${parts.join(' — ')}';
+    return 'Visible to students in ${parts.join(' — ')}';
   }
 
   @override
@@ -104,9 +98,7 @@ class _SummaryBanner extends StatelessWidget {
     final textColor = isFiltered
         ? const Color(0xff1E40AF)
         : const Color(0xff065F46);
-    final icon = isFiltered
-        ? Icons.filter_alt_rounded
-        : Icons.public_rounded;
+    final icon = isFiltered ? Icons.filter_alt_rounded : Icons.public_rounded;
 
     return Container(
       width: double.infinity,

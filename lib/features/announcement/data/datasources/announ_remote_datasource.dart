@@ -184,7 +184,7 @@ class AnnounRemoteDatasource {
 
   Future<void> uploadAnnouncementFile({
     required int announcementId,
-    required String materialId,
+    String? materialId,
     required String title,
     required String fileType,
     String? filePath,
@@ -192,7 +192,7 @@ class AnnounRemoteDatasource {
   }) async {
     try {
       final formData = FormData.fromMap({
-        'material_id': materialId,
+        if (materialId != null) 'material_id': materialId,
         'title': title,
         'file_type': fileType,
         'announcement_id': announcementId,

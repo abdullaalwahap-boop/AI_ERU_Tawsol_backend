@@ -3,6 +3,7 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_an
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_audience_summary.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_filter_section.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_user_type_selector.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_recipient_search.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/audience/add_announ_required_badge.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/shared/section_header.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ class AddAnnounAdminAudienceSelector extends StatelessWidget {
   final void Function(String) onDeptToggle;
   final void Function(String) onLevelToggle;
   final List<String> departments;
-  final List<String> levels;
+  final List<int> availableYears;
+  final void Function(String) onSearchRecipients;
+  final void Function(int) onToggleRecipient;
 
   const AddAnnounAdminAudienceSelector({
     super.key,
@@ -22,7 +25,9 @@ class AddAnnounAdminAudienceSelector extends StatelessWidget {
     required this.onDeptToggle,
     required this.onLevelToggle,
     required this.departments,
-    required this.levels,
+    required this.availableYears,
+    required this.onSearchRecipients,
+    required this.onToggleRecipient,
   });
 
   @override
@@ -50,22 +55,36 @@ class AddAnnounAdminAudienceSelector extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (state.adminUserType != AdminUserType.all) ...[
+                      // Students: optional department + level filter
+                      if (state.adminUserType!.hasStudentFilter) ...[
                         AddAnnounAdminFilterSection(
                           departments: departments,
                           selectedDepartments: state.selectedDepartments,
                           onDeptToggle: onDeptToggle,
-                          levels: levels,
+                          availableYears: availableYears,
                           selectedLevels: state.selectedLevels,
                           onLevelToggle: onLevelToggle,
                         ),
                         AppSpacing.h14,
                       ],
-                      AddAnnounAdminAudienceSummary(
-                        userType: state.adminUserType,
-                        selectedDepartments: state.selectedDepartments,
-                        selectedLevels: state.selectedLevels,
-                      ),
+                      // Specific users: search bar + selected chips
+                      if (state.adminUserType!.needsRecipientSearch) ...[
+                        AddAnnounRecipientSearch(
+                          recipients: state.recipients,
+                          isLoading: state.isLoadingRecipients,
+                          selectedIds: state.selectedRecipientIds,
+                          onSearch: onSearchRecipients,
+                          onToggle: onToggleRecipient,
+                        ),
+                        AppSpacing.h14,
+                      ],
+                      // Summary banner (shown for all types except specificUsers)
+                      if (!state.adminUserType!.needsRecipientSearch)
+                        AddAnnounAdminAudienceSummary(
+                          userType: state.adminUserType,
+                          selectedDepartments: state.selectedDepartments,
+                          selectedLevels: state.selectedLevels,
+                        ),
                     ],
                   ),
                 ),

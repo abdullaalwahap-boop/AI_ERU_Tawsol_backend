@@ -77,7 +77,7 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                     ),
                     const SizedBox(height: 24),
                     AddAnnounAttachmentSection(
-                      visible: state.supportsAttachments,
+                      visible: state.showAttachments,
                       attachments: state.attachments,
                       onAdd: cubit.addAttachment,
                       onRemove: cubit.removeAttachment,
@@ -85,7 +85,7 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                     AnimatedSize(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOutCubic,
-                      child: state.supportsAttachments
+                      child: state.showAttachments
                           ? const SizedBox(height: 24)
                           : const SizedBox.shrink(),
                     ),
@@ -114,9 +114,9 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                         onDeptToggle: cubit.toggleDepartment,
                         onLevelToggle: cubit.toggleLevel,
                         departments: cubit.adminDepartments,
-                        levels: cubit.availableYears
-                            .map((y) => 'Level $y')
-                            .toList(),
+                        availableYears: cubit.availableYears,
+                        onSearchRecipients: cubit.searchRecipients,
+                        onToggleRecipient: cubit.toggleRecipient,
                       ),
                     if (isDoctor) ...[
                       const SizedBox(height: 24),

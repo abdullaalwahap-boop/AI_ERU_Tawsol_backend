@@ -17,20 +17,43 @@ class AddAnnounUserTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: AdminUserType.values.map((type) {
-        final isLast = type == AdminUserType.values.last;
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(right: isLast ? 0 : 10),
-            child: _TypeCard(
-              type: type,
-              isSelected: selected == type,
-              onTap: () => onSelected(type),
-            ),
-          ),
-        );
-      }).toList(),
+    final types = AdminUserType.values;
+    // 3 in first row, 2 in second row
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: types.take(3).map((type) {
+            final isLast = type == types[2];
+            return Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: isLast ? 0 : 10),
+                child: _TypeCard(
+                  type: type,
+                  isSelected: selected == type,
+                  onTap: () => onSelected(type),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        AppSpacing.h10,
+        Row(
+          children: types.skip(3).map((type) {
+            final isLast = type == types.last;
+            return Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: isLast ? 0 : 10),
+                child: _TypeCard(
+                  type: type,
+                  isSelected: selected == type,
+                  onTap: () => onSelected(type),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }
@@ -53,7 +76,7 @@ class _TypeCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeInOut,
-        height: 72,
+        height: 76,
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : AppColors.inputBgLight,
           borderRadius: AppRadius.large,
@@ -81,52 +104,59 @@ class _TypeCard extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 220),
-                    width: 34,
-                    height: 34,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primary
-                          : AppColors.dividerLight,
-                      borderRadius: BorderRadius.circular(10),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 220),
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.dividerLight,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        type.icon,
+                        size: 15,
+                        color: isSelected ? Colors.white : AppColors.textHint,
+                      ),
                     ),
-                    child: Icon(
-                      type.icon,
-                      size: 16,
-                      color: isSelected ? Colors.white : AppColors.textHint,
+                    AppSpacing.h4,
+                    Text(
+                      type.label,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.overline.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.textSecondary,
+                      ),
                     ),
-                  ),
-                  AppSpacing.h6,
-                  Text(
-                    type.label,
-                    style: AppTextStyles.labelSmall.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: isSelected
-                          ? AppColors.primary
-                          : AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             if (isSelected)
               Positioned(
-                top: 7,
-                right: 7,
+                top: 6,
+                right: 6,
                 child: Container(
-                  width: 15,
-                  height: 15,
+                  width: 14,
+                  height: 14,
                   decoration: const BoxDecoration(
                     color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.check_rounded,
-                    size: 9,
+                    size: 8,
                     color: Colors.white,
                   ),
                 ),

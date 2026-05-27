@@ -22,26 +22,31 @@ extension AdminUserTypeExt on AdminUserType {
   /// Maps to the backend `target_type` value.
   String get targetType => switch (this) {
         AdminUserType.all => 'all',
-        AdminUserType.students => 'level',
-        AdminUserType.doctors => 'department',
-        AdminUserType.ta => 'department',
+        AdminUserType.students => 'role',
+        AdminUserType.doctors => 'role',
+        AdminUserType.ta => 'role',
         AdminUserType.specificUsers => 'users',
       };
 
-  /// The backend role filter string (for /announcements/recipients endpoint).
-  String? get roleFilter => switch (this) {
+  /// The backend role value sent when target_type="role".
+  String? get targetRole => switch (this) {
         AdminUserType.doctors => 'DR',
         AdminUserType.ta => 'TA',
         AdminUserType.students => 'STU',
         _ => null,
       };
 
-  bool get needsDepartment =>
-      this == AdminUserType.doctors ||
-      this == AdminUserType.ta ||
-      this == AdminUserType.students;
+  /// The backend role filter string for /announcements/recipients endpoint.
+  /// specificUsers searches all roles (null = no filter).
+  String? get roleFilter => switch (this) {
+        AdminUserType.doctors => 'DR',
+        AdminUserType.ta => 'TA',
+        AdminUserType.students => 'STU',
+        _ => null, // specificUsers and all → no role filter
+      };
 
-  bool get needsYear => this == AdminUserType.students;
+  /// Whether this type shows the department/level filter section.
+  bool get hasStudentFilter => this == AdminUserType.students;
 
   bool get needsRecipientSearch => this == AdminUserType.specificUsers;
 }

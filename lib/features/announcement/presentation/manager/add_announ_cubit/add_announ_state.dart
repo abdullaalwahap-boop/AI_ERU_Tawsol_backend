@@ -82,22 +82,26 @@ class AddAnnounState extends Equatable {
       postType == AnnouncementType.materialFile ||
       postType == AnnouncementType.assignment;
 
+  // Admin announcements always show the attachment section (optional)
+  bool get showAttachments => role == AnnounRole.admin || supportsAttachments;
+
   bool get canPost {
     if (title.trim().isEmpty || details.trim().isEmpty) return false;
-    // In create mode, attachments are required; in edit mode allow saving with existing ones
-    if (!isEditMode && supportsAttachments && attachments.isEmpty) return false;
+    // DR/TA: attachments required when post type demands them
+    if (!isEditMode && supportsAttachments && role != AnnounRole.admin && attachments.isEmpty) return false;
     // Assignments require a deadline
     if (postType == AnnouncementType.assignment && deadline == null) {
       return false;
     }
     if (role == AnnounRole.admin) {
       if (adminUserType == null) return false;
-      if (adminUserType!.needsDepartment && selectedDepartments.isEmpty) {
+      // Students: if a dept filter is active, at least one level must be chosen
+      if (adminUserType == AdminUserType.students &&
+          selectedDepartments.isNotEmpty &&
+          selectedLevels.isEmpty) {
         return false;
       }
-      if (adminUserType!.needsYear && targetYear == null) return false;
-      if (adminUserType!.needsRecipientSearch &&
-          selectedRecipientIds.isEmpty) {
+      if (adminUserType!.needsRecipientSearch && selectedRecipientIds.isEmpty) {
         return false;
       }
       return true;
