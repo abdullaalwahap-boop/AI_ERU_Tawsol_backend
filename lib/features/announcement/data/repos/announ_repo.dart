@@ -40,6 +40,11 @@ abstract class AnnounRepo {
 
   Future<void> markRead(int id);
 
+  Future<void> cloneFilesToAnnouncement({
+    required int fromAnnouncementId,
+    required int toAnnouncementId,
+  });
+
   Future<void> uploadAnnouncementFile({
     required int announcementId,
     required String materialId,

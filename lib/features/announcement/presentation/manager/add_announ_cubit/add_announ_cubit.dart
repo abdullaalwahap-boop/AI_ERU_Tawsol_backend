@@ -161,7 +161,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   void setDeadline(DateTime dt) => emit(state.copyWith(deadline: dt));
 
-  // Kept for backward compat with existing audience chip widget
   void toggleOption(String option) {
     final updated = Set<String>.from(state.selectedOptions);
     if (updated.contains(option)) {
@@ -261,13 +260,32 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (!state.canPost) return;
     emit(state.copyWith(isPosting: true, clearError: true));
     try {
-      // Edit always targets the one existing announcement — no looping.
       if (isEditMode) {
         if (state.postType == AnnouncementType.assignment) {
           await _updateAssignmentRecord();
         }
+        // Update the existing announcement (uses first selected course as target).
         final ann = await _postAnnouncement();
-        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: ann));
+
+        // For any extra selected courses, create brand-new announcements.
+        final primaryId =
+            state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+        final extraIds = state.selectedOptions
+            .where((id) => id != primaryId)
+            .toList();
+        if (extraIds.isNotEmpty) {
+          if (state.postType == AnnouncementType.assignment) {
+            final fromAnnId = int.tryParse(_announcementToEdit?.id ?? '');
+            await Future.wait(extraIds.map((id) => _createAssignment(
+                courseId: id, cloneFromAnnouncementId: fromAnnId)));
+          } else {
+            await Future.wait(extraIds.map(
+                (id) => _postAnnouncement(courseId: id, forceCreate: true)));
+          }
+        }
+
+        emit(state.copyWith(
+            isPosting: false, isPosted: true, postedAnnouncement: ann));
         return;
       }
 
@@ -301,7 +319,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   /// Creates one Assignment (which auto-creates a linked Announcement) for
   /// [courseId], uploads any selected files, and returns the Announcement.
-  Future<Announcement?> _createAssignment({required String courseId}) async {
+  Future<Announcement?> _createAssignment({
+    required String courseId,
+    int? cloneFromAnnouncementId,
+  }) async {
     final assignment = await _assignmentDs.createAssignment(
       materialId: courseId,
       title: state.title,
@@ -325,6 +346,18 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           );
         } catch (_) {}
       }));
+    }
+
+    if (annId != null && cloneFromAnnouncementId != null) {
+      final hasServerFiles = state.attachments.any((a) => a.isServerFile);
+      if (hasServerFiles) {
+        try {
+          await _repo.cloneFilesToAnnouncement(
+            fromAnnouncementId: cloneFromAnnouncementId,
+            toAnnouncementId: annId,
+          );
+        } catch (_) {}
+      }
     }
 
     if (annId != null) {
@@ -352,12 +385,14 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   }
 
   /// Creates or updates a single announcement, optionally targeting [courseId].
-  /// In edit mode [courseId] is ignored — the existing course is preserved.
-  Future<Announcement> _postAnnouncement({String? courseId}) async {
+  /// Pass [forceCreate] to always create a new announcement even in edit mode
+  /// (used when the user selects extra courses while editing).
+  Future<Announcement> _postAnnouncement(
+      {String? courseId, bool forceCreate = false}) async {
     final payload = _buildAnnouncementPayload(courseId: courseId);
     final Announcement base;
 
-    if (isEditMode) {
+    if (isEditMode && !forceCreate) {
       final id = int.parse(_announcementToEdit!.id);
 
       // Delete server files removed from the edit form
@@ -377,6 +412,19 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       base = await _repo.updateAnnouncement(id, payload);
     } else {
       base = await _repo.createAnnouncement(payload);
+
+      // Clone server-side files from original announcement to the new copy
+      if (forceCreate && _announcementToEdit != null) {
+        final hasServerFiles = state.attachments.any((a) => a.isServerFile);
+        if (hasServerFiles) {
+          try {
+            await _repo.cloneFilesToAnnouncement(
+              fromAnnouncementId: int.parse(_announcementToEdit!.id),
+              toAnnouncementId: int.parse(base.id),
+            );
+          } catch (_) {}
+        }
+      }
     }
 
     // Upload new local files (best-effort)
@@ -401,6 +449,16 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       final full = await _repo.getAnnouncementDetail(annId);
       try { await _repo.notifyAnnouncement(annId); } catch (_) {}
       return full;
+    }
+
+    // Refresh via detail endpoint so deadline (from the assignment relationship)
+    // is always populated in the returned object.
+    if (isEditMode && !forceCreate) {
+      try {
+        final refreshed = await _repo.getAnnouncementDetail(annId);
+        try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+        return refreshed;
+      } catch (_) {}
     }
 
     try { await _repo.notifyAnnouncement(annId); } catch (_) {}

@@ -78,6 +78,16 @@ class AnnounRepoImpl implements AnnounRepo {
   Future<void> markRead(int id) => _ds.markRead(id);
 
   @override
+  Future<void> cloneFilesToAnnouncement({
+    required int fromAnnouncementId,
+    required int toAnnouncementId,
+  }) =>
+      _ds.cloneFilesToAnnouncement(
+        fromAnnouncementId: fromAnnouncementId,
+        toAnnouncementId: toAnnouncementId,
+      );
+
+  @override
   Future<void> uploadAnnouncementFile({
     required int announcementId,
     required String materialId,

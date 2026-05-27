@@ -182,6 +182,21 @@ class AnnounRemoteDatasource {
     }
   }
 
+  Future<void> cloneFilesToAnnouncement({
+    required int fromAnnouncementId,
+    required int toAnnouncementId,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'from_announcement_id': fromAnnouncementId,
+        'to_announcement_id': toAnnouncementId,
+      });
+      await _dio.post(ApiConstants.filesClone, data: formData);
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
+    }
+  }
+
   Future<void> uploadAnnouncementFile({
     required int announcementId,
     required String materialId,
