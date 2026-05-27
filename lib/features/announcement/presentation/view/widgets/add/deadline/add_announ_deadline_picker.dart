@@ -138,9 +138,12 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
     final now = DateTime.now();
     final firstDate = now.add(const Duration(minutes: 5));
 
+    final initialDate = (deadline != null && deadline!.isAfter(firstDate))
+        ? deadline!
+        : firstDate;
     final date = await showDatePicker(
       context: context,
-      initialDate: deadline ?? firstDate,
+      initialDate: initialDate,
       firstDate: firstDate,
       lastDate: now.add(const Duration(days: 365)),
       helpText: 'Select deadline date',

@@ -23,7 +23,7 @@ const kDepartments = [
 
 // Year pools by department context
 const kSpecializedYears = [3, 4]; // specific departments
-const kGeneralYears = [1, 2];      // General department
+const kGeneralYears = [1, 2]; // General department
 
 class AddAnnounCubit extends Cubit<AddAnnounState> {
   AddAnnounCubit({
@@ -45,8 +45,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   bool get isEditMode => state.isEditMode;
 
-  static AddAnnounState _buildInitial(
-      AnnounRole role, Announcement? toEdit) {
+  static AddAnnounState _buildInitial(AnnounRole role, Announcement? toEdit) {
     if (toEdit == null) return AddAnnounState.initial(role);
     final preSelectedOptions = toEdit.targetCourseId != null
         ? {toEdit.targetCourseId!}
@@ -161,7 +160,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   void setDeadline(DateTime dt) => emit(state.copyWith(deadline: dt));
 
-  // Kept for backward compat with existing audience chip widget
   void toggleOption(String option) {
     final updated = Set<String>.from(state.selectedOptions);
     if (updated.contains(option)) {
@@ -177,8 +175,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     ));
   }
 
-  List<String> get audienceOptions =>
-      state.courses.map((c) => c.id).toList();
+  List<String> get audienceOptions => state.courses.map((c) => c.id).toList();
 
   List<CourseOption> get courseList => state.courses;
 
@@ -234,7 +231,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (depts.isEmpty) return [];
     final hasGeneral = depts.contains('General');
     final hasSpecific = depts.any((d) => d != 'General');
-    if (hasGeneral && hasSpecific) return [...kGeneralYears, ...kSpecializedYears];
+    if (hasGeneral && hasSpecific)
+      return [...kGeneralYears, ...kSpecializedYears];
     if (hasGeneral) return kGeneralYears;
     return kSpecializedYears;
   }
@@ -270,13 +268,31 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (!state.canPost) return;
     emit(state.copyWith(isPosting: true, clearError: true));
     try {
-      // Edit always targets the one existing announcement — no looping.
       if (isEditMode) {
         if (state.postType == AnnouncementType.assignment) {
           await _updateAssignmentRecord();
         }
+        // Update the existing announcement (uses first selected course as target).
         final ann = await _postAnnouncement();
-        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: ann));
+
+        // For any extra selected courses, create brand-new announcements.
+        final primaryId =
+            state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+        final extraIds =
+            state.selectedOptions.where((id) => id != primaryId).toList();
+        if (extraIds.isNotEmpty) {
+          if (state.postType == AnnouncementType.assignment) {
+            final fromAnnId = int.tryParse(_announcementToEdit?.id ?? '');
+            await Future.wait(extraIds.map((id) => _createAssignment(
+                courseId: id, cloneFromAnnouncementId: fromAnnId)));
+          } else {
+            await Future.wait(extraIds.map(
+                (id) => _postAnnouncement(courseId: id, forceCreate: true)));
+          }
+        }
+
+        emit(state.copyWith(
+            isPosting: false, isPosted: true, postedAnnouncement: ann));
         return;
       }
 
@@ -292,7 +308,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           years.map((y) => _postAnnouncement(overrideYear: y)),
         );
         final first = results.whereType<Announcement>().firstOrNull;
-        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: first));
+        emit(state.copyWith(
+            isPosting: false, isPosted: true, postedAnnouncement: first));
         return;
       }
 
@@ -307,8 +324,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       final adminStudentYear = (state.role == AnnounRole.admin &&
               state.adminUserType == AdminUserType.students &&
               state.selectedLevels.length == 1)
-          ? int.tryParse(
-              state.selectedLevels.first.replaceAll('Level ', ''))
+          ? int.tryParse(state.selectedLevels.first.replaceAll('Level ', ''))
           : null;
 
       if (state.postType == AnnouncementType.assignment) {
@@ -316,7 +332,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           courseIds.map((id) => _createAssignment(courseId: id ?? '')),
         );
         final first = results.whereType<Announcement>().firstOrNull;
-        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: first));
+        emit(state.copyWith(
+            isPosting: false, isPosted: true, postedAnnouncement: first));
       } else {
         final results = await Future.wait(
           courseIds.map((id) => _postAnnouncement(
@@ -337,7 +354,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   /// Creates one Assignment (which auto-creates a linked Announcement) for
   /// [courseId], uploads any selected files, and returns the Announcement.
-  Future<Announcement?> _createAssignment({required String courseId}) async {
+  Future<Announcement?> _createAssignment({
+    required String courseId,
+    int? cloneFromAnnouncementId,
+  }) async {
     final assignment = await _assignmentDs.createAssignment(
       materialId: courseId,
       title: state.title,
@@ -363,10 +383,24 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       }));
     }
 
+    if (annId != null && cloneFromAnnouncementId != null) {
+      final hasServerFiles = state.attachments.any((a) => a.isServerFile);
+      if (hasServerFiles) {
+        try {
+          await _repo.cloneFilesToAnnouncement(
+            fromAnnouncementId: cloneFromAnnouncementId,
+            toAnnouncementId: annId,
+          );
+        } catch (_) {}
+      }
+    }
+
     if (annId != null) {
       try {
         final ann = await _repo.getAnnouncementDetail(annId);
-        try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+        try {
+          await _repo.notifyAnnouncement(annId);
+        } catch (_) {}
         return ann;
       } catch (_) {}
     }
@@ -387,13 +421,13 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     } catch (_) {}
   }
 
-  /// Creates or updates a single announcement.
-  /// [overrideYear] is used when admin targets multiple student levels (one call per level).
-  Future<Announcement> _postAnnouncement({String? courseId, int? overrideYear}) async {
-    final payload = _buildAnnouncementPayload(courseId: courseId, overrideYear: overrideYear);
+  /// Creates or updates a single announcement, optionally targeting [courseId].
+  /// In edit mode [courseId] is ignored — the existing course is preserved.
+  Future<Announcement> _postAnnouncement({String? courseId}) async {
+    final payload = _buildAnnouncementPayload(courseId: courseId);
     final Announcement base;
 
-    if (isEditMode) {
+    if (isEditMode && !forceCreate) {
       final id = int.parse(_announcementToEdit!.id);
 
       // Delete server files removed from the edit form
@@ -407,12 +441,27 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           .toSet();
       final removedIds = originalIds.difference(keptIds);
       await Future.wait(removedIds.map((fid) async {
-        try { await _repo.deleteFile(fid); } catch (_) {}
+        try {
+          await _repo.deleteFile(fid);
+        } catch (_) {}
       }));
 
       base = await _repo.updateAnnouncement(id, payload);
     } else {
       base = await _repo.createAnnouncement(payload);
+
+      // Clone server-side files from original announcement to the new copy
+      if (forceCreate && _announcementToEdit != null) {
+        final hasServerFiles = state.attachments.any((a) => a.isServerFile);
+        if (hasServerFiles) {
+          try {
+            await _repo.cloneFilesToAnnouncement(
+              fromAnnouncementId: int.parse(_announcementToEdit!.id),
+              toAnnouncementId: int.parse(base.id),
+            );
+          } catch (_) {}
+        }
+      }
     }
 
     // Upload new local files (best-effort)
@@ -422,13 +471,15 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
     final annId = int.parse(base.id);
     // Admin has no course; DR/TA require a courseId to upload
-    final canUpload = state.role == AnnounRole.admin || effectiveCourseId != null;
+    final canUpload =
+        state.role == AnnounRole.admin || effectiveCourseId != null;
     if (canUpload && newFiles.isNotEmpty) {
       await Future.wait(newFiles.map((item) async {
         try {
           await _repo.uploadAnnouncementFile(
             announcementId: annId,
-            materialId: effectiveCourseId, // null for admin → backend accepts it
+            materialId:
+                effectiveCourseId, // null for admin → backend accepts it
             title: item.name,
             fileType: _toBackendFileType(item),
             filePath: item.filePath,
@@ -437,11 +488,27 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         } catch (_) {}
       }));
       final full = await _repo.getAnnouncementDetail(annId);
-      try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+      try {
+        await _repo.notifyAnnouncement(annId);
+      } catch (_) {}
       return full;
     }
 
-    try { await _repo.notifyAnnouncement(annId); } catch (_) {}
+    // Refresh via detail endpoint so deadline (from the assignment relationship)
+    // is always populated in the returned object.
+    if (isEditMode && !forceCreate) {
+      try {
+        final refreshed = await _repo.getAnnouncementDetail(annId);
+        try {
+          await _repo.notifyAnnouncement(annId);
+        } catch (_) {}
+        return refreshed;
+      } catch (_) {}
+    }
+
+    try {
+      await _repo.notifyAnnouncement(annId);
+    } catch (_) {}
     return base;
   }
 
@@ -449,9 +516,13 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (item.isLink) return 'link';
     final n = item.name.toLowerCase();
     if (n.endsWith('.pdf')) return 'pdf';
-    if (n.endsWith('.jpg') || n.endsWith('.jpeg') ||
-        n.endsWith('.png') || n.endsWith('.gif') ||
-        n.endsWith('.webp')) { return 'image'; }
+    if (n.endsWith('.jpg') ||
+        n.endsWith('.jpeg') ||
+        n.endsWith('.png') ||
+        n.endsWith('.gif') ||
+        n.endsWith('.webp')) {
+      return 'image';
+    }
     if (n.endsWith('.doc') || n.endsWith('.docx')) return 'word';
     if (n.endsWith('.ppt') || n.endsWith('.pptx')) return 'ppt';
     if (n.endsWith('.zip')) return 'zip';
@@ -459,7 +530,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return 'file';
   }
 
-  Map<String, dynamic> _buildAnnouncementPayload({String? courseId, int? overrideYear}) {
+  Map<String, dynamic> _buildAnnouncementPayload(
+      {String? courseId, int? overrideYear}) {
     final s = state;
     final payload = <String, dynamic>{
       'title': s.title,
@@ -518,7 +590,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   }
 
   void _applyDoctorTarget(Map<String, dynamic> p, {String? courseId}) {
-    final id = courseId ?? state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+    final id =
+        courseId ?? state.selectedCourseId ?? state.selectedOptions.firstOrNull;
     if (id == null) return;
     p['target_type'] = 'course';
     p['target_course_id'] = id;

@@ -89,6 +89,7 @@ class AssignmentRemoteDatasource {
     String? fileType,
     String? textContent,
     MultipartFile? file,
+    int? announcementId,
   }) async {
     try {
       final formData = FormData.fromMap({
@@ -100,6 +101,7 @@ class AssignmentRemoteDatasource {
         if (fileType != null) 'file_type': fileType,
         if (textContent != null) 'text_content': textContent,
         if (file != null) 'file': file,
+        if (announcementId != null) 'announcement_id': announcementId,
       });
       final response = await _dio.post(
         ApiConstants.assignments,
