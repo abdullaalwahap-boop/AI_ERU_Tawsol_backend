@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:flutter/material.dart' show Color;
 
@@ -191,8 +192,8 @@ class CourseContent {
     final ann = Announcement.fromJson(json);
     final contentType = switch (ann.type) {
       AnnouncementType.materialFile => ContentType.material,
-      AnnouncementType.assignment   => ContentType.assignment,
-      _                             => ContentType.announcement,
+      AnnouncementType.assignment => ContentType.assignment,
+      _ => ContentType.announcement,
     };
     return CourseContent(
       id: ann.id,
@@ -236,14 +237,15 @@ class CourseContent {
       if (filePath != null) {
         final resolvedUrl = filePath.startsWith('http')
             ? filePath
-            : 'http://10.0.2.2:8000/$filePath';
+            : '${ApiConstants.baseUrl}/$filePath';
         attachments = [
           ContentAttachment(
             name: title,
             sizeLabel: (fileType ?? 'file').toUpperCase(),
             fileType: ContentFileType.fromString(fileType),
             url: resolvedUrl,
-            isImage: ContentFileType.fromString(fileType) == ContentFileType.image,
+            isImage:
+                ContentFileType.fromString(fileType) == ContentFileType.image,
           ),
         ];
       } else if (linkUrl != null) {
@@ -356,7 +358,7 @@ class CourseContent {
     } else if (filePath != null && filePath.isNotEmpty) {
       url = filePath.startsWith('http')
           ? filePath
-          : 'http://10.0.2.2:8000/$filePath';
+          : '${ApiConstants.baseUrl}/$filePath';
     }
 
     final ct = ContentFileType.fromString(fileType);
