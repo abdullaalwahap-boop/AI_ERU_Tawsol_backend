@@ -56,6 +56,8 @@ class _AnnounViewBodyState extends State<AnnounViewBody> {
       cubit.replaceAnnouncement(notifier.replaced!);
     } else if (notifier.deletedId != null) {
       cubit.localDelete(notifier.deletedId!);
+    } else if (notifier.markedReadId != null) {
+      cubit.localMarkRead(notifier.markedReadId!);
     }
   }
 

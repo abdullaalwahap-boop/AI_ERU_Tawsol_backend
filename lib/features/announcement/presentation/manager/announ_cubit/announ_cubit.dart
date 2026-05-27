@@ -187,6 +187,19 @@ class AnnounCubit extends Cubit<AnnounState> {
     ));
   }
 
+  void localMarkRead(String id) {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    emit(current.copyWith(
+      primary: current.primary
+          .map((a) => a.id == id ? a.copyWith(isRead: true) : a)
+          .toList(),
+      secondary: current.secondary
+          .map((a) => a.id == id ? a.copyWith(isRead: true) : a)
+          .toList(),
+    ));
+  }
+
   void prependAnnouncement(Announcement ann) {
     final current = state;
     if (current is! AnnounLoaded) return;

@@ -55,6 +55,8 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
       cubit.removeContent(notifier.deletedId!);
     } else if (notifier.replaced != null) {
       cubit.updateAnnouncementContent(notifier.replaced!);
+    } else if (notifier.markedReadId != null) {
+      cubit.localMarkAnnouncementRead(notifier.markedReadId!);
     }
   }
 

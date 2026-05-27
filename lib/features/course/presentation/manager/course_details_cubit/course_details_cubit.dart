@@ -72,6 +72,18 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     ));
   }
 
+  void localMarkAnnouncementRead(String id) {
+    final current = state;
+    if (current is! CourseDetailsLoaded) return;
+    emit(current.copyWith(
+      content: current.content.map((c) {
+        final ann = c.announcement;
+        if (ann == null || ann.id != id) return c;
+        return c.withAnnouncement(ann.copyWith(isRead: true));
+      }).toList(),
+    ));
+  }
+
   Future<void> refresh(CourseRole role, Course course) =>
       loadForRole(role, course);
 
