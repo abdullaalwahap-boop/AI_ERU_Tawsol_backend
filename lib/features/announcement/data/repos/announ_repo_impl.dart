@@ -1,7 +1,6 @@
 import 'package:ai_eru_tawasol/features/announcement/data/datasources/announ_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
-import 'package:dio/dio.dart';
 
 class AnnounRepoImpl implements AnnounRepo {
   const AnnounRepoImpl(this._ds);
@@ -65,25 +64,34 @@ class AnnounRepoImpl implements AnnounRepo {
       );
 
   @override
-  Future<Announcement> createAnnouncement(
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  }) =>
-      _ds.createAnnouncement(payload, files: files, linkUrls: linkUrls);
+  Future<Announcement> createAnnouncement(Map<String, dynamic> payload) =>
+      _ds.createAnnouncement(payload);
 
   @override
-  Future<Announcement> updateAnnouncement(
-    int id,
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  }) =>
-      _ds.updateAnnouncement(id, payload, files: files, linkUrls: linkUrls);
+  Future<Announcement> updateAnnouncement(int id, Map<String, dynamic> payload) =>
+      _ds.updateAnnouncement(id, payload);
 
   @override
   Future<void> deleteAnnouncement(int id) => _ds.deleteAnnouncement(id);
 
   @override
   Future<void> markRead(int id) => _ds.markRead(id);
+
+  @override
+  Future<void> uploadAnnouncementFile({
+    required int announcementId,
+    required String materialId,
+    required String title,
+    required String fileType,
+    String? filePath,
+    String? linkUrl,
+  }) =>
+      _ds.uploadAnnouncementFile(
+        announcementId: announcementId,
+        materialId: materialId,
+        title: title,
+        fileType: fileType,
+        filePath: filePath,
+        linkUrl: linkUrl,
+      );
 }

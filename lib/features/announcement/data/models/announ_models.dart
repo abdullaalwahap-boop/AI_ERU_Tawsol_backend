@@ -160,14 +160,36 @@ class AnnounAttachment {
   });
 
   factory AnnounAttachment.fromJson(Map<String, dynamic> json) {
+    // name: supports old format (file_name/name) and MaterialFileOut (title)
+    final name = (json['file_name'] as String?) ??
+        (json['name'] as String?) ??
+        (json['title'] as String?) ??
+        '';
+
+    // url: link_url for links, file_path made absolute, then legacy fields
+    final filePath = json['file_path'] as String?;
+    final linkUrl = json['link_url'] as String?;
+    final legacyUrl =
+        (json['file_url'] as String?) ?? (json['url'] as String?);
+    String url = '';
+    if (linkUrl != null && linkUrl.isNotEmpty) {
+      url = linkUrl;
+    } else if (filePath != null && filePath.isNotEmpty) {
+      url = filePath.startsWith('http')
+          ? filePath
+          : 'http://10.0.2.2:8000/$filePath';
+    } else if (legacyUrl != null && legacyUrl.isNotEmpty) {
+      url = legacyUrl;
+    }
+
     final rawSize = json['file_size'] ?? json['size'] ?? 0;
-    final sizeMB = _toMB(rawSize);
     final typeStr =
         (json['file_type'] ?? json['type'] ?? '').toString().toLowerCase();
+
     return AnnounAttachment(
-      name: json['file_name'] as String? ?? json['name'] as String? ?? '',
-      url: json['file_url'] as String? ?? json['url'] as String? ?? '',
-      sizeMB: sizeMB,
+      name: name,
+      url: url,
+      sizeMB: _toMB(rawSize),
       fileType: _fileTypeFromString(typeStr),
     );
   }
@@ -180,11 +202,10 @@ class AnnounAttachment {
 
   static AttachmentFileType _fileTypeFromString(String type) {
     if (type == 'pdf') return AttachmentFileType.pdf;
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'image']
-        .contains(type)) {
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'image'].contains(type)) {
       return AttachmentFileType.image;
     }
-    if (['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'].contains(type)) {
+    if (['doc', 'docx', 'word', 'ppt', 'pptx', 'xls', 'xlsx'].contains(type)) {
       return AttachmentFileType.doc;
     }
     return AttachmentFileType.other;

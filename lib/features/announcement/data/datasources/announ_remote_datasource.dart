@@ -117,11 +117,7 @@ class AnnounRemoteDatasource {
 
   // ── Write ─────────────────────────────────────────────────────────────────
 
-  Future<Announcement> createAnnouncement(
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  }) async {
+  Future<Announcement> createAnnouncement(Map<String, dynamic> payload) async {
     try {
       final response = await _dio.post(
         ApiConstants.announcements,
@@ -138,10 +134,8 @@ class AnnounRemoteDatasource {
 
   Future<Announcement> updateAnnouncement(
     int id,
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  }) async {
+    Map<String, dynamic> payload,
+  ) async {
     try {
       final response = await _dio.put(
         ApiConstants.announcementById(id),
@@ -167,6 +161,30 @@ class AnnounRemoteDatasource {
   Future<void> markRead(int id) async {
     try {
       await _dio.post(ApiConstants.announcementMarkRead(id));
+    } on DioException catch (e) {
+      throw NetworkException.fromDioError(e);
+    }
+  }
+
+  Future<void> uploadAnnouncementFile({
+    required int announcementId,
+    required String materialId,
+    required String title,
+    required String fileType,
+    String? filePath,
+    String? linkUrl,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'material_id': materialId,
+        'title': title,
+        'file_type': fileType,
+        'announcement_id': announcementId,
+        if (filePath != null)
+          'file': await MultipartFile.fromFile(filePath, filename: title),
+        if (linkUrl != null && linkUrl.isNotEmpty) 'link_url': linkUrl,
+      });
+      await _dio.post(ApiConstants.files, data: formData);
     } on DioException catch (e) {
       throw NetworkException.fromDioError(e);
     }

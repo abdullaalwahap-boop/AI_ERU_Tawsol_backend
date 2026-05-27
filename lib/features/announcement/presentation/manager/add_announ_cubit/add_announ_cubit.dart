@@ -6,7 +6,6 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_an
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
@@ -283,13 +282,56 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     );
   }
 
-  Future<Announcement> _postAnnouncement() {
+  Future<Announcement> _postAnnouncement() async {
     final payload = _buildAnnouncementPayload();
+    final Announcement base;
+
     if (isEditMode) {
       final id = int.parse(_announcementToEdit!.id);
-      return _repo.updateAnnouncement(id, payload);
+      base = await _repo.updateAnnouncement(id, payload);
+    } else {
+      base = await _repo.createAnnouncement(payload);
     }
-    return _repo.createAnnouncement(payload);
+
+    // Upload new local files linked to this announcement (best-effort)
+    final courseId =
+        state.selectedCourseId ?? state.selectedOptions.firstOrNull;
+    final newFiles =
+        state.attachments.where((a) => !a.isServerFile).toList();
+
+    if (courseId != null && newFiles.isNotEmpty) {
+      final annId = int.parse(base.id);
+      await Future.wait(newFiles.map((item) async {
+        try {
+          await _repo.uploadAnnouncementFile(
+            announcementId: annId,
+            materialId: courseId,
+            title: item.name,
+            fileType: _toBackendFileType(item),
+            filePath: item.filePath,
+            linkUrl: item.isLink ? item.url : null,
+          );
+        } catch (_) {}
+      }));
+      // Refetch so the returned Announcement includes uploaded files
+      return _repo.getAnnouncementDetail(annId);
+    }
+
+    return base;
+  }
+
+  static String _toBackendFileType(AddAnnounAttachmentItem item) {
+    if (item.isLink) return 'link';
+    final n = item.name.toLowerCase();
+    if (n.endsWith('.pdf')) return 'pdf';
+    if (n.endsWith('.jpg') || n.endsWith('.jpeg') ||
+        n.endsWith('.png') || n.endsWith('.gif') ||
+        n.endsWith('.webp')) { return 'image'; }
+    if (n.endsWith('.doc') || n.endsWith('.docx')) return 'word';
+    if (n.endsWith('.ppt') || n.endsWith('.pptx')) return 'ppt';
+    if (n.endsWith('.zip')) return 'zip';
+    if (n.endsWith('.rar')) return 'rar';
+    return 'file';
   }
 
   Map<String, dynamic> _buildAnnouncementPayload() {

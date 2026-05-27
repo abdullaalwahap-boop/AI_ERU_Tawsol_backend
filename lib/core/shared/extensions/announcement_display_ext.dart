@@ -32,6 +32,7 @@ extension AnnouncementDisplayExt on Announcement {
               icon: a.fileType.icon,
               iconColor: a.fileType.color,
               url: a.url.isNotEmpty ? a.url : null,
+              isImage: a.fileType == AttachmentFileType.image,
             ),
           )
           .toList(),

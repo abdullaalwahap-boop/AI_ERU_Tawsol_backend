@@ -1,5 +1,4 @@
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:dio/dio.dart';
 
 abstract class AnnounRepo {
   // ── Read ──────────────────────────────────────────────────────────────────
@@ -33,20 +32,20 @@ abstract class AnnounRepo {
   });
 
   // ── Write ─────────────────────────────────────────────────────────────────
-  Future<Announcement> createAnnouncement(
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  });
+  Future<Announcement> createAnnouncement(Map<String, dynamic> payload);
 
-  Future<Announcement> updateAnnouncement(
-    int id,
-    Map<String, dynamic> payload, {
-    List<MultipartFile> files = const [],
-    List<String> linkUrls = const [],
-  });
+  Future<Announcement> updateAnnouncement(int id, Map<String, dynamic> payload);
 
   Future<void> deleteAnnouncement(int id);
 
   Future<void> markRead(int id);
+
+  Future<void> uploadAnnouncementFile({
+    required int announcementId,
+    required String materialId,
+    required String title,
+    required String fileType,
+    String? filePath,
+    String? linkUrl,
+  });
 }

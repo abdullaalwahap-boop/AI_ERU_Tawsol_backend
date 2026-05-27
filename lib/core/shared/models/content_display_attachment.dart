@@ -6,6 +6,7 @@ class ContentDisplayAttachment {
   final IconData icon;
   final Color iconColor;
   final String? url;
+  final bool isImage;
 
   const ContentDisplayAttachment({
     required this.name,
@@ -13,5 +14,6 @@ class ContentDisplayAttachment {
     required this.icon,
     required this.iconColor,
     this.url,
+    this.isImage = false,
   });
 }
