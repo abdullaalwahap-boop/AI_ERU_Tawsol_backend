@@ -423,7 +423,11 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
   /// Creates or updates a single announcement, optionally targeting [courseId].
   /// In edit mode [courseId] is ignored — the existing course is preserved.
-  Future<Announcement> _postAnnouncement({String? courseId}) async {
+  Future<Announcement> _postAnnouncement({
+    String? courseId,
+    forceCreate = false,
+    int? overrideYear,
+  }) async {
     final payload = _buildAnnouncementPayload(courseId: courseId);
     final Announcement base;
 
