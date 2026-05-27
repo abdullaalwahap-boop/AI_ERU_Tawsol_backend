@@ -1,6 +1,5 @@
 import 'package:ai_eru_tawasol/features/announcement/data/datasources/assignment_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
-import 'package:ai_eru_tawasol/features/announcement/data/models/assignment_model.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
@@ -44,7 +43,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   final CourseRepo _courseRepo;
   final Announcement? _announcementToEdit;
 
-  bool get isEditMode => _announcementToEdit != null;
+  bool get isEditMode => state.isEditMode;
 
   static AddAnnounState _buildInitial(
       AnnounRole role, Announcement? toEdit) {
@@ -54,12 +53,13 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         : const <String>{};
     final preAttachments = toEdit.attachments
         .map((a) => AddAnnounAttachmentItem(
-              id: a.url,
+              id: a.fileId?.toString() ?? a.url,
               name: a.name,
               sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
               fileType: a.fileType,
               url: a.url,
               isServerFile: true,
+              fileId: a.fileId,
             ))
         .toList();
     return AddAnnounState(
@@ -75,6 +75,8 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           : const {},
       selectedLevels: const {},
       targetYear: toEdit.targetYear,
+      deadline: toEdit.deadline,
+      isEditMode: true,
       attachments: preAttachments,
     );
   }
@@ -259,10 +261,13 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (!state.canPost) return;
     emit(state.copyWith(isPosting: true, clearError: true));
     try {
-      if (state.postType == AnnouncementType.assignment) {
-        await _postAssignment();
-        emit(state.copyWith(isPosting: false, isPosted: true));
+      if (state.postType == AnnouncementType.assignment && !isEditMode) {
+        final ann = await _createAssignment();
+        emit(state.copyWith(isPosting: false, isPosted: true, postedAnnouncement: ann));
       } else {
+        if (isEditMode && state.postType == AnnouncementType.assignment) {
+          await _updateAssignmentRecord(); // sync deadline first so ann.deadline is fresh
+        }
         final ann = await _postAnnouncement();
         emit(state.copyWith(
             isPosting: false, isPosted: true, postedAnnouncement: ann));
@@ -272,14 +277,54 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     }
   }
 
-  Future<Assignment> _postAssignment() {
+  /// Creates the Assignment (which auto-creates a linked Announcement), then
+  /// uploads any selected files to that announcement, and returns the full
+  /// Announcement so the feed can display it immediately.
+  Future<Announcement?> _createAssignment() async {
     final courseId = state.selectedCourseId ?? state.selectedOptions.first;
-    return _assignmentDs.createAssignment(
+    final assignment = await _assignmentDs.createAssignment(
       materialId: courseId,
       title: state.title,
       description: state.details.isNotEmpty ? state.details : null,
       deadline: state.deadline ?? DateTime.now().add(const Duration(days: 7)),
     );
+
+    final annId = assignment.announcementId;
+    final newFiles = state.attachments.where((a) => !a.isServerFile).toList();
+
+    if (annId != null && newFiles.isNotEmpty) {
+      await Future.wait(newFiles.map((item) async {
+        try {
+          await _repo.uploadAnnouncementFile(
+            announcementId: annId,
+            materialId: courseId,
+            title: item.name,
+            fileType: _toBackendFileType(item),
+            filePath: item.filePath,
+            linkUrl: item.isLink ? item.url : null,
+          );
+        } catch (_) {}
+      }));
+    }
+
+    if (annId != null) {
+      try { return await _repo.getAnnouncementDetail(annId); } catch (_) {}
+    }
+    return null;
+  }
+
+  /// Updates the linked Assignment's deadline/title/description in edit mode.
+  Future<void> _updateAssignmentRecord() async {
+    final assignmentId = _announcementToEdit?.assignmentId;
+    if (assignmentId == null) return;
+    try {
+      await _assignmentDs.updateAssignment(assignmentId, {
+        'title': state.title,
+        if (state.details.isNotEmpty) 'description': state.details,
+        if (state.deadline != null)
+          'deadline': state.deadline!.toUtc().toIso8601String(),
+      });
+    } catch (_) {}
   }
 
   Future<Announcement> _postAnnouncement() async {
@@ -288,16 +333,30 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
 
     if (isEditMode) {
       final id = int.parse(_announcementToEdit!.id);
+
+      // Delete server files that the user removed from the edit form
+      final originalIds = _announcementToEdit!.attachments
+          .where((a) => a.fileId != null)
+          .map((a) => a.fileId!)
+          .toSet();
+      final keptIds = state.attachments
+          .where((a) => a.isServerFile && a.fileId != null)
+          .map((a) => a.fileId!)
+          .toSet();
+      final removedIds = originalIds.difference(keptIds);
+      await Future.wait(removedIds.map((fid) async {
+        try { await _repo.deleteFile(fid); } catch (_) {}
+      }));
+
       base = await _repo.updateAnnouncement(id, payload);
     } else {
       base = await _repo.createAnnouncement(payload);
     }
 
-    // Upload new local files linked to this announcement (best-effort)
+    // Upload new local files (best-effort)
     final courseId =
         state.selectedCourseId ?? state.selectedOptions.firstOrNull;
-    final newFiles =
-        state.attachments.where((a) => !a.isServerFile).toList();
+    final newFiles = state.attachments.where((a) => !a.isServerFile).toList();
 
     if (courseId != null && newFiles.isNotEmpty) {
       final annId = int.parse(base.id);
@@ -313,7 +372,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
           );
         } catch (_) {}
       }));
-      // Refetch so the returned Announcement includes uploaded files
       return _repo.getAnnouncementDetail(annId);
     }
 

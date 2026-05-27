@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:flutter/material.dart' show Color;
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
@@ -109,11 +110,15 @@ class ContentAttachment {
   final String name;
   final String sizeLabel;
   final ContentFileType fileType;
+  final String? url;
+  final bool isImage;
 
   const ContentAttachment({
     required this.name,
     required this.sizeLabel,
     required this.fileType,
+    this.url,
+    this.isImage = false,
   });
 }
 
@@ -126,6 +131,8 @@ class CourseContent {
   final List<ContentAttachment> attachments;
   final bool isFromAdmin;
   final String authorName;
+  final DateTime? deadline;
+  final Announcement? announcement;
 
   const CourseContent({
     required this.id,
@@ -136,51 +143,105 @@ class CourseContent {
     this.attachments = const [],
     this.isFromAdmin = false,
     required this.authorName,
+    this.deadline,
+    this.announcement,
   });
+
+  CourseContent withAnnouncement(Announcement ann) => CourseContent(
+        id: id,
+        title: ann.title,
+        body: ann.body,
+        type: type,
+        createdAt: createdAt,
+        attachments: ann.attachments
+            .map((a) => ContentAttachment(
+                  name: a.name,
+                  sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
+                  fileType: _contentFileTypeFrom(a.fileType),
+                  url: a.url.isNotEmpty ? a.url : null,
+                  isImage: a.fileType == AttachmentFileType.image,
+                ))
+            .toList(),
+        isFromAdmin: ann.isFromAdmin,
+        authorName: ann.doctorName,
+        deadline: ann.deadline,
+        announcement: ann,
+      );
+
+  static ContentFileType _contentFileTypeFrom(AttachmentFileType t) {
+    switch (t) {
+      case AttachmentFileType.pdf:
+        return ContentFileType.pdf;
+      case AttachmentFileType.image:
+        return ContentFileType.image;
+      case AttachmentFileType.doc:
+        return ContentFileType.doc;
+      case AttachmentFileType.other:
+        return ContentFileType.other;
+    }
+  }
 
   // ── Backend factories ──────────────────────────────────────────────────────
 
   /// Maps a backend `AnnouncementOut` JSON object.
   /// Only call with announcements where `announcement_type == 'normal'`.
   factory CourseContent.fromAnnouncement(Map<String, dynamic> json) {
+    final ann = Announcement.fromJson(json);
     return CourseContent(
-      id: (json['announcement_id'] as int).toString(),
-      title: json['title'] as String,
-      body: json['content'] as String,
+      id: ann.id,
+      title: ann.title,
+      body: ann.body,
       type: ContentType.announcement,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      authorName: json['author_name'] as String? ?? '',
+      createdAt: ann.createdAt,
+      authorName: ann.doctorName,
       attachments: const [],
-      isFromAdmin: false,
+      isFromAdmin: ann.isFromAdmin,
+      announcement: ann,
     );
   }
 
   /// Maps a backend `AssignmentOut` JSON object.
   factory CourseContent.fromAssignment(Map<String, dynamic> json) {
-    final fileType = json['file_type'] as String?;
-    final filePath = json['file_path'] as String?;
-    final linkUrl = json['link_url'] as String?;
     final title = json['title'] as String;
 
+    // Prefer the enriched attachments list (MaterialFileOut records linked to
+    // the announcement), falling back to the legacy file_path / link_url fields.
+    final rawAttachments = json['attachments'] as List<dynamic>?;
     final List<ContentAttachment> attachments;
-    if (filePath != null) {
-      attachments = [
-        ContentAttachment(
-          name: title,
-          sizeLabel: (fileType ?? 'file').toUpperCase(),
-          fileType: ContentFileType.fromString(fileType),
-        ),
-      ];
-    } else if (linkUrl != null) {
-      attachments = const [
-        ContentAttachment(
-          name: 'Open Link',
-          sizeLabel: 'URL',
-          fileType: ContentFileType.other,
-        ),
-      ];
+
+    if (rawAttachments != null && rawAttachments.isNotEmpty) {
+      attachments = rawAttachments
+          .map((a) => _attachmentFromFileJson(a as Map<String, dynamic>))
+          .toList();
     } else {
-      attachments = const [];
+      final fileType = json['file_type'] as String?;
+      final filePath = json['file_path'] as String?;
+      final linkUrl = json['link_url'] as String?;
+      if (filePath != null) {
+        final resolvedUrl = filePath.startsWith('http')
+            ? filePath
+            : 'http://10.0.2.2:8000/$filePath';
+        attachments = [
+          ContentAttachment(
+            name: title,
+            sizeLabel: (fileType ?? 'file').toUpperCase(),
+            fileType: ContentFileType.fromString(fileType),
+            url: resolvedUrl,
+            isImage: ContentFileType.fromString(fileType) == ContentFileType.image,
+          ),
+        ];
+      } else if (linkUrl != null) {
+        attachments = [
+          ContentAttachment(
+            name: 'Open Link',
+            sizeLabel: 'URL',
+            fileType: ContentFileType.other,
+            url: linkUrl,
+          ),
+        ];
+      } else {
+        attachments = const [];
+      }
     }
 
     return CourseContent(
@@ -189,49 +250,22 @@ class CourseContent {
       body: _assignmentBody(json),
       type: ContentType.assignment,
       createdAt: DateTime.parse(json['created_at'] as String),
-      authorName: '',
+      authorName: json['author_name'] as String? ?? '',
       attachments: attachments,
       isFromAdmin: false,
+      deadline: json['deadline'] != null
+          ? DateTime.tryParse(json['deadline'] as String)
+          : null,
     );
   }
 
   /// Maps a backend `MaterialFileOut` JSON object.
   factory CourseContent.fromFile(Map<String, dynamic> json) {
-    final fileType = json['file_type'] as String? ?? 'other';
-    final filePath = json['file_path'] as String?;
-    final linkUrl = json['link_url'] as String?;
-    final title = json['title'] as String;
-
-    final List<ContentAttachment> attachments;
-    if (filePath != null) {
-      attachments = [
-        ContentAttachment(
-          name: title,
-          sizeLabel: fileType.toUpperCase(),
-          fileType: ContentFileType.fromString(fileType),
-        ),
-      ];
-    } else if (linkUrl != null) {
-      attachments = const [
-        ContentAttachment(
-          name: 'Open Link',
-          sizeLabel: 'URL',
-          fileType: ContentFileType.other,
-        ),
-      ];
-    } else {
-      attachments = [
-        ContentAttachment(
-          name: title,
-          sizeLabel: fileType.toUpperCase(),
-          fileType: ContentFileType.fromString(fileType),
-        ),
-      ];
-    }
+    final attachments = [_attachmentFromFileJson(json)];
 
     return CourseContent(
       id: (json['file_id'] as int).toString(),
-      title: title,
+      title: json['title'] as String,
       body: json['description'] as String? ??
           json['text_content'] as String? ??
           '',
@@ -287,6 +321,39 @@ class CourseContent {
   }
 
   // ── Private helpers ────────────────────────────────────────────────────────
+
+  static ContentAttachment _attachmentFromFileJson(Map<String, dynamic> j) {
+    final fileType = (j['file_type'] as String? ?? 'other').toLowerCase();
+    final title = j['title'] as String? ?? j['file_name'] as String? ?? 'File';
+    final filePath = j['file_path'] as String?;
+    final linkUrl = j['link_url'] as String?;
+    final rawSize = j['file_size'] ?? 0;
+    final sizeMB = rawSize is int
+        ? (rawSize < 1000 ? rawSize.toDouble() : rawSize / (1024 * 1024))
+        : (rawSize is double
+            ? (rawSize < 1000 ? rawSize : rawSize / (1024 * 1024))
+            : 0.0);
+
+    String? url;
+    if (linkUrl != null && linkUrl.isNotEmpty) {
+      url = linkUrl;
+    } else if (filePath != null && filePath.isNotEmpty) {
+      url = filePath.startsWith('http')
+          ? filePath
+          : 'http://10.0.2.2:8000/$filePath';
+    }
+
+    final ct = ContentFileType.fromString(fileType);
+    return ContentAttachment(
+      name: title,
+      sizeLabel: url == linkUrl && linkUrl != null
+          ? 'URL'
+          : '${sizeMB.toStringAsFixed(1)} MB',
+      fileType: ct,
+      url: url,
+      isImage: ct == ContentFileType.image,
+    );
+  }
 
   static String _assignmentBody(Map<String, dynamic> json) {
     final parts = <String>[];

@@ -28,6 +28,9 @@ class AddAnnounState extends Equatable {
   // ── Assignment-specific ───────────────────────────────────────────────────
   final DateTime? deadline;
 
+  // ── Edit mode ─────────────────────────────────────────────────────────────
+  final bool isEditMode;
+
   // ── Attachments ───────────────────────────────────────────────────────────
   final List<AddAnnounAttachmentItem> attachments;
 
@@ -56,6 +59,7 @@ class AddAnnounState extends Equatable {
     this.selectedRecipientIds = const {},
     this.deadline,
     this.attachments = const [],
+    this.isEditMode = false,
     this.isPosting = false,
     this.isPosted = false,
     this.postedAnnouncement,
@@ -78,12 +82,10 @@ class AddAnnounState extends Equatable {
       postType == AnnouncementType.materialFile ||
       postType == AnnouncementType.assignment;
 
-  bool get isEditMode => false; // overridden in cubit
-
   bool get canPost {
     if (title.trim().isEmpty || details.trim().isEmpty) return false;
-    // Types that show the attachment section require at least one attachment
-    if (supportsAttachments && attachments.isEmpty) return false;
+    // In create mode, attachments are required; in edit mode allow saving with existing ones
+    if (!isEditMode && supportsAttachments && attachments.isEmpty) return false;
     // Assignments require a deadline
     if (postType == AnnouncementType.assignment && deadline == null) {
       return false;
@@ -129,6 +131,7 @@ class AddAnnounState extends Equatable {
         isLoadingRecipients,
         selectedRecipientIds,
         deadline,
+        isEditMode,
         attachments,
         isPosting,
         isPosted,
@@ -182,6 +185,7 @@ class AddAnnounState extends Equatable {
       isLoadingRecipients: isLoadingRecipients ?? this.isLoadingRecipients,
       selectedRecipientIds: selectedRecipientIds ?? this.selectedRecipientIds,
       deadline: clearDeadline ? null : (deadline ?? this.deadline),
+      isEditMode: isEditMode,
       attachments: attachments ?? this.attachments,
       isPosting: isPosting ?? this.isPosting,
       isPosted: isPosted ?? this.isPosted,

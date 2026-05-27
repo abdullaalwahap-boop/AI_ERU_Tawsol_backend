@@ -10,8 +10,10 @@ class AddAnnounAttachmentItem extends Equatable {
   final String? url;
 
   /// True when this item was loaded from the server (edit mode pre-fill).
-  /// Server files keep their real fileType icon even though [url] is set.
   final bool isServerFile;
+
+  /// Backend file_id — only set for server files, used for deletion on edit.
+  final int? fileId;
 
   const AddAnnounAttachmentItem({
     required this.id,
@@ -21,13 +23,13 @@ class AddAnnounAttachmentItem extends Equatable {
     this.filePath,
     this.url,
     this.isServerFile = false,
+    this.fileId,
   });
 
-  /// A user-added external link (not a file).
   bool get isLink => url != null && !isServerFile;
   bool get isImage => fileType == AttachmentFileType.image && filePath != null;
 
   @override
   List<Object?> get props =>
-      [id, name, sizeLabel, fileType, filePath, url, isServerFile];
+      [id, name, sizeLabel, fileType, filePath, url, isServerFile, fileId];
 }

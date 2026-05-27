@@ -48,4 +48,6 @@ abstract class AnnounRepo {
     String? filePath,
     String? linkUrl,
   });
+
+  Future<void> deleteFile(int fileId);
 }

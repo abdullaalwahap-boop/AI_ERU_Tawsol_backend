@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:equatable/equatable.dart';
@@ -49,6 +50,25 @@ class CourseDetailsCubit extends Cubit<CourseDetailsState> {
     emit(current.copyWith(
       activeFilter: type,
       clearFilter: type == null,
+    ));
+  }
+
+  void removeContent(String id) {
+    final current = state;
+    if (current is! CourseDetailsLoaded) return;
+    emit(current.copyWith(
+      content: current.content.where((c) => c.id != id).toList(),
+    ));
+  }
+
+  void updateAnnouncementContent(Announcement updated) {
+    final current = state;
+    if (current is! CourseDetailsLoaded) return;
+    emit(current.copyWith(
+      content: current.content.map((c) {
+        if (c.announcement?.id == updated.id) return c.withAnnouncement(updated);
+        return c;
+      }).toList(),
     ));
   }
 

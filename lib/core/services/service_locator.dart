@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
 import 'package:ai_eru_tawasol/core/network/dio_client.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
@@ -74,6 +75,9 @@ Future<void> setupServiceLocator() async {
       ChatWebSocketService(storageService));
   getIt.registerSingleton<VoiceRecorderService>(VoiceRecorderService());
   getIt.registerSingleton<AudioPlayerService>(AudioPlayerService());
+
+  // ─── Events ───────────────────────────────────────────────────────────────────
+  getIt.registerSingleton<AnnouncementChangeNotifier>(AnnouncementChangeNotifier());
 
   // ─── Announcements ────────────────────────────────────────────────────────────
   final announDs = AnnounRemoteDatasource(dioClient.dio);

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/course_content_display_ext.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/feature_filter_row.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_card_content.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/extensions/content_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/manager/course_details_cubit/course_details_cubit.dart';
@@ -84,19 +88,78 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
                       shrinkWrap: true,
                       padding: const EdgeInsets.only(top: 6, bottom: 24),
                       itemCount: items.length,
-                      itemBuilder: (context, i) => CourseContentCard(
-                        content: items[i],
-                        index: i,
-                        onTap: () => context.push(
-                          AppRouter.kContentDetailsView,
-                          extra: items[i].toDisplayItem(state.course),
-                        ),
-                      ),
+                      itemBuilder: (context, i) {
+                        final item = items[i];
+                        if (item.type == ContentType.announcement &&
+                            item.announcement != null) {
+                          return _AnimatedCard(
+                            index: i,
+                            child: AnnounCardContent(
+                              announcement: item.announcement!,
+                              onReplaced: (updated) {
+                                context
+                                    .read<CourseDetailsCubit>()
+                                    .updateAnnouncementContent(updated);
+                                getIt<AnnouncementChangeNotifier>()
+                                    .notifyReplace(updated);
+                              },
+                              onDeleteConfirmed: (id) async {
+                                try {
+                                  await getIt<AnnounRepo>()
+                                      .deleteAnnouncement(id);
+                                  if (context.mounted) {
+                                    context
+                                        .read<CourseDetailsCubit>()
+                                        .removeContent(item.id);
+                                  }
+                                  getIt<AnnouncementChangeNotifier>()
+                                      .notifyDelete(item.id);
+                                  return true;
+                                } catch (_) {
+                                  return false;
+                                }
+                              },
+                            ),
+                          );
+                        }
+                        return CourseContentCard(
+                          content: item,
+                          index: i,
+                          onTap: () => context.push(
+                            AppRouter.kContentDetailsView,
+                            extra: item.toDisplayItem(state.course),
+                          ),
+                        );
+                      },
                     ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AnimatedCard extends StatelessWidget {
+  final int index;
+  final Widget child;
+
+  const _AnimatedCard({required this.index, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: 350 + index * 60),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, c) => Opacity(
+        opacity: value,
+        child: Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: c,
+        ),
+      ),
+      child: child,
     );
   }
 }

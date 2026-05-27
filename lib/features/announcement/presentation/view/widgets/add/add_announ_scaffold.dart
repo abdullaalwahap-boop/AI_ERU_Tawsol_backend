@@ -33,9 +33,9 @@ class AddAnnounScaffold extends StatelessWidget {
   }
 
   void _onPosted(BuildContext context, AddAnnounState state) {
-    final label = state.postType == AnnouncementType.assignment
-        ? 'Assignment created successfully!'
-        : 'Announcement posted successfully!';
+    final label = state.postedAnnouncement != null
+        ? 'Announcement saved successfully!'
+        : 'Assignment created successfully!';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -62,10 +62,10 @@ class AddAnnounScaffold extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
-    if (state.postType == AnnouncementType.assignment) {
-      context.pop(true);
-    } else {
+    if (state.postedAnnouncement != null) {
       context.pop(state.postedAnnouncement);
+    } else {
+      context.pop(true);
     }
   }
 }

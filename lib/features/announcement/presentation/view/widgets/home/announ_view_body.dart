@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
@@ -10,10 +12,37 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/h
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_error_state.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_loading_skeleton.dart';
 
-class AnnounViewBody extends StatelessWidget {
+class AnnounViewBody extends StatefulWidget {
   final AnnounRole role;
 
   const AnnounViewBody({super.key, required this.role});
+
+  @override
+  State<AnnounViewBody> createState() => _AnnounViewBodyState();
+}
+
+class _AnnounViewBodyState extends State<AnnounViewBody> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<AnnouncementChangeNotifier>().addListener(_onAnnouncementChanged);
+  }
+
+  @override
+  void dispose() {
+    getIt<AnnouncementChangeNotifier>().removeListener(_onAnnouncementChanged);
+    super.dispose();
+  }
+
+  void _onAnnouncementChanged() {
+    final notifier = getIt<AnnouncementChangeNotifier>();
+    final cubit = context.read<AnnounCubit>();
+    if (notifier.replaced != null) {
+      cubit.replaceAnnouncement(notifier.replaced!);
+    } else if (notifier.deletedId != null) {
+      cubit.localDelete(notifier.deletedId!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +53,7 @@ class AnnounViewBody extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AnnounAppBar(role: role),
+              AnnounAppBar(role: widget.role),
               Expanded(child: _buildContent(context, state)),
             ],
           ),
@@ -39,7 +68,7 @@ class AnnounViewBody extends StatelessWidget {
     if (state is AnnounError) {
       return AnnounErrorState(
         message: state.message,
-        onRetry: () => context.read<AnnounCubit>().loadForRole(role),
+        onRetry: () => context.read<AnnounCubit>().loadForRole(widget.role),
       );
     }
 
@@ -50,14 +79,14 @@ class AnnounViewBody extends StatelessWidget {
 
   Widget _buildLoaded(BuildContext context, AnnounLoaded state) {
     final cubit = context.read<AnnounCubit>();
-    final isDoctor = role == AnnounRole.doctor;
-    final isAdmin = role == AnnounRole.admin;
+    final isDoctor = widget.role == AnnounRole.doctor;
+    final isAdmin = widget.role == AnnounRole.admin;
 
     return RefreshIndicator(
       color: AppColors.primary,
       backgroundColor: AppColors.surfaceLight,
       displacement: 20,
-      onRefresh: () => cubit.refresh(role),
+      onRefresh: () => cubit.refresh(widget.role),
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(
             parent: BouncingScrollPhysics()),
@@ -74,7 +103,8 @@ class AnnounViewBody extends StatelessWidget {
           if (!isAdmin && !(isDoctor && state.activeTab == AnnounTab.admin))
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: isDoctor ? 12 : 14, bottom: 4),
+                padding:
+                    EdgeInsets.only(top: isDoctor ? 12 : 14, bottom: 4),
                 child: AnnounFilterRow(
                   activeFilter: state.activeFilter,
                   onFilterChanged: cubit.filterByType,

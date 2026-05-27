@@ -27,11 +27,14 @@ extension CourseContentDisplayExt on CourseContent {
               sizeLabel: a.sizeLabel,
               icon: a.fileType.icon,
               iconColor: a.fileType.color,
+              url: a.url,
+              isImage: a.isImage,
             ),
           )
           .toList(),
       accentColor: course.accentColor,
       isFromAdmin: isFromAdmin,
+      deadline: deadline,
     );
   }
 }

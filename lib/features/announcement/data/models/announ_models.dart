@@ -147,12 +147,14 @@ class AddAnnounArgs {
 // ---------- Attachment ----------
 
 class AnnounAttachment {
+  final int? fileId;
   final String name;
   final String url;
   final double sizeMB;
   final AttachmentFileType fileType;
 
   const AnnounAttachment({
+    this.fileId,
     required this.name,
     required this.url,
     required this.sizeMB,
@@ -187,6 +189,7 @@ class AnnounAttachment {
         (json['file_type'] ?? json['type'] ?? '').toString().toLowerCase();
 
     return AnnounAttachment(
+      fileId: json['file_id'] as int?,
       name: name,
       url: url,
       sizeMB: _toMB(rawSize),
@@ -237,6 +240,7 @@ class Announcement {
   final int? targetStudentId;
   final List<int> targetUserIds;
   final DateTime? deadline;
+  final int? assignmentId;
 
   const Announcement({
     required this.id,
@@ -259,6 +263,7 @@ class Announcement {
     this.targetStudentId,
     this.targetUserIds = const [],
     this.deadline,
+    this.assignmentId,
   });
 
   factory Announcement.fromJson(Map<String, dynamic> json) => Announcement(
@@ -293,6 +298,7 @@ class Announcement {
         deadline: json['deadline'] != null
             ? DateTime.tryParse(json['deadline'] as String)
             : null,
+        assignmentId: json['assignment_id'] as int?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -329,6 +335,7 @@ class Announcement {
     int? targetStudentId,
     List<int>? targetUserIds,
     DateTime? deadline,
+    int? assignmentId,
   }) =>
       Announcement(
         id: id ?? this.id,
@@ -351,6 +358,7 @@ class Announcement {
         targetStudentId: targetStudentId ?? this.targetStudentId,
         targetUserIds: targetUserIds ?? this.targetUserIds,
         deadline: deadline ?? this.deadline,
+        assignmentId: assignmentId ?? this.assignmentId,
       );
 
   // ---------- Display helpers ----------

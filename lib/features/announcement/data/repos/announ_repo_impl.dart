@@ -94,4 +94,7 @@ class AnnounRepoImpl implements AnnounRepo {
         filePath: filePath,
         linkUrl: linkUrl,
       );
+
+  @override
+  Future<void> deleteFile(int fileId) => _ds.deleteFile(fileId);
 }

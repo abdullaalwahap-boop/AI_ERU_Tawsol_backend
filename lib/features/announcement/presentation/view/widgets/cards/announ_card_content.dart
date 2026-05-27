@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/announcement_display_ext.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -19,8 +21,15 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/c
 
 class AnnounCardContent extends StatelessWidget {
   final Announcement announcement;
+  final void Function(Announcement updated)? onReplaced;
+  final Future<bool> Function(int id)? onDeleteConfirmed;
 
-  const AnnounCardContent({super.key, required this.announcement});
+  const AnnounCardContent({
+    super.key,
+    required this.announcement,
+    this.onReplaced,
+    this.onDeleteConfirmed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +132,14 @@ class AnnounCardContent extends StatelessWidget {
       ),
     );
 
-    if (result != null && context.mounted) {
+    if (result == null || !context.mounted) return;
+
+    if (onReplaced != null) {
+      onReplaced!(result);
+    } else {
       context.read<AnnounCubit>().replaceAnnouncement(result);
     }
+    getIt<AnnouncementChangeNotifier>().notifyReplace(result);
   }
 
   Future<void> _handleDelete(BuildContext context) async {
@@ -153,11 +167,18 @@ class AnnounCardContent extends StatelessWidget {
     );
     if (confirmed != true || !context.mounted) return;
 
-    final success = await context
-        .read<AnnounCubit>()
-        .deleteAnnouncement(int.parse(announcement.id));
+    final bool success;
+    if (onDeleteConfirmed != null) {
+      success = await onDeleteConfirmed!(int.parse(announcement.id));
+    } else {
+      success = await context
+          .read<AnnounCubit>()
+          .deleteAnnouncement(int.parse(announcement.id));
+    }
 
-    if (!success && context.mounted) {
+    if (success) {
+      getIt<AnnouncementChangeNotifier>().notifyDelete(announcement.id);
+    } else if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to delete announcement')),
       );

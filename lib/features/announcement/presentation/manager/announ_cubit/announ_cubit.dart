@@ -146,6 +146,15 @@ class AnnounCubit extends Cubit<AnnounState> {
     emit(current.copyWith(primary: updatedPrimary));
   }
 
+  void localDelete(String id) {
+    final current = state;
+    if (current is! AnnounLoaded) return;
+    emit(current.copyWith(
+      primary: current.primary.where((a) => a.id != id).toList(),
+      secondary: current.secondary.where((a) => a.id != id).toList(),
+    ));
+  }
+
   void prependAnnouncement(Announcement ann) {
     final current = state;
     if (current is! AnnounLoaded) return;
