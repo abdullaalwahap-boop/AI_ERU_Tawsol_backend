@@ -1,3 +1,5 @@
+import 'package:ai_eru_tawasol/core/network/api_constants.dart';
+
 // ---------- Enums ----------
 
 enum AnnounRole { student, doctor, admin }
@@ -179,7 +181,7 @@ class AnnounAttachment {
     } else if (filePath != null && filePath.isNotEmpty) {
       url = filePath.startsWith('http')
           ? filePath
-          : 'http://10.0.2.2:8000/$filePath';
+          : '${ApiConstants.baseUrl}/$filePath';
     } else if (legacyUrl != null && legacyUrl.isNotEmpty) {
       url = legacyUrl;
     }
