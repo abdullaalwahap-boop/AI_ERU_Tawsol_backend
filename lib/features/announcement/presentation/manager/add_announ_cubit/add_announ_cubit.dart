@@ -407,10 +407,37 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return null;
   }
 
-  /// Updates the linked Assignment's deadline/title/description in edit mode.
+  /// Updates (or creates) the Assignment linked to the announcement being edited.
+  ///
+  /// - If an Assignment already exists: update its deadline/title/description.
+  /// - If no Assignment exists yet (type was changed to assignment in this edit):
+  ///   create a new Assignment linked to the existing announcement so that the
+  ///   backend can populate `deadline` in the AnnouncementOut response.
   Future<void> _updateAssignmentRecord() async {
     final assignmentId = _announcementToEdit?.assignmentId;
-    if (assignmentId == null) return;
+    final existingAnnId = int.tryParse(_announcementToEdit?.id ?? '');
+
+    if (assignmentId == null) {
+      // No linked assignment yet — create one attached to the existing announcement.
+      if (state.postType != AnnouncementType.assignment) return;
+      if (existingAnnId == null) return;
+      final courseId = _announcementToEdit?.targetCourseId ??
+          state.selectedCourseId ??
+          state.selectedOptions.firstOrNull ??
+          '';
+      try {
+        await _assignmentDs.createAssignment(
+          materialId: courseId,
+          title: state.title,
+          description: state.details.isNotEmpty ? state.details : null,
+          deadline: state.deadline ?? DateTime.now().add(const Duration(days: 7)),
+          announcementId: existingAnnId,
+        );
+      } catch (_) {}
+      return;
+    }
+
+    // Existing assignment — update deadline/title/description.
     try {
       await _assignmentDs.updateAssignment(assignmentId, {
         'title': state.title,
