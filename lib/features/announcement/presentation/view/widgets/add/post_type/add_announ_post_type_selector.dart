@@ -8,15 +8,20 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/a
 class AddAnnounPostTypeSelector extends StatelessWidget {
   final AnnouncementType selected;
   final void Function(AnnouncementType) onSelected;
+  final Set<AnnouncementType> excluded;
 
   const AddAnnounPostTypeSelector({
     super.key,
     required this.selected,
     required this.onSelected,
+    this.excluded = const {},
   });
 
   @override
   Widget build(BuildContext context) {
+    final types =
+        AnnouncementType.values.where((t) => !excluded.contains(t)).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -30,12 +35,12 @@ class AddAnnounPostTypeSelector extends StatelessWidget {
         ),
         AppSpacing.h10,
         Row(
-          children: AnnouncementType.values
+          children: types
               .map(
                 (type) => Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(
-                      right: type != AnnouncementType.assignment ? 10 : 0,
+                      right: type != types.last ? 10 : 0,
                     ),
                     child: AddAnnounPostTypeCard(
                       type: type,

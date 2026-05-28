@@ -7,9 +7,9 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/a
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/add_announ_attachment_section.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_audience_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/deadline/add_announ_deadline_picker.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/dr_audience/add_announ_dr_audience_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/post_type/add_announ_post_type_selector.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/priority/add_announ_priority_selector.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/subject/add_announ_subject_selector.dart';
 
 class AddAnnounBody extends StatefulWidget {
   final AnnounRole role;
@@ -59,6 +59,10 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                       AddAnnounPostTypeSelector(
                         selected: state.postType,
                         onSelected: cubit.selectPostType,
+                        excluded: state.drAudienceType ==
+                                DrAudienceType.specificStudents
+                            ? {AnnouncementType.assignment}
+                            : {},
                       ),
                       const SizedBox(height: 24),
                     ],
@@ -103,10 +107,13 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                             ? const SizedBox(height: 24)
                             : const SizedBox.shrink(),
                       ),
-                      AddAnnounSubjectSelector(
-                        courses: cubit.courseList,
-                        selected: state.selectedOptions,
-                        onSelect: cubit.toggleOption,
+                      AddAnnounDrAudienceSelector(
+                        state: state,
+                        onTypeSelected: cubit.setDrAudienceType,
+                        onSelectCourse: cubit.toggleOption,
+                        onToggleCourseFilter: cubit.toggleCourseFilter,
+                        onSearchRecipients: cubit.searchRecipients,
+                        onToggleRecipient: cubit.toggleRecipient,
                       ),
                     ] else
                       AddAnnounAdminAudienceSelector(

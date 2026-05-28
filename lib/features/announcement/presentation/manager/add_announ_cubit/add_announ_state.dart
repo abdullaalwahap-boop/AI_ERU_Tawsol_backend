@@ -8,6 +8,7 @@ class AddAnnounState extends Equatable {
   final AnnouncementPriority priority;
 
   // ── Doctor / TA audience ──────────────────────────────────────────────────
+  final DrAudienceType drAudienceType;
   final List<CourseOption> courses;
   final bool isLoadingCourses;
   final String? selectedCourseId;
@@ -46,6 +47,7 @@ class AddAnnounState extends Equatable {
     required this.title,
     required this.details,
     this.priority = AnnouncementPriority.normal,
+    this.drAudienceType = DrAudienceType.course,
     this.courses = const [],
     this.isLoadingCourses = false,
     this.selectedCourseId,
@@ -71,6 +73,7 @@ class AddAnnounState extends Equatable {
         postType: AnnouncementType.normal,
         title: '',
         details: '',
+        drAudienceType: DrAudienceType.course,
         selectedOptions: const {},
         selectedDepartments: const {},
         selectedLevels: const {},
@@ -87,8 +90,13 @@ class AddAnnounState extends Equatable {
 
   bool get canPost {
     if (title.trim().isEmpty || details.trim().isEmpty) return false;
-    // DR/TA: attachments required when post type demands them
-    if (!isEditMode && supportsAttachments && role != AnnounRole.admin && attachments.isEmpty) return false;
+    // DR/TA course mode: attachments required when post type demands them
+    // specific students mode: attachments are optional
+    if (!isEditMode && supportsAttachments && role != AnnounRole.admin &&
+        drAudienceType != DrAudienceType.specificStudents &&
+        attachments.isEmpty) {
+      return false;
+    }
     // Assignments require a deadline
     if (postType == AnnouncementType.assignment && deadline == null) {
       return false;
@@ -106,7 +114,11 @@ class AddAnnounState extends Equatable {
       }
       return true;
     }
-    // Doctor / TA need a course selected
+    // Doctor / TA: specific students mode requires at least one recipient
+    if (drAudienceType == DrAudienceType.specificStudents) {
+      return selectedRecipientIds.isNotEmpty;
+    }
+    // Doctor / TA course mode: requires a course selected
     return selectedCourseId != null || selectedOptions.isNotEmpty;
   }
 
@@ -123,6 +135,7 @@ class AddAnnounState extends Equatable {
         title,
         details,
         priority,
+        drAudienceType,
         courses,
         isLoadingCourses,
         selectedCourseId,
@@ -148,6 +161,7 @@ class AddAnnounState extends Equatable {
     String? title,
     String? details,
     AnnouncementPriority? priority,
+    DrAudienceType? drAudienceType,
     List<CourseOption>? courses,
     bool? isLoadingCourses,
     String? selectedCourseId,
@@ -176,6 +190,7 @@ class AddAnnounState extends Equatable {
       title: title ?? this.title,
       details: details ?? this.details,
       priority: priority ?? this.priority,
+      drAudienceType: drAudienceType ?? this.drAudienceType,
       courses: courses ?? this.courses,
       isLoadingCourses: isLoadingCourses ?? this.isLoadingCourses,
       selectedCourseId:

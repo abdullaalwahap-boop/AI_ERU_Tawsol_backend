@@ -3,12 +3,14 @@ import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.d
 import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/dr_audience_type.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_attachment_item.dart';
 export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
+export 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/dr_audience_type.dart';
 
 part 'add_announ_state.dart';
 
@@ -94,12 +96,22 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       }
     }
 
+    // Restore DR/TA audience type from the saved announcement
+    DrAudienceType drAudienceType = DrAudienceType.course;
+    if (role == AnnounRole.doctor) {
+      if (toEdit.target == AnnouncementTarget.users) {
+        drAudienceType = DrAudienceType.specificStudents;
+        selectedRecipientIds = toEdit.targetUserIds.toSet();
+      }
+    }
+
     return AddAnnounState(
       role: role,
       postType: toEdit.type,
       title: toEdit.title,
       details: toEdit.body,
       priority: toEdit.priority,
+      drAudienceType: drAudienceType,
       selectedOptions: preSelectedOptions,
       selectedCourseId: toEdit.targetCourseId,
       adminUserType: adminUserType,
@@ -158,6 +170,14 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     } catch (_) {
       if (isClosed) return;
       emit(state.copyWith(isLoadingCourses: false));
+    }
+    // Edit mode only: load recipients so selected chips can display names
+    if (!isClosed &&
+        state.isEditMode &&
+        state.drAudienceType == DrAudienceType.specificStudents &&
+        state.selectedRecipientIds.isNotEmpty &&
+        state.recipients.isEmpty) {
+      await searchRecipients('');
     }
   }
 
@@ -266,10 +286,41 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (depts.isEmpty) return [];
     final hasGeneral = depts.contains('General');
     final hasSpecific = depts.any((d) => d != 'General');
-    if (hasGeneral && hasSpecific)
+    if (hasGeneral && hasSpecific) {
       return [...kGeneralYears, ...kSpecializedYears];
+    }
     if (hasGeneral) return kGeneralYears;
     return kSpecializedYears;
+  }
+
+  // ── DR/TA audience type ───────────────────────────────────────────────────
+
+  void setDrAudienceType(DrAudienceType type) {
+    emit(state.copyWith(
+      drAudienceType: type,
+      selectedRecipientIds: <int>{},
+      recipients: [],
+      // assignment not allowed for specific students — reset to normal
+      postType: (type == DrAudienceType.specificStudents &&
+              state.postType == AnnouncementType.assignment)
+          ? AnnouncementType.normal
+          : null,
+      clearDeadline: type == DrAudienceType.specificStudents &&
+          state.postType == AnnouncementType.assignment,
+    ));
+  }
+
+  /// Toggle course filter for the specific-students search.
+  /// Selecting the same course again clears the filter.
+  /// Results are cleared — user must type to search.
+  void toggleCourseFilter(String courseId) {
+    final newId = state.selectedCourseId == courseId ? null : courseId;
+    emit(state.copyWith(
+      selectedCourseId: newId,
+      clearCourse: newId == null,
+      selectedOptions: newId != null ? {newId} : const <String>{},
+      recipients: [],
+    ));
   }
 
   // ── Recipient search ──────────────────────────────────────────────────────
@@ -277,8 +328,19 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   Future<void> searchRecipients(String query) async {
     emit(state.copyWith(isLoadingRecipients: true));
     try {
+      final String? roleFilter;
+      final String? courseFilter;
+      if (state.role != AnnounRole.admin) {
+        // DR/TA: always target students, optionally filtered by course
+        roleFilter = 'STU';
+        courseFilter = state.selectedCourseId;
+      } else {
+        roleFilter = state.adminUserType?.roleFilter;
+        courseFilter = null;
+      }
       final results = await _repo.getRecipients(
-        role: state.adminUserType?.roleFilter, // 'STU' for specificUsers
+        role: roleFilter,
+        courseId: courseFilter,
         search: query.isNotEmpty ? query : null,
       );
       emit(state.copyWith(recipients: results, isLoadingRecipients: false));
@@ -348,10 +410,11 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         return;
       }
 
-      // Create: for doctor/TA, iterate over every selected course so one
-      // announcement (or assignment) is created per course.
-      // Admin has no course selector → courseIds stays [null] → single call.
-      final courseIds = state.role != AnnounRole.admin
+      // Create: for doctor/TA course mode, iterate over every selected course.
+      // Admin or DR/TA specific-students mode → single call (no course iteration).
+      final isSpecificStudents = state.role != AnnounRole.admin &&
+          state.drAudienceType == DrAudienceType.specificStudents;
+      final courseIds = (state.role != AnnounRole.admin && !isSpecificStudents)
           ? state.selectedOptions.toList()
           : <String?>[null];
 
@@ -536,9 +599,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     final newFiles = state.attachments.where((a) => !a.isServerFile).toList();
 
     final annId = int.parse(base.id);
-    // Admin has no course; DR/TA require a courseId to upload
-    final canUpload =
-        state.role == AnnounRole.admin || effectiveCourseId != null;
+    // Admin has no course; specific-students mode has optional course filter
+    final canUpload = state.role == AnnounRole.admin ||
+        effectiveCourseId != null ||
+        state.drAudienceType == DrAudienceType.specificStudents;
     if (canUpload && newFiles.isNotEmpty) {
       await Future.wait(newFiles.map((item) async {
         try {
@@ -656,6 +720,11 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   }
 
   void _applyDoctorTarget(Map<String, dynamic> p, {String? courseId}) {
+    if (state.drAudienceType == DrAudienceType.specificStudents) {
+      p['target_type'] = 'users';
+      p['target_user_ids'] = state.selectedRecipientIds.toList();
+      return;
+    }
     final id =
         courseId ?? state.selectedCourseId ?? state.selectedOptions.firstOrNull;
     if (id == null) return;

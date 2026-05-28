@@ -30,7 +30,9 @@ class AnnounSubjectAvatar extends StatelessWidget {
               color: color, size: size * 0.48)
           : Center(
               child: Text(
-                announcement.subjectInitials,
+                announcement.target == AnnouncementTarget.users
+                    ? announcement.doctorInitials
+                    : announcement.subjectInitials,
                 style: AppTextStyles.titleSmall.copyWith(
                   fontSize: size * 0.34,
                   fontWeight: FontWeight.w800,
