@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/qr_scanner_view.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/shared/app_bar_icon_button.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/chat_view.dart';
 
@@ -34,7 +35,10 @@ class AnnounAppBarTrailing extends StatelessWidget {
       case AnnounRole.student:
         return AppBarIconButton(
           icon: Icons.qr_code_scanner_rounded,
-          onTap: () {},
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const QrScannerView()),
+          ),
         );
       case AnnounRole.doctor:
         return const SizedBox.shrink();

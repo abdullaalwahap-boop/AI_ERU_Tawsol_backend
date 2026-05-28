@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # baseURL
-api_constants.dart
+../api_constants.dart

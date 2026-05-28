@@ -102,7 +102,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
   /// Fetches the doctor's assigned courses from the backend and populates
   /// the course selector. Auto-selects when only one course is available.
   Future<void> loadDoctorCourses() async {
-    if (state.role == AnnounRole.admin) return;
+    if (state.role == AnnounRole.admin || state.role == AnnounRole.student) return;
     emit(state.copyWith(isLoadingCourses: true));
     try {
       final courses = await _courseRepo.getDoctorCourses();

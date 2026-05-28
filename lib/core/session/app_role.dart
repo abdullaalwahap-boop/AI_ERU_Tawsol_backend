@@ -27,8 +27,7 @@ enum AppRole {
 
   // ── Permission guards ─────────────────────────────────────────────────────
 
-  bool get canPostAnnouncements =>
-      this == doctor || this == ta || this == admin;
+  bool get canPostAnnouncements => this != student;
 
   bool get isAdmin => this == admin;
 
