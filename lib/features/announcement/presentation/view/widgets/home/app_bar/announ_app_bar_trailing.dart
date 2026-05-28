@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/qr_scanner_view.dart';
@@ -35,10 +36,18 @@ class AnnounAppBarTrailing extends StatelessWidget {
       case AnnounRole.student:
         return AppBarIconButton(
           icon: Icons.qr_code_scanner_rounded,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const QrScannerView()),
-          ),
+          onTap: () async {
+            final result = await Navigator.push<String>(
+              context,
+              MaterialPageRoute(builder: (_) => const QrScannerView()),
+            );
+            if (result != null && result.isNotEmpty) {
+              final uri = Uri.tryParse(result);
+              if (uri != null && uri.hasScheme) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            }
+          },
         );
       case AnnounRole.doctor:
         return const SizedBox.shrink();
