@@ -5,15 +5,18 @@ class AnnouncementChangeNotifier extends ChangeNotifier {
   Announcement? _replaced;
   String? _deletedId;
   String? _markedReadId;
+  Announcement? _added;
 
   Announcement? get replaced => _replaced;
   String? get deletedId => _deletedId;
   String? get markedReadId => _markedReadId;
+  Announcement? get added => _added;
 
   void notifyReplace(Announcement ann) {
     _replaced = ann;
     _deletedId = null;
     _markedReadId = null;
+    _added = null;
     notifyListeners();
   }
 
@@ -21,6 +24,7 @@ class AnnouncementChangeNotifier extends ChangeNotifier {
     _deletedId = id;
     _replaced = null;
     _markedReadId = null;
+    _added = null;
     notifyListeners();
   }
 
@@ -28,6 +32,15 @@ class AnnouncementChangeNotifier extends ChangeNotifier {
     _markedReadId = id;
     _replaced = null;
     _deletedId = null;
+    _added = null;
+    notifyListeners();
+  }
+
+  void notifyNew(Announcement ann) {
+    _added = ann;
+    _replaced = null;
+    _deletedId = null;
+    _markedReadId = null;
     notifyListeners();
   }
 }

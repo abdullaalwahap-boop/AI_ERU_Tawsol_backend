@@ -23,7 +23,9 @@ class AnnounCardTopRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${announcement.subjectCode} · ${announcement.subjectName}',
+                announcement.isFromAdmin
+                    ? 'ADM · Administration'
+                    : '${announcement.subjectCode} · ${announcement.subjectName}',
                 style: AppTextStyles.labelSmall.copyWith(
                   color: announcement.type.color,
                   letterSpacing: 0.1,

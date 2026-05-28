@@ -61,6 +61,39 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
               fileId: a.fileId,
             ))
         .toList();
+
+    // Restore admin audience from the saved announcement fields
+    AdminUserType? adminUserType;
+    Set<String> selectedLevels = const {};
+    Set<int> selectedRecipientIds = const {};
+    if (role == AnnounRole.admin) {
+      switch (toEdit.target) {
+        case AnnouncementTarget.all:
+          adminUserType = AdminUserType.all;
+        case AnnouncementTarget.users:
+          adminUserType = AdminUserType.specificUsers;
+          selectedRecipientIds = toEdit.targetUserIds.toSet();
+        case AnnouncementTarget.role:
+          switch (toEdit.targetRole) {
+            case 'DR':
+              adminUserType = AdminUserType.doctors;
+            case 'TA':
+              adminUserType = AdminUserType.ta;
+            case 'STU':
+              adminUserType = AdminUserType.students;
+            default:
+              break;
+          }
+        case AnnouncementTarget.level:
+          adminUserType = AdminUserType.students;
+          if (toEdit.targetYear != null) {
+            selectedLevels = {'Level ${toEdit.targetYear}'};
+          }
+        default:
+          break;
+      }
+    }
+
     return AddAnnounState(
       role: role,
       postType: toEdit.type,
@@ -69,10 +102,12 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       priority: toEdit.priority,
       selectedOptions: preSelectedOptions,
       selectedCourseId: toEdit.targetCourseId,
+      adminUserType: adminUserType,
       selectedDepartments: toEdit.targetDepartment != null
           ? {toEdit.targetDepartment!}
           : const {},
-      selectedLevels: const {},
+      selectedLevels: selectedLevels,
+      selectedRecipientIds: selectedRecipientIds,
       targetYear: toEdit.targetYear,
       deadline: toEdit.deadline,
       isEditMode: true,

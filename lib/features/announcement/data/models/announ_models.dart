@@ -47,7 +47,8 @@ enum AnnouncementTarget {
   department,
   level,
   student,
-  users;
+  users,
+  role;
 
   static AnnouncementTarget fromString(String v) => switch (v) {
         'course' => course,
@@ -56,6 +57,7 @@ enum AnnouncementTarget {
         'level' => level,
         'student' => student,
         'users' => users,
+        'role' => role,
         _ => all,
       };
 
@@ -66,6 +68,7 @@ enum AnnouncementTarget {
         level => 'level',
         student => 'student',
         users => 'users',
+        role => 'role',
         all => 'all',
       };
 }
@@ -79,6 +82,7 @@ extension AnnouncementTargetExt on AnnouncementTarget {
         AnnouncementTarget.level => 'Level',
         AnnouncementTarget.student => 'Student',
         AnnouncementTarget.users => 'Selected Users',
+        AnnouncementTarget.role => 'Role',
       };
 }
 
@@ -241,6 +245,7 @@ class Announcement {
   final int? targetYear;
   final int? targetStudentId;
   final List<int> targetUserIds;
+  final String? targetRole;
   final DateTime? deadline;
   final int? assignmentId;
 
@@ -264,6 +269,7 @@ class Announcement {
     this.targetYear,
     this.targetStudentId,
     this.targetUserIds = const [],
+    this.targetRole,
     this.deadline,
     this.assignmentId,
   });
@@ -283,6 +289,7 @@ class Announcement {
             json['priority'] as String? ?? 'normal'),
         createdAt: DateTime.parse(json['created_at'] as String),
         isRead: json['is_read'] as bool? ?? false,
+        isFromAdmin: json['is_from_admin'] as bool? ?? false,
         attachments: (json['attachments'] as List<dynamic>?)
                 ?.map((a) =>
                     AnnounAttachment.fromJson(a as Map<String, dynamic>))
@@ -297,6 +304,7 @@ class Announcement {
                 ?.map((e) => e as int)
                 .toList() ??
             const [],
+        targetRole: json['target_role'] as String?,
         deadline: json['deadline'] != null
             ? DateTime.tryParse(json['deadline'] as String)
             : null,
@@ -336,6 +344,7 @@ class Announcement {
     int? targetYear,
     int? targetStudentId,
     List<int>? targetUserIds,
+    String? targetRole,
     DateTime? deadline,
     int? assignmentId,
   }) =>
@@ -359,6 +368,7 @@ class Announcement {
         targetYear: targetYear ?? this.targetYear,
         targetStudentId: targetStudentId ?? this.targetStudentId,
         targetUserIds: targetUserIds ?? this.targetUserIds,
+        targetRole: targetRole ?? this.targetRole,
         deadline: deadline ?? this.deadline,
         assignmentId: assignmentId ?? this.assignmentId,
       );

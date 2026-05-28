@@ -14,6 +14,7 @@ class LetterBodyCard extends StatelessWidget {
   final String authorName;
   final String authorInitials;
   final String authorSubtitle;
+  final bool isFromAdmin;
 
   const LetterBodyCard({
     super.key,
@@ -25,6 +26,7 @@ class LetterBodyCard extends StatelessWidget {
     required this.authorName,
     required this.authorInitials,
     required this.authorSubtitle,
+    this.isFromAdmin = false,
   });
 
   @override
@@ -63,6 +65,7 @@ class LetterBodyCard extends StatelessWidget {
             subtitle: authorSubtitle,
             color: accentColor,
             lightColor: accentLightColor,
+            isFromAdmin: isFromAdmin,
           ),
         ],
       ),

@@ -9,6 +9,7 @@ class LetterFooter extends StatelessWidget {
   final String subtitle;
   final Color color;
   final Color lightColor;
+  final bool isFromAdmin;
 
   const LetterFooter({
     super.key,
@@ -17,6 +18,7 @@ class LetterFooter extends StatelessWidget {
     required this.subtitle,
     required this.color,
     required this.lightColor,
+    this.isFromAdmin = false,
   });
 
   @override
@@ -32,15 +34,17 @@ class LetterFooter extends StatelessWidget {
               color: lightColor,
               borderRadius: AppRadius.small,
             ),
-            child: Center(
-              child: Text(
-                authorInitials,
-                style: AppTextStyles.labelSmall.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: color,
-                ),
-              ),
-            ),
+            child: isFromAdmin
+                ? Icon(Icons.admin_panel_settings_rounded, color: color, size: 18)
+                : Center(
+                    child: Text(
+                      authorInitials,
+                      style: AppTextStyles.labelSmall.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: color,
+                      ),
+                    ),
+                  ),
           ),
           AppSpacing.w10,
           Column(

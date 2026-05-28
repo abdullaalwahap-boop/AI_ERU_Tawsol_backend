@@ -66,9 +66,13 @@ class AnnounDetailsHeader extends StatelessWidget {
           const Divider(color: AppColors.dividerLight, height: 1),
           AppSpacing.h14,
           MetaRow(
-            icon: Icons.menu_book_rounded,
-            label: 'Subject',
-            value: '${announcement.subjectCode} · ${announcement.subjectName}',
+            icon: announcement.isFromAdmin
+                ? Icons.admin_panel_settings_rounded
+                : Icons.menu_book_rounded,
+            label: announcement.isFromAdmin ? 'Source' : 'Subject',
+            value: announcement.isFromAdmin
+                ? 'ADM · Administration'
+                : '${announcement.subjectCode} · ${announcement.subjectName}',
             color: announcement.type.color,
           ),
           AppSpacing.h10,
