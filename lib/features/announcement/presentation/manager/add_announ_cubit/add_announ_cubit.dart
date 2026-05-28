@@ -553,7 +553,7 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     forceCreate = false,
     int? overrideYear,
   }) async {
-    final payload = _buildAnnouncementPayload(courseId: courseId);
+    final payload = _buildAnnouncementPayload(courseId: courseId, overrideYear: overrideYear);
     final Announcement base;
 
     if (isEditMode && !forceCreate) {
