@@ -27,15 +27,18 @@ class ContentDetailsAuthorAvatar extends StatelessWidget {
           width: 1.5,
         ),
       ),
-      child: Center(
-        child: Text(
-          item.authorInitials,
-          style: AppTextStyles.titleLarge.copyWith(
-            fontWeight: FontWeight.w800,
-            color: item.typeColor,
-          ),
-        ),
-      ),
+      child: item.isFromAdmin
+          ? Icon(Icons.admin_panel_settings_rounded,
+              color: item.typeColor, size: 28)
+          : Center(
+              child: Text(
+                item.authorInitials,
+                style: AppTextStyles.titleLarge.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: item.typeColor,
+                ),
+              ),
+            ),
     );
   }
 }

@@ -19,6 +19,7 @@ class ContentDetailsLetterBody extends StatelessWidget {
       authorSubtitle: item.contextLabel != null
           ? '${item.contextLabel} · ${item.formattedDate}'
           : item.formattedDate,
+      isFromAdmin: item.isFromAdmin,
     );
   }
 }

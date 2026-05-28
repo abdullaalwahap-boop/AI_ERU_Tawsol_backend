@@ -20,8 +20,12 @@ extension AnnouncementDisplayExt on Announcement {
       formattedDate: formattedDate,
       formattedTime: formattedTime,
       timeAgo: timeAgo,
-      contextLabel: subjectName,
-      contextCode: subjectCode,
+      contextLabel: isFromAdmin
+          ? 'Administration'
+          : (subjectName.isNotEmpty ? subjectName : null),
+      contextCode: isFromAdmin
+          ? 'ADM'
+          : (subjectCode.isNotEmpty ? subjectCode : null),
       priorityLabel: _priorityLabel(priority),
       priorityColor: _priorityColor(priority),
       attachments: attachments

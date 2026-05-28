@@ -58,6 +58,8 @@ class _AnnounViewBodyState extends State<AnnounViewBody> {
       cubit.localDelete(notifier.deletedId!);
     } else if (notifier.markedReadId != null) {
       cubit.localMarkRead(notifier.markedReadId!);
+    } else if (notifier.added != null) {
+      cubit.prependAnnouncement(notifier.added!);
     }
   }
 

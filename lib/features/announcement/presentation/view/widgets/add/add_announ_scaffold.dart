@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -63,6 +65,9 @@ class AddAnnounScaffold extends StatelessWidget {
       ),
     );
     if (state.postedAnnouncement != null) {
+      if (!state.isEditMode) {
+        getIt<AnnouncementChangeNotifier>().notifyNew(state.postedAnnouncement!);
+      }
       context.pop(state.postedAnnouncement);
     } else {
       context.pop(true);

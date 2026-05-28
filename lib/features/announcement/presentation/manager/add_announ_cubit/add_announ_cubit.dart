@@ -61,6 +61,39 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
               fileId: a.fileId,
             ))
         .toList();
+
+    // Restore admin audience from the saved announcement fields
+    AdminUserType? adminUserType;
+    Set<String> selectedLevels = const {};
+    Set<int> selectedRecipientIds = const {};
+    if (role == AnnounRole.admin) {
+      switch (toEdit.target) {
+        case AnnouncementTarget.all:
+          adminUserType = AdminUserType.all;
+        case AnnouncementTarget.users:
+          adminUserType = AdminUserType.specificUsers;
+          selectedRecipientIds = toEdit.targetUserIds.toSet();
+        case AnnouncementTarget.role:
+          switch (toEdit.targetRole) {
+            case 'DR':
+              adminUserType = AdminUserType.doctors;
+            case 'TA':
+              adminUserType = AdminUserType.ta;
+            case 'STU':
+              adminUserType = AdminUserType.students;
+            default:
+              break;
+          }
+        case AnnouncementTarget.level:
+          adminUserType = AdminUserType.students;
+          if (toEdit.targetYear != null) {
+            selectedLevels = {'Level ${toEdit.targetYear}'};
+          }
+        default:
+          break;
+      }
+    }
+
     return AddAnnounState(
       role: role,
       postType: toEdit.type,
@@ -69,10 +102,12 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
       priority: toEdit.priority,
       selectedOptions: preSelectedOptions,
       selectedCourseId: toEdit.targetCourseId,
+      adminUserType: adminUserType,
       selectedDepartments: toEdit.targetDepartment != null
           ? {toEdit.targetDepartment!}
           : const {},
-      selectedLevels: const {},
+      selectedLevels: selectedLevels,
+      selectedRecipientIds: selectedRecipientIds,
       targetYear: toEdit.targetYear,
       deadline: toEdit.deadline,
       isEditMode: true,
@@ -407,10 +442,37 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     return null;
   }
 
-  /// Updates the linked Assignment's deadline/title/description in edit mode.
+  /// Updates (or creates) the Assignment linked to the announcement being edited.
+  ///
+  /// - If an Assignment already exists: update its deadline/title/description.
+  /// - If no Assignment exists yet (type was changed to assignment in this edit):
+  ///   create a new Assignment linked to the existing announcement so that the
+  ///   backend can populate `deadline` in the AnnouncementOut response.
   Future<void> _updateAssignmentRecord() async {
     final assignmentId = _announcementToEdit?.assignmentId;
-    if (assignmentId == null) return;
+    final existingAnnId = int.tryParse(_announcementToEdit?.id ?? '');
+
+    if (assignmentId == null) {
+      // No linked assignment yet — create one attached to the existing announcement.
+      if (state.postType != AnnouncementType.assignment) return;
+      if (existingAnnId == null) return;
+      final courseId = _announcementToEdit?.targetCourseId ??
+          state.selectedCourseId ??
+          state.selectedOptions.firstOrNull ??
+          '';
+      try {
+        await _assignmentDs.createAssignment(
+          materialId: courseId,
+          title: state.title,
+          description: state.details.isNotEmpty ? state.details : null,
+          deadline: state.deadline ?? DateTime.now().add(const Duration(days: 7)),
+          announcementId: existingAnnId,
+        );
+      } catch (_) {}
+      return;
+    }
+
+    // Existing assignment — update deadline/title/description.
     try {
       await _assignmentDs.updateAssignment(assignmentId, {
         'title': state.title,

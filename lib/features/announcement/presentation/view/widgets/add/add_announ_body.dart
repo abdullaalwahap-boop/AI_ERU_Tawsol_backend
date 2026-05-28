@@ -45,6 +45,7 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
       builder: (context, state) {
         final cubit = context.read<AddAnnounCubit>();
         final isDoctor = widget.role == AnnounRole.doctor;
+        final isAdmin = widget.role == AnnounRole.admin;
 
         return Column(
           children: [
@@ -118,7 +119,7 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                         onSearchRecipients: cubit.searchRecipients,
                         onToggleRecipient: cubit.toggleRecipient,
                       ),
-                    if (isDoctor) ...[
+                    if (isDoctor || isAdmin) ...[
                       const SizedBox(height: 24),
                       AddAnnounPrioritySelector(
                         selected: state.priority,
