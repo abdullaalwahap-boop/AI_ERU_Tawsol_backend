@@ -1,11 +1,13 @@
 import 'package:ai_eru_tawasol/core/session/app_role.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
+import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/announ_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_floating_action_button.dart.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -21,7 +23,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SessionCubit, SessionState>(
+    return BlocConsumer<SessionCubit, SessionState>(
+      listenWhen: (_, current) => current is SessionUnauthenticated,
+      listener: (context, _) => context.go(AppRouter.kLoginView),
       builder: (context, sessionState) {
         final role = sessionState is SessionAuthenticated
             ? sessionState.role

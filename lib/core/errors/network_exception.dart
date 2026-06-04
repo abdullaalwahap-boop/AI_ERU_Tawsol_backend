@@ -71,6 +71,9 @@ class NetworkException implements Exception {
         return NetworkException(detail ?? 'Conflict with existing data.');
       case 422:
         return NetworkException(detail ?? 'Validation error.');
+      case 429:
+        return NetworkException(
+            detail ?? 'Too many requests. Please wait and try again.');
       case 500:
       case 502:
       case 503:

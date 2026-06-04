@@ -48,14 +48,17 @@ class CourseRemoteDatasource {
 
   // ── Course Content ─────────────────────────────────────────────────────────
 
-  /// Fetches all announcements for [materialId] (all types: normal,
-  /// material_file, assignment) and returns them sorted newest-first.
-  /// Each item maps to the appropriate [ContentType] for client-side filtering.
+  /// Fetches announcements AND direct lecture files for [materialId], merging
+  /// them into a single list sorted newest-first.
   Future<List<CourseContent>> getCourseContent(String materialId) async {
     try {
-      final items = await _fetchCourseAnnouncements(materialId);
-      items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      return items;
+      final results = await Future.wait([
+        _fetchCourseAnnouncements(materialId),
+        _fetchCourseFiles(materialId),
+      ]);
+      final all = [...results[0], ...results[1]];
+      all.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return all;
     } on NetworkException {
       rethrow;
     } catch (_) {
@@ -78,6 +81,19 @@ class CourseRemoteDatasource {
       if ((response.statusCode ?? 0) >= 400) return const [];
       return (response.data as List)
           .map((j) => CourseContent.fromAnnouncement(j as Map<String, dynamic>))
+          .toList();
+    } on DioException {
+      return const [];
+    }
+  }
+
+  /// Fetches direct lecture files uploaded by DR/TA (not announcement attachments).
+  Future<List<CourseContent>> _fetchCourseFiles(String materialId) async {
+    try {
+      final response = await _dio.get(ApiConstants.courseFiles(materialId));
+      if ((response.statusCode ?? 0) >= 400) return const [];
+      return (response.data as List)
+          .map((j) => CourseContent.fromFile(j as Map<String, dynamic>))
           .toList();
     } on DioException {
       return const [];

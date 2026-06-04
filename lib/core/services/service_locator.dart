@@ -21,6 +21,9 @@ import 'package:ai_eru_tawasol/features/chat/data/services/voice_recorder_servic
 import 'package:ai_eru_tawasol/features/course/data/datasources/course_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo.dart';
 import 'package:ai_eru_tawasol/features/course/data/repos/course_repo_impl.dart';
+import 'package:ai_eru_tawasol/features/quiz/data/datasources/quiz_remote_datasource.dart';
+import 'package:ai_eru_tawasol/features/quiz/data/repos/quiz_repo.dart';
+import 'package:ai_eru_tawasol/features/quiz/data/repos/quiz_repo_impl.dart';
 import 'package:ai_eru_tawasol/features/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo_impl.dart';
@@ -90,4 +93,9 @@ Future<void> setupServiceLocator() async {
   final assignmentDs = AssignmentRemoteDatasource(dioClient.dio);
   getIt.registerSingleton<AssignmentRemoteDatasource>(assignmentDs);
   getIt.registerSingleton<AssignmentRepo>(AssignmentRepoImpl(assignmentDs));
+
+  // ─── Quiz (AI) ────────────────────────────────────────────────────────────────
+  final quizDs = QuizRemoteDatasource(dioClient.dio);
+  getIt.registerSingleton<QuizRemoteDatasource>(quizDs);
+  getIt.registerSingleton<QuizRepo>(QuizRepoImpl(quizDs));
 }

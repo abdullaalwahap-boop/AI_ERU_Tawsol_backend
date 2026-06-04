@@ -23,12 +23,14 @@ class AnnounCardContent extends StatelessWidget {
   final Announcement announcement;
   final void Function(Announcement updated)? onReplaced;
   final Future<bool> Function(int id)? onDeleteConfirmed;
+  final VoidCallback? onQuizTap;
 
   const AnnounCardContent({
     super.key,
     required this.announcement,
     this.onReplaced,
     this.onDeleteConfirmed,
+    this.onQuizTap,
   });
 
   @override
@@ -91,6 +93,45 @@ class AnnounCardContent extends StatelessWidget {
                         AppSpacing.h6,
                         AnnounCardPreview(body: announcement.body),
                         AppSpacing.h12,
+                        if (onQuizTap != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: onQuizTap,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.accent
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(Icons.auto_awesome_rounded,
+                                          size: 13, color: Colors.white),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Generate Quiz',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         AnnounCardFooter(announcement: announcement),
                       ],
                     ),

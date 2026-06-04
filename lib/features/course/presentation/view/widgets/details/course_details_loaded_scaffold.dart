@@ -9,8 +9,14 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/c
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/extensions/content_type_ui_ext.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/manager/course_details_cubit/course_details_cubit.dart';
+import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/course_banner.dart';
+import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/course_file_tile.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/states/feature_empty_state.dart';
+import 'package:ai_eru_tawasol/core/session/app_role.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
+import 'package:ai_eru_tawasol/features/quiz/presentation/view/quiz_view.dart';
+import 'package:go_router/go_router.dart';
 
 class CourseDetailsLoadedScaffold extends StatelessWidget {
   final CourseRole role;
@@ -86,35 +92,54 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
                       itemCount: items.length,
                       itemBuilder: (context, i) {
                         final item = items[i];
+                        final session =
+                            getIt<SessionCubit>().state;
+                        final isStudent = session is SessionAuthenticated &&
+                            session.role == AppRole.student;
+
+                        // Direct lecture files — render as file tile (has open + quiz button built in).
+                        // Announcement-linked material files — render as AnnounCardContent with optional quiz button.
+                        final Widget card = item.announcement == null
+                            ? CourseFileTile(content: item)
+                            : AnnounCardContent(
+                                announcement: item.announcement!,
+                                onQuizTap: isStudent && item.isQuizEligible
+                                    ? () => context.push(
+                                          AppRouter.kQuizView,
+                                          extra: QuizArgs(
+                                            fileId: item.fileIdInt!,
+                                            lectureTitle: item.title,
+                                          ),
+                                        )
+                                    : null,
+                                onReplaced: (updated) {
+                                  context
+                                      .read<CourseDetailsCubit>()
+                                      .updateAnnouncementContent(updated);
+                                  getIt<AnnouncementChangeNotifier>()
+                                      .notifyReplace(updated);
+                                },
+                                onDeleteConfirmed: (id) async {
+                                  try {
+                                    await getIt<AnnounRepo>()
+                                        .deleteAnnouncement(id);
+                                    if (context.mounted) {
+                                      context
+                                          .read<CourseDetailsCubit>()
+                                          .removeContent(item.id);
+                                    }
+                                    getIt<AnnouncementChangeNotifier>()
+                                        .notifyDelete(item.id);
+                                    return true;
+                                  } catch (_) {
+                                    return false;
+                                  }
+                                },
+                              );
                         return _AnimatedCard(
                           key: ValueKey(item.id),
                           index: i,
-                          child: AnnounCardContent(
-                            announcement: item.announcement!,
-                            onReplaced: (updated) {
-                              context
-                                  .read<CourseDetailsCubit>()
-                                  .updateAnnouncementContent(updated);
-                              getIt<AnnouncementChangeNotifier>()
-                                  .notifyReplace(updated);
-                            },
-                            onDeleteConfirmed: (id) async {
-                              try {
-                                await getIt<AnnounRepo>()
-                                    .deleteAnnouncement(id);
-                                if (context.mounted) {
-                                  context
-                                      .read<CourseDetailsCubit>()
-                                      .removeContent(item.id);
-                                }
-                                getIt<AnnouncementChangeNotifier>()
-                                    .notifyDelete(item.id);
-                                return true;
-                              } catch (_) {
-                                return false;
-                              }
-                            },
-                          ),
+                          child: card,
                         );
                       },
                     ),

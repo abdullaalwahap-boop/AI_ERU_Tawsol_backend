@@ -113,6 +113,7 @@ class ContentAttachment {
   final ContentFileType fileType;
   final String? url;
   final bool isImage;
+  final int? fileId; // populated for announcement-linked material files
 
   const ContentAttachment({
     required this.name,
@@ -120,6 +121,7 @@ class ContentAttachment {
     required this.fileType,
     this.url,
     this.isImage = false,
+    this.fileId,
   });
 }
 
@@ -134,6 +136,9 @@ class CourseContent {
   final String authorName;
   final DateTime? deadline;
   final Announcement? announcement;
+  // Set for ContentType.material items that come from /files/{materialId}
+  final int? fileIdInt;
+  final String? authorTypeCode; // "DR" | "TA" | "ADM"
 
   const CourseContent({
     required this.id,
@@ -146,28 +151,52 @@ class CourseContent {
     required this.authorName,
     this.deadline,
     this.announcement,
+    this.fileIdInt,
+    this.authorTypeCode,
   });
 
-  CourseContent withAnnouncement(Announcement ann) => CourseContent(
-        id: id,
-        title: ann.title,
-        body: ann.body,
-        type: type,
-        createdAt: createdAt,
-        attachments: ann.attachments
-            .map((a) => ContentAttachment(
-                  name: a.name,
-                  sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
-                  fileType: _contentFileTypeFrom(a.fileType),
-                  url: a.url.isNotEmpty ? a.url : null,
-                  isImage: a.fileType == AttachmentFileType.image,
-                ))
-            .toList(),
-        isFromAdmin: ann.isFromAdmin,
-        authorName: ann.doctorName,
-        deadline: ann.deadline,
-        announcement: ann,
-      );
+  // Only PDF, DOC (word/ppt) are quiz-eligible — images, videos, links are not.
+  bool get isQuizEligible =>
+      type == ContentType.material &&
+      fileIdInt != null &&
+      (authorTypeCode == 'DR' || authorTypeCode == 'TA') &&
+      attachments.isNotEmpty &&
+      (attachments.first.fileType == ContentFileType.pdf ||
+          attachments.first.fileType == ContentFileType.doc);
+
+  CourseContent withAnnouncement(Announcement ann) {
+    final updatedAttachments = ann.attachments
+        .map((a) => ContentAttachment(
+              name: a.name,
+              sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
+              fileType: _contentFileTypeFrom(a.fileType),
+              url: a.url.isNotEmpty ? a.url : null,
+              isImage: a.fileType == AttachmentFileType.image,
+              fileId: a.fileId, // preserve so isQuizEligible stays correct
+            ))
+        .toList();
+
+    // Re-derive fileIdInt from the updated attachment list if not already set.
+    final quizFileId = fileIdInt ??
+        (type == ContentType.material && updatedAttachments.isNotEmpty
+            ? updatedAttachments.first.fileId
+            : null);
+
+    return CourseContent(
+      id: id,
+      title: ann.title,
+      body: ann.body,
+      type: type,
+      createdAt: createdAt,
+      attachments: updatedAttachments,
+      isFromAdmin: ann.isFromAdmin,
+      authorName: ann.doctorName,
+      deadline: ann.deadline,
+      announcement: ann,
+      fileIdInt: quizFileId,          // preserved — was disappearing before
+      authorTypeCode: authorTypeCode, // preserved — was disappearing before
+    );
+  }
 
   static ContentFileType _contentFileTypeFrom(AttachmentFileType t) {
     switch (t) {
@@ -195,6 +224,24 @@ class CourseContent {
       AnnouncementType.assignment => ContentType.assignment,
       _ => ContentType.announcement,
     };
+    final attachments = ann.attachments
+        .map((a) => ContentAttachment(
+              name: a.name,
+              sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
+              fileType: _contentFileTypeFrom(a.fileType),
+              url: a.url.isNotEmpty ? a.url : null,
+              isImage: a.fileType == AttachmentFileType.image,
+              fileId: a.fileId,
+            ))
+        .toList();
+
+    // For material_file announcements, expose the first attachment's file_id
+    // so the Generate Quiz button can use it.
+    final quizFileId = contentType == ContentType.material &&
+            attachments.isNotEmpty
+        ? attachments.first.fileId
+        : null;
+
     return CourseContent(
       id: ann.id,
       title: ann.title,
@@ -202,18 +249,12 @@ class CourseContent {
       type: contentType,
       createdAt: ann.createdAt,
       authorName: ann.doctorName,
-      attachments: ann.attachments
-          .map((a) => ContentAttachment(
-                name: a.name,
-                sizeLabel: '${a.sizeMB.toStringAsFixed(1)} MB',
-                fileType: _contentFileTypeFrom(a.fileType),
-                url: a.url.isNotEmpty ? a.url : null,
-                isImage: a.fileType == AttachmentFileType.image,
-              ))
-          .toList(),
+      attachments: attachments,
       isFromAdmin: ann.isFromAdmin,
       deadline: ann.deadline,
       announcement: ann,
+      fileIdInt: quizFileId,
+      authorTypeCode: ann.isFromAdmin ? 'ADM' : 'DR',
     );
   }
 
@@ -277,12 +318,11 @@ class CourseContent {
     );
   }
 
-  /// Maps a backend `MaterialFileOut` JSON object.
+  /// Maps a backend `MaterialFileOut` JSON object (direct lecture uploads).
   factory CourseContent.fromFile(Map<String, dynamic> json) {
-    final attachments = [_attachmentFromFileJson(json)];
-
+    final fileId = json['file_id'] as int;
     return CourseContent(
-      id: (json['file_id'] as int).toString(),
+      id: fileId.toString(),
       title: json['title'] as String,
       body: json['description'] as String? ??
           json['text_content'] as String? ??
@@ -290,8 +330,10 @@ class CourseContent {
       type: ContentType.material,
       createdAt: DateTime.parse(json['created_at'] as String),
       authorName: '',
-      attachments: attachments,
+      attachments: [_attachmentFromFileJson(json)],
       isFromAdmin: false,
+      fileIdInt: fileId,
+      authorTypeCode: json['author_type_code'] as String?,
     );
   }
 

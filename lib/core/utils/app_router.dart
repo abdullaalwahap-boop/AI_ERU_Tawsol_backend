@@ -14,6 +14,7 @@ import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
+import 'package:ai_eru_tawasol/features/quiz/presentation/view/quiz_view.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,6 +38,7 @@ class AppRouter {
   static const kCourseDetailsView = '/courseDetailsView';
   static const kContentDetailsView = '/contentDetailsView';
   static const kFirstLoginChangePasswordView = '/firstLoginChangePasswordView';
+  static const kQuizView = '/quizView';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -107,6 +109,11 @@ class AppRouter {
           mode: ChangePasswordMode.firstLogin,
           userId: state.extra as int?,
         ),
+      ),
+      GoRoute(
+        path: kQuizView,
+        builder: (context, state) =>
+            QuizView(args: state.extra as QuizArgs),
       ),
     ],
   );

@@ -1,11 +1,13 @@
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:dio/dio.dart';
 
 /// Injects the Bearer token into every request and handles global 401 responses.
 ///
-/// On 401 the user's session is cleared. Navigation back to login is handled
-/// by the individual feature layers (cubit catches the thrown [UnauthorizedException]).
+/// On 401: clears storage + session so the user is sent back to login
+/// automatically on the next navigation check.
 class AuthInterceptor extends Interceptor {
   const AuthInterceptor(this._storage);
 
@@ -16,7 +18,6 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Skip auth header for public endpoints.
     final publicPaths = {
       ApiConstants.login,
       ApiConstants.forgotPassword,
@@ -35,8 +36,24 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    // DioClient uses validateStatus < 500, so 401 arrives here as a response.
+    if (response.statusCode == 401) {
+      _handleExpiredSession();
+    }
+    handler.next(response);
+  }
+
+  @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Let the datasource handle all errors uniformly.
+    if (err.response?.statusCode == 401) {
+      _handleExpiredSession();
+    }
     handler.next(err);
+  }
+
+  void _handleExpiredSession() {
+    _storage.clearAll();
+    getIt<SessionCubit>().clear();
   }
 }

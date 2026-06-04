@@ -85,6 +85,10 @@ class ApiConstants {
   // ─── Support ──────────────────────────────────────────────────────────────────
   static const String contactUs = '/contact/';
 
+  // ─── Quiz (AI) ────────────────────────────────────────────────────────────────
+  static const String quizGenerate = '/quiz/generate';
+  static const String quizEvaluate = '/quiz/evaluate';
+
   // ─── Timeouts ─────────────────────────────────────────────────────────────────
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 30);
