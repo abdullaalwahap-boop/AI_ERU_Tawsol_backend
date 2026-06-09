@@ -1,4 +1,5 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -35,10 +36,10 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
     super.dispose();
   }
 
-  String _roleLabel(String typeCode) => switch (typeCode) {
-        'DR' => 'Doctor',
-        'TA' => 'Assistant',
-        'STU' => 'Student',
+  String _roleLabel(String typeCode, AppLocalizations l10n) => switch (typeCode) {
+        'DR' => l10n.doctor,
+        'TA' => l10n.assistant,
+        'STU' => l10n.student,
         _ => typeCode,
       };
 
@@ -50,6 +51,7 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,7 +60,7 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
           controller: _controller,
           onChanged: widget.onSearch,
           decoration: InputDecoration(
-            hintText: 'Search users by name or ID…',
+            hintText: l10n.searchUsers,
             hintStyle: AppTextStyles.bodySmall
                 .copyWith(color: context.colorTextHint),
             prefixIcon: Icon(Icons.search_rounded,
@@ -125,7 +127,7 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              'No users found',
+              l10n.noUsersFound,
               style: AppTextStyles.bodySmall
                   .copyWith(color: context.colorTextHint),
             ),
@@ -135,7 +137,7 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
             final isSelected = widget.selectedIds.contains(r.userId);
             return _RecipientTile(
               user: r,
-              roleLabel: _roleLabel(r.typeCode),
+              roleLabel: _roleLabel(r.typeCode, l10n),
               roleColor: _roleColor(r.typeCode),
               isSelected: isSelected,
               onTap: () => widget.onToggle(r.userId),

@@ -1,4 +1,5 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -89,13 +90,13 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                 _DragHandle(),
                 AppSpacing.h20,
                 Text(
-                  'Contact Us',
+                  AppLocalizations.of(context).contactUs,
                   style: AppTextStyles.heading4
                       .copyWith(color: context.colorTextPrimary),
                 ),
                 AppSpacing.h4,
                 Text(
-                  'We\'ll get back to you as soon as possible',
+                  AppLocalizations.of(context).contactUsSubtitle,
                   style: AppTextStyles.bodySmall
                       .copyWith(color: context.colorTextSecondary),
                 ),
@@ -107,18 +108,20 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                 AppSpacing.h16,
                 _SheetField(
                   controller: _subjectCtrl,
-                  hint: 'Subject',
+                  hint: AppLocalizations.of(context).subject,
                   maxLines: 1,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? AppLocalizations.of(context).required
+                      : null,
                 ),
                 AppSpacing.h12,
                 _SheetField(
                   controller: _messageCtrl,
-                  hint: 'Describe your issue in detail…',
+                  hint: AppLocalizations.of(context).describeIssue,
                   maxLines: 4,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? AppLocalizations.of(context).required
+                      : null,
                 ),
                 AppSpacing.h20,
                 _SendButton(onPressed: () => _submit(context)),
@@ -136,7 +139,7 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Message sent. We\'ll respond shortly!',
+            AppLocalizations.of(context).messageSentSuccess,
             style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
           ),
           backgroundColor: AppColors.success,
@@ -197,7 +200,7 @@ class _IssueTypeSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Category',
+          AppLocalizations.of(context).category,
           style:
               AppTextStyles.labelMedium.copyWith(color: context.colorTextSecondary),
         ),
@@ -324,7 +327,7 @@ class _SendButton extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Send Message',
+                    AppLocalizations.of(context).sendMessage,
                     style: AppTextStyles.buttonMedium
                         .copyWith(color: AppColors.textOnPrimary),
                   ),

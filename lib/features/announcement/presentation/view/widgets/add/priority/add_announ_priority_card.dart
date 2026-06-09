@@ -55,7 +55,7 @@ class AddAnnounPriorityCard extends StatelessWidget {
             ),
             AppSpacing.h4,
             Text(
-              priority.label,
+              priority.labelOf(context),
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: isSelected ? priority.color : context.colorTextSecondary,

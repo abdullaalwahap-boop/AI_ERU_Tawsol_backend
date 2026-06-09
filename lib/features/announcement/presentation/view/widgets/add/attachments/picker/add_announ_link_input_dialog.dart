@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -32,7 +33,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
   void _confirm() {
     final value = _controller.text.trim();
     if (!_isValidUrl(value)) {
-      setState(() => _error = 'Please enter a valid URL (https://…)');
+      setState(() => _error = AppLocalizations.of(context).validUrlError);
       return;
     }
     Navigator.pop(context, value);
@@ -40,6 +41,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
       backgroundColor: context.colorSurface,
@@ -63,7 +65,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                 ),
                 AppSpacing.w12,
                 Text(
-                  'Add Link',
+                  l10n.addLink,
                   style: AppTextStyles.titleSmall.copyWith(
                     fontWeight: FontWeight.w700,
                     color: context.colorTextPrimary,
@@ -126,7 +128,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text(
-                      'Cancel',
+                      l10n.cancel,
                       style: AppTextStyles.labelMedium.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -146,7 +148,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text(
-                      'Attach',
+                      l10n.attach,
                       style: AppTextStyles.labelMedium.copyWith(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,

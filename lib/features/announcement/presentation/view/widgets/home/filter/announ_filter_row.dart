@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
@@ -24,7 +25,7 @@ class AnnounFilterRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
           AnnounFilterChip(
-            label: 'All',
+            label: AppLocalizations.of(context).all,
             icon: Icons.apps_rounded,
             isSelected: activeFilter == null,
             color: AppColors.primary,
@@ -35,7 +36,7 @@ class AnnounFilterRow extends StatelessWidget {
             (type) => Padding(
               padding: const EdgeInsets.only(right: 8),
               child: AnnounFilterChip(
-                label: type.label,
+                label: type.labelOf(context),
                 icon: type.icon,
                 isSelected: activeFilter == type,
                 color: type.color,

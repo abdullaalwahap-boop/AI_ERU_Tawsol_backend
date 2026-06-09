@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
@@ -35,9 +36,10 @@ class AddAnnounScaffold extends StatelessWidget {
   }
 
   void _onPosted(BuildContext context, AddAnnounState state) {
+    final l10n = AppLocalizations.of(context);
     final label = state.postedAnnouncement != null
-        ? 'Announcement saved successfully!'
-        : 'Assignment created successfully!';
+        ? l10n.announcementSaved
+        : l10n.assignmentCreated;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(

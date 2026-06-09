@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/announ_cubit/announ_cubit.dart';
@@ -30,14 +31,14 @@ class AnnounTabBar extends StatelessWidget {
       child: Row(
         children: [
           AnnounTabItem(
-            label: 'My Announcements',
+            label: AppLocalizations.of(context).myAnnouncements,
             icon: Icons.person_rounded,
             count: mineCount,
             isSelected: selected == AnnounTab.mine,
             onTap: () => onTabSelected(AnnounTab.mine),
           ),
           AnnounTabItem(
-            label: 'Admin',
+            label: AppLocalizations.of(context).admin,
             icon: Icons.admin_panel_settings_rounded,
             count: adminCount,
             isSelected: selected == AnnounTab.admin,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 
 extension AnnouncementTypeUiExt on AnnouncementType {
@@ -11,6 +12,15 @@ extension AnnouncementTypeUiExt on AnnouncementType {
       case AnnouncementType.assignment:
         return 'Assignment';
     }
+  }
+
+  String labelOf(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return switch (this) {
+      AnnouncementType.normal => l10n.announcementLabel,
+      AnnouncementType.materialFile => l10n.material,
+      AnnouncementType.assignment => l10n.assignment,
+    };
   }
 
   Color get color {

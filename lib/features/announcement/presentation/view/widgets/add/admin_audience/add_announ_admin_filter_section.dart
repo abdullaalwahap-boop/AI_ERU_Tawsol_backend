@@ -1,4 +1,5 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/audience/add_announ_option_chip.dart';
@@ -31,7 +32,7 @@ class AddAnnounAdminFilterSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _FilterGroup(
-          label: 'Department',
+          label: AppLocalizations.of(context).department,
           icon: Icons.account_balance_rounded,
           options: departments,
           selected: selectedDepartments,
@@ -140,7 +141,7 @@ class _LevelGroup extends StatelessWidget {
             Icon(Icons.layers_rounded, size: 13, color: context.colorTextSecondary),
             AppSpacing.w4,
             Text(
-              'Level',
+              AppLocalizations.of(context).level,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: context.colorTextSecondary,
@@ -171,11 +172,11 @@ class _LevelGroup extends StatelessWidget {
           spacing: 6,
           runSpacing: 6,
           children: availableYears.map((y) {
-            final label = 'Level $y';
+            final key = 'Level $y';
             return AddAnnounOptionChip(
-              label: label,
-              isSelected: selectedLevels.contains(label),
-              onTap: () => onToggle(label),
+              label: '${AppLocalizations.of(context).level} $y',
+              isSelected: selectedLevels.contains(key),
+              onTap: () => onToggle(key),
             );
           }).toList(),
         ),

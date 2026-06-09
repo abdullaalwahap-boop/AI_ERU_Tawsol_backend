@@ -1,5 +1,6 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
@@ -43,7 +44,7 @@ class ChangePasswordAppBar extends StatelessWidget
                 AppSpacing.w4,
               ],
               Text(
-                isProfile ? 'Change Password' : 'Set Your Password',
+                isProfile ? AppLocalizations.of(context).changePassword : AppLocalizations.of(context).setYourPassword,
                 style: AppTextStyles.heading4
                     .copyWith(color: context.colorTextPrimary),
               ),

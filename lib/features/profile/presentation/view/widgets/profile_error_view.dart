@@ -1,4 +1,5 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class ProfileErrorView extends StatelessWidget {
               ),
               AppSpacing.h16,
               Text(
-                'Failed to load profile',
+                AppLocalizations.of(context).failedToLoadProfile,
                 style: AppTextStyles.heading4
                     .copyWith(color: context.colorTextPrimary),
               ),
@@ -53,7 +54,7 @@ class ProfileErrorView extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text('Try Again'),
+                label: Text(AppLocalizations.of(context).tryAgain),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.textOnPrimary,

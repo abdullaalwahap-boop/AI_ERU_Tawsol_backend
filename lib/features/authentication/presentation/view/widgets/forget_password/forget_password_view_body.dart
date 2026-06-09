@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/forget_password/forget_password_form.dart';
@@ -22,14 +23,14 @@ class ForgetPasswordViewBody extends StatelessWidget {
             size: 72,
           ),
           AppSpacing.h24,
-          const AuthGradientTitle(
-            text: 'Forgot Password?',
+          AuthGradientTitle(
+            text: AppLocalizations.of(context).forgotPassword,
             fontSize: 28,
             textAlign: TextAlign.center,
           ),
           AppSpacing.h8,
           Text(
-            "Enter your email and we'll send you a verification code",
+            AppLocalizations.of(context).forgotPasswordSubtitle,
             style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
             textAlign: TextAlign.center,
           ),

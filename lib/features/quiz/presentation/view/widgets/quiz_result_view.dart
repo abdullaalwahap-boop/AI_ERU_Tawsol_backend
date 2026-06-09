@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -44,24 +45,24 @@ class QuizResultView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text('Quiz Complete!',
+              Text(AppLocalizations.of(context).quizComplete,
                   style: AppTextStyles.heading3
                       .copyWith(color: context.colorTextPrimary)),
               AppSpacing.h20,
               _ScoreRing(percent: _pct, color: scoreColor),
               AppSpacing.h16,
               Text(
-                '$_correct / $_total Correct',
+                AppLocalizations.of(context).quizScore(_correct, _total),
                 style: AppTextStyles.titleLarge
                     .copyWith(color: context.colorTextPrimary),
               ),
               AppSpacing.h6,
               Text(
                 pctInt >= 80
-                    ? 'Excellent work!'
+                    ? AppLocalizations.of(context).quizExcellent
                     : pctInt >= 60
-                        ? 'Good effort — keep practicing!'
-                        : 'Keep studying and try again!',
+                        ? AppLocalizations.of(context).quizGoodEffort
+                        : AppLocalizations.of(context).quizKeepStudying,
                 style: AppTextStyles.bodyMedium
                     .copyWith(color: context.colorTextSecondary),
               ),
@@ -77,7 +78,7 @@ class QuizResultView extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: AppRadius.medium),
                       ),
-                      child: Text('Exit',
+                      child: Text(AppLocalizations.of(context).exit,
                           style: AppTextStyles.labelMedium
                               .copyWith(color: AppColors.primary)),
                     ),
@@ -92,7 +93,7 @@ class QuizResultView extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: AppRadius.medium),
                       ),
-                      child: Text('Retake Quiz',
+                      child: Text(AppLocalizations.of(context).retakeQuiz,
                           style: AppTextStyles.labelMedium
                               .copyWith(color: Colors.white)),
                     ),
@@ -104,7 +105,7 @@ class QuizResultView extends StatelessWidget {
         ),
 
         AppSpacing.h24,
-        Text('Review Your Answers',
+        Text(AppLocalizations.of(context).reviewAnswers,
             style:
                 AppTextStyles.titleLarge.copyWith(color: context.colorTextPrimary)),
         AppSpacing.h12,

@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -34,13 +35,14 @@ class _ForgetPasswordFormState extends State<ForgetPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Form(
       key: _formKey,
       child: Column(
         children: [
           AuthTextField(
             controller: _emailCtrl,
-            label: 'Email Address',
+            label: l10n.emailAddress,
             prefixIcon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.done,
@@ -68,7 +70,7 @@ class _ForgetPasswordFormState extends State<ForgetPasswordForm> {
                           strokeWidth: 2,
                         )
                       : Text(
-                          'Send OTP',
+                          l10n.sendOtp,
                           style: AppTextStyles.buttonLarge.copyWith(
                             color: Colors.white,
                           ),

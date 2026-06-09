@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/auth_flow_service.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
@@ -71,7 +72,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Password changed successfully!',
+                  AppLocalizations.of(context).passwordChangedSuccess,
                   style:
                       AppTextStyles.bodySmall.copyWith(color: Colors.white),
                 ),
@@ -114,20 +115,21 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
               AppSpacing.h24,
               ChangePasswordField(
                 controller: _currentCtrl,
-                label: 'Current Password',
-                hint: 'Enter your current password',
+                label: AppLocalizations.of(context).currentPassword,
+                hint: AppLocalizations.of(context).enterCurrentPassword,
                 validator: (v) =>
-                    (v == null || v.isEmpty) ? 'Required' : null,
+                    (v == null || v.isEmpty) ? AppLocalizations.of(context).required : null,
               ),
               AppSpacing.h20,
               ChangePasswordField(
                 controller: _newCtrl,
-                label: 'New Password',
-                hint: 'Create a strong password',
+                label: AppLocalizations.of(context).newPassword,
+                hint: AppLocalizations.of(context).newPasswordHint,
                 onChanged: (v) => setState(() => _newPassword = v),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return 'Required';
-                  if (!_hasMin8) return 'At least 8 characters required';
+                  final l10n = AppLocalizations.of(context);
+                  if (v == null || v.isEmpty) return l10n.required;
+                  if (!_hasMin8) return l10n.atLeast8CharsRequired;
                   return null;
                 },
               ),
@@ -142,12 +144,13 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
               AppSpacing.h20,
               ChangePasswordField(
                 controller: _confirmCtrl,
-                label: 'Confirm New Password',
-                hint: 'Re-enter your new password',
+                label: AppLocalizations.of(context).confirmNewPassword,
+                hint: AppLocalizations.of(context).reEnterNewPassword,
                 textInputAction: TextInputAction.done,
                 validator: (v) {
-                  if (v == null || v.isEmpty) return 'Required';
-                  if (v != _newCtrl.text) return 'Passwords do not match';
+                  final l10n = AppLocalizations.of(context);
+                  if (v == null || v.isEmpty) return l10n.required;
+                  if (v != _newCtrl.text) return l10n.passwordsDoNotMatch;
                   return null;
                 },
               ),

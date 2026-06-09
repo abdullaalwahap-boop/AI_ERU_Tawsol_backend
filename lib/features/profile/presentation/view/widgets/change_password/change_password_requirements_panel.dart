@@ -1,4 +1,5 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -33,7 +34,7 @@ class ChangePasswordRequirementsPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Password requirements',
+            AppLocalizations.of(context).passwordRequirements,
             style: AppTextStyles.labelSmall.copyWith(
               color: context.colorTextSecondary,
               fontWeight: FontWeight.w700,
@@ -41,14 +42,11 @@ class ChangePasswordRequirementsPanel extends StatelessWidget {
             ),
           ),
           AppSpacing.h8,
-          PasswordRequirementItem(label: 'At least 8 characters', met: hasMin8),
-          PasswordRequirementItem(
-              label: 'One uppercase letter (A–Z)', met: hasUpper),
-          PasswordRequirementItem(
-              label: 'One lowercase letter (a–z)', met: hasLower),
-          PasswordRequirementItem(label: 'One number (0–9)', met: hasDigit),
-          PasswordRequirementItem(
-              label: 'One special character (!@#…)', met: hasSpecial),
+          PasswordRequirementItem(label: AppLocalizations.of(context).atLeast8Chars, met: hasMin8),
+          PasswordRequirementItem(label: AppLocalizations.of(context).oneUppercaseLetter, met: hasUpper),
+          PasswordRequirementItem(label: AppLocalizations.of(context).oneLowercaseLetter, met: hasLower),
+          PasswordRequirementItem(label: AppLocalizations.of(context).oneNumber, met: hasDigit),
+          PasswordRequirementItem(label: AppLocalizations.of(context).oneSpecialChar, met: hasSpecial),
         ],
       ),
     );

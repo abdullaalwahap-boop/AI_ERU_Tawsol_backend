@@ -1,6 +1,7 @@
 ﻿import 'dart:io';
 
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -130,7 +131,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
       setState(() => _state = _DownloadState.error);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Download failed'),
+          content: Text(AppLocalizations.of(context).downloadFailed),
           backgroundColor: Colors.red.shade700,
           behavior: SnackBarBehavior.floating,
           shape:

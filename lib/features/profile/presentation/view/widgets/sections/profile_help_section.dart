@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/contact_model.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common/profile_nav_tile.dart';
@@ -11,44 +12,29 @@ class ProfileHelpSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
         ProfileSectionCard(
-          title: 'FAQ',
+          title: l10n.faq,
           titleIcon: Icons.quiz_outlined,
-          children: const [
-            HelpFaqTile(
-              question: 'How do I reset my password?',
-              answer:
-                  'Go to Account → Change Password. You\'ll need your current password. If you\'ve forgotten it, use Forgot Password on the login screen.',
-            ),
-            HelpFaqTile(
-              question: 'How are announcements filtered?',
-              answer:
-                  'Announcements are filtered by your role, level, and enrolled courses. Use the filter chips on the home screen to narrow down by type.',
-            ),
-            HelpFaqTile(
-              question: 'Can I submit assignments here?',
-              answer:
-                  'Yes — open the relevant course, navigate to the assignment card, and tap Submit. Accepted formats: PDF, Word, ZIP.',
-            ),
-            HelpFaqTile(
-              question: 'Who can see my messages?',
-              answer:
-                  'Direct messages are private between you and the recipient. Group channels are visible to all enrolled members of that course.',
-            ),
+          children: [
+            HelpFaqTile(question: l10n.faqQuestion1, answer: l10n.faqAnswer1),
+            HelpFaqTile(question: l10n.faqQuestion2, answer: l10n.faqAnswer2),
+            HelpFaqTile(question: l10n.faqQuestion3, answer: l10n.faqAnswer3),
+            HelpFaqTile(question: l10n.faqQuestion4, answer: l10n.faqAnswer4),
           ],
         ),
         ProfileSectionCard(
-          title: 'Support',
+          title: l10n.support,
           titleIcon: Icons.headset_mic_outlined,
           children: [
             ProfileNavTile(
               icon: Icons.flag_outlined,
               iconColor: AppColors.error,
               iconBg: AppColors.errorLight,
-              title: 'Report an Issue',
-              subtitle: 'Something broken? Tell us',
+              title: l10n.reportIssue,
+              subtitle: l10n.reportIssueSubtitle,
               onTap: () => _openContactSheet(context, IssueType.technical),
             ),
           ],

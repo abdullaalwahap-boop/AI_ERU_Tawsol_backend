@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
 class ChatSearchBar extends StatelessWidget {
@@ -8,6 +9,7 @@ class ChatSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       height: 44,
       decoration: BoxDecoration(
@@ -25,7 +27,7 @@ class ChatSearchBar extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search_rounded,
               color: Colors.white60, size: 20),
-          hintText: 'Search by name or student ID…',
+          hintText: l10n.searchByNameOrId,
           hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 12),

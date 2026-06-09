@@ -25,7 +25,7 @@ class AnnounTypeBadge extends StatelessWidget {
           Icon(type.icon, size: 11, color: type.color),
           AppSpacing.w4,
           Text(
-            type.label,
+            type.labelOf(context),
             style: AppTextStyles.badgeText.copyWith(
               color: type.color,
             ),

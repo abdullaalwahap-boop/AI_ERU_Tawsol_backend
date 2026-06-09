@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class ChatHeaderTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Messages',
+          AppLocalizations.of(context).messages,
           style: AppTextStyles.heading2.copyWith(
             color: Colors.white,
             letterSpacing: -0.3,
@@ -21,7 +22,7 @@ class ChatHeaderTitle extends StatelessWidget {
         ),
         AppSpacing.h3,
         Text(
-          '$totalConversations conversations',
+          AppLocalizations.of(context).conversations(totalConversations),
           style: AppTextStyles.caption.copyWith(
             color: Colors.white.withValues(alpha: 0.75),
           ),

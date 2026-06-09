@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
@@ -9,6 +10,23 @@ import 'package:ai_eru_tawasol/core/shared/widgets/badges/content_priority_badge
 import 'package:ai_eru_tawasol/core/shared/widgets/badges/content_type_badge.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/meta/feature_meta_row.dart';
 
+String _localTypeLabel(String label, AppLocalizations l10n) =>
+    switch (label.toLowerCase()) {
+      'announcement' => l10n.announcementLabel,
+      'material' => l10n.material,
+      'assignment' => l10n.assignment,
+      _ => label,
+    };
+
+String? _localPriorityLabel(String? label, AppLocalizations l10n) {
+  if (label == null) return null;
+  return switch (label.toLowerCase()) {
+    'important' => l10n.important,
+    'urgent' => l10n.urgent,
+    _ => label,
+  };
+}
+
 class ContentDetailsHeaderCard extends StatelessWidget {
   final ContentDisplayItem item;
 
@@ -16,6 +34,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -38,7 +57,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
                     Row(
                       children: [
                         ContentTypeBadge(
-                          label: item.typeLabel,
+                          label: _localTypeLabel(item.typeLabel, l10n),
                           icon: item.typeIcon,
                           color: item.typeColor,
                           lightColor: item.typeLightColor,
@@ -46,7 +65,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
                         if (item.priorityLabel != null) ...[
                           AppSpacing.w6,
                           ContentPriorityBadge(
-                            label: item.priorityLabel!,
+                            label: _localPriorityLabel(item.priorityLabel, l10n)!,
                             color: item.priorityColor!,
                           ),
                         ],
@@ -72,7 +91,7 @@ class ContentDetailsHeaderCard extends StatelessWidget {
           if (item.contextLabel != null) ...[
             FeatureMetaRow(
               icon: Icons.menu_book_rounded,
-              label: 'Subject / Course',
+              label: AppLocalizations.of(context).subjectCourse,
               value: item.contextCode != null
                   ? '${item.contextCode} · ${item.contextLabel}'
                   : item.contextLabel!,
@@ -82,21 +101,21 @@ class ContentDetailsHeaderCard extends StatelessWidget {
           ],
           FeatureMetaRow(
             icon: Icons.person_rounded,
-            label: 'Posted by',
+            label: AppLocalizations.of(context).postedBy,
             value: item.authorName,
             iconColor: const Color(0xff64748B),
           ),
           AppSpacing.h10,
           FeatureMetaRow(
             icon: Icons.calendar_today_rounded,
-            label: 'Date',
+            label: AppLocalizations.of(context).date,
             value: item.formattedDate,
             iconColor: const Color(0xff64748B),
           ),
           AppSpacing.h10,
           FeatureMetaRow(
             icon: Icons.access_time_rounded,
-            label: 'Time',
+            label: AppLocalizations.of(context).time,
             value: item.formattedTime,
             iconColor: const Color(0xff64748B),
           ),
@@ -104,8 +123,8 @@ class ContentDetailsHeaderCard extends StatelessWidget {
             AppSpacing.h10,
             FeatureMetaRow(
               icon: Icons.timer_outlined,
-              label: 'Deadline',
-              value: _formatDeadline(item.deadline!),
+              label: AppLocalizations.of(context).deadline,
+              value: _formatDeadline(item.deadline!, context),
               iconColor: const Color(0xffDC2626),
             ),
           ],
@@ -114,16 +133,26 @@ class ContentDetailsHeaderCard extends StatelessWidget {
     );
   }
 
-  static String _formatDeadline(DateTime dt) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    ];
-    final date = '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+  static const _monthsEn = [
+    '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  static const _monthsAr = [
+    '', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+  ];
+
+  static String _formatDeadline(DateTime dt, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final month = isAr ? _monthsAr[dt.month] : _monthsEn[dt.month];
+    final date = isAr
+        ? '${dt.day} $month ${dt.year}'
+        : '$month ${dt.day}, ${dt.year}';
     final h = dt.hour;
     final hour = h > 12 ? h - 12 : (h == 0 ? 12 : h);
     final minute = dt.minute.toString().padLeft(2, '0');
-    final period = h >= 12 ? 'PM' : 'AM';
+    final period = h >= 12 ? l10n.pm : l10n.am;
     return '$date  ·  $hour:$minute $period';
   }
 }

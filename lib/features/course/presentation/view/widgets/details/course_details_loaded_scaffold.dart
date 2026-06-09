@@ -1,6 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/feature_filter_row.dart';
@@ -30,29 +31,27 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
     required this.state,
   });
 
-  List<FilterItem<ContentType>> _filterItems() {
-    return [
-      const FilterItem<ContentType>(
-        label: 'All',
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final cubit = context.read<CourseDetailsCubit>();
+    final items = state.filteredContent;
+    final filterItems = [
+      FilterItem<ContentType>(
+        label: l10n.all,
         icon: Icons.apps_rounded,
         color: AppColors.primary,
         value: null,
       ),
       ...ContentType.values.map(
         (t) => FilterItem<ContentType>(
-          label: t.label,
+          label: t.labelOf(context),
           icon: t.icon,
           color: t.color,
           value: t,
         ),
       ),
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<CourseDetailsCubit>();
-    final items = state.filteredContent;
 
     return Scaffold(
       backgroundColor: context.colorBackground,
@@ -70,7 +69,7 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 14, bottom: 4),
                 child: FeatureFilterRow<ContentType>(
-                  items: _filterItems(),
+                  items: filterItems,
                   activeValue: state.activeFilter,
                   onChanged: cubit.filterContent,
                 ),
@@ -78,11 +77,10 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: items.isEmpty
-                  ? const FeatureEmptyState(
+                  ? FeatureEmptyState(
                       icon: Icons.inbox_outlined,
-                      title: 'No Content Yet',
-                      description:
-                          'Nothing has been posted for this course yet.\nCheck back later for updates.',
+                      title: l10n.noContentYet,
+                      description: l10n.noContentDesc,
                       accentColor: AppColors.primary,
                     )
                   : ListView.builder(

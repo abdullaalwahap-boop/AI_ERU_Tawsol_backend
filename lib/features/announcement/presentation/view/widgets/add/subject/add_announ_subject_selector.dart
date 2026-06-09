@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -23,12 +24,13 @@ class AddAnnounSubjectSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (courses.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: 'Subject',
+            title: l10n.subject,
             trailing: const AddAnnounRequiredBadge(),
           ),
           AppSpacing.h14,
@@ -51,7 +53,7 @@ class AddAnnounSubjectSelector extends StatelessWidget {
                 ),
                 AppSpacing.w10,
                 Text(
-                  'Loading your courses…',
+                  l10n.loadingCourses,
                   style: AppTextStyles.labelMedium
                       .copyWith(color: context.colorTextHint),
                 ),
@@ -66,7 +68,7 @@ class AddAnnounSubjectSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
-          title: 'Subject',
+          title: l10n.subject,
           trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,

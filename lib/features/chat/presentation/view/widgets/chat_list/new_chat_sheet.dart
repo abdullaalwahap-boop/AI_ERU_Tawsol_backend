@@ -1,6 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -142,7 +143,7 @@ class _SheetHeader extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'New Chat',
+            AppLocalizations.of(context).newChat,
             style: AppTextStyles.heading3
                 .copyWith(color: context.colorTextPrimary),
           ),
@@ -176,7 +177,7 @@ class _SheetSearchField extends StatelessWidget {
         style: AppTextStyles.bodyMedium
             .copyWith(color: context.colorTextPrimary),
         decoration: InputDecoration(
-          hintText: 'Search by name or student ID…',
+          hintText: AppLocalizations.of(context).searchByNameOrId,
           hintStyle: AppTextStyles.bodyMedium
               .copyWith(color: context.colorTextHint),
           prefixIcon: Icon(
@@ -231,14 +232,14 @@ class _SheetPrompt extends StatelessWidget {
           ),
           AppSpacing.h16,
           Text(
-            'Find Someone to Chat With',
+            AppLocalizations.of(context).findSomeoneToChatWith,
             style: AppTextStyles.titleMedium
                 .copyWith(color: context.colorTextPrimary),
             textAlign: TextAlign.center,
           ),
           AppSpacing.h8,
           Text(
-            'Search by name or student ID',
+            AppLocalizations.of(context).searchByNameOrId,
             style: AppTextStyles.bodySmall
                 .copyWith(color: context.colorTextHint),
             textAlign: TextAlign.center,
@@ -289,14 +290,14 @@ class _SheetNoResults extends StatelessWidget {
           ),
           AppSpacing.h16,
           Text(
-            'No users found for "$query"',
+            AppLocalizations.of(context).noUsersFoundFor(query),
             style: AppTextStyles.titleSmall
                 .copyWith(color: context.colorTextSecondary),
             textAlign: TextAlign.center,
           ),
           AppSpacing.h8,
           Text(
-            'Try a different name or student ID',
+            AppLocalizations.of(context).tryDifferentName,
             style: AppTextStyles.bodySmall
                 .copyWith(color: context.colorTextHint),
             textAlign: TextAlign.center,

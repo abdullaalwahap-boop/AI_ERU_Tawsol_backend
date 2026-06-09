@@ -1,4 +1,5 @@
-﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -41,7 +42,7 @@ class CoursesErrorState extends StatelessWidget {
             ),
             AppSpacing.h20,
             Text(
-              'Something Went Wrong',
+              AppLocalizations.of(context).errorTitle,
               style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
               textAlign: TextAlign.center,
             ),
@@ -66,7 +67,7 @@ class CoursesErrorState extends StatelessWidget {
               ),
               icon: const Icon(Icons.refresh_rounded, size: 18),
               label: Text(
-                'Try Again',
+                AppLocalizations.of(context).tryAgain,
                 style: AppTextStyles.titleSmall,
               ),
             ),

@@ -1,4 +1,5 @@
-﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -80,7 +81,7 @@ class _EditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.edit_rounded, color: Colors.white),
-      tooltip: 'Edit',
+      tooltip: AppLocalizations.of(context).edit,
       onPressed: () => context.push(
         AppRouter.kAddAnnouncementView,
         extra: AddAnnounArgs(
@@ -102,24 +103,23 @@ class _DeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.delete_rounded, color: Colors.white),
-      tooltip: 'Delete',
+      tooltip: AppLocalizations.of(context).delete,
       onPressed: () async {
         final confirmed = await showDialog<bool>(
           context: context,
           builder: (_) => AlertDialog(
-            title: const Text('Delete Announcement'),
-            content:
-                const Text('Are you sure you want to delete this announcement?'),
+            title: Text(AppLocalizations.of(context).deleteAnnouncement),
+            content: Text(AppLocalizations.of(context).deleteAnnouncementConfirm),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context).cancel),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  'Delete',
-                  style: TextStyle(color: Colors.red),
+                child: Text(
+                  AppLocalizations.of(context).delete,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
             ],

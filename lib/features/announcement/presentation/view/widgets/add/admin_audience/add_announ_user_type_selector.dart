@@ -127,7 +127,7 @@ class _TypeCard extends StatelessWidget {
                     ),
                     AppSpacing.h4,
                     Text(
-                      type.label,
+                      type.labelOf(context),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

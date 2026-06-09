@@ -7,6 +7,7 @@ import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common/profile_section_card.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/info/info_edit_name_dialog.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/info/info_tile.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -18,12 +19,13 @@ class ProfileInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ProfileSectionCard(
-      title: 'Account',
+      title: l10n.account,
       titleIcon: Icons.person_rounded,
       children: [
         ProfileInfoTile(
-          label: 'Full Name',
+          label: l10n.fullName,
           value: user.name,
           icon: Icons.badge_outlined,
           iconColor: AppColors.accent,
@@ -32,7 +34,7 @@ class ProfileInfoSection extends StatelessWidget {
         ),
         _divider(context),
         ProfileInfoTile(
-          label: 'Email Address',
+          label: l10n.emailAddress,
           value: user.email,
           icon: Icons.alternate_email_rounded,
           iconColor: AppColors.contentGreen,
@@ -41,7 +43,7 @@ class ProfileInfoSection extends StatelessWidget {
         if (user.role == ProfileRole.student) ...[
           _divider(context),
           ProfileInfoTile(
-            label: 'University ID',
+            label: l10n.universityId,
             value: user.uniCode,
             icon: Icons.numbers_rounded,
             iconColor: AppColors.contentAmber,
@@ -53,8 +55,8 @@ class ProfileInfoSection extends StatelessWidget {
           icon: Icons.lock_outline_rounded,
           iconColor: AppColors.primary,
           iconBg: AppColors.primary.withValues(alpha: 0.09),
-          title: 'Change Password',
-          subtitle: 'Update your account password',
+          title: l10n.changePassword,
+          subtitle: l10n.changePasswordSubtitle,
           onTap: () => context.push(AppRouter.kChangePasswordView),
         ),
       ],

@@ -53,7 +53,7 @@ class AddAnnounPostTypeCard extends StatelessWidget {
             ),
             AppSpacing.h4,
             Text(
-              type.label,
+              type.labelOf(context),
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: isSelected ? type.color : context.colorTextSecondary,

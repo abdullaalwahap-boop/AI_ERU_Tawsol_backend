@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -28,14 +29,14 @@ class ResetPasswordViewBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppSpacing.h32,
-              const AuthGradientTitle(
-                text: 'Reset Password',
+              AuthGradientTitle(
+                text: AppLocalizations.of(context).resetPassword,
                 fontSize: 28,
                 textAlign: TextAlign.center,
               ),
               AppSpacing.h8,
               Text(
-                'Create a strong new password',
+                AppLocalizations.of(context).createStrongPassword,
                 style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
               ),
               AppSpacing.h32,
@@ -72,14 +73,14 @@ class _SuccessContent extends StatelessWidget {
               ),
             ),
             AppSpacing.h24,
-            const AuthGradientTitle(
-              text: 'Password Reset!',
+            AuthGradientTitle(
+              text: AppLocalizations.of(context).passwordResetSuccess,
               fontSize: 26,
               textAlign: TextAlign.center,
             ),
             AppSpacing.h12,
             Text(
-              'Your password has been successfully reset.\nYou can now sign in with your new password.',
+              AppLocalizations.of(context).passwordResetMessage,
               style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
               textAlign: TextAlign.center,
             ),
@@ -96,7 +97,7 @@ class _SuccessContent extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Back to Login',
+                  AppLocalizations.of(context).backToLogin,
                   style: AppTextStyles.buttonLarge.copyWith(
                     color: Colors.white,
                   ),

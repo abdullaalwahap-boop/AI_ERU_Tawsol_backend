@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -42,7 +43,7 @@ class HomeFloatingActionButton extends StatelessWidget {
                 const Icon(Icons.add_rounded, color: Colors.white, size: 20),
                 AppSpacing.w8,
                 Text(
-                  'New Post',
+                  AppLocalizations.of(context).newPost,
                   style: AppTextStyles.buttonMedium.copyWith(
                     color: Colors.white,
                   ),

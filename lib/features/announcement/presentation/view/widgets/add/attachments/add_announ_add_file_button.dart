@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -27,7 +28,7 @@ class AddAnnounAddFileButton extends StatelessWidget {
             const Icon(Icons.add_rounded, size: 14, color: AppColors.primary),
             AppSpacing.w4,
             Text(
-              'Add File',
+              AppLocalizations.of(context).addFile,
               style: AppTextStyles.labelMedium.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.primary,

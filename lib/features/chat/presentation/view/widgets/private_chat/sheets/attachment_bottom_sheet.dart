@@ -1,5 +1,6 @@
 ﻿import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/sheet_handle.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -38,12 +39,12 @@ class AttachmentBottomSheet extends StatelessWidget {
           const SheetHandle(),
           AppSpacing.h20,
           Text(
-            'Share Content',
+            AppLocalizations.of(context).shareContent,
             style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
           ),
           AppSpacing.h8,
           Text(
-            'Choose what you would like to send',
+            AppLocalizations.of(context).chooseWhatToSend,
             style: AppTextStyles.bodySmall.copyWith(color: context.colorTextSecondary),
           ),
           AppSpacing.h28,
@@ -73,7 +74,7 @@ class AttachmentBottomSheet extends StatelessWidget {
                   borderRadius: AppRadius.medium),
             ),
             child: Text(
-              'Cancel',
+              AppLocalizations.of(context).cancel,
               style: AppTextStyles.titleSmall,
             ),
           ),

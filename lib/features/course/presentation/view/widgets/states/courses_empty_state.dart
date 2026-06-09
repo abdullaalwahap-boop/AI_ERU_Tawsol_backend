@@ -1,4 +1,5 @@
-﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +34,13 @@ class CoursesEmptyState extends StatelessWidget {
             ),
             AppSpacing.h20,
             Text(
-              'No Courses Yet',
+              AppLocalizations.of(context).noCoursesYet,
               style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
               textAlign: TextAlign.center,
             ),
             AppSpacing.h8,
             Text(
-              'You have no courses assigned this semester.\nCheck back later for updates.',
+              AppLocalizations.of(context).noCoursesDescription,
               style: AppTextStyles.bodySmall.copyWith(color: context.colorTextSecondary, height: 1.6),
               textAlign: TextAlign.center,
             ),

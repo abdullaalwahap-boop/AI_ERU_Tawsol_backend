@@ -1,5 +1,6 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
@@ -33,7 +34,7 @@ class AddAnnounDrAudienceSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
-          title: 'Target Audience',
+          title: AppLocalizations.of(context).targetAudience,
           trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,
@@ -114,7 +115,7 @@ class _CourseContent extends StatelessWidget {
             ),
             AppSpacing.w10,
             Text(
-              'Loading your courses…',
+              AppLocalizations.of(context).loadingCourses,
               style:
                   AppTextStyles.labelMedium.copyWith(color: context.colorTextHint),
             ),
@@ -127,7 +128,7 @@ class _CourseContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select Subject',
+          AppLocalizations.of(context).selectSubject,
           style: AppTextStyles.labelMedium.copyWith(
             color: context.colorTextSecondary,
             fontWeight: FontWeight.w600,
@@ -175,7 +176,7 @@ class _SpecificStudentsContent extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Filter by course',
+                AppLocalizations.of(context).filterByCourse,
                 style: AppTextStyles.labelMedium.copyWith(
                   color: context.colorTextSecondary,
                   fontWeight: FontWeight.w600,
@@ -190,7 +191,7 @@ class _SpecificStudentsContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  'optional',
+                  AppLocalizations.of(context).optional,
                   style: AppTextStyles.overline.copyWith(
                     color: context.colorTextHint,
                     fontSize: 9,
@@ -358,7 +359,7 @@ class _DrTypeCard extends StatelessWidget {
                     ),
                     AppSpacing.h4,
                     Text(
-                      type.label,
+                      type.labelOf(context),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

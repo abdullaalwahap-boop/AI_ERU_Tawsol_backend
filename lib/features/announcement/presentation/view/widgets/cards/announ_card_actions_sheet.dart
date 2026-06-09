@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -13,6 +14,7 @@ class AnnounCardActionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: context.colorSurface,
@@ -48,13 +50,13 @@ class AnnounCardActionsSheet extends StatelessWidget {
               AppSpacing.h8,
               _ActionTile(
                 icon: Icons.edit_rounded,
-                label: 'Edit Announcement',
+                label: l10n.editAnnouncement,
                 color: AppColors.primary,
                 onTap: () => Navigator.pop(context, AnnounCardAction.edit),
               ),
               _ActionTile(
                 icon: Icons.delete_outline_rounded,
-                label: 'Delete Announcement',
+                label: l10n.deleteAnnouncement,
                 color: const Color(0xffDC2626),
                 onTap: () => Navigator.pop(context, AnnounCardAction.delete),
               ),

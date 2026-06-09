@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/otp_cubit/otp_cubit.dart';
@@ -45,8 +46,8 @@ class _OtpViewBodyState extends State<OtpViewBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AppSpacing.h32,
-              const AuthGradientTitle(
-                text: 'Enter OTP',
+              AuthGradientTitle(
+                text: AppLocalizations.of(context).enterOtpTitle,
                 fontSize: 28,
                 textAlign: TextAlign.center,
               ),
@@ -79,7 +80,7 @@ class _OtpViewBodyState extends State<OtpViewBody> {
                               strokeWidth: 2,
                             )
                           : Text(
-                              'Verify OTP',
+                              AppLocalizations.of(context).verifyOtp,
                               style: AppTextStyles.buttonLarge.copyWith(
                                 color: Colors.white,
                               ),

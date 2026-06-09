@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 
 extension AnnouncementPriorityUiExt on AnnouncementPriority {
@@ -11,6 +12,15 @@ extension AnnouncementPriorityUiExt on AnnouncementPriority {
       case AnnouncementPriority.urgent:
         return 'Urgent';
     }
+  }
+
+  String labelOf(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return switch (this) {
+      AnnouncementPriority.normal => l10n.normal,
+      AnnouncementPriority.important => l10n.important,
+      AnnouncementPriority.urgent => l10n.urgent,
+    };
   }
 
   Color get color {

@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -46,7 +47,7 @@ class _QuizScaffold extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Quiz',
+            Text(AppLocalizations.of(context).quiz,
                 style: AppTextStyles.titleMedium
                     .copyWith(color: AppColors.primary)),
             Text(
@@ -123,14 +124,14 @@ class _GeneratingView extends StatelessWidget {
             const CircularProgressIndicator(color: AppColors.primary),
             AppSpacing.h24,
             Text(
-              'Generating your quiz…',
+              AppLocalizations.of(context).generatingQuiz,
               style: AppTextStyles.titleMedium
                   .copyWith(color: context.colorTextPrimary),
               textAlign: TextAlign.center,
             ),
             AppSpacing.h8,
             Text(
-              'The AI is reading the lecture and creating\n10 questions just for you.',
+              AppLocalizations.of(context).generatingQuizDesc,
               style: AppTextStyles.bodySmall
                   .copyWith(color: context.colorTextSecondary),
               textAlign: TextAlign.center,
@@ -160,7 +161,7 @@ class _ErrorView extends StatelessWidget {
                 color: AppColors.error, size: 56),
             AppSpacing.h16,
             Text(
-              'Could not generate quiz',
+              AppLocalizations.of(context).couldNotGenerateQuiz,
               style: AppTextStyles.heading4
                   .copyWith(color: context.colorTextPrimary),
             ),
@@ -178,7 +179,7 @@ class _ErrorView extends StatelessWidget {
                 OutlinedButton.icon(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.arrow_back, size: 18),
-                  label: const Text('Go Back'),
+                  label: Text(AppLocalizations.of(context).goBack),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primary,
                     side: const BorderSide(color: AppColors.primary),
@@ -189,7 +190,7 @@ class _ErrorView extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: onRetry,
                     icon: const Icon(Icons.refresh_rounded, size: 18),
-                    label: const Text('Try Again'),
+                    label: Text(AppLocalizations.of(context).tryAgain),
                     style: FilledButton.styleFrom(
                         backgroundColor: AppColors.primary),
                   ),

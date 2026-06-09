@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -33,13 +34,13 @@ class EmptyChatsState extends StatelessWidget {
             ),
             AppSpacing.h24,
             Text(
-              'No Conversations Yet',
+              AppLocalizations.of(context).noConversationsYet,
               style: AppTextStyles.heading3
                   .copyWith(color: context.colorTextPrimary),
             ),
             AppSpacing.h10,
             Text(
-              'Start a conversation with your professors,\nteaching assistants, or administrators.',
+              AppLocalizations.of(context).noConversationsDesc,
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
                 height: 1.6,
@@ -57,7 +58,7 @@ class EmptyChatsState extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Tap the button below to start',
+                  AppLocalizations.of(context).tapBelowToStart,
                   style: AppTextStyles.bodySmall
                       .copyWith(color: context.colorTextHint),
                 ),

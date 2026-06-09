@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -28,10 +29,11 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'Deadline'),
+        SectionHeader(title: l10n.deadline),
         const SizedBox(height: 12),
         GestureDetector(
           onTap: () => _pickDeadline(context),
@@ -68,7 +70,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                 Expanded(
                   child: deadline == null
                       ? Text(
-                          'Select deadline date & time…',
+                          l10n.selectDeadline,
                           style: AppTextStyles.bodySmall
                               .copyWith(color: context.colorTextHint),
                         )
@@ -76,7 +78,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _formatDate(deadline!),
+                              _formatDate(deadline!, context),
                               style: AppTextStyles.bodySmall.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: context.colorTextPrimary,
@@ -84,7 +86,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                             ),
                             AppSpacing.h2,
                             Text(
-                              _formatTime(deadline!),
+                              _formatTime(deadline!, context),
                               style: AppTextStyles.bodySmall.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.primary,
@@ -110,27 +112,33 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
     );
   }
 
-  static const _months = [
+  static const _monthsEn = [
     '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
+  static const _monthsAr = [
+    '', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+    'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+  ];
+  static const _weekdaysEn = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  static const _weekdaysAr = ['', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد'];
 
-  static const _weekdays = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-  String _formatDate(DateTime dt) {
-    final day = _weekdays[dt.weekday];
-    final month = _months[dt.month];
-    return '$day, $month ${dt.day}, ${dt.year}';
+  String _formatDate(DateTime dt, BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final day = isAr ? _weekdaysAr[dt.weekday] : _weekdaysEn[dt.weekday];
+    final month = isAr ? _monthsAr[dt.month] : _monthsEn[dt.month];
+    return '$day، ${dt.day} $month ${dt.year}';
   }
 
-  String _formatTime(DateTime dt) {
+  String _formatTime(DateTime dt, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final hour = dt.hour == 0
         ? 12
         : dt.hour > 12
             ? dt.hour - 12
             : dt.hour;
     final minute = dt.minute.toString().padLeft(2, '0');
-    final period = dt.hour < 12 ? 'AM' : 'PM';
+    final period = dt.hour < 12 ? l10n.am : l10n.pm;
     return '$hour:$minute $period';
   }
 
@@ -146,7 +154,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
       initialDate: initialDate,
       firstDate: firstDate,
       lastDate: now.add(const Duration(days: 365)),
-      helpText: 'Select deadline date',
+      helpText: AppLocalizations.of(context).selectDeadlineDate,
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.light(
@@ -164,7 +172,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
       initialTime: deadline != null
           ? TimeOfDay.fromDateTime(deadline!)
           : const TimeOfDay(hour: 23, minute: 59),
-      helpText: 'Select deadline time',
+      helpText: AppLocalizations.of(context).selectDeadlineTime,
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.light(

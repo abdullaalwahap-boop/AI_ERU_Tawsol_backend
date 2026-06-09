@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 
 enum AdminUserType { all, students, doctors, ta, specificUsers }
 
@@ -10,6 +11,17 @@ extension AdminUserTypeExt on AdminUserType {
         AdminUserType.ta => 'Assistants',
         AdminUserType.specificUsers => 'Specific Users',
       };
+
+  String labelOf(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return switch (this) {
+      AdminUserType.all => l10n.all,
+      AdminUserType.students => l10n.students,
+      AdminUserType.doctors => l10n.doctors,
+      AdminUserType.ta => l10n.assistants,
+      AdminUserType.specificUsers => l10n.specificUsers,
+    };
+  }
 
   IconData get icon => switch (this) {
         AdminUserType.all => Icons.groups_rounded,

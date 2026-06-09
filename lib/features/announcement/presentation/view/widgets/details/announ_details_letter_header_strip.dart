@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/extensions/announcement_type_ui_ext.dart';
@@ -40,7 +41,7 @@ class AnnounDetailsLetterHeaderStrip extends StatelessWidget {
           ),
           AppSpacing.w10,
           Text(
-            'Message',
+            AppLocalizations.of(context).message,
             style: AppTextStyles.labelLarge.copyWith(
               fontWeight: FontWeight.w700,
               color: announcement.type.color,

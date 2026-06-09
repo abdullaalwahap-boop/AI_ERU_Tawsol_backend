@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class ProfileAppBar extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Profile',
+                          AppLocalizations.of(context).profile,
                           style: AppTextStyles.heading2.copyWith(
                             color: Colors.white,
                             letterSpacing: -0.3,
@@ -57,7 +58,7 @@ class ProfileAppBar extends StatelessWidget {
                         ),
                         AppSpacing.h3,
                         Text(
-                          'Manage your account & preferences',
+                          AppLocalizations.of(context).profileSubtitle,
                           style: AppTextStyles.caption.copyWith(
                             color: Colors.white.withValues(alpha: 0.75),
                           ),

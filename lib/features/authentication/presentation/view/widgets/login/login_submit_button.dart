@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
@@ -32,7 +33,7 @@ class LoginSubmitButton extends StatelessWidget {
                     strokeWidth: 2,
                   )
                 : Text(
-                    'Sign In',
+                    AppLocalizations.of(context).signIn,
                     style: AppTextStyles.buttonLarge.copyWith(
                       color: Colors.white,
                     ),

@@ -1,6 +1,7 @@
 ﻿import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -17,6 +18,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: context.colorSurface,
@@ -39,7 +41,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
               ),
               AppSpacing.h16,
               Text(
-                'Attach a file',
+                l10n.attachAFile,
                 style: AppTextStyles.titleLarge
                     .copyWith(color: context.colorTextPrimary),
               ),
@@ -49,7 +51,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                   Expanded(
                     child: _PickTile(
                       icon: Icons.image_rounded,
-                      label: 'Gallery',
+                      label: l10n.gallery,
                       color: const Color(0xff7C3AED),
                       onTap: () => _pickGallery(context),
                     ),
@@ -58,7 +60,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                   Expanded(
                     child: _PickTile(
                       icon: Icons.insert_drive_file_rounded,
-                      label: 'Document',
+                      label: l10n.document,
                       color: const Color(0xff2563EB),
                       onTap: () => _pickDocument(context),
                     ),
@@ -67,7 +69,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                   Expanded(
                     child: _PickTile(
                       icon: Icons.link_rounded,
-                      label: 'Link',
+                      label: l10n.link,
                       color: const Color(0xff059669),
                       onTap: () => _pickLink(context),
                     ),
@@ -125,6 +127,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
   }
 
   Future<void> _pickLink(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
     Navigator.pop(context);
     if (!context.mounted) return;
 
@@ -137,7 +140,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
     onPick(AddAnnounAttachmentItem(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: url,
-      sizeLabel: 'Link',
+      sizeLabel: l10n.link,
       fileType: AttachmentFileType.other,
       url: url,
     ));

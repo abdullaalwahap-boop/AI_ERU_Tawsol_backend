@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -9,6 +10,18 @@ import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/c
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/cards/announ_type_badge.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/shared/meta_row.dart';
 
+String _targetLabel(AppLocalizations l10n, AnnouncementTarget target) =>
+    switch (target) {
+      AnnouncementTarget.all => l10n.announceToAll,
+      AnnouncementTarget.course => l10n.course,
+      AnnouncementTarget.courseDepartment => l10n.deptCourse,
+      AnnouncementTarget.department => l10n.department,
+      AnnouncementTarget.level => l10n.level,
+      AnnouncementTarget.student => l10n.student,
+      AnnouncementTarget.users => l10n.selectedUsers,
+      AnnouncementTarget.role => l10n.role,
+    };
+
 class AnnounDetailsHeader extends StatelessWidget {
   final Announcement announcement;
 
@@ -16,6 +29,7 @@ class AnnounDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -69,38 +83,38 @@ class AnnounDetailsHeader extends StatelessWidget {
             icon: announcement.isFromAdmin
                 ? Icons.admin_panel_settings_rounded
                 : Icons.menu_book_rounded,
-            label: announcement.isFromAdmin ? 'Source' : 'Subject',
+            label: announcement.isFromAdmin ? l10n.source : l10n.subject,
             value: announcement.isFromAdmin
-                ? 'ADM · Administration'
+                ? l10n.admAdministration
                 : '${announcement.subjectCode} · ${announcement.subjectName}',
             color: announcement.type.color,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.person_rounded,
-            label: 'Posted by',
+            label: l10n.postedBy,
             value: announcement.doctorName,
             color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.calendar_today_rounded,
-            label: 'Date',
+            label: l10n.date,
             value: announcement.formattedDate,
             color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.access_time_rounded,
-            label: 'Time',
+            label: l10n.time,
             value: announcement.formattedTime,
             color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.group_rounded,
-            label: 'Audience',
-            value: announcement.target.label,
+            label: l10n.audience,
+            value: _targetLabel(l10n, announcement.target),
             color: context.colorTextSecondary,
           ),
         ],

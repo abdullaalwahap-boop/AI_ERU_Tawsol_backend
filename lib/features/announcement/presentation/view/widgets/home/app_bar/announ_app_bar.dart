@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -10,19 +11,21 @@ class AnnounAppBar extends StatelessWidget {
 
   const AnnounAppBar({super.key, required this.role});
 
-  String get _subtitle {
+  String _subtitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     switch (role) {
       case AnnounRole.student:
-        return 'Stay up to date with your courses';
+        return l10n.announcementsSubtitleStudent;
       case AnnounRole.doctor:
-        return 'Manage and view all announcements';
+        return l10n.announcementsSubtitleDoctor;
       case AnnounRole.admin:
-        return 'University-wide announcements';
+        return l10n.announcementsSubtitleAdmin;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -57,7 +60,7 @@ class AnnounAppBar extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Announcements',
+                          l10n.announcements,
                           style: AppTextStyles.heading2.copyWith(
                             color: Colors.white,
                             letterSpacing: -0.3,
@@ -65,7 +68,7 @@ class AnnounAppBar extends StatelessWidget {
                         ),
                         AppSpacing.h3,
                         Text(
-                          _subtitle,
+                          _subtitle(context),
                           style: AppTextStyles.caption.copyWith(
                             color: Colors.white.withValues(alpha: 0.75),
                           ),

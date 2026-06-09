@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/admin_user_type.dart';
@@ -62,14 +63,15 @@ class _SummaryBanner extends StatelessWidget {
   bool get _hasFilters =>
       selectedDepartments.isNotEmpty || selectedLevels.isNotEmpty;
 
-  String get _summaryText {
+  String _summaryText(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (!_hasFilters) {
       return switch (userType) {
-        AdminUserType.all => 'Visible to all students, doctors and assistants',
-        AdminUserType.students => 'Visible to all students',
-        AdminUserType.doctors => 'Visible to all doctors',
-        AdminUserType.ta => 'Visible to all teaching assistants',
-        AdminUserType.specificUsers => 'Visible to selected users',
+        AdminUserType.all => l10n.visibleToAll,
+        AdminUserType.students => l10n.visibleToAllStudents,
+        AdminUserType.doctors => l10n.visibleToAllDoctors,
+        AdminUserType.ta => l10n.visibleToAllAssistants,
+        AdminUserType.specificUsers => l10n.visibleToSelectedUsers,
       };
     }
 
@@ -78,16 +80,16 @@ class _SummaryBanner extends StatelessWidget {
       final names = selectedDepartments
           .map((d) => d.split(' ').take(2).join(' '))
           .join(', ');
-      parts.add('$names dept.');
+      parts.add('$names ${l10n.deptSuffix}');
     }
     if (selectedLevels.isNotEmpty) {
       final names = selectedLevels
-          .map((l) => l.replaceFirst('Level ', 'L'))
+          .map((lvl) => '${l10n.level} ${lvl.replaceFirst('Level ', '')}')
           .join(' & ');
       parts.add(names);
     }
 
-    return 'Visible to students in ${parts.join(' — ')}';
+    return l10n.visibleToStudentsIn(parts.join(' — '));
   }
 
   @override
@@ -122,7 +124,7 @@ class _SummaryBanner extends StatelessWidget {
           AppSpacing.w12,
           Expanded(
             child: Text(
-              _summaryText,
+              _summaryText(context),
               style: AppTextStyles.labelLarge.copyWith(
                 color: textColor,
                 height: 1.4,

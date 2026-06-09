@@ -1,5 +1,6 @@
 ﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class AboutMissionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Our Mission',
+                  AppLocalizations.of(context).ourMission,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w700,
@@ -46,9 +47,7 @@ class AboutMissionCard extends StatelessWidget {
                 ),
                 AppSpacing.h6,
                 Text(
-                  'To bridge the gap between students and educators at ERU — '
-                  'making academic communication seamless, transparent, and '
-                  'empowering every member of the university community.',
+                  AppLocalizations.of(context).missionText,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: context.colorTextSecondary,
                     height: 1.65,
