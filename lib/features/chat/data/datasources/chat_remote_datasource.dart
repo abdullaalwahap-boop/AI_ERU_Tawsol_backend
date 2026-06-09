@@ -38,17 +38,12 @@ class ChatRemoteDatasource {
 
   // ── Message History ────────────────────────────────────────────────────────
 
-  Future<List<ChatMessage>> getMessages(
-    String otherUserId, {
-    int skip = 0,
-    int limit = 50,
-  }) async {
+  Future<List<ChatMessage>> getMessages(String otherUserId) async {
     final myId = await _requireUserId();
     final otherId = int.parse(otherUserId);
     try {
       final response = await _dio.get(
         ApiConstants.chatHistory(myId, otherId),
-        queryParameters: {'skip': skip, 'limit': limit},
       );
       _assertOk(response);
       return (response.data as List)
@@ -65,18 +60,29 @@ class ChatRemoteDatasource {
   // ── Send Message (REST fallback) ───────────────────────────────────────────
 
   Future<ChatMessage> sendMessage({
-    required String receiverId,
-    required String text,
+    required int receiverId,
     String contentType = 'text',
+    String? message,
+    String? fileUrl,
+    String? fileName,
+    int? fileSizeBytes,
+    int? voiceDurationSeconds,
+    int? replyToId,
   }) async {
     final myId = await _requireUserId();
     try {
       final response = await _dio.post(
         ApiConstants.chatSend,
         data: {
-          'receiver_id': int.parse(receiverId),
-          'message': text,
+          'receiver_id': receiverId,
           'content_type': contentType,
+          if (message != null) 'message': message,
+          if (fileUrl != null) 'file_url': fileUrl,
+          if (fileName != null) 'file_name': fileName,
+          if (fileSizeBytes != null) 'file_size_bytes': fileSizeBytes,
+          if (voiceDurationSeconds != null)
+            'voice_duration_seconds': voiceDurationSeconds,
+          if (replyToId != null) 'reply_to_id': replyToId,
         },
       );
       _assertOk(response);

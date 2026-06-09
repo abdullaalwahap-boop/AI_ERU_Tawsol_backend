@@ -31,4 +31,16 @@ abstract class ChatRepo {
 
   /// Uploads any attachment (image, document, audio) to the general endpoint.
   Future<VoiceUploadResult> uploadFile(String filePath);
+
+  /// Sends a message via REST (used as WS fallback).
+  Future<ChatMessage> sendMessage({
+    required int receiverId,
+    String contentType = 'text',
+    String? message,
+    String? fileUrl,
+    String? fileName,
+    int? fileSizeBytes,
+    int? voiceDurationSeconds,
+    int? replyToId,
+  });
 }
