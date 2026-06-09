@@ -12,10 +12,6 @@ class Assignment {
   final String? textContent;
   final DateTime createdAt;
   final DateTime? updatedAt;
-  // Enriched (viewer-dependent)
-  final bool? hasSubmitted;
-  final int? mySubmissionId;
-  final int? submissionCount;
 
   const Assignment({
     required this.id,
@@ -31,9 +27,6 @@ class Assignment {
     this.textContent,
     required this.createdAt,
     this.updatedAt,
-    this.hasSubmitted,
-    this.mySubmissionId,
-    this.submissionCount,
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) => Assignment(
@@ -52,9 +45,6 @@ class Assignment {
         updatedAt: json['updated_at'] != null
             ? DateTime.parse(json['updated_at'] as String)
             : null,
-        hasSubmitted: json['has_submitted'] as bool?,
-        mySubmissionId: json['my_submission_id'] as int?,
-        submissionCount: json['submission_count'] as int?,
       );
 
   // ---------- Display helpers ----------
@@ -108,8 +98,5 @@ class Assignment {
         textContent: textContent ?? this.textContent,
         createdAt: createdAt,
         updatedAt: updatedAt,
-        hasSubmitted: hasSubmitted,
-        mySubmissionId: mySubmissionId,
-        submissionCount: submissionCount,
       );
 }

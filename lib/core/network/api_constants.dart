@@ -48,14 +48,6 @@ class ApiConstants {
   static String fileById(int id) => '/files/$id';
   static String courseFiles(String materialId) => '/files/$materialId';
 
-  // ─── Submissions ──────────────────────────────────────────────────────────────
-  static const String submissions = '/submissions';
-  static String submissionById(int id) => '/submissions/$id';
-  static String assignmentSubmissions(int assignmentId) =>
-      '/submissions/$assignmentId';
-  static String mySubmission(int assignmentId) =>
-      '/submissions/my/$assignmentId';
-
   // ─── Chat ─────────────────────────────────────────────────────────────────────
   static const String chatConversations = '/chat/conversations';
   static const String chatSend = '/chat/send';
