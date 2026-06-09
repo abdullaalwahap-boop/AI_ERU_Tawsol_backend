@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -235,7 +235,7 @@ class _PrivateChatBodyState extends State<PrivateChatBody> {
               child: Stack(
                 children: [
                   Container(
-                    color: AppColors.backgroundLight,
+                    color: context.colorBackground,
                     child: ChatMessageList(
                       scrollController: _scrollController,
                       messages: loaded.displayMessages,

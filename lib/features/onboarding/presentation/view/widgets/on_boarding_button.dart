@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,9 @@ class OnBoardingButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            isLastPage ? 'Enter Platform' : 'Continue',
+            isLastPage
+                ? AppLocalizations.of(context).enterPlatform
+                : AppLocalizations.of(context).continueButton,
             style: AppTextStyles.buttonLarge.copyWith(
               color: Colors.white,
               letterSpacing: 0.3,

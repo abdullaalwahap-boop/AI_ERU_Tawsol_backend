@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/filter/feature_filter_chip.dart';
@@ -24,7 +25,7 @@ class CourseContentFilterRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
           FeatureFilterChip(
-            label: 'All',
+            label: AppLocalizations.of(context).all,
             icon: Icons.apps_rounded,
             isSelected: activeFilter == null,
             color: AppColors.primary,
@@ -35,7 +36,7 @@ class CourseContentFilterRow extends StatelessWidget {
             (type) => Padding(
               padding: const EdgeInsets.only(right: 8),
               child: FeatureFilterChip(
-                label: type.label,
+                label: type.labelOf(context),
                 icon: type.icon,
                 isSelected: activeFilter == type,
                 color: type.color,

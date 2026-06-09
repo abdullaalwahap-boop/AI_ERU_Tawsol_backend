@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -94,11 +95,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
       messenger.showSnackBar(
         SnackBar(
           content: Text(permanentlyDenied
-              ? 'Microphone permission denied. Enable it in Settings.'
-              : 'Microphone permission is required to record voice messages.'),
+              ? AppLocalizations.of(context).micPermissionDenied
+              : AppLocalizations.of(context).micPermissionRequired),
           action: permanentlyDenied
               ? SnackBarAction(
-                  label: 'Settings',
+                  label: AppLocalizations.of(context).settings,
                   onPressed: openAppSettings,
                 )
               : null,
@@ -168,7 +169,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   Widget _buildInputRow() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colorSurface,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
@@ -185,7 +186,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
           children: [
             ChatIconButton(
               icon: Icons.attach_file_rounded,
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
               onTap: () => AttachmentBottomSheet.show(
                 context,
                 onSelected: widget.onAttachment,

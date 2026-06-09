@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -23,21 +24,22 @@ class AddAnnounSubjectSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (courses.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: 'Subject',
+            title: l10n.subject,
             trailing: const AddAnnounRequiredBadge(),
           ),
           AppSpacing.h14,
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
             decoration: BoxDecoration(
-              color: AppColors.inputBgLight,
+              color: context.colorInputBg,
               borderRadius: AppRadius.medium,
-              border: Border.all(color: AppColors.dividerLight),
+              border: Border.all(color: context.colorDivider),
             ),
             child: Row(
               children: [
@@ -51,9 +53,9 @@ class AddAnnounSubjectSelector extends StatelessWidget {
                 ),
                 AppSpacing.w10,
                 Text(
-                  'Loading your courses…',
+                  l10n.loadingCourses,
                   style: AppTextStyles.labelMedium
-                      .copyWith(color: AppColors.textHint),
+                      .copyWith(color: context.colorTextHint),
                 ),
               ],
             ),
@@ -66,7 +68,7 @@ class AddAnnounSubjectSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
-          title: 'Subject',
+          title: l10n.subject,
           trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,
@@ -107,12 +109,12 @@ class _CoursechIp extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.1)
-              : AppColors.inputBgLight,
+              : context.colorInputBg,
           borderRadius: AppRadius.large,
           border: Border.all(
             color: isSelected
                 ? AppColors.primary.withValues(alpha: 0.6)
-                : AppColors.dividerLight,
+                : context.colorDivider,
             width: isSelected ? 1.5 : 1.2,
           ),
         ),
@@ -124,7 +126,7 @@ class _CoursechIp extends StatelessWidget {
               course.id,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w800,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : context.colorTextSecondary,
                 fontSize: 11,
                 letterSpacing: 0.5,
               ),
@@ -135,7 +137,7 @@ class _CoursechIp extends StatelessWidget {
               style: AppTextStyles.bodySmall.copyWith(
                 fontWeight: FontWeight.w600,
                 color:
-                    isSelected ? AppColors.primary : AppColors.textPrimary,
+                    isSelected ? AppColors.primary : context.colorTextPrimary,
                 fontSize: 13,
               ),
             ),

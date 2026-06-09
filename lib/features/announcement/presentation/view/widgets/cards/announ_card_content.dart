@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
@@ -49,7 +50,7 @@ class AnnounCardContent extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColors.surfaceLight,
+          color: context.colorSurface,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             ...AppShadows.card,
@@ -119,7 +120,7 @@ class AnnounCardContent extends StatelessWidget {
                                           size: 13, color: Colors.white),
                                       const SizedBox(width: 4),
                                       Text(
-                                        'Generate Quiz',
+                                        AppLocalizations.of(context).generateQuiz,
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 11,
@@ -189,20 +190,18 @@ class AnnounCardContent extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: const RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
-        title: const Text('Delete Announcement'),
-        content: const Text(
-          'This will permanently delete the announcement. This action cannot be undone.',
-        ),
+        title: Text(AppLocalizations.of(context).deleteAnnouncement),
+        content: Text(AppLocalizations.of(context).deleteAnnouncementPermanent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(
                 foregroundColor: const Color(0xffDC2626)),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context).delete),
           ),
         ],
       ),
@@ -222,7 +221,7 @@ class AnnounCardContent extends StatelessWidget {
       getIt<AnnouncementChangeNotifier>().notifyDelete(announcement.id);
     } else if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete announcement')),
+        SnackBar(content: Text(AppLocalizations.of(context).failedToDeleteAnnouncement)),
       );
     }
   }
@@ -243,7 +242,7 @@ class _ActionsButton extends StatelessWidget {
         child: Icon(
           Icons.more_horiz_rounded,
           size: 20,
-          color: AppColors.textHint,
+          color: context.colorTextHint,
         ),
       ),
     );

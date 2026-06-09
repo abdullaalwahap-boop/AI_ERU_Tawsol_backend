@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class OnBoardingIllus3 extends StatelessWidget {
             child: Transform.translate(
               offset: const Offset(-28, 8),
               child: _courseCard(
-                label: 'Mathematics',
+                label: AppLocalizations.of(context).mathematics,
                 icon: Icons.functions_rounded,
                 topColor: const Color(0xff7C3AED),
                 bottomColor: const Color(0xff3B0764),
@@ -43,7 +44,7 @@ class OnBoardingIllus3 extends StatelessWidget {
             child: Transform.translate(
               offset: const Offset(28, 8),
               child: _courseCard(
-                label: 'Physics',
+                label: AppLocalizations.of(context).physics,
                 icon: Icons.science_rounded,
                 topColor: const Color(0xff0EA5E9),
                 bottomColor: const Color(0xff0C4A6E),
@@ -52,7 +53,7 @@ class OnBoardingIllus3 extends StatelessWidget {
             ),
           ),
           _courseCard(
-            label: 'AI Systems',
+            label: AppLocalizations.of(context).aiSystems,
             icon: Icons.psychology_rounded,
             topColor: const Color(0xff4A7AFF),
             bottomColor: const Color(0xff001E6B),

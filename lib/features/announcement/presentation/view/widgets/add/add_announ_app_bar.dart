@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
@@ -11,8 +12,10 @@ class AddAnnounAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 1);
 
-  String get _title =>
-      role == AnnounRole.admin ? 'New Announcement' : 'New Post';
+  String _title(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return role == AnnounRole.admin ? l10n.newAnnouncement : l10n.newPost;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class AddAnnounAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               Expanded(
                 child: Text(
-                  _title,
+                  _title(context),
                   style: AppTextStyles.titleMedium.copyWith(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,

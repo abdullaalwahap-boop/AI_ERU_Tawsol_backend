@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/services/service_locator.dart';
+﻿import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_cubit.dart';
@@ -29,7 +29,7 @@ class ChangePasswordView extends StatelessWidget {
         // Prevent hardware-back and swipe-back in first-login mode.
         canPop: mode == ChangePasswordMode.profile,
         child: Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: context.colorBackground,
           appBar: ChangePasswordAppBar(mode: mode),
           body: ChangePasswordBody(mode: mode, userId: userId),
         ),

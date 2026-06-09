@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -54,10 +55,11 @@ class MessageActionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.large,
         boxShadow: [
           BoxShadow(
@@ -75,7 +77,7 @@ class MessageActionsSheet extends StatelessWidget {
             width: 36,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -84,7 +86,7 @@ class MessageActionsSheet extends StatelessWidget {
           // Reply — always available for non-deleted messages
           _ActionTile(
             icon: Icons.reply_rounded,
-            label: 'Reply',
+            label: l10n.reply,
             color: AppColors.primary,
             onTap: () => _handleReply(context),
           ),
@@ -93,8 +95,8 @@ class MessageActionsSheet extends StatelessWidget {
           if (onCopy != null)
             _ActionTile(
               icon: Icons.copy_rounded,
-              label: 'Copy message',
-              color: AppColors.textSecondary,
+              label: l10n.copyMessage,
+              color: context.colorTextSecondary,
               onTap: () => _handleCopy(context),
             ),
 
@@ -104,13 +106,13 @@ class MessageActionsSheet extends StatelessWidget {
               height: 1,
               indent: 16,
               endIndent: 16,
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
             ),
 
           if (message.canEdit)
             _ActionTile(
               icon: Icons.edit_rounded,
-              label: 'Edit message',
+              label: l10n.editMessageAction,
               color: AppColors.primary,
               onTap: () => _handleEdit(context),
             ),
@@ -120,13 +122,13 @@ class MessageActionsSheet extends StatelessWidget {
               height: 1,
               indent: 16,
               endIndent: 16,
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
             ),
 
           if (message.canDelete)
             _ActionTile(
               icon: Icons.delete_outline_rounded,
-              label: 'Delete message',
+              label: l10n.deleteMessageAction,
               color: AppColors.error,
               onTap: () => _handleDelete(context),
             ),
@@ -166,12 +168,13 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AlertDialog(
-      backgroundColor: AppColors.surfaceLight,
+      backgroundColor: context.colorSurface,
       shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
       title: Text(
-        'Edit message',
-        style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+        l10n.editMessageAction,
+        style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
       ),
       content: TextField(
         controller: _controller,
@@ -179,11 +182,11 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
-          hintText: 'Edit your message…',
+          hintText: l10n.editMessageHint,
           hintStyle:
-              AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+              AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
           filled: true,
-          fillColor: AppColors.inputBgLight,
+          fillColor: context.colorInputBg,
           border: OutlineInputBorder(
             borderRadius: AppRadius.small,
             borderSide: BorderSide.none,
@@ -194,15 +197,15 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
           ),
         ),
         style:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+            AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
-            'Cancel',
+            l10n.cancel,
             style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
             ),
           ),
         ),
@@ -212,7 +215,7 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
             Navigator.pop(context, text.isNotEmpty ? text : null);
           },
           child: Text(
-            'Save',
+            l10n.save,
             style: AppTextStyles.labelMedium.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w700,

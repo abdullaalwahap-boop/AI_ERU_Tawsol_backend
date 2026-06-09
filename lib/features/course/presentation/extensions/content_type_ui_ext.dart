@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 
 extension ContentTypeUiExt on ContentType {
@@ -11,6 +12,15 @@ extension ContentTypeUiExt on ContentType {
       case ContentType.assignment:
         return 'Assignment';
     }
+  }
+
+  String labelOf(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return switch (this) {
+      ContentType.announcement => l10n.announcementLabel,
+      ContentType.material => l10n.material,
+      ContentType.assignment => l10n.assignment,
+    };
   }
 
   Color get color {

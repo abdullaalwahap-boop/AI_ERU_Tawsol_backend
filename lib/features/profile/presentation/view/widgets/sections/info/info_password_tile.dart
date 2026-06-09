@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -46,14 +46,14 @@ class ProfilePasswordTile extends StatelessWidget {
                 Text(
                   'Password',
                   style: AppTextStyles.caption
-                      .copyWith(color: AppColors.textSecondary),
+                      .copyWith(color: context.colorTextSecondary),
                 ),
                 Row(
                   children: [
                     Text(
                       showPassword ? 'mypassword' : '••••••••••',
                       style: AppTextStyles.titleSmall.copyWith(
-                        color: AppColors.textPrimary,
+                        color: context.colorTextPrimary,
                         letterSpacing: showPassword ? 0 : 2.5,
                       ),
                     ),
@@ -65,7 +65,7 @@ class ProfilePasswordTile extends StatelessWidget {
                             ? Icons.visibility_off_rounded
                             : Icons.visibility_rounded,
                         size: 16,
-                        color: AppColors.textSecondary,
+                        color: context.colorTextSecondary,
                       ),
                     ),
                   ],

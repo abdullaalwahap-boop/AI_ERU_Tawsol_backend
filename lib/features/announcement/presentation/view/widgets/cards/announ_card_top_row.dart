@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -37,7 +37,7 @@ class AnnounCardTopRow extends StatelessWidget {
               Text(
                 announcement.doctorName,
                 style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -52,7 +52,7 @@ class AnnounCardTopRow extends StatelessWidget {
             Text(
               announcement.timeAgo,
               style: AppTextStyles.badgeText.copyWith(
-                color: AppColors.textHint,
+                color: context.colorTextHint,
               ),
             ),
             if (!announcement.isRead) ...[

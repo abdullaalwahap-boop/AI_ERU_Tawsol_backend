@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -39,13 +40,14 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Form(
       key: _formKey,
       child: Column(
         children: [
           AuthTextField(
             controller: _passwordCtrl,
-            label: 'New Password',
+            label: l10n.newPassword,
             prefixIcon: Icons.lock_outline_rounded,
             obscurable: true,
             textInputAction: TextInputAction.next,
@@ -54,7 +56,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
           AppSpacing.h16,
           AuthTextField(
             controller: _confirmCtrl,
-            label: 'Confirm Password',
+            label: l10n.confirmPassword,
             prefixIcon: Icons.lock_outline_rounded,
             obscurable: true,
             textInputAction: TextInputAction.done,
@@ -82,7 +84,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                           strokeWidth: 2,
                         )
                       : Text(
-                          'Reset Password',
+                          l10n.resetPassword,
                           style: AppTextStyles.buttonLarge.copyWith(
                             color: Colors.white,
                           ),

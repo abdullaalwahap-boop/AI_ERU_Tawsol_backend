@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:dio/dio.dart';
@@ -73,7 +74,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Image saved to gallery'),
+          content: Text(AppLocalizations.of(context).imageSavedToGallery),
           behavior: SnackBarBehavior.floating,
           backgroundColor: AppColors.primary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -83,7 +84,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Could not save image'),
+          content: Text(AppLocalizations.of(context).couldNotSaveImage),
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.red.shade700,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -122,7 +123,7 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
                 )
               : IconButton(
                   icon: const Icon(Icons.download_rounded),
-                  tooltip: 'Save to gallery',
+                  tooltip: AppLocalizations.of(context).saveToGallery,
                   onPressed: _saveToGallery,
                 ),
         ],

@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -70,8 +71,8 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.surfaceLight,
+          decoration: BoxDecoration(
+            color: context.colorSurface,
             borderRadius: AppRadius.bottomSheet,
           ),
           padding: const EdgeInsets.fromLTRB(
@@ -89,15 +90,15 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                 _DragHandle(),
                 AppSpacing.h20,
                 Text(
-                  'Contact Us',
+                  AppLocalizations.of(context).contactUs,
                   style: AppTextStyles.heading4
-                      .copyWith(color: AppColors.textPrimary),
+                      .copyWith(color: context.colorTextPrimary),
                 ),
                 AppSpacing.h4,
                 Text(
-                  'We\'ll get back to you as soon as possible',
+                  AppLocalizations.of(context).contactUsSubtitle,
                   style: AppTextStyles.bodySmall
-                      .copyWith(color: AppColors.textSecondary),
+                      .copyWith(color: context.colorTextSecondary),
                 ),
                 AppSpacing.h20,
                 _IssueTypeSelector(
@@ -107,18 +108,20 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                 AppSpacing.h16,
                 _SheetField(
                   controller: _subjectCtrl,
-                  hint: 'Subject',
+                  hint: AppLocalizations.of(context).subject,
                   maxLines: 1,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? AppLocalizations.of(context).required
+                      : null,
                 ),
                 AppSpacing.h12,
                 _SheetField(
                   controller: _messageCtrl,
-                  hint: 'Describe your issue in detail…',
+                  hint: AppLocalizations.of(context).describeIssue,
                   maxLines: 4,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? AppLocalizations.of(context).required
+                      : null,
                 ),
                 AppSpacing.h20,
                 _SendButton(onPressed: () => _submit(context)),
@@ -136,7 +139,7 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Message sent. We\'ll respond shortly!',
+            AppLocalizations.of(context).messageSentSuccess,
             style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
           ),
           backgroundColor: AppColors.success,
@@ -174,7 +177,7 @@ class _DragHandle extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: AppColors.dividerLight,
+          color: context.colorDivider,
           borderRadius: AppRadius.circular,
         ),
       ),
@@ -197,9 +200,9 @@ class _IssueTypeSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Category',
+          AppLocalizations.of(context).category,
           style:
-              AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary),
+              AppTextStyles.labelMedium.copyWith(color: context.colorTextSecondary),
         ),
         AppSpacing.h8,
         SingleChildScrollView(
@@ -220,18 +223,18 @@ class _IssueTypeSelector extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.primary
-                          : AppColors.inputBgLight,
+                          : context.colorInputBg,
                       borderRadius: AppRadius.circular,
                       border: isSelected
                           ? null
-                          : Border.all(color: AppColors.borderLight),
+                          : Border.all(color: context.colorBorder),
                     ),
                     child: Text(
                       type.label,
                       style: AppTextStyles.labelMedium.copyWith(
                         color: isSelected
                             ? AppColors.textOnPrimary
-                            : AppColors.textSecondary,
+                            : context.colorTextSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -265,13 +268,13 @@ class _SheetField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       validator: validator,
-      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+      style: AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+            AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
         filled: true,
-        fillColor: AppColors.inputBgLight,
+        fillColor: context.colorInputBg,
         border: OutlineInputBorder(
           borderRadius: AppRadius.large,
           borderSide: BorderSide.none,
@@ -324,7 +327,7 @@ class _SendButton extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Send Message',
+                    AppLocalizations.of(context).sendMessage,
                     style: AppTextStyles.buttonMedium
                         .copyWith(color: AppColors.textOnPrimary),
                   ),

@@ -1,5 +1,6 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
@@ -20,7 +21,7 @@ class ChangePasswordInfoBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isFirstLogin ? AppColors.backgroundLight : AppColors.infoLight,
+        color: isFirstLogin ? context.colorBackground : AppColors.infoLight,
         borderRadius: AppRadius.large,
         border: Border.all(
           color: isFirstLogin
@@ -43,8 +44,8 @@ class ChangePasswordInfoBanner extends StatelessWidget {
           Expanded(
             child: Text(
               isFirstLogin
-                  ? 'Your account was created with a temporary password. Please set a secure personal password to continue.'
-                  : 'Use a strong password with a mix of letters, numbers and symbols.',
+                  ? AppLocalizations.of(context).firstLoginBannerText
+                  : AppLocalizations.of(context).strongPasswordHint,
               style: AppTextStyles.bodySmall.copyWith(
                 color: isFirstLogin ? AppColors.primary : AppColors.info,
                 height: 1.5,

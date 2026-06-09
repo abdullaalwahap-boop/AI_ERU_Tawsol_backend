@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -21,7 +21,7 @@ class CourseContentCardContent extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.xlarge,
         boxShadow: [
           ...AppShadows.card,
@@ -49,7 +49,7 @@ class CourseContentCardContent extends StatelessWidget {
                       AppSpacing.h8,
                       Text(
                         content.title,
-                        style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimary),
+                        style: AppTextStyles.titleSmall.copyWith(color: context.colorTextPrimary),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -57,7 +57,7 @@ class CourseContentCardContent extends StatelessWidget {
                       Text(
                         content.body,
                         style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.textHint,
+                          color: context.colorTextHint,
                           height: 1.5,
                         ),
                         maxLines: 2,

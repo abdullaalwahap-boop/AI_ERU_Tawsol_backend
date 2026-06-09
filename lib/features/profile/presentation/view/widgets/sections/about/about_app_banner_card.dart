@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class AboutAppBannerCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'AI Connect',
+                  AppLocalizations.of(context).appName,
                   style: AppTextStyles.heading4.copyWith(
                     color: AppColors.textOnDark,
                     letterSpacing: 0.3,
@@ -55,7 +56,7 @@ class AboutAppBannerCard extends StatelessWidget {
                 ),
                 AppSpacing.h4,
                 Text(
-                  'Connecting ERU community',
+                  AppLocalizations.of(context).connectingEru,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: Colors.white.withValues(alpha: 0.72),
                   ),

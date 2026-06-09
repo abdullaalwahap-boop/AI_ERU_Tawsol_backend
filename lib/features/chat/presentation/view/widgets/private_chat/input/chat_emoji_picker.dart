@@ -1,5 +1,6 @@
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+﻿import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 
 class ChatEmojiPicker extends StatelessWidget {
@@ -19,19 +20,19 @@ class ChatEmojiPicker extends StatelessWidget {
       config: Config(
         height: height,
         checkPlatformCompatibility: false,
-        emojiViewConfig: const EmojiViewConfig(
-          backgroundColor: Colors.white,
+        emojiViewConfig: EmojiViewConfig(
+          backgroundColor: context.colorSurface,
           buttonMode: ButtonMode.MATERIAL,
         ),
         categoryViewConfig: CategoryViewConfig(
-          backgroundColor: Colors.white,
+          backgroundColor: context.colorSurface,
           indicatorColor: ChatColors.primary,
-          iconColor: ChatColors.textHint,
+          iconColor: context.colorTextHint,
           iconColorSelected: ChatColors.primary,
           backspaceColor: ChatColors.primary,
         ),
         bottomActionBarConfig: BottomActionBarConfig(
-          backgroundColor: Colors.white,
+          backgroundColor: context.colorSurface,
           buttonColor: ChatColors.primary.withValues(alpha: 0.1),
           buttonIconColor: ChatColors.primary,
         ),

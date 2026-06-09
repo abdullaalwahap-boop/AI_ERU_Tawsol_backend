@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -14,17 +15,17 @@ class ChatNoResultsState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.search_off_rounded,
-              size: 56, color: AppColors.textHint),
+          Icon(Icons.search_off_rounded,
+              size: 56, color: context.colorTextHint),
           AppSpacing.h16,
           Text(
-            'No results for "$query"',
-            style: AppTextStyles.titleLarge.copyWith(color: AppColors.textSecondary),
+            AppLocalizations.of(context).noResultsFor(query),
+            style: AppTextStyles.titleLarge.copyWith(color: context.colorTextSecondary),
           ),
           AppSpacing.h8,
           Text(
-            'Try a different name or student ID',
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textHint),
+            AppLocalizations.of(context).tryDifferentName,
+            style: AppTextStyles.bodySmall.copyWith(color: context.colorTextHint),
           ),
         ],
       ),

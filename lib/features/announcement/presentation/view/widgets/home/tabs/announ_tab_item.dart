@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -30,7 +30,7 @@ class AnnounTabItem extends StatelessWidget {
           curve: Curves.easeInOut,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.surfaceLight : Colors.transparent,
+            color: isSelected ? context.colorSurface : Colors.transparent,
             borderRadius: AppRadius.medium,
             boxShadow: isSelected
                 ? [
@@ -49,7 +49,7 @@ class AnnounTabItem extends StatelessWidget {
                 icon,
                 size: 16,
                 color:
-                    isSelected ? AppColors.primary : AppColors.textHint,
+                    isSelected ? AppColors.primary : context.colorTextHint,
               ),
               AppSpacing.w6,
               Flexible(
@@ -60,14 +60,14 @@ class AnnounTabItem extends StatelessWidget {
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected
                         ? AppColors.primary
-                        : AppColors.textSecondary,
+                        : context.colorTextSecondary,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               if (count > 0) ...[
                 const SizedBox(width: 5),
-                _buildCountBadge(),
+                _buildCountBadge(context),
               ],
             ],
           ),
@@ -76,12 +76,12 @@ class AnnounTabItem extends StatelessWidget {
     );
   }
 
-  Widget _buildCountBadge() {
+  Widget _buildCountBadge(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primary : AppColors.dividerLight,
+        color: isSelected ? AppColors.primary : context.colorDivider,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -89,7 +89,7 @@ class AnnounTabItem extends StatelessWidget {
         style: AppTextStyles.overline.copyWith(
           fontSize: 10,
           fontWeight: FontWeight.w700,
-          color: isSelected ? Colors.white : AppColors.textSecondary,
+          color: isSelected ? Colors.white : context.colorTextSecondary,
         ),
       ),
     );

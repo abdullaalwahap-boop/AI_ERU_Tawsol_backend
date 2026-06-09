@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+export 'package:ai_eru_tawasol/core/extensions/context_ext.dart';
+
 /// Single source of truth for all app colors.
 ///
 /// Light palette  — post-login screens (home, chat, announcement, course, profile)

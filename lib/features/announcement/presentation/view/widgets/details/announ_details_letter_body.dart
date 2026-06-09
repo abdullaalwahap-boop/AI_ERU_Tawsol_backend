@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
@@ -15,7 +15,7 @@ class AnnounDetailsLetterBody extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -29,18 +29,18 @@ class AnnounDetailsLetterBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AnnounDetailsLetterHeaderStrip(announcement: announcement),
-          Container(height: 1, color: AppColors.dividerLight),
+          Container(height: 1, color: context.colorDivider),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Text(
               announcement.body,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textPrimary,
+                color: context.colorTextPrimary,
                 height: 1.75,
               ),
             ),
           ),
-          Container(height: 1, color: AppColors.dividerLight),
+          Container(height: 1, color: context.colorDivider),
           AnnounDetailsLetterFooter(announcement: announcement),
         ],
       ),

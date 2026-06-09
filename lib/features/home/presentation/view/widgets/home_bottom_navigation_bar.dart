@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_nav_item.dart';
 
@@ -15,20 +17,19 @@ class HomeBottomNavigationBar extends StatelessWidget {
 
   static const _primaryColor = Color(0xff003096);
   static const _inactiveColor = Color(0xffA0AABB);
-  static const _bgColor = Colors.white;
-
-  static const _items = [
-    HomeNavItem(icon: Icons.campaign_rounded, label: 'Announcements'),
-    HomeNavItem(icon: Icons.chat_bubble_rounded, label: 'Chat'),
-    HomeNavItem(icon: Icons.menu_book_rounded, label: 'Courses'),
-    HomeNavItem(icon: Icons.person_rounded, label: 'Profile'),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final items = [
+      HomeNavItem(icon: Icons.campaign_rounded, label: l10n.announcements),
+      HomeNavItem(icon: Icons.chat_bubble_rounded, label: l10n.chat),
+      HomeNavItem(icon: Icons.menu_book_rounded, label: l10n.courses),
+      HomeNavItem(icon: Icons.person_rounded, label: l10n.profile),
+    ];
     return Container(
-      decoration: const BoxDecoration(
-        color: _bgColor,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         boxShadow: [
           BoxShadow(
             color: Color(0x14000000),
@@ -42,7 +43,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
         child: SizedBox(
           height: 64,
           child: Row(
-            children: List.generate(_items.length, (i) {
+            children: List.generate(items.length, (i) {
               final selected = i == currentIndex;
               return Expanded(
                 child: GestureDetector(
@@ -66,14 +67,14 @@ class HomeBottomNavigationBar extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Icon(
-                            _items[i].icon,
+                            items[i].icon,
                             size: 22,
                             color: selected ? _primaryColor : _inactiveColor,
                           ),
                         ),
                         AppSpacing.h3,
                         Text(
-                          _items[i].label,
+                          items[i].label,
                           style: AppTextStyles.overline.copyWith(
                             fontWeight: selected
                                 ? FontWeight.w700

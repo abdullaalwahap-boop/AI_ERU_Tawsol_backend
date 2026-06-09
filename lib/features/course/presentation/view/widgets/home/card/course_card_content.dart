@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
@@ -18,7 +18,7 @@ class CourseCardContent extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.xlarge,
         boxShadow: [
           ...AppShadows.card,
@@ -36,7 +36,7 @@ class CourseCardContent extends StatelessWidget {
           children: [
             CourseCardHeader(course: course),
             AppSpacing.h12,
-            const Divider(color: AppColors.dividerLight, height: 1),
+            Divider(color: context.colorDivider, height: 1),
             AppSpacing.h10,
             CourseCardInfoRow(course: course, role: role),
           ],

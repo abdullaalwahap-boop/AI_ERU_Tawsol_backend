@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
@@ -89,7 +90,7 @@ class _ChatSearchBarState extends State<ChatSearchBar> {
                 style:
                     AppTextStyles.bodyMedium.copyWith(color: Colors.white),
                 decoration: InputDecoration(
-                  hintText: 'Search messages…',
+                  hintText: AppLocalizations.of(context).searchMessages,
                   hintStyle: AppTextStyles.bodyMedium
                       .copyWith(color: Colors.white54),
                   border: InputBorder.none,

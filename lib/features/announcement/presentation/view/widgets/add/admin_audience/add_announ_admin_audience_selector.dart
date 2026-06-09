@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_audience_summary.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_admin_filter_section.dart';
@@ -36,7 +37,7 @@ class AddAnnounAdminAudienceSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
-          title: 'Target Audience',
+          title: AppLocalizations.of(context).targetAudience,
           trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,

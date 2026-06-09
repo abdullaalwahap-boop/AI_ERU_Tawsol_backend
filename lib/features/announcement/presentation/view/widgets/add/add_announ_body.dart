@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/actions/add_announ_action_buttons.dart';
@@ -43,6 +44,7 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddAnnounCubit, AddAnnounState>(
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context);
         final cubit = context.read<AddAnnounCubit>();
         final isDoctor = widget.role == AnnounRole.doctor;
         final isAdmin = widget.role == AnnounRole.admin;
@@ -67,15 +69,15 @@ class _AddAnnounBodyState extends State<AddAnnounBody> {
                       const SizedBox(height: 24),
                     ],
                     AddAnnounTextField(
-                      label: 'Title',
-                      hint: 'Enter announcement title...',
+                      label: l10n.announcementTitle,
+                      hint: l10n.enterAnnouncementTitle,
                       controller: _titleController,
                       onChanged: cubit.setTitle,
                     ),
                     const SizedBox(height: 16),
                     AddAnnounTextField(
-                      label: 'Details',
-                      hint: 'Write your announcement content here...',
+                      label: l10n.announcementDetails,
+                      hint: l10n.writeAnnouncementContent,
                       controller: _detailsController,
                       maxLines: 6,
                       onChanged: cubit.setDetails,

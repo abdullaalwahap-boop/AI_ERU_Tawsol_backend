@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/helpers/auth_validators.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/login_cubit/login_cubit.dart';
@@ -64,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Form(
       key: _formKey,
       child: Padding(
@@ -72,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             AuthTextField(
               controller: _emailCtrl,
-              label: 'University Email',
+              label: l10n.universityEmail,
               prefixIcon: Icons.alternate_email,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
@@ -81,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
             AppSpacing.h16,
             AuthTextField(
               controller: _passwordCtrl,
-              label: 'Password',
+              label: l10n.password,
               prefixIcon: Icons.lock_outline_rounded,
               obscurable: true,
               textInputAction: TextInputAction.done,

@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -10,7 +11,7 @@ class ProfileLogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surfaceLight,
+      backgroundColor: context.colorSurface,
       shape: RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
       title: Row(
         children: [
@@ -29,24 +30,24 @@ class ProfileLogoutDialog extends StatelessWidget {
           ),
           AppSpacing.w12,
           Text(
-            'Log Out',
+            AppLocalizations.of(context).logOutTitle,
             style:
-                AppTextStyles.heading4.copyWith(color: AppColors.textPrimary),
+                AppTextStyles.heading4.copyWith(color: context.colorTextPrimary),
           ),
         ],
       ),
       content: Text(
-        'Are you sure you want to log out of your ERU account?',
+        AppLocalizations.of(context).logOutMessage,
         style:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+            AppTextStyles.bodyMedium.copyWith(color: context.colorTextSecondary),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           child: Text(
-            'Cancel',
+            AppLocalizations.of(context).cancel,
             style: AppTextStyles.buttonSmall
-                .copyWith(color: AppColors.textSecondary),
+                .copyWith(color: context.colorTextSecondary),
           ),
         ),
         ElevatedButton(
@@ -62,7 +63,7 @@ class ProfileLogoutDialog extends StatelessWidget {
             elevation: 0,
           ),
           child: Text(
-            'Log Out',
+            AppLocalizations.of(context).logout,
             style: AppTextStyles.buttonSmall
                 .copyWith(color: AppColors.textOnPrimary),
           ),

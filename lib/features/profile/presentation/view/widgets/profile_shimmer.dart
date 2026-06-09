@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfileShimmer extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ProfileShimmerState extends State<ProfileShimmer>
         margin: widget.margin,
         height: widget.height,
         decoration: BoxDecoration(
-          color: AppColors.dividerLight.withValues(alpha: _anim.value),
+          color: context.colorDivider.withValues(alpha: _anim.value),
           borderRadius: BorderRadius.circular(widget.radius),
         ),
       ),

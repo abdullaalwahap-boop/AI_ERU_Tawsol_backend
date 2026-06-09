@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -67,7 +68,7 @@ class MessageBubble extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: message.text!));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Message copied'),
+        content: Text(AppLocalizations.of(context).messageCopied),
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -117,7 +118,7 @@ class MessageBubble extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isMe
                               ? AppColors.sentBubble
-                              : AppColors.receivedBubble,
+                              : context.colorReceivedBubble,
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(20),
                             topRight: const Radius.circular(20),

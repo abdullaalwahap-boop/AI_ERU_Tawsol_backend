@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/shared/extensions/announcement_display_ext.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -22,7 +23,7 @@ class AnnounCardReadMoreButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Read more',
+            AppLocalizations.of(context).readMore,
             style: AppTextStyles.labelSmall.copyWith(
               fontWeight: FontWeight.w700,
               color: AppColors.primary,

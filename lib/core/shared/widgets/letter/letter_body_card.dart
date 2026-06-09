@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/letter/letter_footer.dart';
@@ -10,7 +11,7 @@ class LetterBodyCard extends StatelessWidget {
   final Color accentColor;
   final Color accentLightColor;
   final IconData accentIcon;
-  final String headerLabel;
+  final String? headerLabel;
   final String authorName;
   final String authorInitials;
   final String authorSubtitle;
@@ -22,7 +23,7 @@ class LetterBodyCard extends StatelessWidget {
     required this.accentColor,
     required this.accentLightColor,
     required this.accentIcon,
-    this.headerLabel = 'Message',
+    this.headerLabel,
     required this.authorName,
     required this.authorInitials,
     required this.authorSubtitle,
@@ -42,7 +43,7 @@ class LetterBodyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           LetterHeaderStrip(
-            label: headerLabel,
+            label: headerLabel ?? AppLocalizations.of(context).message,
             color: accentColor,
             lightColor: accentLightColor,
             icon: accentIcon,

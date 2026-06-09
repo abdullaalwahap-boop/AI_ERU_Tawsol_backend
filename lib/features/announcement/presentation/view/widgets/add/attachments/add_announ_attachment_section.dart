@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/add_announ_add_more_button.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/add_announ_file_card.dart';
@@ -43,7 +44,7 @@ class AddAnnounAttachmentSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'Attachments'),
+        SectionHeader(title: AppLocalizations.of(context).attachments),
         const SizedBox(height: 12),
         if (attachments.isEmpty)
           AddAnnounUploadZone(onTap: () => _showPicker(context))

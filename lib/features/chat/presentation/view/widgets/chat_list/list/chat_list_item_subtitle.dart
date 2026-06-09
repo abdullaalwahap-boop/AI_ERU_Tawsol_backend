@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -58,10 +58,10 @@ class ChatListItemSubtitle extends StatelessWidget {
                 const SizedBox(width: 3),
               ],
               if (last != null && last.isDeleted) ...[
-                const Icon(
+                Icon(
                   Icons.not_interested_rounded,
                   size: 13,
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                 ),
                 const SizedBox(width: 3),
               ],
@@ -72,10 +72,10 @@ class ChatListItemSubtitle extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: last?.isDeleted == true
-                        ? AppColors.textHint
+                        ? context.colorTextHint
                         : (unread > 0
-                            ? AppColors.textPrimary
-                            : AppColors.textSecondary),
+                            ? context.colorTextPrimary
+                            : context.colorTextSecondary),
                     fontWeight: unread > 0 && last?.isDeleted != true
                         ? FontWeight.w500
                         : FontWeight.w400,

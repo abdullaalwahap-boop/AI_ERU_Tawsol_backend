@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -9,17 +10,19 @@ class CoursesAppBar extends StatelessWidget {
 
   const CoursesAppBar({super.key, required this.role});
 
-  String get _subtitle {
+  String _subtitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     switch (role) {
       case CourseRole.student:
-        return 'Your enrolled courses this semester';
+        return l10n.coursesSubtitleStudent;
       case CourseRole.doctor:
-        return 'Courses you are currently teaching';
+        return l10n.coursesSubtitleDoctor;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -52,7 +55,7 @@ class CoursesAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'My Courses',
+                    l10n.myCourses,
                     style: AppTextStyles.heading2.copyWith(
                       color: Colors.white,
                       letterSpacing: -0.3,
@@ -60,7 +63,7 @@ class CoursesAppBar extends StatelessWidget {
                   ),
                   AppSpacing.h3,
                   Text(
-                    _subtitle,
+                    _subtitle(context),
                     style: AppTextStyles.caption.copyWith(
                       color: Colors.white.withValues(alpha: 0.75),
                     ),

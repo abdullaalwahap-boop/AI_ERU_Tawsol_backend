@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/priority/add_announ_priority_card.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/shared/section_header.dart';
@@ -19,7 +20,7 @@ class AddAnnounPrioritySelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeader(title: 'Priority'),
+        SectionHeader(title: AppLocalizations.of(context).priority),
         const SizedBox(height: 14),
         Row(
           children: priorities

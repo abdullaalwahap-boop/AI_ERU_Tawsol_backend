@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -32,7 +33,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
   void _confirm() {
     final value = _controller.text.trim();
     if (!_isValidUrl(value)) {
-      setState(() => _error = 'Please enter a valid URL (https://…)');
+      setState(() => _error = AppLocalizations.of(context).validUrlError);
       return;
     }
     Navigator.pop(context, value);
@@ -40,9 +41,10 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
-      backgroundColor: Colors.white,
+      backgroundColor: context.colorSurface,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
         child: Column(
@@ -63,10 +65,10 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                 ),
                 AppSpacing.w12,
                 Text(
-                  'Add Link',
+                  l10n.addLink,
                   style: AppTextStyles.titleSmall.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+                    color: context.colorTextPrimary,
                   ),
                 ),
               ],
@@ -77,25 +79,25 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
               autofocus: true,
               keyboardType: TextInputType.url,
               style: AppTextStyles.bodySmall
-                  .copyWith(color: AppColors.textPrimary),
+                  .copyWith(color: context.colorTextPrimary),
               decoration: InputDecoration(
                 hintText: 'https://example.com/resource',
                 hintStyle: AppTextStyles.bodySmall
-                    .copyWith(color: AppColors.textHint),
+                    .copyWith(color: context.colorTextHint),
                 errorText: _error,
                 filled: true,
-                fillColor: AppColors.inputBgLight,
+                fillColor: context.colorInputBg,
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: 14, vertical: 12),
                 border: OutlineInputBorder(
                   borderRadius: AppRadius.medium,
                   borderSide:
-                      const BorderSide(color: AppColors.dividerLight),
+                      BorderSide(color: context.colorDivider),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: AppRadius.medium,
                   borderSide:
-                      const BorderSide(color: AppColors.dividerLight),
+                      BorderSide(color: context.colorDivider),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: AppRadius.medium,
@@ -119,14 +121,14 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.textSecondary,
-                      side: const BorderSide(color: AppColors.dividerLight),
+                      foregroundColor: context.colorTextSecondary,
+                      side: BorderSide(color: context.colorDivider),
                       shape: RoundedRectangleBorder(
                           borderRadius: AppRadius.medium),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text(
-                      'Cancel',
+                      l10n.cancel,
                       style: AppTextStyles.labelMedium.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -146,7 +148,7 @@ class _AddAnnounLinkInputDialogState extends State<AddAnnounLinkInputDialog> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: Text(
-                      'Attach',
+                      l10n.attach,
                       style: AppTextStyles.labelMedium.copyWith(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,

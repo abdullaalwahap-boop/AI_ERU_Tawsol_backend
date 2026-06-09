@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
@@ -78,5 +79,38 @@ class LocalStorageService {
   Future<bool> getHasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_keyHasSeenOnboarding) ?? false;
+  }
+
+  // ─── Theme Mode ───────────────────────────────────────────────────────────────
+
+  static const _keyThemeMode = 'themeMode';
+
+  Future<void> saveThemeMode(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyThemeMode, mode.name);
+  }
+
+  Future<ThemeMode> getThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString(_keyThemeMode);
+    return ThemeMode.values.firstWhere(
+      (m) => m.name == name,
+      orElse: () => ThemeMode.light,
+    );
+  }
+
+  // ─── Locale ───────────────────────────────────────────────────────────────────
+
+  static const _keyLocale = 'locale';
+
+  Future<void> saveLocale(Locale locale) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyLocale, locale.languageCode);
+  }
+
+  Future<Locale> getLocale() async {
+    final prefs = await SharedPreferences.getInstance();
+    final code = prefs.getString(_keyLocale) ?? 'en';
+    return Locale(code);
   }
 }

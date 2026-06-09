@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -40,18 +41,18 @@ class AddAnnounUploadZone extends StatelessWidget {
             ),
             AppSpacing.h10,
             Text(
-              'Tap to attach files',
+              AppLocalizations.of(context).tapToAttachFiles,
               style: AppTextStyles.bodySmall.copyWith(
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
+                color: context.colorTextPrimary,
               ),
             ),
             AppSpacing.h4,
             Text(
-              'PDF · DOCX · PPT · Images · ZIP · Links',
+              AppLocalizations.of(context).attachmentFormats,
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textHint,
+                color: context.colorTextHint,
               ),
             ),
           ],

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/input/chat_emoji_toggle_button.dart';
@@ -22,10 +23,11 @@ class ChatInputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       constraints: const BoxConstraints(minHeight: 44, maxHeight: 130),
       decoration: BoxDecoration(
-        color: AppColors.inputBgLight,
+        color: context.colorInputBg,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: focusNode.hasFocus
@@ -47,13 +49,13 @@ class ChatInputTextField extends StatelessWidget {
               textCapitalization: TextCapitalization.sentences,
               style: AppTextStyles.bodyMedium.copyWith(
                 fontSize: 14.5,
-                color: AppColors.textPrimary,
+                color: context.colorTextPrimary,
               ),
               decoration: InputDecoration(
-                hintText: 'Type a message…',
+                hintText: l10n.typeAMessage,
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                   fontSize: 14.5,
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                 ),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(vertical: 11),

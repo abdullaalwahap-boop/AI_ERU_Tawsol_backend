@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -37,27 +37,27 @@ class DateSeparator extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: [
-          const Expanded(
-              child: Divider(color: AppColors.dividerLight, thickness: 1)),
+          Expanded(
+              child: Divider(color: context.colorDivider, thickness: 1)),
           AppSpacing.w12,
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
             decoration: BoxDecoration(
-              color: AppColors.backgroundLight,
+              color: context.colorBackground,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.dividerLight),
+              border: Border.all(color: context.colorDivider),
             ),
             child: Text(
               _formatDate(),
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
                 letterSpacing: 0.3,
               ),
             ),
           ),
           AppSpacing.w12,
-          const Expanded(
-              child: Divider(color: AppColors.dividerLight, thickness: 1)),
+          Expanded(
+              child: Divider(color: context.colorDivider, thickness: 1)),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -35,7 +36,7 @@ class LoginRememberMeRow extends StatelessWidget {
         ),
         AppSpacing.w8,
         Text(
-          'Remember me',
+          AppLocalizations.of(context).rememberMe,
           style: AppTextStyles.bodySmall.copyWith(color: Colors.white60),
         ),
         const Spacer(),
@@ -46,7 +47,7 @@ class LoginRememberMeRow extends StatelessWidget {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Text(
-            'Forgot Password?',
+            AppLocalizations.of(context).forgotPassword,
             style: AppTextStyles.labelLarge.copyWith(color: AppColors.accent),
           ),
         ),

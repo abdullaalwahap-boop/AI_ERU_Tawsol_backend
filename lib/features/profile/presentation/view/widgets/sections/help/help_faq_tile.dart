@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -81,7 +81,7 @@ class _HelpFaqTileState extends State<HelpFaqTile>
                     child: Text(
                       widget.question,
                       style: AppTextStyles.titleSmall
-                          .copyWith(color: AppColors.textPrimary),
+                          .copyWith(color: context.colorTextPrimary),
                     ),
                   ),
                   AppSpacing.w8,
@@ -89,7 +89,7 @@ class _HelpFaqTileState extends State<HelpFaqTile>
                     turns: _rotate,
                     child: Icon(
                       Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.textHint,
+                      color: context.colorTextHint,
                       size: 20,
                     ),
                   ),
@@ -110,7 +110,7 @@ class _HelpFaqTileState extends State<HelpFaqTile>
             child: Text(
               widget.answer,
               style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
                 height: 1.6,
               ),
             ),
@@ -122,7 +122,7 @@ class _HelpFaqTileState extends State<HelpFaqTile>
         Divider(
           height: 1,
           thickness: 1,
-          color: AppColors.dividerLight,
+          color: context.colorDivider,
           indent: AppSpacing.lg + 38 + AppSpacing.md,
         ),
       ],

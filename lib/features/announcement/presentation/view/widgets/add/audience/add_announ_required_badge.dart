@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class AddAnnounRequiredBadge extends StatelessWidget {
         border: Border.all(color: _amber.withValues(alpha: 0.4)),
       ),
       child: Text(
-        'Required',
+        AppLocalizations.of(context).required,
         style: AppTextStyles.overline.copyWith(
           color: _amberText,
         ),

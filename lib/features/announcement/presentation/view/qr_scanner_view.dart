@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 
 class QrScannerView extends StatefulWidget {
@@ -40,7 +41,7 @@ class _QrScannerViewState extends State<QrScannerView> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
-        title: const Text('Scan QR Code'),
+        title: Text(AppLocalizations.of(context).scanQrCode),
         actions: [
           IconButton(
             icon: ValueListenableBuilder(
@@ -72,7 +73,7 @@ class _QrScannerViewState extends State<QrScannerView> {
             right: 0,
             child: Center(
               child: Text(
-                'Align the QR code within the frame',
+                AppLocalizations.of(context).alignQrCode,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.8),
                   fontSize: 14,

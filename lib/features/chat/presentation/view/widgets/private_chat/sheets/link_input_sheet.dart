@@ -1,4 +1,5 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/sheet_handle.dart';
@@ -55,8 +56,8 @@ class _LinkInputSheetState extends State<LinkInputSheet> {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       padding: EdgeInsets.fromLTRB(24, 8, 24, 24 + bottomInset),
@@ -67,8 +68,8 @@ class _LinkInputSheetState extends State<LinkInputSheet> {
           const SheetHandle(),
           AppSpacing.h20,
           Text(
-            'Send a Link',
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+            AppLocalizations.of(context).sendALink,
+            style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
           ),
           AppSpacing.h16,
           TextField(
@@ -79,9 +80,9 @@ class _LinkInputSheetState extends State<LinkInputSheet> {
             onSubmitted: (_) => _submit(),
             decoration: InputDecoration(
               hintText: 'https://',
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+              hintStyle: AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
               filled: true,
-              fillColor: AppColors.inputBgLight,
+              fillColor: context.colorInputBg,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -104,7 +105,7 @@ class _LinkInputSheetState extends State<LinkInputSheet> {
                 ),
               ),
               child: Text(
-                'Send',
+                AppLocalizations.of(context).send,
                 style: AppTextStyles.titleSmall.copyWith(color: Colors.white),
               ),
             ),

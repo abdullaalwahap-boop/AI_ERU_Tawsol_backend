@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -31,9 +31,9 @@ class ReplyPreviewBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         border: Border(
-          top: BorderSide(color: AppColors.dividerLight, width: 0.5),
+          top: BorderSide(color: context.colorDivider, width: 0.5),
         ),
       ),
       padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
@@ -66,7 +66,7 @@ class ReplyPreviewBar extends StatelessWidget {
                 Text(
                   _preview,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colorTextSecondary,
                     fontStyle: replyingTo.isDeleted
                         ? FontStyle.italic
                         : FontStyle.normal,
@@ -80,7 +80,7 @@ class ReplyPreviewBar extends StatelessWidget {
           IconButton(
             onPressed: onDismiss,
             icon: const Icon(Icons.close_rounded, size: 20),
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             splashRadius: 18,

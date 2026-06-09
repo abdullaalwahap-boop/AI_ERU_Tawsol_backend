@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -15,19 +16,20 @@ class AddAnnounDiscardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SizedBox(
       height: 52,
       child: OutlinedButton(
         onPressed: isDisabled ? null : onTap,
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AppColors.dividerLight, width: 1.5),
+          side: BorderSide(color: context.colorDivider, width: 1.5),
           shape:
               RoundedRectangleBorder(borderRadius: AppRadius.large),
         ),
         child: Text(
-          'Discard',
+          l10n.discard,
           style: AppTextStyles.titleSmall.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
           ),
         ),
       ),

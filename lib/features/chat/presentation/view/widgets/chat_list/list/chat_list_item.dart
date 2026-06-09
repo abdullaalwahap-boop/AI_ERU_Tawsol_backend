@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -24,7 +24,7 @@ class ChatListItem extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       splashColor: AppColors.primary.withValues(alpha: 0.05),
-      highlightColor: AppColors.backgroundLight,
+      highlightColor: context.colorBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(

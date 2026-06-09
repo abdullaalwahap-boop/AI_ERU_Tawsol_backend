@@ -27,7 +27,7 @@ class AnnounPriorityBadge extends StatelessWidget {
           Icon(priority.icon, size: 11, color: priority.color),
           AppSpacing.w4,
           Text(
-            priority.label,
+            priority.labelOf(context),
             style: AppTextStyles.badgeText.copyWith(
               color: priority.color,
             ),

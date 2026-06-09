@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class SkipButton extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Skip',
+              AppLocalizations.of(context).skip,
               style: AppTextStyles.labelLarge.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Colors.white.withValues(alpha: 0.65),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -20,8 +20,8 @@ class ChatListItemTitle extends StatelessWidget {
     return Row(
       children: [
         if (conversation.isPinned) ...[
-          const Icon(Icons.push_pin_rounded,
-              size: 12, color: AppColors.textHint),
+          Icon(Icons.push_pin_rounded,
+              size: 12, color: context.colorTextHint),
           AppSpacing.w4,
         ],
         Expanded(
@@ -31,7 +31,7 @@ class ChatListItemTitle extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.titleMedium.copyWith(
               fontWeight: unread > 0 ? FontWeight.w700 : FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: context.colorTextPrimary,
             ),
           ),
         ),
@@ -40,7 +40,7 @@ class ChatListItemTitle extends StatelessWidget {
           Text(
             ChatTimeFormatter.formatConversationTime(last.timestamp),
             style: AppTextStyles.caption.copyWith(
-              color: unread > 0 ? AppColors.primary : AppColors.textHint,
+              color: unread > 0 ? AppColors.primary : context.colorTextHint,
               fontWeight: unread > 0 ? FontWeight.w600 : FontWeight.w400,
             ),
           ),

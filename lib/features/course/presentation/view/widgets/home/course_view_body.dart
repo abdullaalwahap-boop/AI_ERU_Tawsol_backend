@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/states/feature_error_state.dart';
@@ -18,7 +18,7 @@ class CourseViewBody extends StatelessWidget {
     return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: context.colorBackground,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,7 +45,7 @@ class CourseViewBody extends StatelessWidget {
     if (state is CoursesLoaded) {
       return RefreshIndicator(
         color: AppColors.primary,
-        backgroundColor: AppColors.surfaceLight,
+        backgroundColor: context.colorSurface,
         displacement: 20,
         onRefresh: () => context.read<CoursesCubit>().refresh(role),
         child: SingleChildScrollView(

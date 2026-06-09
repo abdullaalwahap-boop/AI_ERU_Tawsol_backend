@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
@@ -20,7 +20,7 @@ class ProfileLoadedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -28,7 +28,7 @@ class ProfileLoadedView extends StatelessWidget {
           Expanded(
             child: RefreshIndicator(
               color: AppColors.primary,
-              backgroundColor: AppColors.surfaceLight,
+              backgroundColor: context.colorSurface,
               displacement: 20,
               onRefresh: () => context.read<ProfileCubit>().load(),
               child: CustomScrollView(

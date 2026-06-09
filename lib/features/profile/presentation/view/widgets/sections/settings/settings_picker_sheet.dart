@@ -1,6 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -43,8 +42,8 @@ class ProfilePickerSheet<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceLight,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: AppRadius.bottomSheet,
       ),
       padding: const EdgeInsets.fromLTRB(
@@ -60,14 +59,16 @@ class ProfilePickerSheet<T> extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.dividerLight,
+              color: Theme.of(context).dividerColor,
               borderRadius: AppRadius.circular,
             ),
           ),
           AppSpacing.h16,
           Text(
             title,
-            style: AppTextStyles.heading4.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.heading4.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           AppSpacing.h20,
           ...options.map((opt) {
@@ -84,7 +85,10 @@ class ProfilePickerSheet<T> extends StatelessWidget {
                   ),
                   decoration: isSelected
                       ? BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.06),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.08),
                           borderRadius: AppRadius.large,
                         )
                       : null,
@@ -93,8 +97,8 @@ class ProfilePickerSheet<T> extends StatelessWidget {
                       Icon(
                         iconOf(opt),
                         color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textSecondary,
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                         size: 22,
                       ),
                       AppSpacing.w16,
@@ -103,8 +107,8 @@ class ProfilePickerSheet<T> extends StatelessWidget {
                           labelOf(opt),
                           style: AppTextStyles.titleSmall.copyWith(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textPrimary,
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.onSurface,
                             fontWeight: isSelected
                                 ? FontWeight.w700
                                 : FontWeight.w500,
@@ -114,7 +118,7 @@ class ProfilePickerSheet<T> extends StatelessWidget {
                       if (isSelected)
                         Icon(
                           Icons.check_circle_rounded,
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           size: 20,
                         ),
                     ],

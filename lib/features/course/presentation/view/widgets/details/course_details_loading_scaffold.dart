@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
 import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/shared/white_back_button.dart';
@@ -12,7 +12,7 @@ class CourseDetailsLoadingScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

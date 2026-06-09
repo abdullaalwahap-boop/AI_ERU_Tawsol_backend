@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -18,9 +18,9 @@ class AnnounDetailsAttachmentTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.inputBgLight,
+          color: context.colorInputBg,
           borderRadius: AppRadius.medium,
-          border: Border.all(color: AppColors.dividerLight, width: 1),
+          border: Border.all(color: context.colorDivider, width: 1),
         ),
         child: Row(
           children: [
@@ -44,7 +44,7 @@ class AnnounDetailsAttachmentTile extends StatelessWidget {
                     style: AppTextStyles.labelMedium.copyWith(
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: context.colorTextPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -53,7 +53,7 @@ class AnnounDetailsAttachmentTile extends StatelessWidget {
                   Text(
                     '${attachment.sizeMB.toStringAsFixed(1)} MB',
                     style: AppTextStyles.labelSmall.copyWith(
-                      color: AppColors.textHint,
+                      color: context.colorTextHint,
                     ),
                   ),
                 ],

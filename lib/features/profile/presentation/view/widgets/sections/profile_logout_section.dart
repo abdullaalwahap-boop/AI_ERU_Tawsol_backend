@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
@@ -23,7 +24,7 @@ class ProfileLogoutSection extends StatelessWidget {
         child: OutlinedButton.icon(
           icon: const Icon(Icons.logout_rounded, size: 18),
           label: Text(
-            'Log Out',
+            AppLocalizations.of(context).logout,
             style: AppTextStyles.buttonMedium.copyWith(color: AppColors.error),
           ),
           onPressed: () => _confirm(context),
