@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -23,7 +23,7 @@ class ChangePasswordAppBar extends StatelessWidget
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         boxShadow: AppShadows.appBar,
       ),
       child: SafeArea(
@@ -37,7 +37,7 @@ class ChangePasswordAppBar extends StatelessWidget
               if (isProfile) ...[
                 IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
-                  color: AppColors.textPrimary,
+                  color: context.colorTextPrimary,
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 AppSpacing.w4,
@@ -45,7 +45,7 @@ class ChangePasswordAppBar extends StatelessWidget
               Text(
                 isProfile ? 'Change Password' : 'Set Your Password',
                 style: AppTextStyles.heading4
-                    .copyWith(color: AppColors.textPrimary),
+                    .copyWith(color: context.colorTextPrimary),
               ),
             ],
           ),

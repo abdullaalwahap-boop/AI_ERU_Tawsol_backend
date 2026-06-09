@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -70,8 +70,8 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.surfaceLight,
+          decoration: BoxDecoration(
+            color: context.colorSurface,
             borderRadius: AppRadius.bottomSheet,
           ),
           padding: const EdgeInsets.fromLTRB(
@@ -91,13 +91,13 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                 Text(
                   'Contact Us',
                   style: AppTextStyles.heading4
-                      .copyWith(color: AppColors.textPrimary),
+                      .copyWith(color: context.colorTextPrimary),
                 ),
                 AppSpacing.h4,
                 Text(
                   'We\'ll get back to you as soon as possible',
                   style: AppTextStyles.bodySmall
-                      .copyWith(color: AppColors.textSecondary),
+                      .copyWith(color: context.colorTextSecondary),
                 ),
                 AppSpacing.h20,
                 _IssueTypeSelector(
@@ -174,7 +174,7 @@ class _DragHandle extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: AppColors.dividerLight,
+          color: context.colorDivider,
           borderRadius: AppRadius.circular,
         ),
       ),
@@ -199,7 +199,7 @@ class _IssueTypeSelector extends StatelessWidget {
         Text(
           'Category',
           style:
-              AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary),
+              AppTextStyles.labelMedium.copyWith(color: context.colorTextSecondary),
         ),
         AppSpacing.h8,
         SingleChildScrollView(
@@ -220,18 +220,18 @@ class _IssueTypeSelector extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.primary
-                          : AppColors.inputBgLight,
+                          : context.colorInputBg,
                       borderRadius: AppRadius.circular,
                       border: isSelected
                           ? null
-                          : Border.all(color: AppColors.borderLight),
+                          : Border.all(color: context.colorBorder),
                     ),
                     child: Text(
                       type.label,
                       style: AppTextStyles.labelMedium.copyWith(
                         color: isSelected
                             ? AppColors.textOnPrimary
-                            : AppColors.textSecondary,
+                            : context.colorTextSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -265,13 +265,13 @@ class _SheetField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       validator: validator,
-      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+      style: AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+            AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
         filled: true,
-        fillColor: AppColors.inputBgLight,
+        fillColor: context.colorInputBg,
         border: OutlineInputBorder(
           borderRadius: AppRadius.large,
           borderSide: BorderSide.none,

@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
@@ -30,7 +30,7 @@ class ProfileInfoSection extends StatelessWidget {
           iconBg: AppColors.accentLight.withValues(alpha: 0.13),
           onTap: () => _showEditDialog(context),
         ),
-        _divider(),
+        _divider(context),
         ProfileInfoTile(
           label: 'Email Address',
           value: user.email,
@@ -39,7 +39,7 @@ class ProfileInfoSection extends StatelessWidget {
           iconBg: AppColors.contentGreenLight,
         ),
         if (user.role == ProfileRole.student) ...[
-          _divider(),
+          _divider(context),
           ProfileInfoTile(
             label: 'University ID',
             value: user.uniCode,
@@ -48,7 +48,7 @@ class ProfileInfoSection extends StatelessWidget {
             iconBg: AppColors.contentAmberLight,
           ),
         ],
-        _divider(),
+        _divider(context),
         ProfileNavTile(
           icon: Icons.lock_outline_rounded,
           iconColor: AppColors.primary,
@@ -76,10 +76,10 @@ class ProfileInfoSection extends StatelessWidget {
     );
   }
 
-  Widget _divider() => Divider(
+  Widget _divider(BuildContext context) => Divider(
         height: 1,
         thickness: 1,
-        color: AppColors.dividerLight,
+        color: context.colorDivider,
         indent: AppSpacing.lg + 38 + AppSpacing.md,
       );
 }

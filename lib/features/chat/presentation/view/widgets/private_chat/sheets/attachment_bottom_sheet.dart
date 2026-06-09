@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/sheet_handle.dart';
+﻿import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/sheet_handle.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -27,8 +27,8 @@ class AttachmentBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
@@ -39,12 +39,12 @@ class AttachmentBottomSheet extends StatelessWidget {
           AppSpacing.h20,
           Text(
             'Share Content',
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
           ),
           AppSpacing.h8,
           Text(
             'Choose what you would like to send',
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySmall.copyWith(color: context.colorTextSecondary),
           ),
           AppSpacing.h28,
           Row(
@@ -67,7 +67,7 @@ class AttachmentBottomSheet extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             style: TextButton.styleFrom(
-              foregroundColor: AppColors.textSecondary,
+              foregroundColor: context.colorTextSecondary,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                   borderRadius: AppRadius.medium),

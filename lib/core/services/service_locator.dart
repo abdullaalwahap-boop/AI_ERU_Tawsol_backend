@@ -1,4 +1,6 @@
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
+import 'package:ai_eru_tawasol/core/settings/cubit/settings_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/services/announcement_ws_service.dart';
 import 'package:ai_eru_tawasol/core/network/dio_client.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
@@ -98,4 +100,7 @@ Future<void> setupServiceLocator() async {
   final quizDs = QuizRemoteDatasource(dioClient.dio);
   getIt.registerSingleton<QuizRemoteDatasource>(quizDs);
   getIt.registerSingleton<QuizRepo>(QuizRepoImpl(quizDs));
+
+  // ─── Settings (Theme + Language) ─────────────────────────────────────────────
+  getIt.registerSingleton<SettingsCubit>(SettingsCubit(LocalStorageService()));
 }

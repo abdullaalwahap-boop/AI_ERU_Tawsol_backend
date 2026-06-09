@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -78,10 +78,10 @@ class _TypeCard extends StatelessWidget {
         curve: Curves.easeInOut,
         height: 76,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : AppColors.inputBgLight,
+          color: isSelected ? Colors.white : context.colorInputBg,
           borderRadius: AppRadius.large,
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.dividerLight,
+            color: isSelected ? AppColors.primary : context.colorDivider,
             width: isSelected ? 1.5 : 1.0,
           ),
           boxShadow: isSelected
@@ -116,13 +116,13 @@ class _TypeCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.dividerLight,
+                            : context.colorDivider,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(
                         type.icon,
                         size: 15,
-                        color: isSelected ? Colors.white : AppColors.textHint,
+                        color: isSelected ? Colors.white : context.colorTextHint,
                       ),
                     ),
                     AppSpacing.h4,
@@ -136,7 +136,7 @@ class _TypeCard extends StatelessWidget {
                         fontSize: 10,
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.textSecondary,
+                            : context.colorTextSecondary,
                       ),
                     ),
                   ],

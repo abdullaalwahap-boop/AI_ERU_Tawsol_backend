@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -21,7 +21,7 @@ class ChatUserSearchItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       splashColor: AppColors.primary.withValues(alpha: 0.05),
-      highlightColor: AppColors.backgroundLight,
+      highlightColor: context.colorBackground,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
@@ -37,7 +37,7 @@ class ChatUserSearchItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.titleSmall.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colorTextPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -62,7 +62,7 @@ class ChatUserSearchItem extends StatelessWidget {
                         Text(
                           user.studentId!,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.colorTextSecondary,
                           ),
                         ),
                       ],

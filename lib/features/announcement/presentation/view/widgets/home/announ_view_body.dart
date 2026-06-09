@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +68,7 @@ class _AnnounViewBodyState extends State<AnnounViewBody> {
     return BlocBuilder<AnnounCubit, AnnounState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: context.colorBackground,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,7 +103,7 @@ class _AnnounViewBodyState extends State<AnnounViewBody> {
 
     return RefreshIndicator(
       color: AppColors.primary,
-      backgroundColor: AppColors.surfaceLight,
+      backgroundColor: context.colorSurface,
       displacement: 20,
       onRefresh: () => cubit.refresh(widget.role),
       child: CustomScrollView(

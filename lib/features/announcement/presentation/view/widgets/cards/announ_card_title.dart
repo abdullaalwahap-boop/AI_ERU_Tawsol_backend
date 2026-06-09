@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 
@@ -14,7 +14,7 @@ class AnnounCardTitle extends StatelessWidget {
       style: AppTextStyles.titleSmall.copyWith(
         fontSize: 14.5,
         fontWeight: FontWeight.w700,
-        color: AppColors.textPrimary,
+        color: context.colorTextPrimary,
         height: 1.35,
       ),
       maxLines: 2,

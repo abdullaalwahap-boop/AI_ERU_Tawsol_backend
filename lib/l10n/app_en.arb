@@ -1,0 +1,381 @@
+{
+  "@@locale": "en",
+
+  "appName": "AI Connect",
+  "@appName": { "description": "Application name" },
+
+  "loading": "Loading...",
+  "@loading": {},
+
+  "retry": "Retry",
+  "@retry": {},
+
+  "cancel": "Cancel",
+  "@cancel": {},
+
+  "save": "Save",
+  "@save": {},
+
+  "confirm": "Confirm",
+  "@confirm": {},
+
+  "delete": "Delete",
+  "@delete": {},
+
+  "ok": "OK",
+  "@ok": {},
+
+  "yes": "Yes",
+  "@yes": {},
+
+  "no": "No",
+  "@no": {},
+
+  "error": "Error",
+  "@error": {},
+
+  "success": "Success",
+  "@success": {},
+
+  "back": "Back",
+  "@back": {},
+
+  "next": "Next",
+  "@next": {},
+
+  "submit": "Submit",
+  "@submit": {},
+
+  "send": "Send",
+  "@send": {},
+
+  "edit": "Edit",
+  "@edit": {},
+
+  "update": "Update",
+  "@update": {},
+
+  "search": "Search",
+  "@search": {},
+
+  "noResults": "No results found",
+  "@noResults": {},
+
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "@somethingWentWrong": {},
+
+  "networkError": "Network error. Check your connection.",
+  "@networkError": {},
+
+  "login": "Login",
+  "@login": {},
+
+  "signIn": "Sign In",
+  "@signIn": {},
+
+  "email": "Email",
+  "@email": {},
+
+  "password": "Password",
+  "@password": {},
+
+  "rememberMe": "Remember me",
+  "@rememberMe": {},
+
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {},
+
+  "enterEmail": "Enter your email",
+  "@enterEmail": {},
+
+  "enterPassword": "Enter your password",
+  "@enterPassword": {},
+
+  "invalidEmail": "Please enter a valid email address.",
+  "@invalidEmail": {},
+
+  "passwordRequired": "Password is required.",
+  "@passwordRequired": {},
+
+  "loginFailed": "Login failed. Please check your credentials.",
+  "@loginFailed": {},
+
+  "resetPassword": "Reset Password",
+  "@resetPassword": {},
+
+  "newPassword": "New Password",
+  "@newPassword": {},
+
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {},
+
+  "otp": "OTP",
+  "@otp": {},
+
+  "enterOtp": "Enter OTP sent to your email",
+  "@enterOtp": {},
+
+  "resendOtp": "Resend OTP",
+  "@resendOtp": {},
+
+  "home": "Home",
+  "@home": {},
+
+  "announcements": "Announcements",
+  "@announcements": {},
+
+  "courses": "Courses",
+  "@courses": {},
+
+  "chat": "Chat",
+  "@chat": {},
+
+  "profile": "Profile",
+  "@profile": {},
+
+  "newAnnouncement": "New Announcement",
+  "@newAnnouncement": {},
+
+  "noAnnouncements": "No announcements yet",
+  "@noAnnouncements": {},
+
+  "markAsRead": "Mark as read",
+  "@markAsRead": {},
+
+  "unread": "Unread",
+  "@unread": {},
+
+  "priority": "Priority",
+  "@priority": {},
+
+  "normal": "Normal",
+  "@normal": {},
+
+  "important": "Important",
+  "@important": {},
+
+  "urgent": "Urgent",
+  "@urgent": {},
+
+  "assignment": "Assignment",
+  "@assignment": {},
+
+  "material": "Material",
+  "@material": {},
+
+  "deadline": "Deadline",
+  "@deadline": {},
+
+  "noCourses": "No courses available",
+  "@noCourses": {},
+
+  "courseDetails": "Course Details",
+  "@courseDetails": {},
+
+  "messages": "Messages",
+  "@messages": {},
+
+  "newMessage": "New Message",
+  "@newMessage": {},
+
+  "noMessages": "No messages yet",
+  "@noMessages": {},
+
+  "typeMessage": "Type a message...",
+  "@typeMessage": {},
+
+  "online": "Online",
+  "@online": {},
+
+  "offline": "Offline",
+  "@offline": {},
+
+  "lastSeen": "Last seen",
+  "@lastSeen": {},
+
+  "accountInfo": "Account Info",
+  "@accountInfo": {},
+
+  "preferences": "Preferences",
+  "@preferences": {},
+
+  "appearance": "Appearance",
+  "@appearance": {},
+
+  "language": "Language",
+  "@language": {},
+
+  "pushNotifications": "Push Notifications",
+  "@pushNotifications": {},
+
+  "enabled": "Enabled",
+  "@enabled": {},
+
+  "disabled": "Disabled",
+  "@disabled": {},
+
+  "lightMode": "Light",
+  "@lightMode": {},
+
+  "darkMode": "Dark",
+  "@darkMode": {},
+
+  "systemDefault": "System",
+  "@systemDefault": {},
+
+  "english": "English",
+  "@english": {},
+
+  "arabic": "العربية",
+  "@arabic": {},
+
+  "settings": "Settings",
+  "@settings": {},
+
+  "helpSupport": "Help & Support",
+  "@helpSupport": {},
+
+  "aboutApp": "About App",
+  "@aboutApp": {},
+
+  "changePassword": "Change Password",
+  "@changePassword": {},
+
+  "logout": "Log Out",
+  "@logout": {},
+
+  "logOutTitle": "Log Out",
+  "@logOutTitle": {},
+
+  "logOutMessage": "Are you sure you want to log out of your ERU account?",
+  "@logOutMessage": {},
+
+  "name": "Name",
+  "@name": {},
+
+  "studentId": "Student ID",
+  "@studentId": {},
+
+  "department": "Department",
+  "@department": {},
+
+  "level": "Level",
+  "@level": {},
+
+  "role": "Role",
+  "@role": {},
+
+  "student": "Student",
+  "@student": {},
+
+  "doctor": "Doctor",
+  "@doctor": {},
+
+  "teachingAssistant": "Teaching Assistant",
+  "@teachingAssistant": {},
+
+  "admin": "Admin",
+  "@admin": {},
+
+  "faq": "Frequently Asked Questions",
+  "@faq": {},
+
+  "contactUs": "Contact Us",
+  "@contactUs": {},
+
+  "version": "Version",
+  "@version": {},
+
+  "madeWith": "Made with ❤️ by ERU Team",
+  "@madeWith": {},
+
+  "currentPassword": "Current Password",
+  "@currentPassword": {},
+
+  "passwordChanged": "Password changed successfully.",
+  "@passwordChanged": {},
+
+  "oldPasswordIncorrect": "Old password is incorrect.",
+  "@oldPasswordIncorrect": {},
+
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "@passwordsDoNotMatch": {},
+
+  "today": "Today",
+  "@today": {},
+
+  "yesterday": "Yesterday",
+  "@yesterday": {},
+
+  "justNow": "Just now",
+  "@justNow": {},
+
+  "emptyChat": "No conversations yet.\nStart chatting!",
+  "@emptyChat": {},
+
+  "typeAMessage": "Type a message...",
+  "@typeAMessage": {},
+
+  "reply": "Reply",
+  "@reply": {},
+
+  "deleteMessage": "Delete",
+  "@deleteMessage": {},
+
+  "editMessage": "Edit",
+  "@editMessage": {},
+
+  "announceToAll": "All Students",
+  "@announceToAll": {},
+
+  "subject": "Subject",
+  "@subject": {},
+
+  "postedBy": "Posted by",
+  "@postedBy": {},
+
+  "audience": "Audience",
+  "@audience": {},
+
+  "attachments": "Attachments",
+  "@attachments": {},
+
+  "noAttachments": "No attachments",
+  "@noAttachments": {},
+
+  "download": "Download",
+  "@download": {},
+
+  "open": "Open",
+  "@open": {},
+
+  "upcomingAssignments": "Upcoming Assignments",
+  "@upcomingAssignments": {},
+
+  "noUpcomingAssignments": "No upcoming assignments",
+  "@noUpcomingAssignments": {},
+
+  "submitAssignment": "Submit Assignment",
+  "@submitAssignment": {},
+
+  "submitted": "Submitted",
+  "@submitted": {},
+
+  "notSubmitted": "Not Submitted",
+  "@notSubmitted": {},
+
+  "quiz": "Quiz",
+  "@quiz": {},
+
+  "generateQuiz": "Generate Quiz",
+  "@generateQuiz": {},
+
+  "myProfile": "My Profile",
+  "@myProfile": {},
+
+  "editProfile": "Edit Profile",
+  "@editProfile": {},
+
+  "profileUpdated": "Profile updated successfully.",
+  "@profileUpdated": {}
+}

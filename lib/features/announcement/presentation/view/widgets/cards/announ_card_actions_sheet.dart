@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -14,8 +14,8 @@ class AnnounCardActionsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         borderRadius: AppRadius.bottomSheet,
       ),
       child: SafeArea(
@@ -29,7 +29,7 @@ class AnnounCardActionsSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColors.dividerLight,
+                  color: context.colorDivider,
                   borderRadius: AppRadius.xsmall,
                 ),
               ),
@@ -37,14 +37,14 @@ class AnnounCardActionsSheet extends StatelessWidget {
               Text(
                 announcementTitle,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
               AppSpacing.h12,
-              const Divider(height: 1, color: AppColors.dividerLight),
+              Divider(height: 1, color: context.colorDivider),
               AppSpacing.h8,
               _ActionTile(
                 icon: Icons.edit_rounded,
@@ -98,7 +98,7 @@ class _ActionTile extends StatelessWidget {
         label,
         style: AppTextStyles.bodySmall.copyWith(
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color: context.colorTextPrimary,
         ),
       ),
       onTap: onTap,

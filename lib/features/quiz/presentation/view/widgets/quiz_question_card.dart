@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -43,7 +43,7 @@ class QuizQuestionCard extends StatelessWidget {
                   Text(
                     'Question $questionNumber of $totalQuestions',
                     style: AppTextStyles.labelMedium
-                        .copyWith(color: AppColors.textSecondary),
+                        .copyWith(color: context.colorTextSecondary),
                   ),
                   Text(
                     '${((questionNumber - 1) / totalQuestions * 100).round()}%',
@@ -57,7 +57,7 @@ class QuizQuestionCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: (questionNumber - 1) / totalQuestions,
-                  backgroundColor: AppColors.borderLight,
+                  backgroundColor: context.colorBorder,
                   color: AppColors.accent,
                   minHeight: 6,
                 ),
@@ -72,14 +72,14 @@ class QuizQuestionCard extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
+            color: context.colorSurface,
             borderRadius: AppRadius.xlarge,
             boxShadow: AppShadows.card,
           ),
           child: Text(
             attempt.question.question,
             style: AppTextStyles.titleMedium
-                .copyWith(color: AppColors.textPrimary, height: 1.5),
+                .copyWith(color: context.colorTextPrimary, height: 1.5),
           ),
         ),
         AppSpacing.h16,
@@ -150,11 +150,11 @@ class _OptionTile extends StatelessWidget {
     final isCorrect = result?.correctAnswer == optionKey;
     final isWrong = isSelected && result?.correct == false;
 
-    Color bg = AppColors.surfaceLight;
-    Color border = AppColors.borderLight;
-    Color labelBg = AppColors.backgroundLight;
-    Color labelText = AppColors.textSecondary;
-    Color textColor = AppColors.textPrimary;
+    Color bg = context.colorSurface;
+    Color border = context.colorBorder;
+    Color labelBg = context.colorBackground;
+    Color labelText = context.colorTextSecondary;
+    Color textColor = context.colorTextPrimary;
     IconData? trailingIcon;
 
     if (isAnswered) {

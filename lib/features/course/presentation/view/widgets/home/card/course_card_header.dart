@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -23,7 +23,7 @@ class CourseCardHeader extends StatelessWidget {
             children: [
               Text(
                 course.name,
-                style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -33,17 +33,17 @@ class CourseCardHeader extends StatelessWidget {
                 AppSpacing.h5,
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.person_outline_rounded,
                       size: 12,
-                      color: AppColors.textHint,
+                      color: context.colorTextHint,
                     ),
                     AppSpacing.w4,
                     Expanded(
                       child: Text(
                         course.doctorName,
                         style: AppTextStyles.labelSmall
-                            .copyWith(color: AppColors.textHint),
+                            .copyWith(color: context.colorTextHint),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -54,8 +54,8 @@ class CourseCardHeader extends StatelessWidget {
             ],
           ),
         ),
-        const Icon(Icons.chevron_right_rounded,
-            color: AppColors.textHint, size: 22),
+        Icon(Icons.chevron_right_rounded,
+            color: context.colorTextHint, size: 22),
       ],
     );
   }

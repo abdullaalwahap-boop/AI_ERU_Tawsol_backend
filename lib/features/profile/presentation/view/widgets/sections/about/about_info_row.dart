@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -43,12 +43,12 @@ class AboutInfoRow extends StatelessWidget {
               Text(
                 label,
                 style: AppTextStyles.caption
-                    .copyWith(color: AppColors.textSecondary),
+                    .copyWith(color: context.colorTextSecondary),
               ),
               Text(
                 value,
                 style: AppTextStyles.titleSmall
-                    .copyWith(color: AppColors.textPrimary),
+                    .copyWith(color: context.colorTextPrimary),
               ),
             ],
           ),

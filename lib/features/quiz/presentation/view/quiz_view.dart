@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -38,9 +38,9 @@ class _QuizScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.surfaceLight,
+        backgroundColor: context.colorSurface,
         elevation: 0,
         leading: BackButton(color: AppColors.primary),
         title: Column(
@@ -52,7 +52,7 @@ class _QuizScaffold extends StatelessWidget {
             Text(
               args.lectureTitle,
               style: AppTextStyles.labelSmall
-                  .copyWith(color: AppColors.textSecondary),
+                  .copyWith(color: context.colorTextSecondary),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -125,14 +125,14 @@ class _GeneratingView extends StatelessWidget {
             Text(
               'Generating your quiz…',
               style: AppTextStyles.titleMedium
-                  .copyWith(color: AppColors.textPrimary),
+                  .copyWith(color: context.colorTextPrimary),
               textAlign: TextAlign.center,
             ),
             AppSpacing.h8,
             Text(
               'The AI is reading the lecture and creating\n10 questions just for you.',
               style: AppTextStyles.bodySmall
-                  .copyWith(color: AppColors.textSecondary),
+                  .copyWith(color: context.colorTextSecondary),
               textAlign: TextAlign.center,
             ),
           ],
@@ -162,13 +162,13 @@ class _ErrorView extends StatelessWidget {
             Text(
               'Could not generate quiz',
               style: AppTextStyles.heading4
-                  .copyWith(color: AppColors.textPrimary),
+                  .copyWith(color: context.colorTextPrimary),
             ),
             AppSpacing.h8,
             Text(
               message,
               style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textSecondary),
+                  .copyWith(color: context.colorTextSecondary),
               textAlign: TextAlign.center,
             ),
             AppSpacing.h24,

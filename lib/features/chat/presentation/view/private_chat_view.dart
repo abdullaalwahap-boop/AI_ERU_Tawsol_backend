@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
+﻿import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -47,7 +47,7 @@ class PrivateChatView extends StatelessWidget {
           child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.light,
             child: Scaffold(
-              backgroundColor: AppColors.backgroundLight,
+              backgroundColor: context.colorBackground,
               appBar: ChatAppBar(user: conversation.otherUser),
               body: PrivateChatBody(conversation: conversation),
             ),

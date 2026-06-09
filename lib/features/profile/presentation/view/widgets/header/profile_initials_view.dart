@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class ProfileInitialsView extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      color: AppColors.backgroundLight,
+      color: context.colorBackground,
       child: Center(
         child: Text(
           _initials(name),

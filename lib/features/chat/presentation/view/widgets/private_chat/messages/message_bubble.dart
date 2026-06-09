@@ -117,7 +117,7 @@ class MessageBubble extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isMe
                               ? AppColors.sentBubble
-                              : AppColors.receivedBubble,
+                              : context.colorReceivedBubble,
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(20),
                             topRight: const Radius.circular(20),

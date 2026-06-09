@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -112,15 +112,15 @@ class _ChatViewBodyState extends State<ChatViewBody> {
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
           if (state is ChatInitial || state is ChatLoading) {
-            return const Scaffold(
-              backgroundColor: AppColors.backgroundLight,
-              body: Center(child: CircularProgressIndicator()),
+            return Scaffold(
+              backgroundColor: context.colorBackground,
+              body: const Center(child: CircularProgressIndicator()),
             );
           }
 
           if (state is ChatError) {
             return Scaffold(
-              backgroundColor: AppColors.backgroundLight,
+              backgroundColor: context.colorBackground,
               body: Center(child: Text(state.message)),
             );
           }
@@ -128,7 +128,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
           final loaded = state as ChatLoaded;
 
           return Scaffold(
-            backgroundColor: AppColors.backgroundLight,
+            backgroundColor: context.colorBackground,
             floatingActionButton: ChatNewFab(onTap: _openNewChat),
             body: Column(
               children: [
@@ -197,11 +197,11 @@ class _ChatBody extends StatelessWidget {
       child: ListView.separated(
         padding: const EdgeInsets.only(bottom: 100),
         itemCount: conversations.length,
-        separatorBuilder: (_, __) => const Divider(
+        separatorBuilder: (_, __) => Divider(
           height: 1,
           indent: 76,
           endIndent: 16,
-          color: AppColors.dividerLight,
+          color: context.colorDivider,
         ),
         itemBuilder: (_, index) {
           final convo = conversations[index];
@@ -236,7 +236,7 @@ class _ConversationActionsSheet extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.large,
         boxShadow: [
           BoxShadow(
@@ -254,7 +254,7 @@ class _ConversationActionsSheet extends StatelessWidget {
             width: 36,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -279,7 +279,7 @@ class _ConversationActionsSheet extends StatelessWidget {
                   child: Text(
                     conversation.otherUser.name,
                     style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.textPrimary,
+                      color: context.colorTextPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -288,7 +288,7 @@ class _ConversationActionsSheet extends StatelessWidget {
               ],
             ),
           ),
-          Divider(height: 1, color: AppColors.dividerLight),
+          Divider(height: 1, color: context.colorDivider),
           InkWell(
             onTap: () {
               Navigator.pop(context);

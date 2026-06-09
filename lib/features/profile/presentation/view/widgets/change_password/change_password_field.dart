@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -37,7 +37,7 @@ class _ChangePasswordFieldState extends State<ChangePasswordField> {
         Text(
           widget.label,
           style: AppTextStyles.labelMedium.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -49,15 +49,15 @@ class _ChangePasswordFieldState extends State<ChangePasswordField> {
           onChanged: widget.onChanged,
           validator: widget.validator,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimary,
+            color: context.colorTextPrimary,
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textHint,
+              color: context.colorTextHint,
             ),
             filled: true,
-            fillColor: AppColors.inputBgLight,
+            fillColor: context.colorInputBg,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
@@ -69,7 +69,7 @@ class _ChangePasswordFieldState extends State<ChangePasswordField> {
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.large,
               borderSide: BorderSide(
-                color: AppColors.borderLight,
+                color: context.colorBorder,
                 width: 1.5,
               ),
             ),
@@ -99,7 +99,7 @@ class _ChangePasswordFieldState extends State<ChangePasswordField> {
                 _obscure
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
-                color: AppColors.textHint,
+                color: context.colorTextHint,
                 size: 20,
               ),
               onPressed: () => setState(() => _obscure = !_obscure),

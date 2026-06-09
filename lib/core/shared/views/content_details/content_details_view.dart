@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
@@ -40,7 +40,7 @@ class _ContentDetailsViewState extends State<ContentDetailsView> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: AppColors.backgroundLight,
+        backgroundColor: context.colorBackground,
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [

@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -50,7 +50,7 @@ class AboutMissionCard extends StatelessWidget {
                   'making academic communication seamless, transparent, and '
                   'empowering every member of the university community.',
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.colorTextSecondary,
                     height: 1.65,
                     fontStyle: FontStyle.italic,
                   ),

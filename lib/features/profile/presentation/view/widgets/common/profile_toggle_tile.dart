@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -50,14 +50,14 @@ class ProfileToggleTile extends StatelessWidget {
                 Text(
                   title,
                   style: AppTextStyles.titleSmall.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colorTextPrimary,
                   ),
                 ),
                 if (subtitle != null)
                   Text(
                     subtitle!,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textSecondary,
+                      color: context.colorTextSecondary,
                     ),
                   ),
               ],

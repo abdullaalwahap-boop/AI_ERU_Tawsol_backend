@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -18,7 +18,7 @@ class EmptyChatsState extends StatelessWidget {
               width: 110,
               height: 110,
               decoration: BoxDecoration(
-                color: AppColors.backgroundLight,
+                color: context.colorBackground,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: AppColors.primary.withValues(alpha: 0.15),
@@ -35,7 +35,7 @@ class EmptyChatsState extends StatelessWidget {
             Text(
               'No Conversations Yet',
               style: AppTextStyles.heading3
-                  .copyWith(color: AppColors.textPrimary),
+                  .copyWith(color: context.colorTextPrimary),
             ),
             AppSpacing.h10,
             Text(
@@ -43,23 +43,23 @@ class EmptyChatsState extends StatelessWidget {
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
                 height: 1.6,
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
               ),
             ),
             AppSpacing.h16,
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.edit_rounded,
                   size: 14,
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   'Tap the button below to start',
                   style: AppTextStyles.bodySmall
-                      .copyWith(color: AppColors.textHint),
+                      .copyWith(color: context.colorTextHint),
                 ),
               ],
             ),

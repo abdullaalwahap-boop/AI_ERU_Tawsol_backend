@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -29,29 +29,29 @@ class AddAnnounTextField extends StatelessWidget {
           label,
           style: AppTextStyles.bodySmall.copyWith(
             fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
+            color: context.colorTextPrimary,
             letterSpacing: 0.1,
           ),
         ),
         AppSpacing.h8,
         Container(
           decoration: BoxDecoration(
-            color: AppColors.inputBgLight,
+            color: context.colorInputBg,
             borderRadius: AppRadius.large,
-            border: Border.all(color: AppColors.dividerLight, width: 1.2),
+            border: Border.all(color: context.colorDivider, width: 1.2),
           ),
           child: TextField(
             controller: controller,
             maxLines: maxLines,
             onChanged: onChanged,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textPrimary,
+              color: context.colorTextPrimary,
               height: 1.5,
             ),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textHint,
+                color: context.colorTextHint,
               ),
               border: InputBorder.none,
               contentPadding:

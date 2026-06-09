@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -148,7 +148,7 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget>
                   style: AppTextStyles.overline.copyWith(
                     color: isMe
                         ? Colors.white.withValues(alpha: 0.8)
-                        : AppColors.textSecondary,
+                        : context.colorTextSecondary,
                   ),
                 ),
               ],

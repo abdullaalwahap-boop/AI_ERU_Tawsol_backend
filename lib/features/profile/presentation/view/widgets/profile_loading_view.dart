@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/profile_shimmer.dart';
@@ -10,7 +10,7 @@ class ProfileLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

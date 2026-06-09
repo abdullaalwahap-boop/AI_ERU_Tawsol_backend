@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -17,22 +17,22 @@ class AddAnnounAddMoreButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.inputBgLight,
+          color: context.colorInputBg,
           borderRadius: AppRadius.medium,
-          border: Border.all(color: AppColors.dividerLight, width: 1.2),
+          border: Border.all(color: context.colorDivider, width: 1.2),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add_rounded,
-                size: 16, color: AppColors.textSecondary),
+            Icon(Icons.add_rounded,
+                size: 16, color: context.colorTextSecondary),
             AppSpacing.w6,
             Text(
               'Add another file',
               style: AppTextStyles.labelMedium.copyWith(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
               ),
             ),
           ],

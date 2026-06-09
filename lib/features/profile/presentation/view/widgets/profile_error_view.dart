@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class ProfileErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       body: Center(
         child: Padding(
           padding: AppSpacing.pagePadding,
@@ -40,13 +40,13 @@ class ProfileErrorView extends StatelessWidget {
               Text(
                 'Failed to load profile',
                 style: AppTextStyles.heading4
-                    .copyWith(color: AppColors.textPrimary),
+                    .copyWith(color: context.colorTextPrimary),
               ),
               AppSpacing.h8,
               Text(
                 message,
                 style: AppTextStyles.bodySmall
-                    .copyWith(color: AppColors.textSecondary),
+                    .copyWith(color: context.colorTextSecondary),
                 textAlign: TextAlign.center,
               ),
               AppSpacing.h24,

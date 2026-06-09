@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
@@ -55,10 +55,10 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
     final items = state.filteredContent;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: context.colorBackground,
       body: RefreshIndicator(
         color: AppColors.primary,
-        backgroundColor: AppColors.surfaceLight,
+        backgroundColor: context.colorSurface,
         displacement: 20,
         onRefresh: () => cubit.refresh(role, course),
         child: CustomScrollView(

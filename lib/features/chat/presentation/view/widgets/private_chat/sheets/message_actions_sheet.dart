@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -57,7 +57,7 @@ class MessageActionsSheet extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.large,
         boxShadow: [
           BoxShadow(
@@ -75,7 +75,7 @@ class MessageActionsSheet extends StatelessWidget {
             width: 36,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -94,7 +94,7 @@ class MessageActionsSheet extends StatelessWidget {
             _ActionTile(
               icon: Icons.copy_rounded,
               label: 'Copy message',
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
               onTap: () => _handleCopy(context),
             ),
 
@@ -104,7 +104,7 @@ class MessageActionsSheet extends StatelessWidget {
               height: 1,
               indent: 16,
               endIndent: 16,
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
             ),
 
           if (message.canEdit)
@@ -120,7 +120,7 @@ class MessageActionsSheet extends StatelessWidget {
               height: 1,
               indent: 16,
               endIndent: 16,
-              color: AppColors.dividerLight,
+              color: context.colorDivider,
             ),
 
           if (message.canDelete)
@@ -167,11 +167,11 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surfaceLight,
+      backgroundColor: context.colorSurface,
       shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
       title: Text(
         'Edit message',
-        style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+        style: AppTextStyles.titleMedium.copyWith(color: context.colorTextPrimary),
       ),
       content: TextField(
         controller: _controller,
@@ -181,9 +181,9 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
         decoration: InputDecoration(
           hintText: 'Edit your message…',
           hintStyle:
-              AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+              AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
           filled: true,
-          fillColor: AppColors.inputBgLight,
+          fillColor: context.colorInputBg,
           border: OutlineInputBorder(
             borderRadius: AppRadius.small,
             borderSide: BorderSide.none,
@@ -194,7 +194,7 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
           ),
         ),
         style:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+            AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
       ),
       actions: [
         TextButton(
@@ -202,7 +202,7 @@ class _EditMessageDialogState extends State<_EditMessageDialog> {
           child: Text(
             'Cancel',
             style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
             ),
           ),
         ),

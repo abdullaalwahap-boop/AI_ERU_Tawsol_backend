@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +26,7 @@ class AddAnnounScaffold extends StatelessWidget {
         listenWhen: (prev, curr) => curr.isPosted && !prev.isPosted,
         listener: _onPosted,
         child: Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: context.colorBackground,
           appBar: AddAnnounAppBar(role: role),
           body: AddAnnounBody(role: role),
         ),

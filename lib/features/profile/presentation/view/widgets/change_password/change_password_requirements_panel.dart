@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -26,7 +26,7 @@ class ChangePasswordRequirementsPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.inputBgLight,
+        color: context.colorInputBg,
         borderRadius: AppRadius.large,
       ),
       child: Column(
@@ -35,7 +35,7 @@ class ChangePasswordRequirementsPanel extends StatelessWidget {
           Text(
             'Password requirements',
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.5,
             ),

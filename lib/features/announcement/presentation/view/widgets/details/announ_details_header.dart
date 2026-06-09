@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -19,7 +19,7 @@ class AnnounDetailsHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -53,7 +53,7 @@ class AnnounDetailsHeader extends StatelessWidget {
                       announcement.title,
                       style: AppTextStyles.titleLarge.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        color: context.colorTextPrimary,
                         height: 1.3,
                       ),
                     ),
@@ -63,7 +63,7 @@ class AnnounDetailsHeader extends StatelessWidget {
             ],
           ),
           AppSpacing.h16,
-          const Divider(color: AppColors.dividerLight, height: 1),
+          Divider(color: context.colorDivider, height: 1),
           AppSpacing.h14,
           MetaRow(
             icon: announcement.isFromAdmin
@@ -80,28 +80,28 @@ class AnnounDetailsHeader extends StatelessWidget {
             icon: Icons.person_rounded,
             label: 'Posted by',
             value: announcement.doctorName,
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.calendar_today_rounded,
             label: 'Date',
             value: announcement.formattedDate,
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.access_time_rounded,
             label: 'Time',
             value: announcement.formattedTime,
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
           ),
           AppSpacing.h10,
           MetaRow(
             icon: Icons.group_rounded,
             label: 'Audience',
             value: announcement.target.label,
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
           ),
         ],
       ),

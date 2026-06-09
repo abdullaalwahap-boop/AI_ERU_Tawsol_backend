@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -29,10 +29,10 @@ class AddAnnounPriorityCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? priority.color.withValues(alpha: 0.08)
-              : AppColors.inputBgLight,
+              : context.colorInputBg,
           borderRadius: AppRadius.medium,
           border: Border.all(
-            color: isSelected ? priority.color : AppColors.dividerLight,
+            color: isSelected ? priority.color : context.colorDivider,
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
@@ -44,13 +44,13 @@ class AddAnnounPriorityCard extends StatelessWidget {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: isSelected ? priority.color : AppColors.dividerLight,
+                color: isSelected ? priority.color : context.colorDivider,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 priority.icon,
                 size: 18,
-                color: isSelected ? Colors.white : AppColors.textHint,
+                color: isSelected ? Colors.white : context.colorTextHint,
               ),
             ),
             AppSpacing.h4,
@@ -58,7 +58,7 @@ class AddAnnounPriorityCard extends StatelessWidget {
               priority.label,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: isSelected ? priority.color : AppColors.textSecondary,
+                color: isSelected ? priority.color : context.colorTextSecondary,
               ),
               textAlign: TextAlign.center,
             ),

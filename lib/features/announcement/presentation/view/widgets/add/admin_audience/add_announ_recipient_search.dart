@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -60,13 +60,13 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
           decoration: InputDecoration(
             hintText: 'Search users by name or ID…',
             hintStyle: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textHint),
-            prefixIcon: const Icon(Icons.search_rounded,
-                size: 20, color: AppColors.textHint),
+                .copyWith(color: context.colorTextHint),
+            prefixIcon: Icon(Icons.search_rounded,
+                size: 20, color: context.colorTextHint),
             suffixIcon: _controller.text.isNotEmpty
                 ? IconButton(
-                    icon: const Icon(Icons.close_rounded,
-                        size: 18, color: AppColors.textHint),
+                    icon: Icon(Icons.close_rounded,
+                        size: 18, color: context.colorTextHint),
                     onPressed: () {
                       _controller.clear();
                       widget.onSearch('');
@@ -74,18 +74,18 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
                   )
                 : null,
             filled: true,
-            fillColor: AppColors.inputBgLight,
+            fillColor: context.colorInputBg,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             border: OutlineInputBorder(
               borderRadius: AppRadius.medium,
               borderSide:
-                  const BorderSide(color: AppColors.dividerLight),
+                  BorderSide(color: context.colorDivider),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.medium,
               borderSide:
-                  const BorderSide(color: AppColors.dividerLight),
+                  BorderSide(color: context.colorDivider),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.medium,
@@ -127,7 +127,7 @@ class _AddAnnounRecipientSearchState extends State<AddAnnounRecipientSearch> {
             child: Text(
               'No users found',
               style: AppTextStyles.bodySmall
-                  .copyWith(color: AppColors.textHint),
+                  .copyWith(color: context.colorTextHint),
             ),
           )
         else
@@ -213,12 +213,12 @@ class _RecipientTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.06)
-              : AppColors.inputBgLight,
+              : context.colorInputBg,
           borderRadius: AppRadius.medium,
           border: Border.all(
             color: isSelected
                 ? AppColors.primary.withValues(alpha: 0.4)
-                : AppColors.dividerLight,
+                : context.colorDivider,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -251,7 +251,7 @@ class _RecipientTile extends StatelessWidget {
                     user.name,
                     style: AppTextStyles.bodySmall.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: context.colorTextPrimary,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -261,7 +261,7 @@ class _RecipientTile extends StatelessWidget {
                             '${user.department != null ? ' · ${user.department}' : ''}'
                         : roleLabel,
                     style: AppTextStyles.overline.copyWith(
-                      color: AppColors.textHint,
+                      color: context.colorTextHint,
                     ),
                   ),
                 ],
@@ -277,7 +277,7 @@ class _RecipientTile extends StatelessWidget {
                 border: Border.all(
                   color: isSelected
                       ? AppColors.primary
-                      : AppColors.dividerLight,
+                      : context.colorDivider,
                   width: 1.5,
                 ),
               ),

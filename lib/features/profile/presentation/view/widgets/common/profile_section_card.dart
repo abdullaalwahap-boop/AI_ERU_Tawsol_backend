@@ -1,7 +1,6 @@
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_shadows.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/common/profile_section_header.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +24,7 @@ class ProfileSectionCard extends StatelessWidget {
         vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: AppRadius.xlarge,
         boxShadow: AppShadows.card,
       ),

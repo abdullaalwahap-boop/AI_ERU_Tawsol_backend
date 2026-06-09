@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -40,12 +40,12 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
             decoration: BoxDecoration(
               color: deadline != null
                   ? AppColors.primary.withValues(alpha: 0.05)
-                  : AppColors.inputBgLight,
+                  : context.colorInputBg,
               borderRadius: AppRadius.medium,
               border: Border.all(
                 color: deadline != null
                     ? AppColors.primary.withValues(alpha: 0.4)
-                    : AppColors.dividerLight,
+                    : context.colorDivider,
                 width: 1.2,
               ),
             ),
@@ -70,7 +70,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                       ? Text(
                           'Select deadline date & time…',
                           style: AppTextStyles.bodySmall
-                              .copyWith(color: AppColors.textHint),
+                              .copyWith(color: context.colorTextHint),
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                               _formatDate(deadline!),
                               style: AppTextStyles.bodySmall.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
+                                color: context.colorTextPrimary,
                               ),
                             ),
                             AppSpacing.h2,
@@ -99,7 +99,7 @@ class AddAnnounDeadlinePicker extends StatelessWidget {
                     child: Icon(
                       Icons.edit_rounded,
                       size: 16,
-                      color: AppColors.textHint,
+                      color: context.colorTextHint,
                     ),
                   ),
               ],

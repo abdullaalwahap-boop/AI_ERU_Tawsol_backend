@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -168,7 +168,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   Widget _buildInputRow() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colorSurface,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
@@ -185,7 +185,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
           children: [
             ChatIconButton(
               icon: Icons.attach_file_rounded,
-              color: AppColors.textSecondary,
+              color: context.colorTextSecondary,
               onTap: () => AttachmentBottomSheet.show(
                 context,
                 onSelected: widget.onAttachment,

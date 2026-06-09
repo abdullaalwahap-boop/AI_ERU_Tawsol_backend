@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -98,9 +98,9 @@ class _CourseContent extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
         decoration: BoxDecoration(
-          color: AppColors.inputBgLight,
+          color: context.colorInputBg,
           borderRadius: AppRadius.medium,
-          border: Border.all(color: AppColors.dividerLight),
+          border: Border.all(color: context.colorDivider),
         ),
         child: Row(
           children: [
@@ -116,7 +116,7 @@ class _CourseContent extends StatelessWidget {
             Text(
               'Loading your courses…',
               style:
-                  AppTextStyles.labelMedium.copyWith(color: AppColors.textHint),
+                  AppTextStyles.labelMedium.copyWith(color: context.colorTextHint),
             ),
           ],
         ),
@@ -129,7 +129,7 @@ class _CourseContent extends StatelessWidget {
         Text(
           'Select Subject',
           style: AppTextStyles.labelMedium.copyWith(
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -177,7 +177,7 @@ class _SpecificStudentsContent extends StatelessWidget {
               Text(
                 'Filter by course',
                 style: AppTextStyles.labelMedium.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.colorTextSecondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -186,13 +186,13 @@ class _SpecificStudentsContent extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppColors.dividerLight,
+                  color: context.colorDivider,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   'optional',
                   style: AppTextStyles.overline.copyWith(
-                    color: AppColors.textHint,
+                    color: context.colorTextHint,
                     fontSize: 9,
                   ),
                 ),
@@ -249,12 +249,12 @@ class _CourseChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.1)
-              : AppColors.inputBgLight,
+              : context.colorInputBg,
           borderRadius: AppRadius.large,
           border: Border.all(
             color: isSelected
                 ? AppColors.primary.withValues(alpha: 0.6)
-                : AppColors.dividerLight,
+                : context.colorDivider,
             width: isSelected ? 1.5 : 1.2,
           ),
         ),
@@ -267,7 +267,7 @@ class _CourseChip extends StatelessWidget {
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w800,
                 color:
-                    isSelected ? AppColors.primary : AppColors.textSecondary,
+                    isSelected ? AppColors.primary : context.colorTextSecondary,
                 fontSize: 11,
                 letterSpacing: 0.5,
               ),
@@ -277,7 +277,7 @@ class _CourseChip extends StatelessWidget {
               course.name,
               style: AppTextStyles.bodySmall.copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                color: isSelected ? AppColors.primary : context.colorTextPrimary,
                 fontSize: 13,
               ),
             ),
@@ -310,10 +310,10 @@ class _DrTypeCard extends StatelessWidget {
         curve: Curves.easeInOut,
         height: 76,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : AppColors.inputBgLight,
+          color: isSelected ? Colors.white : context.colorInputBg,
           borderRadius: AppRadius.large,
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.dividerLight,
+            color: isSelected ? AppColors.primary : context.colorDivider,
             width: isSelected ? 1.5 : 1.0,
           ),
           boxShadow: isSelected
@@ -347,13 +347,13 @@ class _DrTypeCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.dividerLight,
+                            : context.colorDivider,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(
                         type.icon,
                         size: 15,
-                        color: isSelected ? Colors.white : AppColors.textHint,
+                        color: isSelected ? Colors.white : context.colorTextHint,
                       ),
                     ),
                     AppSpacing.h4,
@@ -367,7 +367,7 @@ class _DrTypeCard extends StatelessWidget {
                         fontSize: 10,
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.textSecondary,
+                            : context.colorTextSecondary,
                       ),
                     ),
                   ],

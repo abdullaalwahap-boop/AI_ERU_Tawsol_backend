@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/extensions/context_ext.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/shared/chat_user_avatar.dart';
 
@@ -69,7 +69,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.receivedBubble,
+              color: context.colorReceivedBubble,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -96,8 +96,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
                       width: 7,
                       height: 7,
                       margin: const EdgeInsets.symmetric(horizontal: 2.5),
-                      decoration: const BoxDecoration(
-                        color: AppColors.textSecondary,
+                      decoration: BoxDecoration(
+                        color: context.colorTextSecondary,
                         shape: BoxShape.circle,
                       ),
                     ),

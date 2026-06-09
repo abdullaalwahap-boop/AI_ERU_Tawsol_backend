@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -50,13 +50,13 @@ class ProfileNavTile extends StatelessWidget {
                     Text(
                       title,
                       style: AppTextStyles.titleSmall
-                          .copyWith(color: AppColors.textPrimary),
+                          .copyWith(color: context.colorTextPrimary),
                     ),
                     if (subtitle != null)
                       Text(
                         subtitle!,
                         style: AppTextStyles.caption
-                            .copyWith(color: AppColors.textSecondary),
+                            .copyWith(color: context.colorTextSecondary),
                       ),
                   ],
                 ),
@@ -66,7 +66,7 @@ class ProfileNavTile extends StatelessWidget {
               else if (showArrow)
                 Icon(
                   Icons.chevron_right_rounded,
-                  color: AppColors.textHint,
+                  color: context.colorTextHint,
                   size: 20,
                 ),
             ],

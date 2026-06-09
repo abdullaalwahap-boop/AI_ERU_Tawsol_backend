@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/states/announ_skeleton_bone.dart';
@@ -50,7 +50,7 @@ class _AnnounLoadingSkeletonCardState extends State<AnnounLoadingSkeletonCard>
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
+            color: context.colorSurface,
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
@@ -66,7 +66,7 @@ class _AnnounLoadingSkeletonCardState extends State<AnnounLoadingSkeletonCard>
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(width: 4, color: AppColors.dividerLight),
+                  Container(width: 4, color: context.colorDivider),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(14),

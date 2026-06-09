@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
@@ -49,7 +49,7 @@ class AnnounCardContent extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColors.surfaceLight,
+          color: context.colorSurface,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             ...AppShadows.card,
@@ -243,7 +243,7 @@ class _ActionsButton extends StatelessWidget {
         child: Icon(
           Icons.more_horiz_rounded,
           size: 20,
-          color: AppColors.textHint,
+          color: context.colorTextHint,
         ),
       ),
     );

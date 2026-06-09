@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_nav_item.dart';
 
@@ -15,7 +16,6 @@ class HomeBottomNavigationBar extends StatelessWidget {
 
   static const _primaryColor = Color(0xff003096);
   static const _inactiveColor = Color(0xffA0AABB);
-  static const _bgColor = Colors.white;
 
   static const _items = [
     HomeNavItem(icon: Icons.campaign_rounded, label: 'Announcements'),
@@ -27,8 +27,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: _bgColor,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         boxShadow: [
           BoxShadow(
             color: Color(0x14000000),

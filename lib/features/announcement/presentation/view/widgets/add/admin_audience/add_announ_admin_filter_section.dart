@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/audience/add_announ_option_chip.dart';
@@ -72,13 +72,13 @@ class _FilterGroup extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(icon, size: 13, color: AppColors.textSecondary),
+            Icon(icon, size: 13, color: context.colorTextSecondary),
             AppSpacing.w4,
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
                 letterSpacing: 0.4,
               ),
             ),
@@ -137,13 +137,13 @@ class _LevelGroup extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.layers_rounded, size: 13, color: AppColors.textSecondary),
+            Icon(Icons.layers_rounded, size: 13, color: context.colorTextSecondary),
             AppSpacing.w4,
             Text(
               'Level',
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
                 letterSpacing: 0.4,
               ),
             ),

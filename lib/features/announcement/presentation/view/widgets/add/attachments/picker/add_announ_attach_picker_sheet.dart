@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,8 +18,8 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colorSurface,
         borderRadius: AppRadius.xxxlarge,
       ),
       child: SafeArea(
@@ -33,7 +33,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColors.dividerLight,
+                  color: context.colorDivider,
                   borderRadius: AppRadius.xsmall,
                 ),
               ),
@@ -41,7 +41,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
               Text(
                 'Attach a file',
                 style: AppTextStyles.titleLarge
-                    .copyWith(color: AppColors.textPrimary),
+                    .copyWith(color: context.colorTextPrimary),
               ),
               AppSpacing.h20,
               Row(
@@ -193,7 +193,7 @@ class _PickTile extends StatelessWidget {
               label,
               style: AppTextStyles.labelSmall.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AppColors.textSecondary,
+                color: context.colorTextSecondary,
               ),
             ),
           ],

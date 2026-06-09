@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
@@ -78,9 +78,9 @@ class _NewChatSheetState extends State<NewChatSheet> {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height * 0.88,
             ),
-            decoration: const BoxDecoration(
-              color: AppColors.surfaceLight,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            decoration: BoxDecoration(
+              color: context.colorSurface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -88,7 +88,7 @@ class _NewChatSheetState extends State<NewChatSheet> {
                 const _SheetHandle(),
                 _SheetHeader(onClose: () => Navigator.pop(context)),
                 _SheetSearchField(controller: _controller),
-                const Divider(height: 1, color: AppColors.dividerLight),
+                Divider(height: 1, color: context.colorDivider),
                 Flexible(
                   child: _buildBody(query, isLoading, users),
                 ),
@@ -122,7 +122,7 @@ class _SheetHandle extends StatelessWidget {
         width: 36,
         height: 4,
         decoration: BoxDecoration(
-          color: AppColors.dividerLight,
+          color: context.colorDivider,
           borderRadius: BorderRadius.circular(2),
         ),
       ),
@@ -144,13 +144,13 @@ class _SheetHeader extends StatelessWidget {
           Text(
             'New Chat',
             style: AppTextStyles.heading3
-                .copyWith(color: AppColors.textPrimary),
+                .copyWith(color: context.colorTextPrimary),
           ),
           const Spacer(),
           IconButton(
             onPressed: onClose,
             icon: const Icon(Icons.close_rounded, size: 22),
-            color: AppColors.textSecondary,
+            color: context.colorTextSecondary,
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
           ),
@@ -174,18 +174,18 @@ class _SheetSearchField extends StatelessWidget {
         autofocus: true,
         textInputAction: TextInputAction.search,
         style: AppTextStyles.bodyMedium
-            .copyWith(color: AppColors.textPrimary),
+            .copyWith(color: context.colorTextPrimary),
         decoration: InputDecoration(
           hintText: 'Search by name or student ID…',
           hintStyle: AppTextStyles.bodyMedium
-              .copyWith(color: AppColors.textHint),
-          prefixIcon: const Icon(
+              .copyWith(color: context.colorTextHint),
+          prefixIcon: Icon(
             Icons.search_rounded,
-            color: AppColors.textHint,
+            color: context.colorTextHint,
             size: 20,
           ),
           filled: true,
-          fillColor: AppColors.inputBgLight,
+          fillColor: context.colorInputBg,
           contentPadding: const EdgeInsets.symmetric(vertical: 10),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -233,14 +233,14 @@ class _SheetPrompt extends StatelessWidget {
           Text(
             'Find Someone to Chat With',
             style: AppTextStyles.titleMedium
-                .copyWith(color: AppColors.textPrimary),
+                .copyWith(color: context.colorTextPrimary),
             textAlign: TextAlign.center,
           ),
           AppSpacing.h8,
           Text(
             'Search by name or student ID',
             style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textHint),
+                .copyWith(color: context.colorTextHint),
             textAlign: TextAlign.center,
           ),
         ],
@@ -282,23 +282,23 @@ class _SheetNoResults extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
+          Icon(
             Icons.search_off_rounded,
             size: 48,
-            color: AppColors.textHint,
+            color: context.colorTextHint,
           ),
           AppSpacing.h16,
           Text(
             'No users found for "$query"',
             style: AppTextStyles.titleSmall
-                .copyWith(color: AppColors.textSecondary),
+                .copyWith(color: context.colorTextSecondary),
             textAlign: TextAlign.center,
           ),
           AppSpacing.h8,
           Text(
             'Try a different name or student ID',
             style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textHint),
+                .copyWith(color: context.colorTextHint),
             textAlign: TextAlign.center,
           ),
         ],
@@ -319,11 +319,11 @@ class _SheetUserList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       shrinkWrap: true,
       itemCount: users.length,
-      separatorBuilder: (_, __) => const Divider(
+      separatorBuilder: (_, __) => Divider(
         height: 1,
         indent: 76,
         endIndent: 16,
-        color: AppColors.dividerLight,
+        color: context.colorDivider,
       ),
       itemBuilder: (_, i) => ChatUserSearchItem(
         user: users[i],

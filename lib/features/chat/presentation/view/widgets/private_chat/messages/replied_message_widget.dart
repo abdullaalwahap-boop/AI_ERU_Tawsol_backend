@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
@@ -41,7 +41,7 @@ class RepliedMessageWidget extends StatelessWidget {
         isFromMe ? Colors.white.withValues(alpha: 0.9) : AppColors.primary;
     final previewColor = isFromMe
         ? Colors.white.withValues(alpha: 0.72)
-        : AppColors.textSecondary;
+        : context.colorTextSecondary;
 
     return GestureDetector(
       onTap: onTap,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 
 class ScrollToBottomButton extends StatelessWidget {
@@ -24,7 +24,7 @@ class ScrollToBottomButton extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: AppColors.surfaceLight,
+              color: context.colorSurface,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(

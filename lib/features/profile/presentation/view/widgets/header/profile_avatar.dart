@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_initials_view.dart';
 import 'package:flutter/material.dart';
 
@@ -37,9 +37,9 @@ class ProfileAvatar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(3.5),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.surfaceLight,
+            color: context.colorSurface,
           ),
           child: ClipOval(
             child: avatarUrl != null

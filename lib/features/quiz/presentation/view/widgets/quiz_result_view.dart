@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -38,7 +38,7 @@ class QuizResultView extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
+            color: context.colorSurface,
             borderRadius: AppRadius.xlarge,
             boxShadow: AppShadows.card,
           ),
@@ -46,14 +46,14 @@ class QuizResultView extends StatelessWidget {
             children: [
               Text('Quiz Complete!',
                   style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.textPrimary)),
+                      .copyWith(color: context.colorTextPrimary)),
               AppSpacing.h20,
               _ScoreRing(percent: _pct, color: scoreColor),
               AppSpacing.h16,
               Text(
                 '$_correct / $_total Correct',
                 style: AppTextStyles.titleLarge
-                    .copyWith(color: AppColors.textPrimary),
+                    .copyWith(color: context.colorTextPrimary),
               ),
               AppSpacing.h6,
               Text(
@@ -63,7 +63,7 @@ class QuizResultView extends StatelessWidget {
                         ? 'Good effort — keep practicing!'
                         : 'Keep studying and try again!',
                 style: AppTextStyles.bodyMedium
-                    .copyWith(color: AppColors.textSecondary),
+                    .copyWith(color: context.colorTextSecondary),
               ),
               AppSpacing.h24,
               Row(
@@ -106,7 +106,7 @@ class QuizResultView extends StatelessWidget {
         AppSpacing.h24,
         Text('Review Your Answers',
             style:
-                AppTextStyles.titleLarge.copyWith(color: AppColors.textPrimary)),
+                AppTextStyles.titleLarge.copyWith(color: context.colorTextPrimary)),
         AppSpacing.h12,
 
         // ── Per-question review ───────────────────────────────────────────────
@@ -137,7 +137,7 @@ class _ScoreRing extends StatelessWidget {
             child: CircularProgressIndicator(
               value: percent,
               strokeWidth: 10,
-              backgroundColor: AppColors.borderLight,
+              backgroundColor: context.colorBorder,
               valueColor: AlwaysStoppedAnimation<Color>(color),
               strokeCap: StrokeCap.round,
             ),
@@ -167,7 +167,7 @@ class _ReviewTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.large,
         border: Border.all(
           color: correct ? AppColors.success : AppColors.error,
@@ -201,7 +201,7 @@ class _ReviewTile extends StatelessWidget {
           Text(
             attempt.question.question,
             style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textPrimary, height: 1.4),
+                .copyWith(color: context.colorTextPrimary, height: 1.4),
           ),
           if (result != null) ...[
             AppSpacing.h6,
@@ -216,7 +216,7 @@ class _ReviewTile extends StatelessWidget {
             Text(
               result.explanation,
               style: AppTextStyles.labelSmall
-                  .copyWith(color: AppColors.textSecondary, height: 1.4),
+                  .copyWith(color: context.colorTextSecondary, height: 1.4),
             ),
           ],
         ],

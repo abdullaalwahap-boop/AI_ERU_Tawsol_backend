@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -17,22 +17,22 @@ class ProfileEditNameDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surfaceLight,
+      backgroundColor: context.colorSurface,
       shape: RoundedRectangleBorder(borderRadius: AppRadius.xlarge),
       title: Text(
         'Edit Name',
-        style: AppTextStyles.heading4.copyWith(color: AppColors.textPrimary),
+        style: AppTextStyles.heading4.copyWith(color: context.colorTextPrimary),
       ),
       content: TextField(
         controller: controller,
         autofocus: true,
-        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+        style: AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
         decoration: InputDecoration(
           hintText: 'Enter your full name',
           hintStyle:
-              AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
+              AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
           filled: true,
-          fillColor: AppColors.inputBgLight,
+          fillColor: context.colorInputBg,
           border: OutlineInputBorder(
             borderRadius: AppRadius.large,
             borderSide: BorderSide.none,
@@ -49,7 +49,7 @@ class ProfileEditNameDialog extends StatelessWidget {
           child: Text(
             'Cancel',
             style: AppTextStyles.buttonSmall
-                .copyWith(color: AppColors.textSecondary),
+                .copyWith(color: context.colorTextSecondary),
           ),
         ),
         ElevatedButton(

@@ -1,5 +1,6 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Compact link-preview card shown inside a chat bubble.
@@ -27,13 +28,13 @@ class LinkPreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = isFromMe
         ? const Color(0xff1A3566) // slightly darker than sent bubble
-        : const Color(0xffEEF0F4);
+        : context.colorReceivedBubble;
     final borderColor = isFromMe
         ? Colors.white.withValues(alpha: 0.12)
         : Colors.black.withValues(alpha: 0.08);
-    final titleColor = isFromMe ? Colors.white : const Color(0xff1A1A1A);
+    final titleColor = isFromMe ? Colors.white : context.colorTextPrimary;
     final bodyColor =
-        isFromMe ? Colors.white70 : const Color(0xff555555);
+        isFromMe ? Colors.white70 : context.colorTextSecondary;
 
     return GestureDetector(
       onTap: _open,

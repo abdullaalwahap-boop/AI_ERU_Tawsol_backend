@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/data/utils/link_utils.dart';
@@ -14,7 +14,7 @@ class MessageTextContent extends StatelessWidget {
 
   // ── Deleted state ──────────────────────────────────────────────────────────
 
-  Widget _buildDeleted() {
+  Widget _buildDeleted(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       child: Row(
@@ -25,7 +25,7 @@ class MessageTextContent extends StatelessWidget {
             size: 13,
             color: message.isFromMe
                 ? AppColors.sentBubbleText.withValues(alpha: 0.55)
-                : AppColors.textHint,
+                : context.colorTextHint,
           ),
           const SizedBox(width: 6),
           Text(
@@ -35,7 +35,7 @@ class MessageTextContent extends StatelessWidget {
               fontStyle: FontStyle.italic,
               color: message.isFromMe
                   ? AppColors.sentBubbleText.withValues(alpha: 0.55)
-                  : AppColors.textHint,
+                  : context.colorTextHint,
             ),
           ),
         ],
@@ -47,7 +47,7 @@ class MessageTextContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (message.isDeleted) return _buildDeleted();
+    if (message.isDeleted) return _buildDeleted(context);
 
     final text = message.text ?? '';
     final hasLink = LinkUtils.containsUrl(text);
@@ -55,7 +55,7 @@ class MessageTextContent extends StatelessWidget {
 
     final textColor = message.isFromMe
         ? AppColors.sentBubbleText
-        : AppColors.receivedBubbleText;
+        : context.colorTextPrimary;
 
     final linkColor =
         message.isFromMe ? Colors.lightBlueAccent : AppColors.primary;
@@ -106,7 +106,7 @@ class MessageTextContent extends StatelessWidget {
                 fontStyle: FontStyle.italic,
                 color: message.isFromMe
                     ? AppColors.sentBubbleText.withValues(alpha: 0.6)
-                    : AppColors.textHint,
+                    : context.colorTextHint,
               ),
             ),
           ],

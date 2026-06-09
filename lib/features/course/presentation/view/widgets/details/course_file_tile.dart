@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
@@ -32,7 +32,7 @@ class CourseFileTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
+        color: context.colorSurface,
         borderRadius: AppRadius.xlarge,
         boxShadow: [
           ...AppShadows.card,
@@ -65,7 +65,7 @@ class CourseFileTile extends StatelessWidget {
                             child: Text(
                               content.title,
                               style: AppTextStyles.titleSmall
-                                  .copyWith(color: AppColors.textPrimary),
+                                  .copyWith(color: context.colorTextPrimary),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -79,7 +79,7 @@ class CourseFileTile extends StatelessWidget {
                         Text(
                           content.body,
                           style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.textHint,
+                            color: context.colorTextHint,
                             height: 1.5,
                           ),
                           maxLines: 2,
@@ -102,12 +102,12 @@ class CourseFileTile extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.schedule_rounded,
-                              size: 13, color: AppColors.textHint),
+                              size: 13, color: context.colorTextHint),
                           AppSpacing.w4,
                           Text(
                             content.timeAgo,
                             style: AppTextStyles.labelSmall
-                                .copyWith(color: AppColors.textHint),
+                                .copyWith(color: context.colorTextHint),
                           ),
                           const Spacer(),
 
@@ -197,7 +197,7 @@ class _FileTypeChip extends StatelessWidget {
       ContentFileType.pdf => ('PDF', const Color(0xffDC2626)),
       ContentFileType.doc => ('DOC', const Color(0xff2563EB)),
       ContentFileType.image => ('IMG', const Color(0xff059669)),
-      ContentFileType.other => ('FILE', AppColors.textSecondary),
+      ContentFileType.other => ('FILE', context.colorTextSecondary),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),

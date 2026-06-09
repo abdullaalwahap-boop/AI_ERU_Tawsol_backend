@@ -1,4 +1,4 @@
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
+﻿import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
@@ -32,7 +32,7 @@ class AnnounDetailsView extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: AppColors.backgroundLight,
+        backgroundColor: context.colorBackground,
         body: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [

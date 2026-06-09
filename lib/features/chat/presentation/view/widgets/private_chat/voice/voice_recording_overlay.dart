@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
@@ -130,7 +130,7 @@ class _VoiceRecordingOverlayState extends State<VoiceRecordingOverlay>
                 Text(
                   _timerText,
                   style: AppTextStyles.titleMedium.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.colorTextPrimary,
                     fontFeatures: [const FontFeature.tabularFigures()],
                   ),
                 ),

@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
@@ -240,7 +240,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
                       fontWeight: FontWeight.w600,
                       color: isMe
                           ? AppColors.sentBubbleText
-                          : AppColors.receivedBubbleText,
+                          : context.colorTextPrimary,
                     ),
                   ),
                   if (sizeText.isNotEmpty) ...[
@@ -250,7 +250,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
                       style: AppTextStyles.labelSmall.copyWith(
                         color: isMe
                             ? Colors.white.withValues(alpha: 0.7)
-                            : AppColors.textSecondary,
+                            : context.colorTextSecondary,
                       ),
                     ),
                   ],

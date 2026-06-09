@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -31,7 +31,7 @@ class AddAnnounPostButton extends StatelessWidget {
                   end: Alignment.bottomRight,
                 )
               : null,
-          color: _isActive ? null : AppColors.dividerLight,
+          color: _isActive ? null : context.colorDivider,
           borderRadius: AppRadius.large,
           boxShadow: _isActive
               ? [
@@ -48,14 +48,14 @@ class AddAnnounPostButton extends StatelessWidget {
           child: InkWell(
             borderRadius: AppRadius.large,
             onTap: _isActive ? onTap : null,
-            child: Center(child: _buildContent()),
+            child: Center(child: _buildContent(context)),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     if (isPosting) {
       return const SizedBox(
         width: 20,
@@ -69,7 +69,7 @@ class AddAnnounPostButton extends StatelessWidget {
         Icon(
           Icons.send_rounded,
           size: 17,
-          color: canPost ? Colors.white : AppColors.textHint,
+          color: canPost ? Colors.white : context.colorTextHint,
         ),
         const SizedBox(width: 7),
         Text(
@@ -77,7 +77,7 @@ class AddAnnounPostButton extends StatelessWidget {
           style: AppTextStyles.bodySmall.copyWith(
             fontSize: 13.5,
             fontWeight: FontWeight.w700,
-            color: canPost ? Colors.white : AppColors.textHint,
+            color: canPost ? Colors.white : context.colorTextHint,
           ),
         ),
       ],
