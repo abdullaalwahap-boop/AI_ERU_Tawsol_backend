@@ -96,18 +96,23 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
     final hasSeenOnboarding = await local.getHasSeenOnboarding();
     final hasToken = await secure.hasToken();
+    final isLoggedIn = await local.getIsLoggedIn();
 
     if (!mounted) return;
 
-    if (hasToken) {
-      // Restore role + userId into SessionCubit before entering the app.
+    if (hasToken && isLoggedIn) {
       await getIt<SessionCubit>().restoreFromStorage();
       if (!mounted) return;
       context.go(AppRouter.kHomeView);
-    } else if (hasSeenOnboarding) {
-      context.go(AppRouter.kLoginView);
     } else {
-      context.go(AppRouter.kOnBoardingView);
+      // Token exists but Remember Me was off — clear the stale token.
+      if (hasToken) await secure.clearAll();
+      if (!mounted) return;
+      if (hasSeenOnboarding) {
+        context.go(AppRouter.kLoginView);
+      } else {
+        context.go(AppRouter.kOnBoardingView);
+      }
     }
   }
 

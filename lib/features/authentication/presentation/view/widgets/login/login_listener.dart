@@ -48,6 +48,10 @@ class LoginListener extends StatelessWidget {
   Future<void> _persistSession() async {
     final storage = LocalStorageService();
     final rememberMe = await storage.getRememberMe();
-    if (rememberMe) await storage.saveIsLoggedIn(true);
+    if (rememberMe) {
+      await storage.saveIsLoggedIn(true);
+    } else {
+      await storage.clearIsLoggedIn();
+    }
   }
 }

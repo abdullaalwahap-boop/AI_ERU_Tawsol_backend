@@ -1,4 +1,5 @@
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
@@ -54,6 +55,7 @@ class AuthInterceptor extends Interceptor {
 
   void _handleExpiredSession() {
     _storage.clearAll();
+    LocalStorageService().clearIsLoggedIn();
     getIt<SessionCubit>().clear();
   }
 }
