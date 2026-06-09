@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 class LoginIllustration extends StatelessWidget {
   const LoginIllustration({super.key});
 
-  static const _imagePath =
-      'assets/images/png/383625f2-e45b-4e3f-b7ae-8df7531e4b04.png';
+  static const _imagePath = 'assets/images/png/full_logo.png';
 
   @override
   Widget build(BuildContext context) {
