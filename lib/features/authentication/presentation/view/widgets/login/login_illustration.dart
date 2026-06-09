@@ -1,38 +1,57 @@
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
-import 'package:ai_eru_tawasol/features/authentication/presentation/view/widgets/login/card/login_card.dart';
 import 'package:flutter/material.dart';
 
 class LoginIllustration extends StatelessWidget {
   const LoginIllustration({super.key});
 
+  static const _imagePath =
+      'assets/images/png/383625f2-e45b-4e3f-b7ae-8df7531e4b04.png';
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final cardWidth = (constraints.maxWidth - 16).clamp(0.0, 290.0);
-        final cardHeight = cardWidth * (185 / 300);
+        final w = (constraints.maxWidth - 32).clamp(0.0, 260.0);
+        final h = w * 0.78;
         return SizedBox(
-          height: cardHeight + 24,
+          width: w + 32,
+          height: h + 32,
           child: Stack(
             alignment: Alignment.center,
             children: [
               Container(
-                width: cardWidth + 40,
-                height: cardHeight + 24,
+                width: w + 32,
+                height: h + 32,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.accent.withValues(alpha: 0.15),
+                      AppColors.accent.withValues(alpha: 0.18),
                       Colors.transparent,
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                width: cardWidth,
-                height: cardHeight,
-                child: const LoginCard(),
+              Container(
+                width: w,
+                height: h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.15),
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    _imagePath,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ],
           ),
