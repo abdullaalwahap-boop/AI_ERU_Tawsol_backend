@@ -496,9 +496,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (annId != null) {
       try {
         final ann = await _repo.getAnnouncementDetail(annId);
-        try {
-          await _repo.notifyAnnouncement(annId);
-        } catch (_) {}
         return ann;
       } catch (_) {}
     }
@@ -618,9 +615,6 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
         } catch (_) {}
       }));
       final full = await _repo.getAnnouncementDetail(annId);
-      try {
-        await _repo.notifyAnnouncement(annId);
-      } catch (_) {}
       return full;
     }
 
@@ -629,16 +623,10 @@ class AddAnnounCubit extends Cubit<AddAnnounState> {
     if (isEditMode && !forceCreate) {
       try {
         final refreshed = await _repo.getAnnouncementDetail(annId);
-        try {
-          await _repo.notifyAnnouncement(annId);
-        } catch (_) {}
         return refreshed;
       } catch (_) {}
     }
 
-    try {
-      await _repo.notifyAnnouncement(annId);
-    } catch (_) {}
     return base;
   }
 

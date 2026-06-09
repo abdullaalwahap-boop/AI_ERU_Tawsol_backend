@@ -30,7 +30,6 @@ class ApiConstants {
   static const String announcements = '/announcements';
   static String announcementById(int id) => '/announcements/$id';
   static String announcementMarkRead(int id) => '/announcements/$id/read';
-  static String announcementNotify(int id) => '/announcements/$id/notify';
   static const String announcementsUnreadCount = '/announcements/unread-count';
   static const String announcementsSent = '/announcements/sent';
   static const String announcementsRecipients = '/announcements/recipients';
@@ -56,13 +55,6 @@ class ApiConstants {
       '/submissions/$assignmentId';
   static String mySubmission(int assignmentId) =>
       '/submissions/my/$assignmentId';
-
-  // ─── Notifications ────────────────────────────────────────────────────────────
-  static const String notifications = '/notifications';
-  static const String notificationsUnreadCount = '/notifications/unread-count';
-  static const String notificationsReadAll = '/notifications/read-all';
-  static String notificationMarkRead(int id) => '/notifications/$id/read';
-  static String notificationDelete(int id) => '/notifications/$id';
 
   // ─── Chat ─────────────────────────────────────────────────────────────────────
   static const String chatConversations = '/chat/conversations';

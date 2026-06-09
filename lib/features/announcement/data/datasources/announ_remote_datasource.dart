@@ -166,14 +166,6 @@ class AnnounRemoteDatasource {
     }
   }
 
-  Future<void> notifyAnnouncement(int id) async {
-    try {
-      await _dio.post(ApiConstants.announcementNotify(id));
-    } on DioException catch (e) {
-      throw NetworkException.fromDioError(e);
-    }
-  }
-
   Future<void> deleteFile(int fileId) async {
     try {
       await _dio.delete(ApiConstants.fileById(fileId));
