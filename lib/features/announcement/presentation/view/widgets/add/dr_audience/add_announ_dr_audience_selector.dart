@@ -1,14 +1,12 @@
-﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
-import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
-import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
-import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
-import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/admin_audience/add_announ_recipient_search.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/audience/add_announ_required_badge.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/dr_audience/dr_audience_course_content.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/dr_audience/dr_specific_students_content.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/dr_audience/dr_type_card.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/shared/section_header.dart';
-import 'package:flutter/material.dart';
 
 class AddAnnounDrAudienceSelector extends StatelessWidget {
   final AddAnnounState state;
@@ -38,14 +36,13 @@ class AddAnnounDrAudienceSelector extends StatelessWidget {
           trailing: const AddAnnounRequiredBadge(),
         ),
         AppSpacing.h14,
-        // ── Type cards row ──────────────────────────────────────────────────
         Row(
           children: DrAudienceType.values.map((type) {
             final isLast = type == DrAudienceType.values.last;
             return Expanded(
               child: Padding(
                 padding: EdgeInsets.only(right: isLast ? 0 : 12),
-                child: _DrTypeCard(
+                child: DrTypeCard(
                   type: type,
                   isSelected: state.drAudienceType == type,
                   onTap: () => onTypeSelected(type),
@@ -54,7 +51,6 @@ class AddAnnounDrAudienceSelector extends StatelessWidget {
             );
           }).toList(),
         ),
-        // ── Content based on selected type ──────────────────────────────────
         AnimatedSize(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOutCubic,
@@ -62,13 +58,13 @@ class AddAnnounDrAudienceSelector extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: AppSpacing.lg),
             child: state.drAudienceType == DrAudienceType.specificStudents
-                ? _SpecificStudentsContent(
+                ? DrSpecificStudentsContent(
                     state: state,
                     onToggleCourseFilter: onToggleCourseFilter,
                     onSearch: onSearchRecipients,
                     onToggle: onToggleRecipient,
                   )
-                : _CourseContent(
+                : DrAudienceCourseContent(
                     courses: state.courses,
                     selected: state.selectedOptions,
                     onSelect: onSelectCourse,
@@ -76,326 +72,6 @@ class AddAnnounDrAudienceSelector extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-// ── Course mode content ───────────────────────────────────────────────────────
-
-class _CourseContent extends StatelessWidget {
-  final List<CourseOption> courses;
-  final Set<String> selected;
-  final void Function(String) onSelect;
-
-  const _CourseContent({
-    required this.courses,
-    required this.selected,
-    required this.onSelect,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (courses.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
-        decoration: BoxDecoration(
-          color: context.colorInputBg,
-          borderRadius: AppRadius.medium,
-          border: Border.all(color: context.colorDivider),
-        ),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppColors.primary,
-              ),
-            ),
-            AppSpacing.w10,
-            Text(
-              AppLocalizations.of(context).loadingCourses,
-              style:
-                  AppTextStyles.labelMedium.copyWith(color: context.colorTextHint),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context).selectSubject,
-          style: AppTextStyles.labelMedium.copyWith(
-            color: context.colorTextSecondary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        AppSpacing.h10,
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: courses
-              .map((c) => _CourseChip(
-                    course: c,
-                    isSelected: selected.contains(c.id),
-                    onTap: () => onSelect(c.id),
-                  ))
-              .toList(),
-        ),
-      ],
-    );
-  }
-}
-
-// ── Specific students mode content ────────────────────────────────────────────
-
-class _SpecificStudentsContent extends StatelessWidget {
-  final AddAnnounState state;
-  final void Function(String) onToggleCourseFilter;
-  final void Function(String) onSearch;
-  final void Function(int) onToggle;
-
-  const _SpecificStudentsContent({
-    required this.state,
-    required this.onToggleCourseFilter,
-    required this.onSearch,
-    required this.onToggle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Optional course filter
-        if (state.courses.length > 1) ...[
-          Row(
-            children: [
-              Text(
-                AppLocalizations.of(context).filterByCourse,
-                style: AppTextStyles.labelMedium.copyWith(
-                  color: context.colorTextSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              AppSpacing.w6,
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: context.colorDivider,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  AppLocalizations.of(context).optional,
-                  style: AppTextStyles.overline.copyWith(
-                    color: context.colorTextHint,
-                    fontSize: 9,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          AppSpacing.h8,
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: state.courses
-                .map((c) => _CourseChip(
-                      course: c,
-                      isSelected: state.selectedCourseId == c.id,
-                      onTap: () => onToggleCourseFilter(c.id),
-                    ))
-                .toList(),
-          ),
-          AppSpacing.h16,
-        ],
-        // Recipient search
-        AddAnnounRecipientSearch(
-          recipients: state.recipients,
-          isLoading: state.isLoadingRecipients,
-          selectedIds: state.selectedRecipientIds,
-          onSearch: onSearch,
-          onToggle: onToggle,
-        ),
-      ],
-    );
-  }
-}
-
-// ── Shared course chip ────────────────────────────────────────────────────────
-
-class _CourseChip extends StatelessWidget {
-  final CourseOption course;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _CourseChip({
-    required this.course,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.1)
-              : context.colorInputBg,
-          borderRadius: AppRadius.large,
-          border: Border.all(
-            color: isSelected
-                ? AppColors.primary.withValues(alpha: 0.6)
-                : context.colorDivider,
-            width: isSelected ? 1.5 : 1.2,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              course.id,
-              style: AppTextStyles.labelSmall.copyWith(
-                fontWeight: FontWeight.w800,
-                color:
-                    isSelected ? AppColors.primary : context.colorTextSecondary,
-                fontSize: 11,
-                letterSpacing: 0.5,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              course.name,
-              style: AppTextStyles.bodySmall.copyWith(
-                fontWeight: FontWeight.w600,
-                color: isSelected ? AppColors.primary : context.colorTextPrimary,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Audience type card ────────────────────────────────────────────────────────
-
-class _DrTypeCard extends StatelessWidget {
-  final DrAudienceType type;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _DrTypeCard({
-    required this.type,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeInOut,
-        height: 76,
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.white : context.colorInputBg,
-          borderRadius: AppRadius.large,
-          border: Border.all(
-            color: isSelected ? AppColors.primary : context.colorDivider,
-            width: isSelected ? 1.5 : 1.0,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.14),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 220),
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.primary
-                            : context.colorDivider,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        type.icon,
-                        size: 15,
-                        color: isSelected ? Colors.white : context.colorTextHint,
-                      ),
-                    ),
-                    AppSpacing.h4,
-                    Text(
-                      type.labelOf(context),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.overline.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 10,
-                        color: isSelected
-                            ? AppColors.primary
-                            : context.colorTextSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (isSelected)
-              Positioned(
-                top: 6,
-                right: 6,
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    size: 8,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }

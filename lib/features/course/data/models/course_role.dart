@@ -1,0 +1,1 @@
+enum CourseRole { student, doctor }

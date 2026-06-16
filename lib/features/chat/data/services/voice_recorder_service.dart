@@ -4,16 +4,9 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/recorder_result.dart';
 
-class RecorderResult {
-  final String filePath;
-  final int durationSeconds;
-
-  const RecorderResult({
-    required this.filePath,
-    required this.durationSeconds,
-  });
-}
+export 'recorder_result.dart';
 
 /// Wraps the [record] package — one recording session at a time.
 /// Registered as a GetIt singleton so only one recorder exists app-wide.

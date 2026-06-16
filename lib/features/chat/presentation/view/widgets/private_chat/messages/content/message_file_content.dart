@@ -1,17 +1,16 @@
-﻿import 'dart:io';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/network/api_constants.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/data/models/message_download_state.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
-
-enum _DownloadState { idle, downloading, done, error }
 
 class MessageFileContent extends StatefulWidget {
   final ChatMessage message;
@@ -23,7 +22,7 @@ class MessageFileContent extends StatefulWidget {
 }
 
 class _MessageFileContentState extends State<MessageFileContent> {
-  _DownloadState _state = _DownloadState.idle;
+  MessageDownloadState _state = MessageDownloadState.idle;
   double _progress = 0;
   String? _savedPath;
 
@@ -35,8 +34,6 @@ class _MessageFileContentState extends State<MessageFileContent> {
     _checkAlreadyDownloaded();
   }
 
-  // ── Check if file already downloaded from a previous session ──────────────
-
   Future<void> _checkAlreadyDownloaded() async {
     final fn = _msg.fileName;
     if (fn == null) return;
@@ -47,15 +44,13 @@ class _MessageFileContentState extends State<MessageFileContent> {
       if (await File(path).exists()) {
         if (mounted) {
           setState(() {
-            _state = _DownloadState.done;
+            _state = MessageDownloadState.done;
             _savedPath = path;
           });
         }
       }
     } catch (_) {}
   }
-
-  // ── URL resolution ─────────────────────────────────────────────────────────
 
   bool get _isLocalFile =>
       _msg.fileUrl != null &&
@@ -70,12 +65,9 @@ class _MessageFileContentState extends State<MessageFileContent> {
     return null;
   }
 
-  // ── Download ───────────────────────────────────────────────────────────────
-
   Future<void> _download() async {
-    if (_state == _DownloadState.downloading) return;
+    if (_state == MessageDownloadState.downloading) return;
 
-    // Sent by me — open directly if local, or download to temp then open.
     if (_msg.isFromMe) {
       if (_isLocalFile && _msg.fileUrl != null) {
         await OpenFilex.open(_msg.fileUrl!);
@@ -85,7 +77,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
       return;
     }
 
-    if (_state == _DownloadState.done && _savedPath != null) {
+    if (_state == MessageDownloadState.done && _savedPath != null) {
       await OpenFilex.open(_savedPath!);
       return;
     }
@@ -99,7 +91,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
     if (url == null) return;
 
     setState(() {
-      _state = _DownloadState.downloading;
+      _state = MessageDownloadState.downloading;
       _progress = 0;
     });
 
@@ -121,14 +113,14 @@ class _MessageFileContentState extends State<MessageFileContent> {
 
       if (!mounted) return;
       setState(() {
-        _state = _DownloadState.done;
+        _state = MessageDownloadState.done;
         _savedPath = savePath;
       });
 
       await OpenFilex.open(savePath);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _state = _DownloadState.error);
+      setState(() => _state = MessageDownloadState.error);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context).downloadFailed),
@@ -139,12 +131,10 @@ class _MessageFileContentState extends State<MessageFileContent> {
         ),
       );
       await Future.delayed(const Duration(seconds: 2));
-      if (mounted) setState(() => _state = _DownloadState.idle);
+      if (mounted) setState(() => _state = MessageDownloadState.idle);
     }
   }
 
-  /// Downloads the file to a temp directory and opens it.
-  /// Used for sent messages (no download state shown).
   Future<void> _downloadAndOpen({required bool toTemp}) async {
     final url = _remoteUrl;
     if (url == null) return;
@@ -160,7 +150,12 @@ class _MessageFileContentState extends State<MessageFileContent> {
       }
       await OpenFilex.open(savePath);
       if (!toTemp) {
-        if (mounted) setState(() { _state = _DownloadState.done; _savedPath = savePath; });
+        if (mounted) {
+          setState(() {
+            _state = MessageDownloadState.done;
+            _savedPath = savePath;
+          });
+        }
       }
     } catch (_) {}
   }
@@ -169,8 +164,6 @@ class _MessageFileContentState extends State<MessageFileContent> {
     final name = url.split('/').last.split('?').first;
     return name.isNotEmpty ? name : 'file';
   }
-
-  // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +183,6 @@ class _MessageFileContentState extends State<MessageFileContent> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── File type icon ───────────────────────────────────────────────
             Container(
               width: 44,
               height: 44,
@@ -225,10 +217,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
                 ],
               ),
             ),
-
             AppSpacing.w10,
-
-            // ── File name + size ─────────────────────────────────────────────
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,10 +247,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
                 ],
               ),
             ),
-
             AppSpacing.w8,
-
-            // ── Action button (only for received messages) ───────────────────
             if (!isMe) _buildActionIcon(),
           ],
         ),
@@ -273,7 +259,7 @@ class _MessageFileContentState extends State<MessageFileContent> {
     const color = AppColors.primary;
 
     switch (_state) {
-      case _DownloadState.downloading:
+      case MessageDownloadState.downloading:
         return SizedBox(
           width: 22,
           height: 22,
@@ -283,19 +269,14 @@ class _MessageFileContentState extends State<MessageFileContent> {
             color: color,
           ),
         );
-
-      case _DownloadState.done:
+      case MessageDownloadState.done:
         return Icon(Icons.check_circle_rounded, size: 22, color: color);
-
-      case _DownloadState.error:
+      case MessageDownloadState.error:
         return Icon(Icons.error_rounded, size: 22, color: Colors.red.shade300);
-
-      case _DownloadState.idle:
+      case MessageDownloadState.idle:
         return const Icon(Icons.download_rounded, size: 18, color: color);
     }
   }
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
 
   Color _colorForExt(String ext) {
     switch (ext.toLowerCase()) {
@@ -342,5 +323,4 @@ class _MessageFileContentState extends State<MessageFileContent> {
         return Icons.insert_drive_file_rounded;
     }
   }
-
 }

@@ -1,6 +1,4 @@
-﻿import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
@@ -9,11 +7,11 @@ import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/session/app_role.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
-import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/attachments/attachment_tile.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/attachments/attachment_display_data.dart';
 import 'package:ai_eru_tawasol/features/course/data/models/course_models.dart';
-import 'package:ai_eru_tawasol/features/quiz/presentation/view/quiz_view.dart';
+import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/content_file_type_chip.dart';
+import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/generate_quiz_button.dart';
 
 class CourseFileTile extends StatelessWidget {
   final CourseContent content;
@@ -57,10 +55,9 @@ class CourseFileTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ── Type chip + title ─────────────────────────────────
                       Row(
                         children: [
-                          _FileTypeChip(fileType: fileType),
+                          ContentFileTypeChip(fileType: fileType),
                           AppSpacing.w8,
                           Expanded(
                             child: Text(
@@ -74,7 +71,6 @@ class CourseFileTile extends StatelessWidget {
                         ],
                       ),
 
-                      // ── Body ─────────────────────────────────────────────
                       if (content.body.isNotEmpty) ...[
                         AppSpacing.h6,
                         Text(
@@ -88,7 +84,6 @@ class CourseFileTile extends StatelessWidget {
                         ),
                       ],
 
-                      // ── Open file button ──────────────────────────────────
                       if (attachment != null && attachment.url != null) ...[
                         AppSpacing.h10,
                         AttachmentTile(
@@ -99,7 +94,6 @@ class CourseFileTile extends StatelessWidget {
 
                       AppSpacing.h10,
 
-                      // ── Footer row ────────────────────────────────────────
                       Row(
                         children: [
                           Icon(Icons.schedule_rounded,
@@ -112,9 +106,8 @@ class CourseFileTile extends StatelessWidget {
                           ),
                           const Spacer(),
 
-                          // Generate Quiz — students only, DR/TA files only
                           if (isStudent && content.isQuizEligible)
-                            _GenerateQuizButton(content: content),
+                            GenerateQuizButton(content: content),
                         ],
                       ),
                     ],
@@ -142,78 +135,6 @@ class CourseFileTile extends StatelessWidget {
       iconColor: color,
       url: a.url,
       isImage: a.isImage,
-    );
-  }
-}
-
-class _GenerateQuizButton extends StatelessWidget {
-  final CourseContent content;
-  const _GenerateQuizButton({required this.content});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push(
-        AppRouter.kQuizView,
-        extra: QuizArgs(
-          fileId: content.fileIdInt!,
-          lectureTitle: content.title,
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.primary, AppColors.accent],
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.auto_awesome_rounded,
-                size: 13, color: Colors.white),
-            AppSpacing.w4,
-            Text(
-              AppLocalizations.of(context).generateQuiz,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _FileTypeChip extends StatelessWidget {
-  final ContentFileType fileType;
-  const _FileTypeChip({required this.fileType});
-
-  @override
-  Widget build(BuildContext context) {
-    final (label, color) = switch (fileType) {
-      ContentFileType.pdf => ('PDF', const Color(0xffDC2626)),
-      ContentFileType.doc => ('DOC', const Color(0xff2563EB)),
-      ContentFileType.image => ('IMG', const Color(0xff059669)),
-      ContentFileType.other => ('FILE', context.colorTextSecondary),
-    };
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        label,
-        style: AppTextStyles.labelSmall.copyWith(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 10,
-        ),
-      ),
     );
   }
 }

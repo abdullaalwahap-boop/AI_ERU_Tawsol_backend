@@ -16,7 +16,8 @@ import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details
 import 'package:ai_eru_tawasol/core/shared/widgets/states/feature_empty_state.dart';
 import 'package:ai_eru_tawasol/core/session/app_role.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
-import 'package:ai_eru_tawasol/features/quiz/presentation/view/quiz_view.dart';
+import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/details/animated_card.dart';
+import 'package:ai_eru_tawasol/features/quiz/data/models/quiz_args.dart';
 import 'package:go_router/go_router.dart';
 
 class CourseDetailsLoadedScaffold extends StatelessWidget {
@@ -134,7 +135,7 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
                                   }
                                 },
                               );
-                        return _AnimatedCard(
+                        return AnimatedCard(
                           key: ValueKey(item.id),
                           index: i,
                           child: card,
@@ -145,30 +146,6 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _AnimatedCard extends StatelessWidget {
-  final int index;
-  final Widget child;
-
-  const _AnimatedCard({super.key, required this.index, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: Duration(milliseconds: 350 + index * 60),
-      curve: Curves.easeOutCubic,
-      builder: (context, value, c) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 20 * (1 - value)),
-          child: c,
-        ),
-      ),
-      child: child,
     );
   }
 }

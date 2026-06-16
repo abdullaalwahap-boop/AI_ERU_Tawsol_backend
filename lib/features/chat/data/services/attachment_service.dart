@@ -1,17 +1,8 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' hide PickedFile;
+import 'package:ai_eru_tawasol/features/chat/data/services/picked_file.dart';
 
-class PickedFile {
-  const PickedFile({
-    required this.path,
-    required this.name,
-    required this.type, // 'image' | 'video' | 'audio' | 'file'
-  });
-
-  final String path;
-  final String name;
-  final String type;
-}
+export 'picked_file.dart';
 
 class AttachmentService {
   AttachmentService._();

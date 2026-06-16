@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/shared/widgets/attachments/attachment_display_data.dart';
+import 'package:ai_eru_tawasol/core/shared/widgets/attachments/attachment_file_state.dart';
+import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/pages/image_viewer_page.dart';
-
-enum _FileState { idle, downloading, done, error }
 
 class AttachmentTile extends StatefulWidget {
   final AttachmentDisplayData attachment;
@@ -28,7 +27,7 @@ class AttachmentTile extends StatefulWidget {
 }
 
 class _AttachmentTileState extends State<AttachmentTile> {
-  _FileState _state = _FileState.idle;
+  AttachmentFileState _state = AttachmentFileState.idle;
   double _progress = 0;
   String? _savedPath;
 
@@ -48,7 +47,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
       final name = _fileNameFromUrl(url);
       final path = '${dir.path}/$name';
       if (await File(path).exists()) {
-        if (mounted) setState(() { _state = _FileState.done; _savedPath = path; });
+        if (mounted) setState(() { _state = AttachmentFileState.done; _savedPath = path; });
       }
     } catch (_) {}
   }
@@ -57,20 +56,18 @@ class _AttachmentTileState extends State<AttachmentTile> {
     final url = _a.url;
     if (url == null || url.isEmpty) return;
 
-    // Images → full-screen viewer
     if (_a.isImage) {
       await ImageViewerPage.open(context, imageUrl: url);
       return;
     }
 
-    // Already downloaded → open immediately
-    if (_state == _FileState.done && _savedPath != null) {
+    if (_state == AttachmentFileState.done && _savedPath != null) {
       await OpenFilex.open(_savedPath!);
       return;
     }
 
-    if (_state == _FileState.downloading) return;
-    setState(() { _state = _FileState.downloading; _progress = 0; });
+    if (_state == AttachmentFileState.downloading) return;
+    setState(() { _state = AttachmentFileState.downloading; _progress = 0; });
 
     try {
       final dir = await getTemporaryDirectory();
@@ -90,11 +87,11 @@ class _AttachmentTileState extends State<AttachmentTile> {
       }
 
       if (!mounted) return;
-      setState(() { _state = _FileState.done; _savedPath = savePath; });
+      setState(() { _state = AttachmentFileState.done; _savedPath = savePath; });
       await OpenFilex.open(savePath);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _state = _FileState.error);
+      setState(() => _state = AttachmentFileState.error);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Download failed'),
@@ -104,7 +101,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
         ),
       );
       await Future.delayed(const Duration(seconds: 2));
-      if (mounted) setState(() => _state = _FileState.idle);
+      if (mounted) setState(() => _state = AttachmentFileState.idle);
     }
   }
 
@@ -178,7 +175,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
     }
 
     switch (_state) {
-      case _FileState.downloading:
+      case AttachmentFileState.downloading:
         return SizedBox(
           width: 22,
           height: 22,
@@ -188,11 +185,11 @@ class _AttachmentTileState extends State<AttachmentTile> {
             color: color,
           ),
         );
-      case _FileState.done:
+      case AttachmentFileState.done:
         return Icon(Icons.check_circle_rounded, size: 22, color: color);
-      case _FileState.error:
+      case AttachmentFileState.error:
         return Icon(Icons.error_rounded, size: 22, color: Colors.red.shade300);
-      case _FileState.idle:
+      case AttachmentFileState.idle:
         return Icon(Icons.download_rounded, size: 18, color: color);
     }
   }

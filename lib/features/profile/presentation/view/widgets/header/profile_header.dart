@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_avatar.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_deco_circle.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_level_chip.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_role_badge.dart';
-import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
   final ProfileUser user;
@@ -40,9 +41,9 @@ class ProfileHeader extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          _DecoCircle(top: -25, right: -25, size: 130, alpha: 0.06),
-          _DecoCircle(bottom: -35, left: -15, size: 110, alpha: 0.05),
-          _DecoCircle(top: 20, right: 60, size: 60, alpha: 0.04),
+          const ProfileDecoCircle(top: -25, right: -25, size: 130, alpha: 0.06),
+          const ProfileDecoCircle(bottom: -35, left: -15, size: 110, alpha: 0.05),
+          const ProfileDecoCircle(top: 20, right: 60, size: 60, alpha: 0.04),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.xxl,
@@ -85,42 +86,6 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DecoCircle extends StatelessWidget {
-  final double? top;
-  final double? bottom;
-  final double? left;
-  final double? right;
-  final double size;
-  final double alpha;
-
-  const _DecoCircle({
-    this.top,
-    this.bottom,
-    this.left,
-    this.right,
-    required this.size,
-    required this.alpha,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: top,
-      bottom: bottom,
-      left: left,
-      right: right,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withValues(alpha: alpha),
-        ),
       ),
     );
   }

@@ -1,14 +1,18 @@
-﻿import 'package:ai_eru_tawasol/core/design/app_radius.dart';
-import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/contact_model.dart';
 import 'package:ai_eru_tawasol/features/profile/data/repos/profile_repo.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/contact_cubit/contact_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_drag_handle.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_issue_type_selector.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_send_button.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_sheet_field.dart';
 
 class ContactUsSheet extends StatelessWidget {
   const ContactUsSheet({super.key, this.initialType = IssueType.general});
@@ -87,7 +91,7 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _DragHandle(),
+                const ContactUsDragHandle(),
                 AppSpacing.h20,
                 Text(
                   AppLocalizations.of(context).contactUs,
@@ -101,12 +105,12 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                       .copyWith(color: context.colorTextSecondary),
                 ),
                 AppSpacing.h20,
-                _IssueTypeSelector(
+                ContactUsIssueTypeSelector(
                   selected: _selectedType,
                   onChanged: (t) => setState(() => _selectedType = t),
                 ),
                 AppSpacing.h16,
-                _SheetField(
+                ContactUsSheetField(
                   controller: _subjectCtrl,
                   hint: AppLocalizations.of(context).subject,
                   maxLines: 1,
@@ -115,7 +119,7 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                       : null,
                 ),
                 AppSpacing.h12,
-                _SheetField(
+                ContactUsSheetField(
                   controller: _messageCtrl,
                   hint: AppLocalizations.of(context).describeIssue,
                   maxLines: 4,
@@ -124,7 +128,7 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
                       : null,
                 ),
                 AppSpacing.h20,
-                _SendButton(onPressed: () => _submit(context)),
+                ContactUsSendButton(onPressed: () => _submit(context)),
               ],
             ),
           ),
@@ -164,176 +168,5 @@ class _ContactUsSheetBodyState extends State<_ContactUsSheetBody> {
         ),
       );
     }
-  }
-}
-
-// ─── Sub-widgets ──────────────────────────────────────────────────────────────
-
-class _DragHandle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 40,
-        height: 4,
-        decoration: BoxDecoration(
-          color: context.colorDivider,
-          borderRadius: AppRadius.circular,
-        ),
-      ),
-    );
-  }
-}
-
-class _IssueTypeSelector extends StatelessWidget {
-  const _IssueTypeSelector({
-    required this.selected,
-    required this.onChanged,
-  });
-
-  final IssueType selected;
-  final ValueChanged<IssueType> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context).category,
-          style:
-              AppTextStyles.labelMedium.copyWith(color: context.colorTextSecondary),
-        ),
-        AppSpacing.h8,
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: IssueType.values.map((type) {
-              final isSelected = type == selected;
-              return Padding(
-                padding: const EdgeInsets.only(right: AppSpacing.sm),
-                child: GestureDetector(
-                  onTap: () => onChanged(type),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.xs + 1,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primary
-                          : context.colorInputBg,
-                      borderRadius: AppRadius.circular,
-                      border: isSelected
-                          ? null
-                          : Border.all(color: context.colorBorder),
-                    ),
-                    child: Text(
-                      type.label,
-                      style: AppTextStyles.labelMedium.copyWith(
-                        color: isSelected
-                            ? AppColors.textOnPrimary
-                            : context.colorTextSecondary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _SheetField extends StatelessWidget {
-  const _SheetField({
-    required this.controller,
-    required this.hint,
-    required this.maxLines,
-    required this.validator,
-  });
-
-  final TextEditingController controller;
-  final String hint;
-  final int maxLines;
-  final String? Function(String?) validator;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      maxLines: maxLines,
-      validator: validator,
-      style: AppTextStyles.bodyMedium.copyWith(color: context.colorTextPrimary),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle:
-            AppTextStyles.bodyMedium.copyWith(color: context.colorTextHint),
-        filled: true,
-        fillColor: context.colorInputBg,
-        border: OutlineInputBorder(
-          borderRadius: AppRadius.large,
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: AppRadius.large,
-          borderSide: const BorderSide(color: AppColors.error),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: AppRadius.large,
-          borderSide: const BorderSide(color: AppColors.error),
-        ),
-        contentPadding: const EdgeInsets.all(AppSpacing.lg),
-      ),
-    );
-  }
-}
-
-class _SendButton extends StatelessWidget {
-  const _SendButton({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ContactCubit, ContactState>(
-      builder: (context, state) {
-        final isLoading = state is ContactLoading;
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: isLoading ? null : onPressed,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.6),
-              foregroundColor: AppColors.textOnPrimary,
-              shape:
-                  RoundedRectangleBorder(borderRadius: AppRadius.large),
-              padding:
-                  const EdgeInsets.symmetric(vertical: AppSpacing.md),
-              elevation: 0,
-            ),
-            child: isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(
-                    AppLocalizations.of(context).sendMessage,
-                    style: AppTextStyles.buttonMedium
-                        .copyWith(color: AppColors.textOnPrimary),
-                  ),
-          ),
-        );
-      },
-    );
   }
 }

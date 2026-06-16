@@ -2,33 +2,9 @@ import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:ai_eru_tawasol/features/chat/data/services/voice_playback_state.dart';
 
-/// Snapshot of playback state broadcast to all listeners.
-class VoicePlaybackState {
-  final String? playingId;
-  final bool isPlaying;
-  final Duration position;
-  final Duration total;
-
-  const VoicePlaybackState({
-    this.playingId,
-    this.isPlaying = false,
-    this.position = Duration.zero,
-    this.total = Duration.zero,
-  });
-
-  bool isThisPlaying(String id) => playingId == id && isPlaying;
-
-  /// Progress 0.0–1.0 for [id]; 0.0 when a different id is playing.
-  double progressFor(String id) {
-    if (playingId != id || total.inMilliseconds == 0) return 0.0;
-    return (position.inMilliseconds / total.inMilliseconds).clamp(0.0, 1.0);
-  }
-
-  /// Current playback position for [id]; Duration.zero otherwise.
-  Duration positionFor(String id) =>
-      playingId == id ? position : Duration.zero;
-}
+export 'voice_playback_state.dart';
 
 /// Global singleton: ensures only one voice message plays at a time.
 /// Registered with GetIt so all [VoiceMessageWidget]s share one player.

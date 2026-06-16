@@ -1,25 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
-import 'package:flutter/material.dart';
-
-enum ProfileThemeOption {
-  light('Light', Icons.light_mode_rounded),
-  dark('Dark', Icons.dark_mode_rounded),
-  system('System', Icons.brightness_auto_rounded);
-
-  final String label;
-  final IconData icon;
-  const ProfileThemeOption(this.label, this.icon);
-}
-
-enum ProfileLangOption {
-  english('English'),
-  arabic('العربية');
-
-  final String label;
-  const ProfileLangOption(this.label);
-}
+export 'profile_theme_option.dart';
+export 'profile_lang_option.dart';
 
 class ProfilePickerSheet<T> extends StatelessWidget {
   final String title;

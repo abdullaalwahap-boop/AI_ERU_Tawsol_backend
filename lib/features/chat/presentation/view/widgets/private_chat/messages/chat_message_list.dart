@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
+import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/chat_message_no_results.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/date_separator.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/message_bubble.dart';
 import 'package:ai_eru_tawasol/features/chat/presentation/view/widgets/private_chat/messages/typing_indicator.dart';
 
-/// Reversed list — index 0 sits at the visual bottom.
-/// Messages are passed in chronological order (oldest first); we reverse
-/// internally so the newest message is always pinned at the bottom without
-/// any programmatic scroll.
 class ChatMessageList extends StatelessWidget {
   final ScrollController scrollController;
   final List<ChatMessage> messages;
   final bool isSearching;
   final bool isOtherTyping;
   final String searchQuery;
-
-  /// IDs of messages that match the current search query (empty when not searching).
   final Set<String> searchMatchIds;
-
   final ChatUser otherUser;
   final void Function(String messageId)? onScrollToMessage;
   final ValueNotifier<String?> highlightedId;
@@ -51,10 +44,8 @@ class ChatMessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Show no-results state only when actively searching with a non-empty query
-    // that yields no matches.
     if (isSearching && searchQuery.isNotEmpty && searchMatchIds.isEmpty) {
-      return _NoResults(query: searchQuery);
+      return ChatMessageNoResults(query: searchQuery);
     }
 
     final reversed = messages.reversed.toList();
@@ -95,34 +86,6 @@ class ChatMessageList extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _NoResults extends StatelessWidget {
-  final String query;
-
-  const _NoResults({required this.query});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.search_off_rounded,
-            size: 48,
-            color: Color(0xffA0AABB),
-          ),
-          AppSpacing.h12,
-          Text(
-            'No messages found for "$query"',
-            style: const TextStyle(color: Color(0xff64748B), fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
     );
   }
 }

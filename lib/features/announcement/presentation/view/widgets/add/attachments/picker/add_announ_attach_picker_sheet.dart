@@ -1,15 +1,16 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ai_eru_tawasol/core/design/app_radius.dart';
 import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/manager/add_announ_cubit/add_announ_cubit.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/picker/add_announ_link_input_dialog.dart';
+import 'package:ai_eru_tawasol/features/announcement/presentation/view/widgets/add/attachments/picker/attach_pick_tile.dart';
 
 class AddAnnounAttachPickerSheet extends StatelessWidget {
   final void Function(AddAnnounAttachmentItem) onPick;
@@ -49,7 +50,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _PickTile(
+                    child: AttachPickTile(
                       icon: Icons.image_rounded,
                       label: l10n.gallery,
                       color: const Color(0xff7C3AED),
@@ -58,7 +59,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _PickTile(
+                    child: AttachPickTile(
                       icon: Icons.insert_drive_file_rounded,
                       label: l10n.document,
                       color: const Color(0xff2563EB),
@@ -67,7 +68,7 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _PickTile(
+                    child: AttachPickTile(
                       icon: Icons.link_rounded,
                       label: l10n.link,
                       color: const Color(0xff059669),
@@ -152,56 +153,5 @@ class AddAnnounAttachPickerSheet extends StatelessWidget {
       return AttachmentFileType.doc;
     }
     return AttachmentFileType.other;
-  }
-}
-
-class _PickTile extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _PickTile({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.06),
-          borderRadius: AppRadius.large,
-          border: Border.all(color: color.withValues(alpha: 0.2), width: 1.2),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.12),
-                borderRadius: AppRadius.medium,
-              ),
-              child: Icon(icon, size: 22, color: color),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: AppTextStyles.labelSmall.copyWith(
-                fontWeight: FontWeight.w600,
-                color: context.colorTextSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
