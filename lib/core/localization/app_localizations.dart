@@ -644,11 +644,11 @@ abstract class AppLocalizations {
   /// **'Teaching Assistant'**
   String get teachingAssistant;
 
-  /// No description provided for @admin.
+  /// No description provided for @others.
   ///
   /// In en, this message translates to:
   /// **'Others'**
-  String get admin;
+  String get others;
 
   /// No description provided for @faq.
   ///

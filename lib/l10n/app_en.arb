@@ -274,7 +274,7 @@
   "teachingAssistant": "Teaching Assistant",
   "@teachingAssistant": {},
 
-  "admin": "Others",
+  "others": "Others",
   "@admin": {},
 
   "faq": "Frequently Asked Questions",

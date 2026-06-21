@@ -283,7 +283,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get teachingAssistant => 'Teaching Assistant';
 
   @override
-  String get admin => 'Others';
+  String get others => 'Others';
 
   @override
   String get faq => 'Frequently Asked Questions';

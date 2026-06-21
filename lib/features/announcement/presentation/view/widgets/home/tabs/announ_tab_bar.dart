@@ -38,7 +38,7 @@ class AnnounTabBar extends StatelessWidget {
             onTap: () => onTabSelected(AnnounTab.mine),
           ),
           AnnounTabItem(
-            label: AppLocalizations.of(context).admin,
+            label: AppLocalizations.of(context).others,
             icon: Icons.admin_panel_settings_rounded,
             count: adminCount,
             isSelected: selected == AnnounTab.admin,

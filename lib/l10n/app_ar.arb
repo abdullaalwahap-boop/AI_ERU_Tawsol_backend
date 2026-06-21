@@ -100,7 +100,7 @@
   "student": "طالب",
   "doctor": "دكتور",
   "teachingAssistant": "مساعد تدريس",
-  "admin": "أخرى",
+  "others": "أخرى",
 
   "faq": "الأسئلة الشائعة",
   "contactUs": "تواصل معنا",
