@@ -647,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @admin.
   ///
   /// In en, this message translates to:
-  /// **'Admin'**
+  /// **'Others'**
   String get admin;
 
   /// No description provided for @faq.

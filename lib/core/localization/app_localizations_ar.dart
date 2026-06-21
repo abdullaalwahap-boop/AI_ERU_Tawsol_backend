@@ -282,7 +282,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get teachingAssistant => 'مساعد تدريس';
 
   @override
-  String get admin => 'مشرف';
+  String get admin => 'أخرى';
 
   @override
   String get faq => 'الأسئلة الشائعة';

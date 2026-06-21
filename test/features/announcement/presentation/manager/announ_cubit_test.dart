@@ -7,7 +7,8 @@ import 'package:mocktail/mocktail.dart';
 
 class _MockAnnounRepo extends Mock implements AnnounRepo {}
 
-Announcement _ann(String id, {
+Announcement _ann(
+  String id, {
   AnnouncementType type = AnnouncementType.normal,
   AnnouncementPriority priority = AnnouncementPriority.normal,
   bool isRead = false,
@@ -116,8 +117,7 @@ void main() {
         act: (c) => c.loadForAdmin(),
         expect: () => [
           isA<AnnounLoading>(),
-          isA<AnnounLoaded>()
-              .having((s) => s.primary.length, 'primary', 2),
+          isA<AnnounLoaded>().having((s) => s.primary.length, 'primary', 2),
         ],
       );
     });
@@ -297,8 +297,7 @@ void main() {
       blocTest<AnnounCubit, AnnounState>(
         'removes from both lists and returns true on success',
         build: () {
-          when(() => repo.deleteAnnouncement(any()))
-              .thenAnswer((_) async {});
+          when(() => repo.deleteAnnouncement(any())).thenAnswer((_) async {});
           return AnnounCubit(repo);
         },
         seed: () => AnnounLoaded(
