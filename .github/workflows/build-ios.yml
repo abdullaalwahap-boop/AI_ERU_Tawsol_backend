@@ -47,12 +47,16 @@ jobs:
           set -o pipefail
           flutter build ios --release --no-codesign --no-tree-shake-icons 2>&1 | tee flutter_build.log
 
-      - name: Upload Build Log on Failure
+      - name: Report Build Log on Failure
         if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-build-log
-          path: flutter_build.log
+        run: |
+          cat flutter_build.log
+          python3 -c "
+          with open('flutter_build.log', 'r') as f:
+              lines = [line.strip() for line in f if line.strip()]
+          for l in lines[-20:]:
+              print(f'::error title=FlutterBuildError::{l}')
+          "
 
       - name: Package into IPA and ZIP
         run: |
