@@ -37,10 +37,26 @@ jobs:
       - name: Precache iOS artifacts
         run: flutter precache --ios
 
-      - name: Configure iOS platform and generate configs
+      - name: Configure iOS platform and Podfile
         run: |
           flutter create --platforms=ios .
+          # Ensure platform :ios, '14.0' is active in Podfile
+          if grep -q "platform :ios" ios/Podfile; then
+            sed -i '' -E "s/#? *platform :ios, .*/platform :ios, '14.0'/" ios/Podfile
+          else
+            echo "platform :ios, '14.0'" | cat - ios/Podfile > temp && mv temp ios/Podfile
+          fi
+          # Ensure code signing is not required for release
+          echo "CODE_SIGNING_REQUIRED = NO" >> ios/Flutter/Release.xcconfig
+          echo "CODE_SIGNING_ALLOWED = NO" >> ios/Flutter/Release.xcconfig
           flutter pub get
+
+      - name: Update Pods and Resolve Dependencies
+        run: |
+          cd ios
+          pod repo update || true
+          pod install --repo-update
+          cd ..
 
       - name: Build iOS Application (Release, Unsigned)
         run: |
@@ -53,9 +69,10 @@ jobs:
           cat flutter_build.log
           python3 -c "
           with open('flutter_build.log', 'r') as f:
-              lines = [line.strip() for line in f if line.strip()]
-          for l in lines[-20:]:
-              print(f'::error title=FlutterBuildError::{l}')
+              for line in f:
+                  l = line.strip()
+                  if any(k in l for k in ['[!] ', 'Error:', 'error:', 'Specs satisfying', 'CocoaPods could not', 'The following']):
+                      print(f'::error title=BuildError::{l[:250]}')
           "
 
       - name: Package into IPA and ZIP
