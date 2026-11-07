@@ -37,14 +37,13 @@ jobs:
       - name: Precache iOS artifacts
         run: flutter precache --ios
 
-      - name: Get Flutter dependencies
-        run: flutter pub get
-
-      - name: Generate iOS Xcode Config
-        run: flutter build ios --config-only
+      - name: Configure iOS platform and generate configs
+        run: |
+          flutter create --platforms=ios .
+          flutter pub get
 
       - name: Build iOS Application (Release, Unsigned)
-        run: flutter build ios --release --no-codesign --no-tree-shake-icons
+        run: flutter build ios --release --no-codesign --no-tree-shake-icons --verbose
 
       - name: Package into IPA and ZIP
         run: |
