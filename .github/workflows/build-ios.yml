@@ -15,7 +15,7 @@ permissions:
 jobs:
   build-ios:
     name: Build iOS IPA & Runner
-    runs-on: macos-13
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
