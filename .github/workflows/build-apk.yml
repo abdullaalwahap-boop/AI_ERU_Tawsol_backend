@@ -6,10 +6,7 @@ on:
       - main
       - master
       - neon-integration
-  pull_request:
-    branches:
-      - main
-      - master
+      - android-app
   workflow_dispatch:
 
 permissions:
@@ -54,7 +51,7 @@ jobs:
           retention-days: 30
 
       - name: Create GitHub Release
-        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/android-app'
         uses: softprops/action-gh-release@v2
         with:
           files: build/app/outputs/flutter-apk/app-release.apk
