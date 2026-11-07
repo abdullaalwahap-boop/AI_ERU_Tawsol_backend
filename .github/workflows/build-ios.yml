@@ -1,0 +1,82 @@
+name: Build and Release iOS App
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - android-app
+      - ios-app
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-ios:
+    name: Build iOS IPA & Runner
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Print Flutter Version
+        run: flutter --version
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Build iOS Application (Release, Unsigned)
+        run: flutter build ios --release --no-codesign
+
+      - name: Package into IPA and ZIP
+        run: |
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -r -q AI_ERU_Tawasol.ipa Payload
+          zip -r -q Runner.app.zip build/ios/iphoneos/Runner.app
+          ls -lh AI_ERU_Tawasol.ipa Runner.app.zip
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI_ERU_Tawasol_iOS_ipa
+          path: AI_ERU_Tawasol.ipa
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Runner.app.zip Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Runner_app_bundle
+          path: Runner.app.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/android-app' || github.ref == 'refs/heads/ios-app'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            AI_ERU_Tawasol.ipa
+            Runner.app.zip
+          tag_name: ios-v1.0.0-${{ github.run_number }}
+          name: iOS Release v1.0.0 (Build #${{ github.run_number }})
+          body: |
+            ## AI ERU Tawasol - iOS Application v1.0.0 (iPhone / iPad)
+
+            ### Included Packages:
+            * **`AI_ERU_Tawasol.ipa`**: iOS Application Package for iPhone & iPad.
+              - Can be installed directly via Sideloadly, AltStore, Scarlet, TrollStore, or Apple Configurator.
+            * **`Runner.app.zip`**: Compressed iOS App Bundle for Xcode or Simulator testing.
+
+            ### Connected Backend:
+            * Live Backend: `https://ai-eru-tawsol-backend-weschool.vercel.app`
+            * Status: Verified & Functional
