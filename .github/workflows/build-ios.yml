@@ -37,25 +37,26 @@ jobs:
       - name: Precache iOS artifacts
         run: flutter precache --ios
 
-      - name: Configure iOS platform and Podfile
+      - name: Setup Generated.xcconfig and Dependencies
         run: |
-          flutter create --platforms=ios .
-          # Ensure platform :ios, '14.0' is active in Podfile
-          if grep -q "platform :ios" ios/Podfile; then
-            sed -i '' -E "s/#? *platform :ios, .*/platform :ios, '14.0'/" ios/Podfile
-          else
-            echo "platform :ios, '14.0'" | cat - ios/Podfile > temp && mv temp ios/Podfile
-          fi
-          # Ensure code signing is not required for release
-          echo "CODE_SIGNING_REQUIRED = NO" >> ios/Flutter/Release.xcconfig
-          echo "CODE_SIGNING_ALLOWED = NO" >> ios/Flutter/Release.xcconfig
           flutter pub get
+          mkdir -p ios/Flutter
+          FLUTTER_SDK_DIR=$(dirname $(dirname $(which flutter)))
+          echo "FLUTTER_ROOT=$FLUTTER_SDK_DIR" > ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_APPLICATION_PATH=$GITHUB_WORKSPACE" >> ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_TARGET=lib/main.dart" >> ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_BUILD_DIR=build" >> ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_BUILD_NAME=1.0.0" >> ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_BUILD_NUMBER=1" >> ios/Flutter/Generated.xcconfig
+          echo "CODE_SIGNING_REQUIRED=NO" >> ios/Flutter/Generated.xcconfig
+          echo "CODE_SIGNING_ALLOWED=NO" >> ios/Flutter/Generated.xcconfig
+          cat ios/Flutter/Generated.xcconfig
 
-      - name: Update Pods and Resolve Dependencies
+      - name: Install CocoaPods
         run: |
           cd ios
           pod repo update || true
-          pod install --repo-update
+          pod install
           cd ..
 
       - name: Build iOS Application (Release, Unsigned)
