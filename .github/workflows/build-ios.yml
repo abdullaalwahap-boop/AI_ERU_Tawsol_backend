@@ -21,20 +21,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set Git safe directory
+        run: git config --global --add safe.directory "*"
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
 
-      - name: Print Flutter Version
-        run: flutter --version
+      - name: Print Flutter & Xcode Version
+        run: |
+          flutter --version
+          xcodebuild -version
 
       - name: Get Flutter dependencies
         run: flutter pub get
 
       - name: Build iOS Application (Release, Unsigned)
-        run: flutter build ios --release --no-codesign
+        run: flutter build ios --release --no-codesign --no-tree-shake-icons
 
       - name: Package into IPA and ZIP
         run: |
