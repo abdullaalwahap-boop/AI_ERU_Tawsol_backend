@@ -8,7 +8,8 @@ class ApiConstants {
 
   //?http://alfred-dell.local:8000 android //http://10.0.2.2:8000 VS
 
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  // Production Vercel FastAPI backend connected to Neon PostgreSQL
+  static const String baseUrl = 'https://ai-eru-tawsol-backend-weschool.vercel.app';
 
   // ─── Auth ─────────────────────────────────────────────────────────────────────
   static const String login = '/auth/login';
