@@ -1,3 +1,5 @@
+import 'package:ai_eru_tawasol/features/attendance/presentation/view/attendance_scanner_view.dart';
+import 'package:ai_eru_tawasol/features/attendance/presentation/view/attendance_summary_view.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
 import 'package:ai_eru_tawasol/core/shared/views/content_details/content_details_view.dart';
 import 'package:ai_eru_tawasol/features/announcement/data/models/announ_models.dart';
@@ -40,6 +42,8 @@ class AppRouter {
   static const kContentDetailsView = '/contentDetailsView';
   static const kFirstLoginChangePasswordView = '/firstLoginChangePasswordView';
   static const kQuizView = '/quizView';
+  static const kAttendanceSummaryView = '/attendanceSummaryView';
+  static const kAttendanceScannerView = '/attendanceScannerView';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -115,6 +119,14 @@ class AppRouter {
         path: kQuizView,
         builder: (context, state) =>
             QuizView(args: state.extra as QuizArgs),
+      ),
+      GoRoute(
+        path: kAttendanceSummaryView,
+        builder: (context, state) => const AttendanceSummaryView(),
+      ),
+      GoRoute(
+        path: kAttendanceScannerView,
+        builder: (context, state) => const AttendanceScannerView(),
       ),
     ],
   );

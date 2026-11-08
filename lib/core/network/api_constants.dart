@@ -74,6 +74,13 @@ class ApiConstants {
   static const String quizGenerate = '/quiz/generate';
   static const String quizEvaluate = '/quiz/evaluate';
 
+  // ─── Attendance (QR Code) ───────────────────────────────────────────────────
+  static const String attendanceSessions = '/attendance/sessions';
+  static String attendanceSessionDetail(int id) => '/attendance/sessions/';
+  static String attendanceSessionClose(int id) => '/attendance/sessions//close';
+  static const String attendanceCheckIn = '/attendance/check-in';
+  static const String attendanceMySummary = '/attendance/my-summary';
+
   // ─── Timeouts ─────────────────────────────────────────────────────────────────
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 30);

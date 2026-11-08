@@ -1,3 +1,4 @@
+import 'package:ai_eru_tawasol/features/attendance/data/datasources/attendance_remote_datasource.dart';
 import 'package:ai_eru_tawasol/core/events/announcement_change_notifier.dart';
 import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/settings/cubit/settings_cubit.dart';
@@ -100,6 +101,10 @@ Future<void> setupServiceLocator() async {
   final quizDs = QuizRemoteDatasource(dioClient.dio);
   getIt.registerSingleton<QuizRemoteDatasource>(quizDs);
   getIt.registerSingleton<QuizRepo>(QuizRepoImpl(quizDs));
+
+  // ─── Attendance (QR) ──────────────────────────────────────────────────────────
+  final attendanceDs = AttendanceRemoteDatasource(dioClient.dio);
+  getIt.registerSingleton<AttendanceRemoteDatasource>(attendanceDs);
 
   // ─── Settings (Theme + Language) ─────────────────────────────────────────────
   getIt.registerSingleton<SettingsCubit>(SettingsCubit(LocalStorageService()));

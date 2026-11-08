@@ -1,9 +1,10 @@
-﻿import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
+import 'package:ai_eru_tawasol/core/design/app_spacing.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/features/profile/data/models/profile_models.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/profile_cubit/profile_cubit.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_app_bar.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/header/profile_header.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_attendance_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_about_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_help_section.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/profile_info_section.dart';
@@ -43,6 +44,8 @@ class ProfileLoadedView extends StatelessWidget {
                         ProfileHeader(user: user),
                         AppSpacing.h8,
                         ProfileInfoSection(user: user),
+                        AppSpacing.h4,
+                        const ProfileAttendanceSection(),
                         AppSpacing.h4,
                         const ProfileSettingsSection(),
                         AppSpacing.h4,
