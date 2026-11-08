@@ -34,61 +34,31 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Precache iOS artifacts
-        run: flutter precache --ios
-
-      - name: Setup Generated.xcconfig and Dependencies
+      - name: Print Versions
         run: |
-          flutter pub get
-          mkdir -p ios/Flutter
-          FLUTTER_SDK_DIR=$(dirname $(dirname $(which flutter)))
-          echo "FLUTTER_ROOT=$FLUTTER_SDK_DIR" > ios/Flutter/Generated.xcconfig
-          echo "FLUTTER_APPLICATION_PATH=$GITHUB_WORKSPACE" >> ios/Flutter/Generated.xcconfig
-          echo "FLUTTER_TARGET=lib/main.dart" >> ios/Flutter/Generated.xcconfig
-          echo "FLUTTER_BUILD_DIR=build" >> ios/Flutter/Generated.xcconfig
-          echo "FLUTTER_BUILD_NAME=1.0.0" >> ios/Flutter/Generated.xcconfig
-          echo "FLUTTER_BUILD_NUMBER=1" >> ios/Flutter/Generated.xcconfig
-          echo "CODE_SIGNING_REQUIRED=NO" >> ios/Flutter/Generated.xcconfig
-          echo "CODE_SIGNING_ALLOWED=NO" >> ios/Flutter/Generated.xcconfig
-          cat ios/Flutter/Generated.xcconfig
+          flutter --version
+          xcodebuild -version
 
-      - name: Install CocoaPods
-        run: |
-          cd ios
-          pod repo update || true
-          pod install
-          cd ..
+      - name: Get Dependencies
+        run: flutter pub get
 
       - name: Build iOS Application (Release, Unsigned)
-        run: |
-          set -o pipefail
-          flutter build ios --release --no-codesign --no-tree-shake-icons 2>&1 | tee flutter_build.log
-
-      - name: Report Build Log on Failure
-        if: failure()
-        run: |
-          cat flutter_build.log
-          python3 -c "
-          with open('flutter_build.log', 'r') as f:
-              for line in f:
-                  l = line.strip()
-                  if any(k in l for k in ['[!] ', 'Error:', 'error:', 'Specs satisfying', 'CocoaPods could not', 'The following']):
-                      print(f'::error title=BuildError::{l[:250]}')
-          "
+        run: flutter build ios --release --no-codesign --no-tree-shake-icons
 
       - name: Package into IPA and ZIP
         run: |
+          cd build/ios/iphoneos
           mkdir -p Payload
-          cp -r build/ios/iphoneos/Runner.app Payload/
+          cp -r Runner.app Payload/
           zip -r -q AI_ERU_Tawasol.ipa Payload
-          zip -r -q Runner.app.zip build/ios/iphoneos/Runner.app
+          zip -r -q Runner.app.zip Runner.app
           ls -lh AI_ERU_Tawasol.ipa Runner.app.zip
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: AI_ERU_Tawasol_iOS_ipa
-          path: AI_ERU_Tawasol.ipa
+          path: build/ios/iphoneos/AI_ERU_Tawasol.ipa
           if-no-files-found: error
           retention-days: 30
 
@@ -96,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Runner_app_bundle
-          path: Runner.app.zip
+          path: build/ios/iphoneos/Runner.app.zip
           if-no-files-found: error
           retention-days: 30
 
@@ -105,8 +75,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            AI_ERU_Tawasol.ipa
-            Runner.app.zip
+            build/ios/iphoneos/AI_ERU_Tawasol.ipa
+            build/ios/iphoneos/Runner.app.zip
           tag_name: ios-v1.0.0-${{ github.run_number }}
           name: iOS Release v1.0.0 (Build #${{ github.run_number }})
           body: |
