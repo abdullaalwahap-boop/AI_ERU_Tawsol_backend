@@ -58,7 +58,7 @@ jobs:
           tag_name: v1.0.0-${{ github.run_number }}
           name: Release v1.0.0 (Build #${{ github.run_number }})
           body: |
-            ### WE School / AI ERU Tawasol Android Application
+            ### WE School Suez Tawasol - Android Application
             - **Target**: Android Release APK (`app-release.apk`)
             - **Backend**: FastAPI Production Backend (`https://ai-eru-tawsol-backend-weschool.vercel.app`)
             - **Database**: Neon Serverless PostgreSQL

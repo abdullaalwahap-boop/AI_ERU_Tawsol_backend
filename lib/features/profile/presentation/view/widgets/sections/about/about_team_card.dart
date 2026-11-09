@@ -15,7 +15,7 @@ class AboutTeamCard extends StatelessWidget {
       children: [
         // AboutTeamMember(name: 'Ziad Tamer', role: l10n.flutterDeveloper),
         AboutTeamMember(
-            name: 'ERU CS Department', role: l10n.backendArchitecture),
+            name: 'WE School Suez - ICT Dept', role: l10n.backendArchitecture),
       ],
     );
   }

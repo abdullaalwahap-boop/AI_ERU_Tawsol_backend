@@ -53,7 +53,7 @@ void main() {
       await tester.pumpWidget(_buildSubject(cubit));
       await tester.pump();
 
-      await tester.enterText(find.byType(TextFormField), 'test@stu.eru.edu.eg');
+      await tester.enterText(find.byType(TextFormField), 'test@suez1.moe.edu.eg');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
@@ -72,7 +72,7 @@ void main() {
       await tester.pumpWidget(_buildSubject(cubit));
       await tester.pump();
 
-      await tester.enterText(find.byType(TextFormField), 'test@stu.eru.edu.eg');
+      await tester.enterText(find.byType(TextFormField), 'test@suez1.moe.edu.eg');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
@@ -92,11 +92,11 @@ void main() {
       await tester.pump();
 
       await tester.enterText(
-          find.byType(TextFormField), 'test@stu.eru.edu.eg');
+          find.byType(TextFormField), 'test@suez1.moe.edu.eg');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
 
-      verify(() => repo.forgetPassword(email: 'test@stu.eru.edu.eg')).called(1);
+      verify(() => repo.forgetPassword(email: 'test@suez1.moe.edu.eg')).called(1);
     });
   });
 }

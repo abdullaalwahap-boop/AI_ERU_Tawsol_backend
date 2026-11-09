@@ -261,7 +261,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get name => 'الاسم';
 
   @override
-  String get studentId => 'الرقم الجامعي';
+  String get studentId => 'كود الطالب / الرقم الأكاديمي';
 
   @override
   String get department => 'القسم';
@@ -294,7 +294,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get version => 'الإصدار';
 
   @override
-  String get madeWith => 'صُنع بـ ❤️ بواسطة فريق ERU';
+  String get madeWith => 'صُنع بـ ❤️ بواسطة فريق مدرسة WE بالسويس';
 
   @override
   String get currentPassword => 'كلمة المرور الحالية';
@@ -387,7 +387,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileUpdated => 'تم تحديث الملف الشخصي بنجاح.';
 
   @override
-  String get universityEmail => 'البريد الجامعي';
+  String get universityEmail => 'البريد المدرسي الأكاديمي';
 
   @override
   String get emailAddress => 'البريد الإلكتروني';
@@ -465,7 +465,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newChat => 'محادثة جديدة';
 
   @override
-  String get searchByNameOrId => 'ابحث بالاسم أو الرقم الجامعي…';
+  String get searchByNameOrId => 'ابحث بالاسم أو كود الطالب…';
 
   @override
   String get findSomeoneToChatWith => 'ابحث عن شخص للدردشة معه';
@@ -476,7 +476,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get tryDifferentName => 'جرّب اسماً أو رقماً جامعياً مختلفاً';
+  String get tryDifferentName => 'جرّب اسماً أو كوداً مختلفاً';
 
   @override
   String get copyMessage => 'نسخ الرسالة';
@@ -538,7 +538,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeBack => 'مرحباً بعودتك';
 
   @override
-  String get signInSubtitle => 'سجّل الدخول بحسابك الجامعي';
+  String get signInSubtitle => 'سجّل الدخول بحسابك المدرسي';
 
   @override
   String get enterOtpTitle => 'أدخل رمز التحقق';
@@ -615,7 +615,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fullName => 'الاسم الكامل';
 
   @override
-  String get universityId => 'الرقم الجامعي';
+  String get universityId => 'كود الطالب / الرقم الأكاديمي';
 
   @override
   String get changePasswordSubtitle => 'قم بتحديث كلمة مرور حسابك';
@@ -718,7 +718,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get organization => 'المؤسسة';
 
   @override
-  String get organizationValue => 'الجامعة المصرية الروسية';
+  String get organizationValue => 'مدرسة WE للتكنولوجيا التطبيقية بالسويس';
 
   @override
   String get builtWith => 'مبني باستخدام';
@@ -762,11 +762,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewAnswers => 'مراجعة إجاباتك';
 
   @override
-  String get onboarding1Title => 'منصة الحرم الجامعي\nالذكية';
+  String get onboarding1Title => 'منصة مدرسة WE الذكية';
 
   @override
   String get onboarding1Subtitle =>
-      'اختبر الحياة الجامعية بصورة مختلفة\nبأدوات مدعومة بالذكاء الاصطناعي لـ ERU.';
+      'اختبر تجربة التعليم التكنولوجي المتقدمة\nبأدوات مدعومة بالذكاء الاصطناعي لمدرسة WE بالسويس.';
 
   @override
   String get onboarding2Title => 'إعلانات أكاديمية\nفورية';
@@ -794,7 +794,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboarding5Subtitle =>
-      'سجّل الدخول ببيانات اعتمادك الجامعية\nوابدأ رحلتك في الحرم الذكي.';
+      'سجّل الدخول ببيانات اعتمادك المدرسية\nوابدأ رحلتك في المنصة الذكية.';
 
   @override
   String get announcementsSubtitleStudent => 'ابقَ على اطلاع بمستجدات مقرراتك';
@@ -803,7 +803,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get announcementsSubtitleDoctor => 'إدارة جميع الإعلانات وعرضها';
 
   @override
-  String get announcementsSubtitleAdmin => 'إعلانات على مستوى الجامعة';
+  String get announcementsSubtitleAdmin => 'إعلانات على مستوى المدرسة';
 
   @override
   String get myCourses => 'مقرراتي';
@@ -836,10 +836,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get missionText =>
-      'سد الفجوة بين الطلاب والمعلمين في ERU — لجعل التواصل الأكاديمي سلساً وشفافاً ومُمكِّناً لكل فرد في المجتمع الجامعي.';
+      'سد الفجوة بين الطلاب والمعلمين في مدرسة WE بالسويس — لجعل التواصل الأكاديمي والتطبيقي سلساً وشفافاً ومُمكِّناً لكل فرد في مجتمع المدرسة.';
 
   @override
-  String get connectingEru => 'نربط مجتمع ERU';
+  String get connectingEru => 'نربط مجتمع مدرسة WE بالسويس';
 
   @override
   String get developmentTeam => 'فريق التطوير';

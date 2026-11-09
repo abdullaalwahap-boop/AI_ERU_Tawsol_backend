@@ -18,7 +18,7 @@ const _fakeUser = ProfileUser(
   id: '1',
   uniCode: '225040',
   name: 'Ahmed Ali',
-  email: 'ahmed@stu.eru.edu.eg',
+  email: 'ahmed@suez1.moe.edu.eg',
   role: ProfileRole.student,
   department: 'CS',
   level: 2,

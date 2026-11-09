@@ -45,7 +45,7 @@ class SplashAppName extends StatelessWidget {
             ),
             AppSpacing.w10,
             Text(
-              'SMART CAMPUS · ERU',
+              'SMART SCHOOL · WE SUEZ',
               style: AppTextStyles.overline.copyWith(
                 fontSize: 10.5,
                 color: Colors.white.withValues(alpha: 0.50),

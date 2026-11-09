@@ -256,7 +256,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logOutMessage =>
-      'Are you sure you want to log out of your ERU account?';
+      'Are you sure you want to log out of your WE School Suez account?';
 
   @override
   String get name => 'Name';
@@ -295,7 +295,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get version => 'Version';
 
   @override
-  String get madeWith => 'Made with ❤️ by ERU Team';
+  String get madeWith => 'Made with ❤️ by WE School Suez Team';
 
   @override
   String get currentPassword => 'Current Password';
@@ -721,7 +721,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get organization => 'Organization';
 
   @override
-  String get organizationValue => 'Egyptian Russian University';
+  String get organizationValue => 'WE Applied Technology School - Suez';
 
   @override
   String get builtWith => 'Built with';
@@ -765,11 +765,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewAnswers => 'Review Your Answers';
 
   @override
-  String get onboarding1Title => 'Smart Campus\nPlatform';
+  String get onboarding1Title => 'Smart School Platform';
 
   @override
   String get onboarding1Subtitle =>
-      'Experience university life reimagined\nwith AI-powered tools built for ERU.';
+      'Experience modern tech education reimagined\nwith AI-powered tools built for WE School Suez.';
 
   @override
   String get onboarding2Title => 'Instant Academic\nAnnouncements';
@@ -797,7 +797,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboarding5Subtitle =>
-      'Sign in with your university credentials\nand begin your smart campus journey.';
+      'Log in with your school credentials\nand begin your journey on the smart platform.';
 
   @override
   String get announcementsSubtitleStudent =>
@@ -840,10 +840,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get missionText =>
-      'To bridge the gap between students and educators at ERU — making academic communication seamless, transparent, and empowering every member of the university community.';
+      'To bridge the gap between students and educators at WE School Suez — making communication seamless, transparent, and empowering every member of our school community.';
 
   @override
-  String get connectingEru => 'Connecting ERU community';
+  String get connectingEru => 'Connecting WE School Suez community';
 
   @override
   String get developmentTeam => 'Development Team';

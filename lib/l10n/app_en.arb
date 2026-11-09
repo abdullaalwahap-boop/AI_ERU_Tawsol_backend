@@ -1,1020 +1,702 @@
 {
   "@@locale": "en",
-
   "appName": "AI Connect",
-  "@appName": { "description": "Application name" },
-
+  "@appName": {
+    "description": "Application name"
+  },
   "loading": "Loading...",
   "@loading": {},
-
   "retry": "Retry",
   "@retry": {},
-
   "cancel": "Cancel",
   "@cancel": {},
-
   "save": "Save",
   "@save": {},
-
   "confirm": "Confirm",
   "@confirm": {},
-
   "delete": "Delete",
   "@delete": {},
-
   "ok": "OK",
   "@ok": {},
-
   "yes": "Yes",
   "@yes": {},
-
   "no": "No",
   "@no": {},
-
   "error": "Error",
   "@error": {},
-
   "success": "Success",
   "@success": {},
-
   "back": "Back",
   "@back": {},
-
   "next": "Next",
   "@next": {},
-
   "submit": "Submit",
   "@submit": {},
-
   "send": "Send",
   "@send": {},
-
   "edit": "Edit",
   "@edit": {},
-
   "update": "Update",
   "@update": {},
-
   "search": "Search",
   "@search": {},
-
   "noResults": "No results found",
   "@noResults": {},
-
   "somethingWentWrong": "Something went wrong. Please try again.",
   "@somethingWentWrong": {},
-
   "networkError": "Network error. Check your connection.",
   "@networkError": {},
-
   "login": "Login",
   "@login": {},
-
   "signIn": "Sign In",
   "@signIn": {},
-
   "email": "Email",
   "@email": {},
-
   "password": "Password",
   "@password": {},
-
   "rememberMe": "Remember me",
   "@rememberMe": {},
-
   "forgotPassword": "Forgot Password?",
   "@forgotPassword": {},
-
   "enterEmail": "Enter your email",
   "@enterEmail": {},
-
   "enterPassword": "Enter your password",
   "@enterPassword": {},
-
   "invalidEmail": "Please enter a valid email address.",
   "@invalidEmail": {},
-
   "passwordRequired": "Password is required.",
   "@passwordRequired": {},
-
   "loginFailed": "Login failed. Please check your credentials.",
   "@loginFailed": {},
-
   "resetPassword": "Reset Password",
   "@resetPassword": {},
-
   "newPassword": "New Password",
   "@newPassword": {},
-
   "confirmPassword": "Confirm Password",
   "@confirmPassword": {},
-
   "otp": "OTP",
   "@otp": {},
-
   "enterOtp": "Enter OTP sent to your email",
   "@enterOtp": {},
-
   "resendOtp": "Resend OTP",
   "@resendOtp": {},
-
   "home": "Home",
   "@home": {},
-
   "announcements": "Announcements",
   "@announcements": {},
-
   "courses": "Courses",
   "@courses": {},
-
   "chat": "Chat",
   "@chat": {},
-
   "profile": "Profile",
   "@profile": {},
-
   "newAnnouncement": "New Announcement",
   "@newAnnouncement": {},
-
   "noAnnouncements": "No announcements yet",
   "@noAnnouncements": {},
-
   "markAsRead": "Mark as read",
   "@markAsRead": {},
-
   "unread": "Unread",
   "@unread": {},
-
   "priority": "Priority",
   "@priority": {},
-
   "normal": "Normal",
   "@normal": {},
-
   "important": "Important",
   "@important": {},
-
   "urgent": "Urgent",
   "@urgent": {},
-
   "assignment": "Assignment",
   "@assignment": {},
-
   "material": "Material",
   "@material": {},
-
   "deadline": "Deadline",
   "@deadline": {},
-
   "noCourses": "No courses available",
   "@noCourses": {},
-
   "courseDetails": "Course Details",
   "@courseDetails": {},
-
   "messages": "Messages",
   "@messages": {},
-
   "newMessage": "New Message",
   "@newMessage": {},
-
   "noMessages": "No messages yet",
   "@noMessages": {},
-
   "typeMessage": "Type a message...",
   "@typeMessage": {},
-
   "online": "Online",
   "@online": {},
-
   "offline": "Offline",
   "@offline": {},
-
   "lastSeen": "Last seen",
   "@lastSeen": {},
-
   "accountInfo": "Account Info",
   "@accountInfo": {},
-
   "preferences": "Preferences",
   "@preferences": {},
-
   "appearance": "Appearance",
   "@appearance": {},
-
   "language": "Language",
   "@language": {},
-
   "pushNotifications": "Push Notifications",
   "@pushNotifications": {},
-
   "enabled": "Enabled",
   "@enabled": {},
-
   "disabled": "Disabled",
   "@disabled": {},
-
   "lightMode": "Light",
   "@lightMode": {},
-
   "darkMode": "Dark",
   "@darkMode": {},
-
   "systemDefault": "System",
   "@systemDefault": {},
-
   "english": "English",
   "@english": {},
-
   "arabic": "العربية",
   "@arabic": {},
-
   "settings": "Settings",
   "@settings": {},
-
   "helpSupport": "Help & Support",
   "@helpSupport": {},
-
   "aboutApp": "About App",
   "@aboutApp": {},
-
   "changePassword": "Change Password",
   "@changePassword": {},
-
   "logout": "Log Out",
   "@logout": {},
-
   "logOutTitle": "Log Out",
   "@logOutTitle": {},
-
-  "logOutMessage": "Are you sure you want to log out of your ERU account?",
+  "logOutMessage": "Are you sure you want to log out of your WE School Suez account?",
   "@logOutMessage": {},
-
   "name": "Name",
   "@name": {},
-
   "studentId": "Student ID",
   "@studentId": {},
-
   "department": "Department",
   "@department": {},
-
   "level": "Level",
   "@level": {},
-
   "role": "Role",
   "@role": {},
-
   "student": "Student",
   "@student": {},
-
   "doctor": "Doctor",
   "@doctor": {},
-
   "teachingAssistant": "Teaching Assistant",
   "@teachingAssistant": {},
-
   "others": "Others",
   "@admin": {},
-
   "faq": "Frequently Asked Questions",
   "@faq": {},
-
   "contactUs": "Contact Us",
   "@contactUs": {},
-
   "version": "Version",
   "@version": {},
-
-  "madeWith": "Made with ❤️ by ERU Team",
+  "madeWith": "Made with ❤️ by WE School Suez Team",
   "@madeWith": {},
-
   "currentPassword": "Current Password",
   "@currentPassword": {},
-
   "passwordChanged": "Password changed successfully.",
   "@passwordChanged": {},
-
   "oldPasswordIncorrect": "Old password is incorrect.",
   "@oldPasswordIncorrect": {},
-
   "passwordsDoNotMatch": "Passwords do not match.",
   "@passwordsDoNotMatch": {},
-
   "today": "Today",
   "@today": {},
-
   "yesterday": "Yesterday",
   "@yesterday": {},
-
   "justNow": "Just now",
   "@justNow": {},
-
   "emptyChat": "No conversations yet.\nStart chatting!",
   "@emptyChat": {},
-
   "typeAMessage": "Type a message...",
   "@typeAMessage": {},
-
   "reply": "Reply",
   "@reply": {},
-
   "deleteMessage": "Delete",
   "@deleteMessage": {},
-
   "editMessage": "Edit",
   "@editMessage": {},
-
   "announceToAll": "All Students",
   "@announceToAll": {},
-
   "subject": "Subject",
   "@subject": {},
-
   "postedBy": "Posted by",
   "@postedBy": {},
-
   "audience": "Audience",
   "@audience": {},
-
   "attachments": "Attachments",
   "@attachments": {},
-
   "noAttachments": "No attachments",
   "@noAttachments": {},
-
   "download": "Download",
   "@download": {},
-
   "open": "Open",
   "@open": {},
-
   "upcomingAssignments": "Upcoming Assignments",
   "@upcomingAssignments": {},
-
   "noUpcomingAssignments": "No upcoming assignments",
   "@noUpcomingAssignments": {},
-
   "submitAssignment": "Submit Assignment",
   "@submitAssignment": {},
-
   "submitted": "Submitted",
   "@submitted": {},
-
   "notSubmitted": "Not Submitted",
   "@notSubmitted": {},
-
   "quiz": "Quiz",
   "@quiz": {},
-
   "generateQuiz": "Generate Quiz",
   "@generateQuiz": {},
-
   "myProfile": "My Profile",
   "@myProfile": {},
-
   "editProfile": "Edit Profile",
   "@editProfile": {},
-
   "profileUpdated": "Profile updated successfully.",
   "@profileUpdated": {},
-
   "universityEmail": "University Email",
   "@universityEmail": {},
-
   "emailAddress": "Email Address",
   "@emailAddress": {},
-
   "sendOtp": "Send OTP",
   "@sendOtp": {},
-
   "announcementTitle": "Title",
   "@announcementTitle": {},
-
   "announcementDetails": "Details",
   "@announcementDetails": {},
-
   "enterAnnouncementTitle": "Enter announcement title...",
   "@enterAnnouncementTitle": {},
-
   "writeAnnouncementContent": "Write your announcement content here...",
   "@writeAnnouncementContent": {},
-
   "source": "Source",
   "@source": {},
-
   "date": "Date",
   "@date": {},
-
   "time": "Time",
   "@time": {},
-
   "loadingCourses": "Loading your courses…",
   "@loadingCourses": {},
-
   "selectDeadline": "Select deadline date & time…",
   "@selectDeadline": {},
-
   "editAnnouncement": "Edit Announcement",
   "@editAnnouncement": {},
-
   "deleteAnnouncement": "Delete Announcement",
   "@deleteAnnouncement": {},
-
   "postAnnouncement": "Post Announcement",
   "@postAnnouncement": {},
-
   "discard": "Discard",
   "@discard": {},
-
   "addLink": "Add Link",
   "@addLink": {},
-
   "attach": "Attach",
   "@attach": {},
-
   "attachAFile": "Attach a file",
   "@attachAFile": {},
-
   "gallery": "Gallery",
   "@gallery": {},
-
   "document": "Document",
   "@document": {},
-
   "link": "Link",
   "@link": {},
-
   "searchUsers": "Search users by name or ID…",
   "@searchUsers": {},
-
   "noUsersFound": "No users found",
   "@noUsersFound": {},
-
   "assistant": "Assistant",
   "@assistant": {},
-
   "newChat": "New Chat",
   "@newChat": {},
-
   "searchByNameOrId": "Search by name or student ID…",
   "@searchByNameOrId": {},
-
   "findSomeoneToChatWith": "Find Someone to Chat With",
   "@findSomeoneToChatWith": {},
-
   "noUsersFoundFor": "No users found for \"{query}\"",
   "@noUsersFoundFor": {
     "placeholders": {
-      "query": { "type": "String" }
+      "query": {
+        "type": "String"
+      }
     }
   },
-
   "tryDifferentName": "Try a different name or student ID",
   "@tryDifferentName": {},
-
   "copyMessage": "Copy message",
   "@copyMessage": {},
-
   "editMessageAction": "Edit message",
   "@editMessageAction": {},
-
   "deleteMessageAction": "Delete message",
   "@deleteMessageAction": {},
-
   "editMessageHint": "Edit your message…",
   "@editMessageHint": {},
-
   "searchMessages": "Search messages…",
   "@searchMessages": {},
-
   "sendALink": "Send a Link",
   "@sendALink": {},
-
   "shareContent": "Share Content",
   "@shareContent": {},
-
   "chooseWhatToSend": "Choose what you would like to send",
   "@chooseWhatToSend": {},
-
   "failedToLoadProfile": "Failed to load profile",
   "@failedToLoadProfile": {},
-
   "tryAgain": "Try Again",
   "@tryAgain": {},
-
   "editName": "Edit Name",
   "@editName": {},
-
   "enterYourFullName": "Enter your full name",
   "@enterYourFullName": {},
-
   "noCoursesYet": "No Courses Yet",
   "@noCoursesYet": {},
-
   "noCoursesDescription": "You have no courses assigned this semester.\nCheck back later for updates.",
   "@noCoursesDescription": {},
-
   "generatingQuiz": "Generating your quiz…",
   "@generatingQuiz": {},
-
   "generatingQuizDesc": "The AI is reading the lecture and creating\n10 questions just for you.",
   "@generatingQuizDesc": {},
-
   "couldNotGenerateQuiz": "Could not generate quiz",
   "@couldNotGenerateQuiz": {},
-
   "goBack": "Go Back",
   "@goBack": {},
-
   "welcomeBack": "Welcome Back",
   "@welcomeBack": {},
-
   "signInSubtitle": "Sign in with your university account",
   "@signInSubtitle": {},
-
   "enterOtpTitle": "Enter OTP",
   "@enterOtpTitle": {},
-
   "verifyOtp": "Verify OTP",
   "@verifyOtp": {},
-
   "forgotPasswordSubtitle": "Enter your email and we'll send you a verification code",
   "@forgotPasswordSubtitle": {},
-
   "createStrongPassword": "Create a strong new password",
   "@createStrongPassword": {},
-
   "passwordResetSuccess": "Password Reset!",
   "@passwordResetSuccess": {},
-
   "passwordResetMessage": "Your password has been successfully reset.\nYou can now sign in with your new password.",
   "@passwordResetMessage": {},
-
   "backToLogin": "Back to Login",
   "@backToLogin": {},
-
   "scanQrCode": "Scan QR Code",
   "@scanQrCode": {},
-
   "alignQrCode": "Align the QR code within the frame",
   "@alignQrCode": {},
-
   "deleteAnnouncementConfirm": "Are you sure you want to delete this announcement?",
   "@deleteAnnouncementConfirm": {},
-
   "deleteAnnouncementPermanent": "This will permanently delete the announcement. This action cannot be undone.",
   "@deleteAnnouncementPermanent": {},
-
   "announcementSaved": "Announcement saved successfully!",
   "@announcementSaved": {},
-
   "assignmentCreated": "Assignment created successfully!",
   "@assignmentCreated": {},
-
   "failedToDeleteAnnouncement": "Failed to delete announcement",
   "@failedToDeleteAnnouncement": {},
-
   "messageCopied": "Message copied",
   "@messageCopied": {},
-
   "imageSavedToGallery": "Image saved to gallery",
   "@imageSavedToGallery": {},
-
   "couldNotSaveImage": "Could not save image",
   "@couldNotSaveImage": {},
-
   "saveToGallery": "Save to gallery",
   "@saveToGallery": {},
-
   "downloadFailed": "Download failed",
   "@downloadFailed": {},
-
   "micPermissionDenied": "Microphone permission denied. Enable it in Settings.",
   "@micPermissionDenied": {},
-
   "micPermissionRequired": "Microphone permission is required to record voice messages.",
   "@micPermissionRequired": {},
-
   "account": "Account",
   "@account": {},
-
   "fullName": "Full Name",
   "@fullName": {},
-
   "universityId": "University ID",
   "@universityId": {},
-
   "changePasswordSubtitle": "Update your account password",
   "@changePasswordSubtitle": {},
-
   "enterCurrentPassword": "Enter your current password",
   "@enterCurrentPassword": {},
-
   "required": "Required",
   "@required": {},
-
   "newPasswordHint": "Create a strong password",
   "@newPasswordHint": {},
-
   "atLeast8CharsRequired": "At least 8 characters required",
   "@atLeast8CharsRequired": {},
-
   "confirmNewPassword": "Confirm New Password",
   "@confirmNewPassword": {},
-
   "reEnterNewPassword": "Re-enter your new password",
   "@reEnterNewPassword": {},
-
   "passwordChangedSuccess": "Password changed successfully!",
   "@passwordChangedSuccess": {},
-
   "passwordRequirements": "Password requirements",
   "@passwordRequirements": {},
-
   "atLeast8Chars": "At least 8 characters",
   "@atLeast8Chars": {},
-
   "oneUppercaseLetter": "One uppercase letter (A–Z)",
   "@oneUppercaseLetter": {},
-
   "oneLowercaseLetter": "One lowercase letter (a–z)",
   "@oneLowercaseLetter": {},
-
   "oneNumber": "One number (0–9)",
   "@oneNumber": {},
-
   "oneSpecialChar": "One special character (!@#…)",
   "@oneSpecialChar": {},
-
   "faqQuestion1": "How do I reset my password?",
   "@faqQuestion1": {},
-
   "faqAnswer1": "Go to Account → Change Password. You'll need your current password. If you've forgotten it, use Forgot Password on the login screen.",
   "@faqAnswer1": {},
-
   "faqQuestion2": "How are announcements filtered?",
   "@faqQuestion2": {},
-
   "faqAnswer2": "Announcements are filtered by your role, level, and enrolled courses. Use the filter chips on the home screen to narrow down by type.",
   "@faqAnswer2": {},
-
   "faqQuestion3": "Can I submit assignments here?",
   "@faqQuestion3": {},
-
   "faqAnswer3": "Yes — open the relevant course, navigate to the assignment card, and tap Submit. Accepted formats: PDF, Word, ZIP.",
   "@faqAnswer3": {},
-
   "faqQuestion4": "Who can see my messages?",
   "@faqQuestion4": {},
-
   "faqAnswer4": "Direct messages are private between you and the recipient. Group channels are visible to all enrolled members of that course.",
   "@faqAnswer4": {},
-
   "support": "Support",
   "@support": {},
-
   "reportIssue": "Report an Issue",
   "@reportIssue": {},
-
   "reportIssueSubtitle": "Something broken? Tell us",
   "@reportIssueSubtitle": {},
-
   "contactUsSubtitle": "We'll get back to you as soon as possible",
   "@contactUsSubtitle": {},
-
   "describeIssue": "Describe your issue in detail…",
   "@describeIssue": {},
-
   "messageSentSuccess": "Message sent. We'll respond shortly!",
   "@messageSentSuccess": {},
-
   "category": "Category",
   "@category": {},
-
   "sendMessage": "Send Message",
   "@sendMessage": {},
-
   "appInfo": "App Info",
   "@appInfo": {},
-
   "organization": "Organization",
   "@organization": {},
-
-  "organizationValue": "Egyptian Russian University",
+  "organizationValue": "WE Applied Technology School - Suez",
   "@organizationValue": {},
-
   "builtWith": "Built with",
   "@builtWith": {},
-
   "builtWithValue": "Flutter + FastAPI",
   "@builtWithValue": {},
-
   "releaseLabel": "Release",
   "@releaseLabel": {},
-
   "releaseValue": "May 2026",
   "@releaseValue": {},
-
   "versionValue": "1.0.0-beta",
   "@versionValue": {},
-
   "quizComplete": "Quiz Complete!",
   "@quizComplete": {},
-
   "quizScore": "{correct} / {total} Correct",
   "@quizScore": {
     "placeholders": {
-      "correct": { "type": "int" },
-      "total": { "type": "int" }
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
-
   "quizExcellent": "Excellent work!",
   "@quizExcellent": {},
-
   "quizGoodEffort": "Good effort — keep practicing!",
   "@quizGoodEffort": {},
-
   "quizKeepStudying": "Keep studying and try again!",
   "@quizKeepStudying": {},
-
   "exit": "Exit",
   "@exit": {},
-
   "retakeQuiz": "Retake Quiz",
   "@retakeQuiz": {},
-
   "reviewAnswers": "Review Your Answers",
   "@reviewAnswers": {},
-
-  "onboarding1Title": "Smart Campus\nPlatform",
+  "onboarding1Title": "Smart School Platform",
   "@onboarding1Title": {},
-
-  "onboarding1Subtitle": "Experience university life reimagined\nwith AI-powered tools built for ERU.",
+  "onboarding1Subtitle": "Experience modern tech education reimagined\nwith AI-powered tools built for WE School Suez.",
   "@onboarding1Subtitle": {},
-
   "onboarding2Title": "Instant Academic\nAnnouncements",
   "@onboarding2Title": {},
-
   "onboarding2Subtitle": "Stay informed with real-time updates\nfrom your professors and departments.",
   "@onboarding2Subtitle": {},
-
   "onboarding3Title": "Courses &\nMaterials",
   "@onboarding3Title": {},
-
   "onboarding3Subtitle": "Access lectures, assignments and\ncourse content — all in one place.",
   "@onboarding3Subtitle": {},
-
   "onboarding4Title": "Direct Faculty\nCommunication",
   "@onboarding4Title": {},
-
   "onboarding4Subtitle": "Chat directly with professors and TAs.\nGet answers when you need them.",
   "@onboarding4Subtitle": {},
-
   "onboarding5Title": "Your Platform\nAwaits",
   "@onboarding5Title": {},
-
-  "onboarding5Subtitle": "Sign in with your university credentials\nand begin your smart campus journey.",
+  "onboarding5Subtitle": "Log in with your school credentials\nand begin your journey on the smart platform.",
   "@onboarding5Subtitle": {},
-
   "announcementsSubtitleStudent": "Stay up to date with your courses",
   "@announcementsSubtitleStudent": {},
-
   "announcementsSubtitleDoctor": "Manage and view all announcements",
   "@announcementsSubtitleDoctor": {},
-
   "announcementsSubtitleAdmin": "University-wide announcements",
   "@announcementsSubtitleAdmin": {},
-
   "myCourses": "My Courses",
   "@myCourses": {},
-
   "coursesSubtitleStudent": "Your enrolled courses this semester",
   "@coursesSubtitleStudent": {},
-
   "coursesSubtitleDoctor": "Courses you are currently teaching",
   "@coursesSubtitleDoctor": {},
-
   "conversations": "{count} conversations",
   "@conversations": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
-
   "profileSubtitle": "Manage your account & preferences",
   "@profileSubtitle": {},
-
   "newPost": "New Post",
   "@newPost": {},
-
   "announcementDetailsTitle": "Announcement Details",
   "@announcementDetailsTitle": {},
-
   "setYourPassword": "Set Your Password",
   "@setYourPassword": {},
-
   "ourMission": "Our Mission",
   "@ourMission": {},
-
-  "missionText": "To bridge the gap between students and educators at ERU — making academic communication seamless, transparent, and empowering every member of the university community.",
+  "missionText": "To bridge the gap between students and educators at WE School Suez — making communication seamless, transparent, and empowering every member of our school community.",
   "@missionText": {},
-
-  "connectingEru": "Connecting ERU community",
+  "connectingEru": "Connecting WE School Suez community",
   "@connectingEru": {},
-
   "developmentTeam": "Development Team",
   "@developmentTeam": {},
-
   "flutterDeveloper": "Flutter Developer",
   "@flutterDeveloper": {},
-
   "backendArchitecture": "Backend & Architecture",
   "@backendArchitecture": {},
-
   "noConversationsYet": "No Conversations Yet",
   "@noConversationsYet": {},
-
   "noConversationsDesc": "Start a conversation with your professors,\nteaching assistants, or administrators.",
   "@noConversationsDesc": {},
-
   "tapBelowToStart": "Tap the button below to start",
   "@tapBelowToStart": {},
-
   "noResultsFor": "No results for \"{query}\"",
   "@noResultsFor": {
     "placeholders": {
-      "query": { "type": "String" }
+      "query": {
+        "type": "String"
+      }
     }
   },
-
   "firstLoginBannerText": "Your account was created with a temporary password. Please set a secure personal password to continue.",
   "@firstLoginBannerText": {},
-
   "strongPasswordHint": "Use a strong password with a mix of letters, numbers and symbols.",
   "@strongPasswordHint": {},
-
   "all": "All",
   "@all": {},
-
   "myAnnouncements": "My Announcements",
   "@myAnnouncements": {},
-
   "targetAudience": "Target Audience",
   "@targetAudience": {},
-
   "selectSubject": "Select Subject",
   "@selectSubject": {},
-
   "filterByCourse": "Filter by course",
   "@filterByCourse": {},
-
   "optional": "optional",
   "@optional": {},
-
   "tapToAttachFiles": "Tap to attach files",
   "@tapToAttachFiles": {},
-
   "attachmentFormats": "PDF · DOCX · PPT · Images · ZIP · Links",
   "@attachmentFormats": {},
-
   "addFile": "Add File",
   "@addFile": {},
-
   "addAnotherFile": "Add another file",
   "@addAnotherFile": {},
-
   "postType": "Post Type",
   "@postType": {},
-
   "noAnnouncementsYet": "No Announcements Yet",
   "@noAnnouncementsYet": {},
-
   "noAnnouncementsDesc": "There are no announcements at the moment.\nCheck back later for updates.",
   "@noAnnouncementsDesc": {},
-
   "errorTitle": "Something Went Wrong",
   "@errorTitle": {},
-
   "readMore": "Read more",
   "@readMore": {},
-
   "students": "Students",
   "@students": {},
-
   "doctors": "Doctors",
   "@doctors": {},
-
   "assistants": "Assistants",
   "@assistants": {},
-
   "specificUsers": "Specific Users",
   "@specificUsers": {},
-
   "courseStudents": "Course\nStudents",
   "@courseStudents": {},
-
   "specificStudents": "Specific\nStudents",
   "@specificStudents": {},
-
   "announcementLabel": "Announcement",
   "@announcementLabel": {},
-
   "visibleToAll": "Visible to all students, doctors and assistants",
   "@visibleToAll": {},
-
   "visibleToAllStudents": "Visible to all students",
   "@visibleToAllStudents": {},
-
   "visibleToAllDoctors": "Visible to all doctors",
   "@visibleToAllDoctors": {},
-
   "visibleToAllAssistants": "Visible to all teaching assistants",
   "@visibleToAllAssistants": {},
-
   "visibleToSelectedUsers": "Visible to selected users",
   "@visibleToSelectedUsers": {},
-
   "visibleToStudentsIn": "Visible to students in {parts}",
   "@visibleToStudentsIn": {
     "placeholders": {
-      "parts": { "type": "String" }
+      "parts": {
+        "type": "String"
+      }
     }
   },
-
   "am": "AM",
   "@am": {},
-
   "pm": "PM",
   "@pm": {},
-
   "selectDeadlineDate": "Select deadline date",
   "@selectDeadlineDate": {},
-
   "selectDeadlineTime": "Select deadline time",
   "@selectDeadlineTime": {},
-
   "validUrlError": "Please enter a valid URL (https://…)",
   "@validUrlError": {},
-
   "deptCourse": "Dept. Course",
   "@deptCourse": {},
-
   "deptSuffix": "dept.",
   "@deptSuffix": {},
-
   "course": "Course",
   "@course": {},
-
   "selectedUsers": "Selected Users",
   "@selectedUsers": {},
-
   "continueButton": "Continue",
   "@continueButton": {},
-
   "enterPlatform": "Enter Platform",
   "@enterPlatform": {},
-
   "skip": "Skip",
   "@skip": {},
-
   "message": "Message",
   "@message": {},
-
   "mathematics": "Mathematics",
   "@mathematics": {},
-
   "physics": "Physics",
   "@physics": {},
-
   "aiSystems": "AI Systems",
   "@aiSystems": {},
-
   "admAdministration": "ADM · Administration",
   "@admAdministration": {},
-
   "viewDetails": "View Details",
   "@viewDetails": {},
-
   "noContentYet": "No Content Yet",
   "@noContentYet": {},
-
   "noContentDesc": "Nothing has been posted for this course yet.\nCheck back later for updates.",
   "@noContentDesc": {},
-
   "items": "items",
   "@items": {},
-
   "hrs": "hrs",
   "@hrs": {},
-
   "subjectCourse": "Subject / Course",
   "@subjectCourse": {},
-
   "materialDetailsTitle": "Material Details",
   "@materialDetailsTitle": {},
-
   "assignmentDetailsTitle": "Assignment Details",
   "@assignmentDetailsTitle": {}
 }

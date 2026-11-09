@@ -1,6 +1,6 @@
 # AI Connect — Flutter Frontend
 
-A mobile application for ERU (Egyptian Russian University) that connects students, doctors, and administrators through announcements, real-time chat, and course management.
+A mobile application for WE Applied Technology School - Suez (مدرسة WE للتكنولوجيا التطبيقية بالسويس) that connects students, teachers, and administrators through announcements, real-time chat, smart attendance, and course management.ime chat, and course management.
 
 ---
 

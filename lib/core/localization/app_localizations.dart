@@ -593,7 +593,7 @@ abstract class AppLocalizations {
   /// No description provided for @logOutMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to log out of your ERU account?'**
+  /// **'Are you sure you want to log out of your WE School Suez account?'**
   String get logOutMessage;
 
   /// No description provided for @name.
@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @madeWith.
   ///
   /// In en, this message translates to:
-  /// **'Made with ❤️ by ERU Team'**
+  /// **'Made with ❤️ by WE School Suez Team'**
   String get madeWith;
 
   /// No description provided for @currentPassword.
@@ -1493,7 +1493,7 @@ abstract class AppLocalizations {
   /// No description provided for @organizationValue.
   ///
   /// In en, this message translates to:
-  /// **'Egyptian Russian University'**
+  /// **'WE Applied Technology School - Suez'**
   String get organizationValue;
 
   /// No description provided for @builtWith.
@@ -1583,7 +1583,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboarding1Subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Experience university life reimagined\nwith AI-powered tools built for ERU.'**
+  /// **'Experience university life reimagined\nwith AI-powered tools built for WE School Suez.'**
   String get onboarding1Subtitle;
 
   /// No description provided for @onboarding2Title.
@@ -1709,13 +1709,13 @@ abstract class AppLocalizations {
   /// No description provided for @missionText.
   ///
   /// In en, this message translates to:
-  /// **'To bridge the gap between students and educators at ERU — making academic communication seamless, transparent, and empowering every member of the university community.'**
+  /// **'To bridge the gap between students and educators at WE School Suez — making academic communication seamless, transparent, and empowering every member of the university community.'**
   String get missionText;
 
   /// No description provided for @connectingEru.
   ///
   /// In en, this message translates to:
-  /// **'Connecting ERU community'**
+  /// **'Connecting WE School Suez community'**
   String get connectingEru;
 
   /// No description provided for @developmentTeam.

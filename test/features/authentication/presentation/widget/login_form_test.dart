@@ -16,7 +16,7 @@ const _fakeUser = AuthUserModel(
   userId: 1,
   uniCode: '225040',
   name: 'Ahmed',
-  email: 'ahmed@stu.eru.edu.eg',
+  email: 'ahmed@suez1.moe.edu.eg',
   typeCode: 'STU',
   level: 2,
   isTemporaryPassword: false,
@@ -91,7 +91,7 @@ void main() {
 
       // Enter valid credentials and submit
       final fields = find.byType(TextFormField);
-      await tester.enterText(fields.at(0), 'test@stu.eru.edu.eg');
+      await tester.enterText(fields.at(0), 'test@suez1.moe.edu.eg');
       await tester.enterText(fields.at(1), 'password123');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump(); // let cubit emit LoginLoading
@@ -113,7 +113,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final fields = find.byType(TextFormField);
-      await tester.enterText(fields.at(0), 'test@stu.eru.edu.eg');
+      await tester.enterText(fields.at(0), 'test@suez1.moe.edu.eg');
       await tester.enterText(fields.at(1), 'password123');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
@@ -136,13 +136,13 @@ void main() {
       await tester.pumpAndSettle();
 
       final fields = find.byType(TextFormField);
-      await tester.enterText(fields.at(0), ' test@stu.eru.edu.eg ');
+      await tester.enterText(fields.at(0), ' test@suez1.moe.edu.eg ');
       await tester.enterText(fields.at(1), 'password123');
       await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
 
       verify(() => repo.login(
-            email: 'test@stu.eru.edu.eg',
+            email: 'test@suez1.moe.edu.eg',
             password: 'password123',
           )).called(1);
     });

@@ -8,9 +8,9 @@ import 'package:ai_eru_tawasol/features/onboarding/presentation/view/widgets/ill
 final List<OnBoardingModel> onBoardingList = [
   const OnBoardingModel(
     illustration: OnBoardingIllus1(),
-    title: 'Smart Campus\nPlatform',
+    title: 'Smart School\nPlatform',
     subtitle:
-        'Experience university life reimagined\nwith AI-powered tools built for ERU.',
+        'Experience modern tech education reimagined\nwith AI-powered tools built for WE School Suez.',
   ),
   const OnBoardingModel(
     illustration: OnBoardingIllus2(),

@@ -80,10 +80,10 @@ jobs:
           tag_name: ios-v1.0.0-${{ github.run_number }}
           name: iOS Release v1.0.0 (Build #${{ github.run_number }})
           body: |
-            ## AI ERU Tawasol - iOS Application v1.0.0 (iPhone / iPad)
+            ## WE School Suez Tawasol - iOS Application v1.0.0 (iPhone / iPad)
 
             ### Included Packages:
-            * **`AI_ERU_Tawasol.ipa`**: iOS Application Package for iPhone & iPad.
+            * **`WE_School_Suez_Tawasol.ipa`**: iOS Application Package for iPhone & iPad.
               - Can be installed directly via Sideloadly, AltStore, Scarlet, TrollStore, or Apple Configurator.
             * **`Runner.app.zip`**: Compressed iOS App Bundle for Xcode or Simulator testing.
 
