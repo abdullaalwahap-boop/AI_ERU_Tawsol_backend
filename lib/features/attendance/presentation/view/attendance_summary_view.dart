@@ -32,9 +32,9 @@ class _AttendanceSummaryViewState extends State<AttendanceSummaryView> {
   }
 
   Color _rateColor(double rate) {
-    if (rate >= 85) return Colors.emerald;
+    if (rate >= 85) return const Color(0xFF10B981);
     if (rate >= 75) return Colors.amber.shade700;
-    return Colors.rose;
+    return const Color(0xFFF43F5E);
   }
 
   @override

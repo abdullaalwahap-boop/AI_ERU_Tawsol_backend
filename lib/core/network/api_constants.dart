@@ -76,8 +76,8 @@ class ApiConstants {
 
   // ─── Attendance (QR Code) ───────────────────────────────────────────────────
   static const String attendanceSessions = '/attendance/sessions';
-  static String attendanceSessionDetail(int id) => '/attendance/sessions/';
-  static String attendanceSessionClose(int id) => '/attendance/sessions//close';
+  static String attendanceSessionDetail(int id) => '/attendance/sessions/$id';
+  static String attendanceSessionClose(int id) => '/attendance/sessions/$id/close';
   static const String attendanceCheckIn = '/attendance/check-in';
   static const String attendanceMySummary = '/attendance/my-summary';
 

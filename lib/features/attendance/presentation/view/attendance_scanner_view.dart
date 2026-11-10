@@ -77,10 +77,10 @@ class _AttendanceScannerViewState extends State<AttendanceScannerView> {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: Colors.emerald.withOpacity(0.15),
+                color: const Color(0xFF10B981).withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.check_circle_rounded, color: Colors.emerald, size: 40),
+              child: const Icon(Icons.check_circle_rounded, color: Color(0xFF10B981), size: 40),
             ),
             const SizedBox(height: 16),
             Text(
@@ -136,10 +136,10 @@ class _AttendanceScannerViewState extends State<AttendanceScannerView> {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: Colors.rose.withOpacity(0.15),
+                color: const Color(0xFFF43F5E).withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.error_outline_rounded, color: Colors.rose, size: 40),
+              child: const Icon(Icons.error_outline_rounded, color: Color(0xFFF43F5E), size: 40),
             ),
             const SizedBox(height: 16),
             const Text(
