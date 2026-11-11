@@ -46,6 +46,6 @@ class AttendanceRemoteDatasource {
     final message = data is Map && data['detail'] is String
         ? data['detail'] as String
         : 'فشلت عملية التحضير (HTTP $code)';
-    throw NetworkException(message: message, statusCode: code);
+    throw NetworkException(message);
   }
 }
