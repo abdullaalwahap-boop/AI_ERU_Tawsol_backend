@@ -10,31 +10,28 @@ class ProfileAttendanceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: ProfileSectionCard(
-        child: Column(
-          children: [
-            ProfileNavTile(
-              icon: Icons.qr_code_scanner_rounded,
-              iconColor: const Color(0xFF6366F1),
-              iconBg: const Color(0xFF6366F1).withOpacity(0.12),
-              title: 'تسجيل الحضور الذكي (QR Code)',
-              subtitle: 'مسح كود المحاضرة وتسجيل حضورك فوراً',
-              onTap: () => context.push(AppRouter.kAttendanceScannerView),
-            ),
-            const Divider(height: 1, indent: 48),
-            ProfileNavTile(
-              icon: Icons.fact_check_rounded,
-              iconColor: const Color(0xFF10B981),
-              iconBg: const Color(0xFF10B981).withOpacity(0.12),
-              title: 'سجل الحضور والغياب',
-              subtitle: 'عرض إحصائيات ونسب الحضور لجميع المقررات',
-              onTap: () => context.push(AppRouter.kAttendanceSummaryView),
-            ),
-          ],
+    return ProfileSectionCard(
+      title: 'الحضور والغياب',
+      titleIcon: Icons.qr_code_scanner_rounded,
+      children: [
+        ProfileNavTile(
+          icon: Icons.qr_code_scanner_rounded,
+          iconColor: const Color(0xFF6366F1),
+          iconBg: const Color(0xFF6366F1).withValues(alpha: 0.12),
+          title: 'تسجيل الحضور الذكي (QR Code)',
+          subtitle: 'مسح كود المحاضرة وتسجيل حضورك فوراً',
+          onTap: () => context.push(AppRouter.kAttendanceScannerView),
         ),
-      ),
+        const Divider(height: 1, indent: 48),
+        ProfileNavTile(
+          icon: Icons.fact_check_rounded,
+          iconColor: const Color(0xFF10B981),
+          iconBg: const Color(0xFF10B981).withValues(alpha: 0.12),
+          title: 'سجل الحضور والغياب',
+          subtitle: 'عرض إحصائيات ونسب الحضور لجميع المقررات',
+          onTap: () => context.push(AppRouter.kAttendanceSummaryView),
+        ),
+      ],
     );
   }
 }
