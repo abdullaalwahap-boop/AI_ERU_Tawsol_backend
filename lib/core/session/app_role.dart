@@ -31,7 +31,7 @@ enum AppRole {
 
   bool get isAdmin => this == admin;
 
-  bool get hasBottomNav => this != admin;
+  bool get hasBottomNav => true;
 
   // ── Feature adapters ──────────────────────────────────────────────────────
 

@@ -34,6 +34,6 @@ final List<OnBoardingModel> onBoardingList = [
     illustration: OnBoardingIllus5(),
     title: 'Your Platform\nAwaits',
     subtitle:
-        'Sign in with your university credentials\nand begin your smart campus journey.',
+        'Sign in with your school credentials\nand begin your smart learning journey.',
   ),
 ];

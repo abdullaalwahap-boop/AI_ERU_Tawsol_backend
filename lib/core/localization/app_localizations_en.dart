@@ -388,7 +388,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileUpdated => 'Profile updated successfully.';
 
   @override
-  String get universityEmail => 'University Email';
+  String get universityEmail => 'School Email';
 
   @override
   String get emailAddress => 'Email Address';
@@ -540,7 +540,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeBack => 'Welcome Back';
 
   @override
-  String get signInSubtitle => 'Sign in with your university account';
+  String get signInSubtitle => 'Sign in with your school account';
 
   @override
   String get enterOtpTitle => 'Enter OTP';
@@ -618,7 +618,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullName => 'Full Name';
 
   @override
-  String get universityId => 'University ID';
+  String get universityId => 'School / Academic ID';
 
   @override
   String get changePasswordSubtitle => 'Update your account password';
@@ -807,7 +807,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get announcementsSubtitleDoctor => 'Manage and view all announcements';
 
   @override
-  String get announcementsSubtitleAdmin => 'University-wide announcements';
+  String get announcementsSubtitleAdmin => 'School-wide announcements';
 
   @override
   String get myCourses => 'My Courses';

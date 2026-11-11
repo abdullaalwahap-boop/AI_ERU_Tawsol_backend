@@ -3,7 +3,7 @@ import 'package:ai_eru_tawasol/features/profile/data/models/profile_role.dart';
 class ProfileUser {
   final String id;
 
-  /// University-issued code (e.g. "225040"). Distinct from [id] which is
+  /// School-issued code (e.g. "225040"). Distinct from [id] which is
   /// the internal database primary key used for API calls.
   final String uniCode;
 

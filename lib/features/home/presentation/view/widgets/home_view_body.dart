@@ -3,7 +3,7 @@ import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/announ_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
-import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_floating_action_button.dart.dart';
+import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_floating_action_button.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,17 +31,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             ? sessionState.role
             : AppRole.student;
 
-        // Admin: no BNB — full-screen feed + FAB
-        if (role.isAdmin) {
-          return Scaffold(
-            body: AnnounView(role: role.toAnnounRole),
-            floatingActionButton:
-                HomeFloatingActionButton(role: role.toAnnounRole),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          );
-        }
-
-        // Doctor/TA: FAB only on Home tab (index 0)
+        // Doctor/TA/Admin: FAB only on Home tab (index 0)
         final showFab = role.canPostAnnouncements && _currentIndex == 0;
 
         final pages = buildPages(role);

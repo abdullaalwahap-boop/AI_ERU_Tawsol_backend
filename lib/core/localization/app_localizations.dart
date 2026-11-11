@@ -1583,7 +1583,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboarding1Subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Experience university life reimagined\nwith AI-powered tools built for WE School Suez.'**
+  /// **'Experience modern tech education reimagined\nwith AI-powered tools built for WE School Suez.'**
   String get onboarding1Subtitle;
 
   /// No description provided for @onboarding2Title.
@@ -1631,7 +1631,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboarding5Subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Sign in with your university credentials\nand begin your smart campus journey.'**
+  /// **'Log in with your school credentials\nand begin your journey on the smart platform.'**
   String get onboarding5Subtitle;
 
   /// No description provided for @announcementsSubtitleStudent.
@@ -1709,7 +1709,7 @@ abstract class AppLocalizations {
   /// No description provided for @missionText.
   ///
   /// In en, this message translates to:
-  /// **'To bridge the gap between students and educators at WE School Suez — making academic communication seamless, transparent, and empowering every member of the university community.'**
+  /// **'To bridge the gap between students and educators at WE School Suez — making communication seamless, transparent, and empowering every member of our school community.'**
   String get missionText;
 
   /// No description provided for @connectingEru.
