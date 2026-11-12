@@ -10,17 +10,17 @@ class LoginIllustration extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final w = (constraints.maxWidth - 32).clamp(0.0, 260.0);
-        final h = w * 0.78;
+        final w = (constraints.maxWidth - 32).clamp(0.0, 230.0);
+        final h = w;
         return SizedBox(
-          width: w + 32,
-          height: h + 32,
+          width: w + 24,
+          height: h + 24,
           child: Stack(
             alignment: Alignment.center,
             children: [
               Container(
-                width: w + 32,
-                height: h + 32,
+                width: w + 24,
+                height: h + 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -48,7 +48,7 @@ class LoginIllustration extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     _imagePath,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
