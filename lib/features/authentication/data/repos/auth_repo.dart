@@ -10,7 +10,7 @@ abstract class AuthRepo {
   });
 
   /// Sends an OTP to [email]. Throws on unknown email or network error.
-  Future<void> forgetPassword({required String email});
+  Future<Map<String, dynamic>> forgetPassword({required String email});
 
   /// Validates [code] for [email] and returns a short-lived `reset_token`.
   ///

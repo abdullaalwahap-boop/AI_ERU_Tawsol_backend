@@ -68,13 +68,16 @@ class AuthRemoteDatasource {
 
   // ─── Forgot Password ──────────────────────────────────────────────────────────
 
-  Future<void> forgotPassword({required String email}) async {
+  Future<Map<String, dynamic>> forgotPassword({required String email}) async {
     try {
       final response = await _dio.post(
         ApiConstants.forgotPassword,
         data: {'email': email},
       );
       _assertOk(response);
+      return response.data is Map<String, dynamic>
+          ? response.data as Map<String, dynamic>
+          : <String, dynamic>{};
     } on DioException catch (e) {
       throw NetworkException.fromDioError(e);
     }

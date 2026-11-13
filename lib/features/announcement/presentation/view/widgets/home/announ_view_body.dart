@@ -26,12 +26,19 @@ class AnnounViewBody extends StatefulWidget {
 
 class _AnnounViewBodyState extends State<AnnounViewBody> {
   StreamSubscription<int>? _wsSub;
+  Timer? _pollingTimer;
 
   @override
   void initState() {
     super.initState();
     getIt<AnnouncementChangeNotifier>().addListener(_onAnnouncementChanged);
     _connectWs();
+    // Background polling fallback (every 30s) ensures immediate notification & announcement updates
+    _pollingTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted) {
+        context.read<AnnounCubit>().silentRefresh(widget.role);
+      }
+    });
   }
 
   void _connectWs() {
@@ -44,6 +51,7 @@ class _AnnounViewBodyState extends State<AnnounViewBody> {
 
   @override
   void dispose() {
+    _pollingTimer?.cancel();
     _wsSub?.cancel();
     getIt<AnnouncementChangeNotifier>().removeListener(_onAnnouncementChanged);
     super.dispose();

@@ -10,10 +10,14 @@ class HomeBottomNavigationBar extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
+    this.announcementUnreadCount = 0,
+    this.chatUnreadCount = 0,
   });
 
   final int currentIndex;
   final void Function(int) onTap;
+  final int announcementUnreadCount;
+  final int chatUnreadCount;
 
   static const _primaryColor = Color(0xff003096);
   static const _inactiveColor = Color(0xffA0AABB);
@@ -22,8 +26,16 @@ class HomeBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final items = [
-      HomeNavItem(icon: Icons.campaign_rounded, label: l10n.announcements),
-      HomeNavItem(icon: Icons.chat_bubble_rounded, label: l10n.chat),
+      HomeNavItem(
+        icon: Icons.campaign_rounded,
+        label: l10n.announcements,
+        badgeCount: announcementUnreadCount,
+      ),
+      HomeNavItem(
+        icon: Icons.chat_bubble_rounded,
+        label: l10n.chat,
+        badgeCount: chatUnreadCount,
+      ),
       HomeNavItem(icon: Icons.menu_book_rounded, label: l10n.courses),
       HomeNavItem(icon: Icons.person_rounded, label: l10n.profile),
     ];
@@ -66,10 +78,42 @@ class HomeBottomNavigationBar extends StatelessWidget {
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Icon(
-                            items[i].icon,
-                            size: 22,
-                            color: selected ? _primaryColor : _inactiveColor,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(
+                                items[i].icon,
+                                size: 22,
+                                color: selected ? _primaryColor : _inactiveColor,
+                              ),
+                              if (items[i].badgeCount > 0)
+                                Positioned(
+                                  top: -4,
+                                  right: -8,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 1),
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    constraints: const BoxConstraints(
+                                        minWidth: 16, minHeight: 16),
+                                    child: Text(
+                                      items[i].badgeCount > 99
+                                          ? '99+'
+                                          : '${items[i].badgeCount}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                         AppSpacing.h3,

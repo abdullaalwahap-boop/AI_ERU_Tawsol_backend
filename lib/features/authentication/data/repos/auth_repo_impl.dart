@@ -15,7 +15,7 @@ class AuthRepoImpl implements AuthRepo {
       _datasource.login(email: email, password: password);
 
   @override
-  Future<void> forgetPassword({required String email}) =>
+  Future<Map<String, dynamic>> forgetPassword({required String email}) =>
       _datasource.forgotPassword(email: email);
 
   @override

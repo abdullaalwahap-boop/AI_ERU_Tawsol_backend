@@ -39,7 +39,7 @@ class AnnouncementWsService {
   Future<void> _connect(int userId, String token) async {
     try {
       final url = '${ApiConstants.wsAnnouncements(userId)}?token=$token';
-      _socket = await WebSocket.connect(url);
+      _socket = await WebSocket.connect(url).timeout(const Duration(seconds: 4));
       _connectedUserId = userId;
 
       _sub = _socket!.listen(
@@ -51,7 +51,8 @@ class AnnouncementWsService {
     } catch (_) {
       _socket = null;
       _connectedUserId = null;
-      _scheduleReconnect(userId, token);
+      // In serverless environments where WebSocket isn't persistent, back off gracefully
+      _scheduleReconnect(userId, token, delaySeconds: 60);
     }
   }
 
@@ -67,11 +68,11 @@ class AnnouncementWsService {
     } catch (_) {}
   }
 
-  void _scheduleReconnect(int userId, String token) {
+  void _scheduleReconnect(int userId, String token, {int delaySeconds = 15}) {
     _socket = null;
     _connectedUserId = null;
     _reconnectTimer?.cancel();
-    _reconnectTimer = Timer(const Duration(seconds: 5), () {
+    _reconnectTimer = Timer(Duration(seconds: delaySeconds), () {
       if (!_controller.isClosed) _connect(userId, token);
     });
   }

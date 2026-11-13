@@ -48,6 +48,20 @@ class OtpInputRowState extends State<OtpInputRow> {
     _focusNodes.first.requestFocus();
   }
 
+  void setCode(String code) {
+    final clean = code.trim();
+    for (int i = 0; i < widget.length; i++) {
+      if (i < clean.length) {
+        _controllers[i].text = clean[i];
+      } else {
+        _controllers[i].clear();
+      }
+    }
+    if (clean.length >= widget.length) {
+      widget.onCompleted(clean.substring(0, widget.length));
+    }
+  }
+
   String get _value => _controllers.map((c) => c.text).join();
 
   @override

@@ -14,7 +14,13 @@ class ForgetPasswordListener extends StatelessWidget {
     return BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
       listener: (context, state) {
         if (state is ForgetPasswordSuccess) {
-          context.push(AppRouter.kOtpView, extra: state.email);
+          context.push(
+            AppRouter.kOtpView,
+            extra: {
+              'email': state.email,
+              'otp': state.otp,
+            },
+          );
         } else if (state is ForgetPasswordFailure) {
           AuthSnackbar.showError(context, state.errMessage);
         }

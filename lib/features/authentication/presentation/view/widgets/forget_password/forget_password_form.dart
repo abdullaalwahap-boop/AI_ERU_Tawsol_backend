@@ -42,12 +42,12 @@ class _ForgetPasswordFormState extends State<ForgetPasswordForm> {
         children: [
           AuthTextField(
             controller: _emailCtrl,
-            label: l10n.emailAddress,
-            prefixIcon: Icons.email_outlined,
-            keyboardType: TextInputType.emailAddress,
+            label: 'البريد الإلكتروني أو كود الطالب / المستخدم',
+            prefixIcon: Icons.account_circle_outlined,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => _submit(),
-            validator: AuthValidators.email,
+            validator: AuthValidators.emailOrCode,
           ),
           AppSpacing.h24,
           BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(

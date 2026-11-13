@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:ai_eru_tawasol/core/services/service_locator.dart';
 import 'package:ai_eru_tawasol/core/session/app_role.dart';
 import 'package:ai_eru_tawasol/core/session/session_cubit.dart';
 import 'package:ai_eru_tawasol/core/utils/app_router.dart';
+import 'package:ai_eru_tawasol/features/announcement/data/repos/announ_repo.dart';
 import 'package:ai_eru_tawasol/features/announcement/presentation/view/announ_view.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_bottom_navigation_bar.dart';
 import 'package:ai_eru_tawasol/features/home/presentation/view/widgets/home_floating_action_button.dart';
@@ -18,8 +22,33 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   int _currentIndex = 0;
+  int _announcementUnread = 0;
+  Timer? _unreadTimer;
 
-  void _onTabTapped(int index) => setState(() => _currentIndex = index);
+  @override
+  void initState() {
+    super.initState();
+    _fetchUnread();
+    _unreadTimer = Timer.periodic(const Duration(seconds: 30), (_) => _fetchUnread());
+  }
+
+  @override
+  void dispose() {
+    _unreadTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _fetchUnread() async {
+    try {
+      final count = await getIt<AnnounRepo>().getUnreadCount();
+      if (mounted) setState(() => _announcementUnread = count);
+    } catch (_) {}
+  }
+
+  void _onTabTapped(int index) {
+    setState(() => _currentIndex = index);
+    if (index == 0) _fetchUnread();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +69,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           bottomNavigationBar: HomeBottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: _onTabTapped,
+            announcementUnreadCount: _announcementUnread,
           ),
           floatingActionButton: showFab
               ? HomeFloatingActionButton(role: role.toAnnounRole)

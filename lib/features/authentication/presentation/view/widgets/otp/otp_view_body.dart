@@ -12,9 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OtpViewBody extends StatefulWidget {
-  const OtpViewBody({super.key, required this.email});
+  const OtpViewBody({super.key, required this.email, this.initialOtp});
 
   final String email;
+  final String? initialOtp;
 
   @override
   State<OtpViewBody> createState() => _OtpViewBodyState();
@@ -23,6 +24,17 @@ class OtpViewBody extends StatefulWidget {
 class _OtpViewBodyState extends State<OtpViewBody> {
   final _otpRowKey = GlobalKey<OtpInputRowState>();
   String _code = '';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialOtp != null && widget.initialOtp!.trim().length == 6) {
+      _code = widget.initialOtp!.trim();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _otpRowKey.currentState?.setCode(widget.initialOtp!.trim());
+      });
+    }
+  }
 
   void _onCompleted(String code) => setState(() => _code = code);
 
@@ -53,7 +65,45 @@ class _OtpViewBodyState extends State<OtpViewBody> {
               ),
               AppSpacing.h12,
               OtpEmailLabel(email: widget.email),
-              AppSpacing.h36,
+              AppSpacing.h24,
+              if (widget.initialOtp != null && widget.initialOtp!.trim().isNotEmpty) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.25),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.mark_email_read_outlined,
+                          color: AppColors.primary, size: 22),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'رمز التحقق الخاص بك: ${widget.initialOtp!.trim()}',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryDark,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _otpRowKey.currentState?.setCode(widget.initialOtp!.trim());
+                          setState(() => _code = widget.initialOtp!.trim());
+                        },
+                        child: const Text('تعبئة الرمز',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               OtpInputRow(
                 key: _otpRowKey,
                 length: 6,
