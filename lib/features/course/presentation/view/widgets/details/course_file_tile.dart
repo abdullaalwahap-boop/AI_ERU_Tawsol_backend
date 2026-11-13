@@ -106,7 +106,7 @@ class CourseFileTile extends StatelessWidget {
                           ),
                           const Spacer(),
 
-                          if (isStudent && content.isQuizEligible)
+                          if (content.isQuizEligible)
                             GenerateQuizButton(content: content),
                         ],
                       ),

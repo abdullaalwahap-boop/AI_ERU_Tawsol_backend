@@ -78,6 +78,11 @@ class _AttachmentTileState extends State<AttachmentTile> {
         await Dio().download(
           url,
           savePath,
+          options: Options(
+            followRedirects: true,
+            maxRedirects: 5,
+            validateStatus: (status) => status != null && status < 400,
+          ),
           onReceiveProgress: (received, total) {
             if (total > 0 && mounted) {
               setState(() => _progress = received / total);
@@ -106,8 +111,11 @@ class _AttachmentTileState extends State<AttachmentTile> {
   }
 
   String _fileNameFromUrl(String url) {
-    final name = url.split('/').last.split('?').first;
-    return name.isNotEmpty ? name : 'file';
+    final raw = url.split('/').last.split('?').first;
+    if (raw.contains('.') && raw.length > 3) return raw;
+    final cleanName = _a.name.replaceAll(RegExp(r'[^\w\.\-\u0600-\u06FF]'), '_');
+    if (cleanName.contains('.')) return cleanName;
+    return '$cleanName.pdf';
   }
 
   @override

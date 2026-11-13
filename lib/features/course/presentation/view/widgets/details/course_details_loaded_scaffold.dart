@@ -102,7 +102,7 @@ class CourseDetailsLoadedScaffold extends StatelessWidget {
                             ? CourseFileTile(content: item)
                             : AnnounCardContent(
                                 announcement: item.announcement!,
-                                onQuizTap: isStudent && item.isQuizEligible
+                                onQuizTap: item.isQuizEligible
                                     ? () => context.push(
                                           AppRouter.kQuizView,
                                           extra: QuizArgs(

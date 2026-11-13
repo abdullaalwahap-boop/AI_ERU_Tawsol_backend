@@ -35,7 +35,6 @@ class CourseContent {
   bool get isQuizEligible =>
       type == ContentType.material &&
       fileIdInt != null &&
-      (authorTypeCode == 'DR' || authorTypeCode == 'TA') &&
       attachments.isNotEmpty &&
       (attachments.first.fileType == ContentFileType.pdf ||
           attachments.first.fileType == ContentFileType.doc);
@@ -236,6 +235,7 @@ class CourseContent {
     final title = j['title'] as String? ?? j['file_name'] as String? ?? 'File';
     final filePath = j['file_path'] as String?;
     final linkUrl = j['link_url'] as String?;
+    final fileId = j['file_id'] as int?;
     final rawSize = j['file_size'] ?? 0;
     final sizeMB = rawSize is int
         ? (rawSize < 1000 ? rawSize.toDouble() : rawSize / (1024 * 1024))
@@ -246,10 +246,13 @@ class CourseContent {
     String? url;
     if (linkUrl != null && linkUrl.isNotEmpty) {
       url = linkUrl;
+    } else if (filePath != null && filePath.isNotEmpty && filePath.startsWith('http')) {
+      url = filePath;
+    } else if (fileId != null) {
+      url = '${ApiConstants.baseUrl}/files/download/$fileId';
     } else if (filePath != null && filePath.isNotEmpty) {
-      url = filePath.startsWith('http')
-          ? filePath
-          : '${ApiConstants.baseUrl}/$filePath';
+      final clean = filePath.replaceFirst(RegExp(r'^/+'), '');
+      url = '${ApiConstants.baseUrl}/$clean';
     }
 
     final ct = ContentFileType.fromString(fileType);
@@ -261,6 +264,7 @@ class CourseContent {
       fileType: ct,
       url: url,
       isImage: ct == ContentFileType.image,
+      fileId: fileId,
     );
   }
 

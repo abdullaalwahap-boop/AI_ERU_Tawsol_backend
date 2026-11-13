@@ -22,6 +22,7 @@ class AnnounAttachment {
         (json['title'] as String?) ??
         '';
 
+    final fileId = json['file_id'] as int?;
     final filePath = json['file_path'] as String?;
     final linkUrl = json['link_url'] as String?;
     final legacyUrl =
@@ -29,10 +30,13 @@ class AnnounAttachment {
     String url = '';
     if (linkUrl != null && linkUrl.isNotEmpty) {
       url = linkUrl;
+    } else if (filePath != null && filePath.isNotEmpty && filePath.startsWith('http')) {
+      url = filePath;
+    } else if (fileId != null) {
+      url = '${ApiConstants.baseUrl}/files/download/$fileId';
     } else if (filePath != null && filePath.isNotEmpty) {
-      url = filePath.startsWith('http')
-          ? filePath
-          : '${ApiConstants.baseUrl}/$filePath';
+      final clean = filePath.replaceFirst(RegExp(r'^/+'), '');
+      url = '${ApiConstants.baseUrl}/$clean';
     } else if (legacyUrl != null && legacyUrl.isNotEmpty) {
       url = legacyUrl;
     }
@@ -42,7 +46,7 @@ class AnnounAttachment {
         (json['file_type'] ?? json['type'] ?? '').toString().toLowerCase();
 
     return AnnounAttachment(
-      fileId: json['file_id'] as int?,
+      fileId: fileId,
       name: name,
       url: url,
       sizeMB: _toMB(rawSize),
