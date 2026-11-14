@@ -14,6 +14,8 @@
         android:label="تواصل - مدرسة WE السويس"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
+        android:allowBackup="false"
+        android:filterTouchesWhenObscured="true"
         android:networkSecurityConfig="@xml/network_security_config">
         <activity
             android:name=".MainActivity"
