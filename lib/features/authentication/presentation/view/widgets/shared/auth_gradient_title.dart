@@ -18,6 +18,7 @@ class AuthGradientTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(text);
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) => const LinearGradient(
@@ -28,9 +29,10 @@ class AuthGradientTitle extends StatelessWidget {
       child: Text(
         text,
         textAlign: textAlign,
+        textDirection: hasArabic ? TextDirection.rtl : null,
         style: AppTextStyles.heading1.copyWith(
           fontSize: fontSize,
-          letterSpacing: letterSpacing,
+          letterSpacing: hasArabic ? 0.0 : letterSpacing,
           color: Colors.white,
         ),
       ),

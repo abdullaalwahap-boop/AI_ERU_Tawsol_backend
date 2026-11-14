@@ -37,13 +37,9 @@ class ChatMessage {
   bool get canEdit =>
       isFromMe &&
       type == MessageType.text &&
-      !isDeleted &&
-      DateTime.now().difference(timestamp).inMinutes < 15;
+      !isDeleted;
 
-  bool get canDelete =>
-      isFromMe &&
-      !isDeleted &&
-      DateTime.now().difference(timestamp).inMinutes < 15;
+  bool get canDelete => !isDeleted;
 
   factory ChatMessage.fromJson(Map<String, dynamic> json,
       {required int myUserId}) {

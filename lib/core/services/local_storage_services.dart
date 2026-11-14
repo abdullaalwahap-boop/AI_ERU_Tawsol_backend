@@ -113,4 +113,22 @@ class LocalStorageService {
     final code = prefs.getString(_keyLocale) ?? 'en';
     return Locale(code);
   }
+
+  // ─── Deleted-for-me Chat Messages ──────────────────────────────────────────
+
+  static String _keyDeletedForMe(int userId) => 'deleted_for_me_$userId';
+
+  Future<Set<String>> getDeletedForMeMessageIds(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final list = prefs.getStringList(_keyDeletedForMe(userId)) ?? const [];
+    return list.toSet();
+  }
+
+  Future<void> addDeletedForMeMessageId(int userId, String messageId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = _keyDeletedForMe(userId);
+    final current = (prefs.getStringList(key) ?? const <String>[]).toSet();
+    current.add(messageId);
+    await prefs.setStringList(key, current.toList());
+  }
 }

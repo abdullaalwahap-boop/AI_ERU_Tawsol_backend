@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ai_eru_tawasol/core/services/local_storage_services.dart';
 import 'package:ai_eru_tawasol/core/services/secure_storage_service.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_models.dart';
 import 'package:ai_eru_tawasol/features/chat/data/models/chat_ws_events.dart';
@@ -11,12 +12,18 @@ import 'package:equatable/equatable.dart';
 part 'private_chat_state.dart';
 
 class PrivateChatCubit extends Cubit<PrivateChatState> {
-  PrivateChatCubit(this._repo, this._wsService, this._storage)
-      : super(PrivateChatInitial());
+  PrivateChatCubit(
+    this._repo,
+    this._wsService,
+    this._storage, [
+    LocalStorageService? localService,
+  ])  : _localService = localService ?? LocalStorageService(),
+        super(PrivateChatInitial());
 
   final ChatRepo _repo;
   final ChatWebSocketService _wsService;
   final SecureStorageService _storage;
+  final LocalStorageService _localService;
 
   StreamSubscription<WsEvent>? _wsSub;
   Timer? _typingTimer;
@@ -60,8 +67,12 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       if (isClosed) return;
       final current = state;
       if (current is! PrivateChatLoaded) return;
+      final deletedForMe = _myUserId != null
+          ? await _localService.getDeletedForMeMessageIds(_myUserId!)
+          : const <String>{};
+      final filtered = fresh.where((m) => !deletedForMe.contains(m.id)).toList();
       _pendingByType.clear();
-      emit(_withMessages(current, fresh));
+      emit(_withMessages(current, filtered));
     } catch (_) {}
   }
 
@@ -81,7 +92,9 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
       await _wsService.ensureConnected();
       final messages = await _repo.getMessages(partnerUserIdStr);
       if (isClosed) return;
-      emit(PrivateChatLoaded(messages: messages));
+      final deletedForMe = await _localService.getDeletedForMeMessageIds(_myUserId!);
+      final filtered = messages.where((m) => !deletedForMe.contains(m.id)).toList();
+      emit(PrivateChatLoaded(messages: filtered));
       _subscribeToWsEvents();
       _wsService.sendSeen(_partnerUserId!);
     } catch (e) {
@@ -574,6 +587,24 @@ class PrivateChatCubit extends Cubit<PrivateChatState> {
     } catch (_) {
       emit(current);
     }
+  }
+
+  // ── Delete message for me ──────────────────────────────────────────────────
+
+  Future<void> deleteMessageForMe(String chatId) async {
+    final current = state;
+    if (current is! PrivateChatLoaded) return;
+    if (_myUserId != null) {
+      await _localService.addDeletedForMeMessageId(_myUserId!, chatId);
+    }
+    final filtered = current.messages.where((m) => m.id != chatId).toList();
+    emit(_withMessages(current, filtered));
+  }
+
+  // ── Delete message for everyone ───────────────────────────────────────────
+
+  Future<void> deleteMessageForEveryone(String chatId) async {
+    await deleteMessage(chatId);
   }
 
   // ── Typing indicator (outgoing) ────────────────────────────────────────────

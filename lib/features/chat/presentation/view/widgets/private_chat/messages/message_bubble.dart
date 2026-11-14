@@ -60,6 +60,10 @@ class MessageBubble extends StatelessWidget {
             context.read<PrivateChatCubit>().editMessage(message.id, newText),
         onDelete: () =>
             context.read<PrivateChatCubit>().deleteMessage(message.id),
+        onDeleteForMe: () =>
+            context.read<PrivateChatCubit>().deleteMessageForMe(message.id),
+        onDeleteForEveryone: () =>
+            context.read<PrivateChatCubit>().deleteMessageForEveryone(message.id),
       ),
     );
   }
@@ -90,6 +94,9 @@ class MessageBubble extends StatelessWidget {
         final isHighlighted = hId == message.id;
 
         return GestureDetector(
+          onTap: (!message.isDeleted && message.type == MessageType.text)
+              ? () => _showActions(context)
+              : null,
           onLongPress:
               !message.isDeleted ? () => _showActions(context) : null,
           child: AnimatedContainer(
@@ -165,12 +172,14 @@ class MessageBubble extends StatelessWidget {
           )
         : null;
 
-    final content = switch (message.type) {
-      MessageType.text => MessageTextContent(message: message),
-      MessageType.image => MessageImageContent(message: message),
-      MessageType.voice => MessageVoiceContent(message: message),
-      MessageType.file => MessageFileContent(message: message),
-    };
+    final content = message.isDeleted
+        ? MessageTextContent(message: message)
+        : switch (message.type) {
+            MessageType.text => MessageTextContent(message: message),
+            MessageType.image => MessageImageContent(message: message),
+            MessageType.voice => MessageVoiceContent(message: message),
+            MessageType.file => MessageFileContent(message: message),
+          };
 
     if (replyCard == null) return content;
 

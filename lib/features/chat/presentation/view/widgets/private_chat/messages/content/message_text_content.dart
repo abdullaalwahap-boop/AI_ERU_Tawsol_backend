@@ -29,7 +29,7 @@ class MessageTextContent extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            'Message deleted',
+            'تم حذف هذه الرسالة',
             style: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14,
               fontStyle: FontStyle.italic,
