@@ -52,6 +52,7 @@ class MessageTextContent extends StatelessWidget {
     final text = message.text ?? '';
     final hasLink = LinkUtils.containsUrl(text);
     final previewUrl = hasLink ? LinkUtils.firstUrl(text) : null;
+    final isArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(text);
 
     final textColor = message.isFromMe
         ? AppColors.sentBubbleText
@@ -68,12 +69,14 @@ class MessageTextContent extends StatelessWidget {
         previewUrl != null ? 8 : 10,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           // ── Text with tappable links ───────────────────────────────────────
           Linkify(
             text: text,
+            textDirection: isArabic ? TextDirection.rtl : null,
             onOpen: (link) async {
               try {
                 final uri = Uri.tryParse(link.url);
@@ -84,11 +87,13 @@ class MessageTextContent extends StatelessWidget {
             style: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14.5,
               height: 1.45,
+              letterSpacing: isArabic ? 0.0 : null,
               color: textColor,
             ),
             linkStyle: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14.5,
               height: 1.45,
+              letterSpacing: isArabic ? 0.0 : null,
               color: linkColor,
               decoration: TextDecoration.underline,
               decorationColor: linkColor,
@@ -100,10 +105,11 @@ class MessageTextContent extends StatelessWidget {
           if (message.editedAt != null) ...[
             const SizedBox(height: 3),
             Text(
-              'edited',
+              isArabic ? 'معدلة' : 'edited',
               style: AppTextStyles.caption.copyWith(
                 fontSize: 11,
                 fontStyle: FontStyle.italic,
+                letterSpacing: 0.0,
                 color: message.isFromMe
                     ? AppColors.sentBubbleText.withValues(alpha: 0.6)
                     : context.colorTextHint,

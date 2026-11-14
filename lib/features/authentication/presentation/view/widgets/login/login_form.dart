@@ -74,11 +74,11 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             AuthTextField(
               controller: _emailCtrl,
-              label: l10n.universityEmail,
-              prefixIcon: Icons.alternate_email,
-              keyboardType: TextInputType.emailAddress,
+              label: 'البريد الإلكتروني أو كود الطالب / المستخدم',
+              prefixIcon: Icons.account_circle_outlined,
+              keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              validator: AuthValidators.email,
+              validator: AuthValidators.emailOrCode,
             ),
             AppSpacing.h16,
             AuthTextField(
