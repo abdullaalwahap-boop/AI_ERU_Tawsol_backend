@@ -34,7 +34,7 @@ class CourseCardContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CourseCardHeader(course: course),
+            CourseCardHeader(course: course, role: role),
             AppSpacing.h12,
             Divider(color: context.colorDivider, height: 1),
             AppSpacing.h10,

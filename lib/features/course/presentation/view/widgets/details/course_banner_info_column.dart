@@ -26,8 +26,8 @@ class CourseBannerInfoColumn extends StatelessWidget {
         AppSpacing.h4,
         Text(
           course.doctorName.isEmpty
-              ? course.code
-              : '${course.code}  ·  ${course.doctorName}',
+              ? 'فصل ${course.code}'
+              : 'فصل ${course.code}  ·  ${course.doctorName}',
           style: AppTextStyles.labelMedium.copyWith(
             fontSize: 12.5,
             color: Colors.white.withValues(alpha: 0.72),

@@ -8,18 +8,20 @@ class CourseCardCodeBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final label = course.code.isNotEmpty ? 'فصل ${course.code}' : '';
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: course.accentColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        course.code,
+        label,
         style: AppTextStyles.labelSmall.copyWith(
           fontSize: 11,
           color: course.accentColor,
           letterSpacing: 0.3,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

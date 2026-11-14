@@ -8,8 +8,13 @@ import 'package:ai_eru_tawasol/features/course/presentation/view/widgets/home/ca
 
 class CourseCardHeader extends StatelessWidget {
   final Course course;
+  final CourseRole role;
 
-  const CourseCardHeader({super.key, required this.course});
+  const CourseCardHeader({
+    super.key,
+    required this.course,
+    this.role = CourseRole.student,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +39,18 @@ class CourseCardHeader extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.person_outline_rounded,
-                      size: 12,
+                      role == CourseRole.doctor
+                          ? Icons.school_outlined
+                          : Icons.person_outline_rounded,
+                      size: 13,
                       color: context.colorTextHint,
                     ),
                     AppSpacing.w4,
                     Expanded(
                       child: Text(
-                        course.doctorName,
+                        role == CourseRole.doctor
+                            ? 'معلم الفصل: ${course.doctorName}'
+                            : 'دكتور المادة: ${course.doctorName}',
                         style: AppTextStyles.labelSmall
                             .copyWith(color: context.colorTextHint),
                         maxLines: 1,
