@@ -16,6 +16,7 @@ import 'package:ai_eru_tawasol/features/onboarding/presentation/view/on_boarding
 import 'package:ai_eru_tawasol/features/profile/presentation/manager/change_password_cubit/change_password_mode.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/change_password_view.dart';
 import 'package:ai_eru_tawasol/features/profile/presentation/view/profile_view.dart';
+import 'package:ai_eru_tawasol/features/profile/presentation/view/widgets/sections/help/contact_us_sheet.dart';
 import 'package:ai_eru_tawasol/features/quiz/data/models/quiz_args.dart';
 import 'package:ai_eru_tawasol/features/quiz/presentation/view/quiz_view.dart';
 import 'package:ai_eru_tawasol/features/splash/presentation/view/splash_view.dart';
@@ -84,6 +85,12 @@ class AppRouter {
       GoRoute(
         path: kProfileView,
         builder: (context, state) => const ProfileView(),
+      ),
+      GoRoute(
+        path: kContactUsView,
+        builder: (context, state) => const Scaffold(
+          body: SafeArea(child: ContactUsSheet()),
+        ),
       ),
       GoRoute(
         path: kChangePasswordView,

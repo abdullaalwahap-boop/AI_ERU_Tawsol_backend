@@ -68,7 +68,7 @@ class ApiConstants {
       '${baseUrl.replaceFirst('http://', 'ws://').replaceFirst('https://', 'wss://')}/announcements/ws/$userId';
 
   // ─── Support ──────────────────────────────────────────────────────────────────
-  static const String contactUs = '/contact/';
+  static const String contactUs = '/contact';
 
   // ─── Quiz (AI) ────────────────────────────────────────────────────────────────
   static const String quizGenerate = '/quiz/generate';
