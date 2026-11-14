@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:ai_eru_tawasol/features/attendance/presentation/view/attendance_scanner_view.dart';
 import 'package:ai_eru_tawasol/features/attendance/presentation/view/attendance_summary_view.dart';
 import 'package:ai_eru_tawasol/core/shared/models/content_display_item.dart';
