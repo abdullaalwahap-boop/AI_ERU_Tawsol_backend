@@ -12,13 +12,12 @@ final class ForgetPasswordLoading extends ForgetPasswordState {}
 
 final class ForgetPasswordSuccess extends ForgetPasswordState {
   final String email;
-  final String? otp;
   final String? message;
 
-  const ForgetPasswordSuccess(this.email, {this.otp, this.message});
+  const ForgetPasswordSuccess(this.email, {this.message});
 
   @override
-  List<Object?> get props => [email, otp, message];
+  List<Object?> get props => [email, message];
 }
 
 final class ForgetPasswordFailure extends ForgetPasswordState {

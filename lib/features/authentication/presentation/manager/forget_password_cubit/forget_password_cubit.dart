@@ -15,9 +15,8 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
       final res = await _repo.forgetPassword(email: email);
       if (isClosed) return;
       final returnedEmail = res['email'] as String? ?? email;
-      final otp = (res['otp'] ?? res['otp_debug']) as String?;
       final msg = res['message'] as String?;
-      emit(ForgetPasswordSuccess(returnedEmail, otp: otp, message: msg));
+      emit(ForgetPasswordSuccess(returnedEmail, message: msg));
     } catch (e) {
       if (isClosed) return;
       emit(ForgetPasswordFailure(e.toString()));

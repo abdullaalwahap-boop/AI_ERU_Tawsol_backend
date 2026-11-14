@@ -7,17 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OtpView extends StatelessWidget {
-  const OtpView({super.key, required this.email, this.initialOtp});
+  const OtpView({super.key, required this.email});
 
   final String email;
-  final String? initialOtp;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => OtpCubit(getIt<AuthRepo>()),
       child: AuthScaffold(
-        body: OtpListener(email: email, initialOtp: initialOtp),
+        body: OtpListener(email: email),
       ),
     );
   }

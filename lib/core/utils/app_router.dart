@@ -67,14 +67,12 @@ class AppRouter {
         builder: (context, state) {
           final extra = state.extra;
           String email = '';
-          String? otp;
           if (extra is Map) {
             email = extra['email'] as String? ?? '';
-            otp = extra['otp'] as String?;
           } else if (extra is String) {
             email = extra;
           }
-          return OtpView(email: email, initialOtp: otp);
+          return OtpView(email: email);
         },
       ),
       GoRoute(

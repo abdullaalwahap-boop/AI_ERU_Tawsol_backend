@@ -18,7 +18,6 @@ class ForgetPasswordListener extends StatelessWidget {
             AppRouter.kOtpView,
             extra: {
               'email': state.email,
-              'otp': state.otp,
             },
           );
         } else if (state is ForgetPasswordFailure) {

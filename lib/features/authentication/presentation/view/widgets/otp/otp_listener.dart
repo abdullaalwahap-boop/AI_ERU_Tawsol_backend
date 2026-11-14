@@ -7,10 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class OtpListener extends StatelessWidget {
-  const OtpListener({super.key, required this.email, this.initialOtp});
+  const OtpListener({super.key, required this.email});
 
   final String email;
-  final String? initialOtp;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class OtpListener extends StatelessWidget {
           AuthSnackbar.showError(context, state.errMessage);
         }
       },
-      child: OtpViewBody(email: email, initialOtp: initialOtp),
+      child: OtpViewBody(email: email),
     );
   }
 }
