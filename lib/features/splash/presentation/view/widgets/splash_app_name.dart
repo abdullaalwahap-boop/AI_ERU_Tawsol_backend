@@ -67,6 +67,18 @@ class SplashAppName extends StatelessWidget {
             ),
           ],
         ),
+        AppSpacing.h8,
+        Text(
+          'مدرسة WE للتكنولوجيا التطبيقية بالسويس',
+          textDirection: TextDirection.rtl,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.labelSmall.copyWith(
+            color: Colors.white.withValues(alpha: 0.75),
+            letterSpacing: 0.0,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ],
     );
   }

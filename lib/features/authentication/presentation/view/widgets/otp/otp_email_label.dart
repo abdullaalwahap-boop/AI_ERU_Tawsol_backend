@@ -8,17 +8,24 @@ class OtpEmailLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: RichText(
         textAlign: TextAlign.center,
+        textDirection: isAr ? TextDirection.rtl : TextDirection.ltr,
         text: TextSpan(
-          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
+          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54, letterSpacing: 0.0),
           children: [
-            const TextSpan(text: 'Enter the 6-digit code sent to\n'),
+            TextSpan(
+              text: isAr
+                  ? 'أدخل الرمز المكون من 6 أرقام المرسل إلى\n'
+                  : 'Enter the 6-digit code sent to\n',
+              style: const TextStyle(letterSpacing: 0.0),
+            ),
             TextSpan(
               text: email,
-              style: AppTextStyles.titleSmall.copyWith(color: Colors.white),
+              style: AppTextStyles.titleSmall.copyWith(color: Colors.white, letterSpacing: 0.0),
             ),
           ],
         ),

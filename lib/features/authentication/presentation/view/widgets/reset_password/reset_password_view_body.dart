@@ -34,7 +34,10 @@ class ResetPasswordViewBody extends StatelessWidget {
               AppSpacing.h8,
               Text(
                 AppLocalizations.of(context).createStrongPassword,
-                style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
+                textDirection: RegExp(r'[\u0600-\u06FF]').hasMatch(AppLocalizations.of(context).createStrongPassword)
+                    ? TextDirection.rtl
+                    : null,
+                style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54, letterSpacing: 0.0),
               ),
               AppSpacing.h32,
               ResetPasswordForm(resetToken: resetToken),

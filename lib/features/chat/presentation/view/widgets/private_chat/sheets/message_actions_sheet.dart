@@ -46,39 +46,51 @@ class MessageActionsSheet extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isMe = message.isFromMe;
 
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
     final action = await showDialog<String>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          l10n.deleteMessageAction,
-          textAlign: TextAlign.start,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          isMe
-              ? 'هل ترغب في حذف الرسالة لديك فقط أم لدى الجميع؟'
-              : 'هل ترغب في حذف هذه الرسالة من محادثتك؟',
-          textAlign: TextAlign.start,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, 'cancel'),
-            child: Text(l10n.cancel),
+      builder: (ctx) => Directionality(
+        textDirection: isAr ? TextDirection.rtl : TextDirection.ltr,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            l10n.deleteMessageAction,
+            textAlign: TextAlign.start,
+            style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.0),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, 'for_me'),
-            child: const Text('حذف لدي فقط', style: TextStyle(color: AppColors.error)),
+          content: Text(
+            isMe
+                ? (isAr
+                    ? 'هل ترغب في حذف الرسالة لديك فقط أم لدى الجميع؟'
+                    : 'Do you want to delete this message for you only or for everyone?')
+                : (isAr
+                    ? 'هل ترغب في حذف هذه الرسالة من محادثتك؟'
+                    : 'Do you want to delete this message from your chat?'),
+            textAlign: TextAlign.start,
+            style: const TextStyle(letterSpacing: 0.0),
           ),
-          if (isMe)
+          actions: [
             TextButton(
-              onPressed: () => Navigator.pop(ctx, 'for_everyone'),
-              child: const Text(
-                'حذف لدى الجميع',
-                style: TextStyle(color: AppColors.error, fontWeight: FontWeight.bold),
+              onPressed: () => Navigator.pop(ctx, 'cancel'),
+              child: Text(l10n.cancel, style: const TextStyle(letterSpacing: 0.0)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, 'for_me'),
+              child: Text(
+                isAr ? 'حذف لدي فقط' : 'Delete for me',
+                style: const TextStyle(color: AppColors.error, letterSpacing: 0.0),
               ),
             ),
-        ],
+            if (isMe)
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, 'for_everyone'),
+                child: Text(
+                  isAr ? 'حذف لدى الجميع' : 'Delete for everyone',
+                  style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.bold, letterSpacing: 0.0),
+                ),
+              ),
+          ],
+        ),
       ),
     );
 

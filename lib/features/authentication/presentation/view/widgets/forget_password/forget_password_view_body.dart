@@ -31,7 +31,10 @@ class ForgetPasswordViewBody extends StatelessWidget {
           AppSpacing.h8,
           Text(
             AppLocalizations.of(context).forgotPasswordSubtitle,
-            style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
+            textDirection: RegExp(r'[\u0600-\u06FF]').hasMatch(AppLocalizations.of(context).forgotPasswordSubtitle)
+                ? TextDirection.rtl
+                : null,
+            style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54, letterSpacing: 0.0),
             textAlign: TextAlign.center,
           ),
           AppSpacing.h32,

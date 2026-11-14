@@ -50,12 +50,14 @@ class ChatInputTextField extends StatelessWidget {
               style: AppTextStyles.bodyMedium.copyWith(
                 fontSize: 14.5,
                 color: context.colorTextPrimary,
+                letterSpacing: 0.0,
               ),
               decoration: InputDecoration(
                 hintText: l10n.typeAMessage,
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
                   fontSize: 14.5,
                   color: context.colorTextHint,
+                  letterSpacing: 0.0,
                 ),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(vertical: 11),

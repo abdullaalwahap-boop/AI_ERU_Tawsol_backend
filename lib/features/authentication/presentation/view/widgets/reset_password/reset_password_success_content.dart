@@ -41,7 +41,10 @@ class ResetPasswordSuccessContent extends StatelessWidget {
             AppSpacing.h12,
             Text(
               AppLocalizations.of(context).passwordResetMessage,
-              style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
+              textDirection: RegExp(r'[\u0600-\u06FF]').hasMatch(AppLocalizations.of(context).passwordResetMessage)
+                  ? TextDirection.rtl
+                  : null,
+              style: AppTextStyles.bodyMedium.copyWith(color: Colors.white54, letterSpacing: 0.0),
               textAlign: TextAlign.center,
             ),
             AppSpacing.h32,

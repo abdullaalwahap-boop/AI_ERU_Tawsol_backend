@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ai_eru_tawasol/core/localization/app_localizations.dart';
 import 'package:ai_eru_tawasol/core/theme/app_colors.dart';
 import 'package:ai_eru_tawasol/core/theme/app_text_styles.dart';
 import 'package:ai_eru_tawasol/features/authentication/presentation/manager/otp_cubit/otp_cubit.dart';
@@ -45,21 +46,28 @@ class _OtpResendSectionState extends State<OtpResendSection> {
 
   @override
   Widget build(BuildContext context) {
+    final isAr = Localizations.localeOf(context).languageCode == 'ar';
+    final l10n = AppLocalizations.of(context);
     return BlocListener<OtpCubit, OtpState>(
       listenWhen: (_, state) => state is OtpInitial,
       listener: (_, __) => _startTimer(),
       child: _seconds > 0
           ? Text(
-              'Resend code in ${_seconds}s',
-              style: AppTextStyles.bodySmall.copyWith(color: Colors.white38),
+              isAr ? 'إعادة الإرسال خلال $_seconds ثانية' : 'Resend code in ${_seconds}s',
+              textDirection: isAr ? TextDirection.rtl : TextDirection.ltr,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: Colors.white38,
+                letterSpacing: 0.0,
+              ),
             )
           : TextButton(
               onPressed: () =>
                   context.read<OtpCubit>().resendOtp(email: widget.email),
               child: Text(
-                'Resend Code',
+                l10n.resendOtp,
                 style: AppTextStyles.titleSmall.copyWith(
                   color: AppColors.accent,
+                  letterSpacing: 0.0,
                 ),
               ),
             ),

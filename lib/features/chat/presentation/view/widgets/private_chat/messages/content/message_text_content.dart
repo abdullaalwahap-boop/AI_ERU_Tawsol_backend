@@ -30,9 +30,11 @@ class MessageTextContent extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             'تم حذف هذه الرسالة',
+            textDirection: TextDirection.rtl,
             style: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14,
               fontStyle: FontStyle.italic,
+              letterSpacing: 0.0,
               color: message.isFromMe
                   ? AppColors.sentBubbleText.withValues(alpha: 0.55)
                   : context.colorTextHint,
@@ -68,64 +70,67 @@ class MessageTextContent extends StatelessWidget {
         14,
         previewUrl != null ? 8 : 10,
       ),
-      child: Column(
-        crossAxisAlignment:
-            isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // ── Text with tappable links ───────────────────────────────────────
-          Linkify(
-            text: text,
-            textDirection: isArabic ? TextDirection.rtl : null,
-            onOpen: (link) async {
-              try {
-                final uri = Uri.tryParse(link.url);
-                if (uri == null) return;
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              } catch (_) {}
-            },
-            style: AppTextStyles.bodyMedium.copyWith(
-              fontSize: 14.5,
-              height: 1.45,
-              letterSpacing: isArabic ? 0.0 : null,
-              color: textColor,
-            ),
-            linkStyle: AppTextStyles.bodyMedium.copyWith(
-              fontSize: 14.5,
-              height: 1.45,
-              letterSpacing: isArabic ? 0.0 : null,
-              color: linkColor,
-              decoration: TextDecoration.underline,
-              decorationColor: linkColor,
-            ),
-            options: const LinkifyOptions(humanize: false),
-          ),
-
-          // ── Edited label ───────────────────────────────────────────────────
-          if (message.editedAt != null) ...[
-            const SizedBox(height: 3),
-            Text(
-              isArabic ? 'معدلة' : 'edited',
-              style: AppTextStyles.caption.copyWith(
-                fontSize: 11,
-                fontStyle: FontStyle.italic,
-                letterSpacing: 0.0,
-                color: message.isFromMe
-                    ? AppColors.sentBubbleText.withValues(alpha: 0.6)
-                    : context.colorTextHint,
+      child: Directionality(
+        textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // ── Text with tappable links ───────────────────────────────────────
+            Linkify(
+              text: text,
+              textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+              onOpen: (link) async {
+                try {
+                  final uri = Uri.tryParse(link.url);
+                  if (uri == null) return;
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                } catch (_) {}
+              },
+              style: AppTextStyles.bodyMedium.copyWith(
+                fontSize: 14.5,
+                height: 1.45,
+                letterSpacing: isArabic ? 0.0 : null,
+                color: textColor,
               ),
+              linkStyle: AppTextStyles.bodyMedium.copyWith(
+                fontSize: 14.5,
+                height: 1.45,
+                letterSpacing: isArabic ? 0.0 : null,
+                color: linkColor,
+                decoration: TextDecoration.underline,
+                decorationColor: linkColor,
+              ),
+              options: const LinkifyOptions(humanize: false),
             ),
-          ],
 
-          // ── Link preview card ──────────────────────────────────────────────
-          if (previewUrl != null) ...[
-            const SizedBox(height: 8),
-            LinkPreviewCard(
-              url: previewUrl,
-              isFromMe: message.isFromMe,
-            ),
+            // ── Edited label ───────────────────────────────────────────────────
+            if (message.editedAt != null) ...[
+              const SizedBox(height: 3),
+              Text(
+                isArabic ? 'معدلة' : 'edited',
+                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+                style: AppTextStyles.caption.copyWith(
+                  fontSize: 11,
+                  fontStyle: FontStyle.italic,
+                  letterSpacing: 0.0,
+                  color: message.isFromMe
+                      ? AppColors.sentBubbleText.withValues(alpha: 0.6)
+                      : context.colorTextHint,
+                ),
+              ),
+            ],
+
+            // ── Link preview card ──────────────────────────────────────────────
+            if (previewUrl != null) ...[
+              const SizedBox(height: 8),
+              LinkPreviewCard(
+                url: previewUrl,
+                isFromMe: message.isFromMe,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

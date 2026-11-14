@@ -48,14 +48,15 @@ class _AuthTextFieldState extends State<AuthTextField> {
           textInputAction: widget.textInputAction,
           onFieldSubmitted: widget.onFieldSubmitted,
           validator: widget.validator,
-          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+          style: AppTextStyles.bodyMedium.copyWith(color: Colors.white, letterSpacing: 0.0),
           decoration: InputDecoration(
             labelText: widget.label,
             hintText: widget.hint,
             labelStyle: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.accentSoft, fontSize: 15),
+                .copyWith(color: AppColors.accentSoft, fontSize: 15, letterSpacing: 0.0),
             hintStyle: AppTextStyles.bodySmall.copyWith(
               color: Colors.white24,
+              letterSpacing: 0.0,
             ),
             prefixIcon: widget.prefixIcon != null
                 ? Icon(widget.prefixIcon, color: AppColors.accentSoft, size: 20)

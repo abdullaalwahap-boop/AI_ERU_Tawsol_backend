@@ -74,7 +74,9 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             AuthTextField(
               controller: _emailCtrl,
-              label: 'البريد الإلكتروني أو كود الطالب / المستخدم',
+              label: Localizations.localeOf(context).languageCode == 'ar'
+                  ? 'البريد الإلكتروني أو كود الطالب / المستخدم'
+                  : 'Email or Student / User Code',
               prefixIcon: Icons.account_circle_outlined,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
